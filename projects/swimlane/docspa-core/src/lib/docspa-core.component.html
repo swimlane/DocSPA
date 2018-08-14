@@ -1,0 +1,67 @@
+<ngx-loading-bar></ngx-loading-bar>
+
+<nav
+  *ngIf="navbarPage"
+  class="app-nav no-badge">
+  <docspa-md-embed
+    [path]="navbarPage"
+    [plugins]="false"
+    [safe]="true">
+  </docspa-md-embed>
+</nav>
+
+<section
+  #coverMain
+  *ngIf="coverPage"
+  class="cover show">
+  <docspa-md-embed
+    class="cover-main"
+    [path]="coverPage"
+    [plugins]="false"
+    [safe]="true">
+  </docspa-md-embed>
+</section>
+
+<main>
+  <button *ngIf="sidebarPage" class="sidebar-toggle" (click)="toggleSidebar()"><div class="sidebar-toggle-button"><span></span><span></span><span></span></div></button>
+  <aside *ngIf="sidebarPage" class="sidebar left-sidebar">
+    <docspa-md-embed
+      class="sidebar-nav"
+      [path]="sidebarPage"
+      [activeLink]="activeLink"
+      [plugins]="false"
+      [safe]="true">
+    </docspa-md-embed>
+  </aside>
+  <section class="content">
+    <article
+      *ngIf="contentPage"
+      class="markdown-section"
+      id="main">
+      <docspa-md-embed
+        [path]="contentPage"
+        [plugins]="true"
+        [safe]="true"
+        [scrollTo]="anchor"
+        (done)="mainContentLoaded($event)">
+      </docspa-md-embed>
+    </article>
+    <footer *ngIf="footerPage">
+      <docspa-md-embed
+        [path]="footerPage"
+        [plugins]="false"
+        [safe]="true">
+      </docspa-md-embed>
+    </footer>
+  </section>
+  <aside *ngIf="rightSidebarPage" class="sidebar right-sidebar">
+    <docspa-md-embed
+      class="sidebar-nav"
+      [path]="rightSidebarPage"
+      [plugins]="false"
+      [activeLink]="activeSubLink"
+      [safe]="true">
+    </docspa-md-embed>
+  </aside>
+
+</main>

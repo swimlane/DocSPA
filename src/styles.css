@@ -1,0 +1,58 @@
+/* You can add global styles to this file, and also import other style files */
+
+body, html {
+  scroll-behavior: smooth;
+}
+
+.app-nav {
+  position: fixed;
+}
+
+/* Move edit button */
+.markdown-section > * > div[style] {
+  float: right;
+}
+
+.markdown-section > * > div[style] a {
+  text-decoration: none;
+}
+
+section.cover {
+  background: linear-gradient(to left bottom, hsl(211, 100%, 85%) 0%,hsl(169, 100%, 85%) 100%)
+}
+
+section.cover hr, footer hr {
+  border: none;
+  border-bottom: 1px solid var(--theme-color-secondary-light, #0074d92e);
+  margin: 2em 20%;
+}
+
+.sidebar hr {
+  border: none;
+  border-bottom: 1px solid var(--theme-color-secondary-light, #0074d92e);
+  margin: 0 20%;
+}
+
+section.content footer {
+  margin: 30px 0;
+  text-align: center;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
