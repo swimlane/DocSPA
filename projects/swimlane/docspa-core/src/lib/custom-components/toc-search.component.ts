@@ -27,7 +27,7 @@ import frontmatter from 'remark-frontmatter';
         #searchInput
         type="search"
         value=""
-        placeholder="Search"
+        placeholder="Search topics"
         (keyup)="search($event.target.value)"
         (search)="search($event.target.value)">
     </div>
