@@ -56,7 +56,7 @@ title: Hello
 ---
 ```
 
-i> Various parts of DocSPA will display a page title.  By default this page title is the first heading of teh page.  This can be overidden by setting the `title` in the YAML Frontmatter.
+i> Various parts of DocSPA will display a page title.  By default this page title is the first heading of the page.  This can be overidden by setting the `title` in the YAML Frontmatter.
 
 ### Blocks
 
@@ -282,7 +282,7 @@ The `env-var` component allows displaying variables defined in the `environment`
 DocSPA version: <env-var var="version"></env-var>
 ~~~
 
-!> It is usally expected that `environment` property will contain teh contents of your project's `environment.ts`.  `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.  The list of file replacements can be found in `angular.json`.
+!> It is usally expected that `environment` property will contain the contents of your project's `environment.ts`.  `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.  The list of file replacements can be found in `angular.json`.
 
 ### `runtime-content`
 
