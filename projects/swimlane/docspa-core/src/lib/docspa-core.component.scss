@@ -287,12 +287,23 @@ $sidebar-width: 16rem;
   z-index: 20;
 }
 
-body.close .sidebar.left-sidebar {
-  transform: translateX(-$sidebar-width);
+section.cover.show {
+  transition: transform 250ms ease-out;
 }
 
-body.close .sidebar.right-sidebar {
-  transform: translateX($sidebar-width);
+body.close {
+  .sidebar.left-sidebar {
+    transform: translateX(-$sidebar-width);
+  }
+
+  .sidebar.right-sidebar {
+    transform: translateX($sidebar-width);
+  }
+
+  body.close .content {
+    left: $sidebar-width;
+    right: $sidebar-width;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -305,11 +316,16 @@ body.close .sidebar.right-sidebar {
       transform: translateX($sidebar-width);
     }
   }
-}
 
-body.close .content {
-  left: $sidebar-width;
-  right: $sidebar-width;
+  body.close {
+    .sidebar.left-sidebar {
+      transform: translateX($sidebar-width);
+    }
+
+    section.cover.show {
+      transform: translateX($sidebar-width);
+    }
+  }
 }
 
 // Theme support
