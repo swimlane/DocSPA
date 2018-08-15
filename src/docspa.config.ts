@@ -8,7 +8,7 @@ import {
   mermaid, mermaidHook, prism, tabsHook
 } from '@swimlane/docspa-core';
 
-const config = {
+export const config = {
   name: 'DocSPA',
   basePath: 'docs/',
   homepage: 'README.md',
@@ -38,8 +38,7 @@ const config = {
   environment,
   theme: {
     '--theme-color': '#0089FF',
-    '--theme-color-secondary-light': '#0074d92e'
+    '--theme-color-secondary-light': '#0074d92e',
+    '--sidebar-width': '16rem'
   }
 };
-
-export default config;

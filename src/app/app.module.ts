@@ -9,7 +9,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AppComponent } from './app.component';
 import { DocspaCoreModule } from '@swimlane/docspa-core';
 
-import config from '../docspa.config';
+import { config } from '../docspa.config';
 
 @NgModule({
   declarations: [
