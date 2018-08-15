@@ -113,7 +113,7 @@ describe('DocSPA', () => {
     it('has custom elements', () => {
       cy.get('@content').find('md-toc a').should('have.length', 7);
       cy.get('@content').find('md-embed').contains('This is the contents of embed.md');
-      cy.get('@content').find('env-var').contains('1.0.0');
+      cy.get('@content').find('env-var').contains(pkg.version);
       cy.get('@content').find('ngx-charts-bar-vertical svg').should('have.length', 1);
     });
 
