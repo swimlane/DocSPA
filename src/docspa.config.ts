@@ -39,6 +39,7 @@ export const config = {
   theme: {
     '--theme-color': '#0089FF',
     '--theme-color-secondary-light': '#0074d92e',
-    '--sidebar-width': '16rem'
+    '--sidebar-width': '16rem',
+    '--base-background-color': '#F5F7F9'
   }
 };
