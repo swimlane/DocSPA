@@ -1,6 +1,6 @@
 {
   "name": "@swimlane/docspa-core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "peerDependencies": {
     "@angular/common": "^6.0.0",
     "@angular/core": "^6.0.0",
@@ -29,5 +29,21 @@
     "url-resolve": "^1.0.0",
     "vfile": "^3.0.0",
     "vfile-reporter": "^5.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swimlane/docspa.git"
+  },
+  "keywords": [
+    "angular",
+    "documentation"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/swimlane/docspa/issues"
+  },
+  "homepage": "https://swimlane.github.io/DocSPA/",
+  "authors": [
+    "Jayson Harshbarger"
+  ]
 }

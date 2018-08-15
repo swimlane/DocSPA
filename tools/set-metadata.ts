@@ -10,6 +10,7 @@ async function main() {
     'repository',
     'keywords',
     'author',
+    'authors',
     'contributors',
     'license',
     'bugs',
