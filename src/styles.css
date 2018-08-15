@@ -17,10 +17,6 @@ body, html {
   text-decoration: none;
 }
 
-section.cover {
-  background: linear-gradient(to left bottom, hsl(211, 100%, 85%) 0%,hsl(169, 100%, 85%) 100%)
-}
-
 section.cover hr, footer hr {
   border: none;
   border-bottom: 1px solid var(--theme-color-secondary-light, #0074d92e);
