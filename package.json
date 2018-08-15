@@ -6,6 +6,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "postversion": "npm run setMetadata",
+    "setMetadata": "ts-node ./tools/set-metadata.ts",
     "prebuild:release": "rimraf dist",
     "build:lib": "ng build @swimlane/docspa-core ---prod",
     "build:release": "cross-env NODE_ENV=production ng build --prod --no-aot --no-build-optimizer",
