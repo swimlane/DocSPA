@@ -2,7 +2,7 @@
   "name": "@swimlane/docspa",
   "private": true,
   "version": "1.0.1",
-  "description": "An Angular powerered documentation SPA.",
+  "description": "An Angular powered documentation SPA",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

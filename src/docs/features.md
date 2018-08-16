@@ -187,7 +187,15 @@ gantt
     Task in sec      :2014-01-12  , 12d
     another task      : 24d
 ```
+
+```mermaid
+sequenceDiagram
+    Alice->>John: Hello John, how are you?
+    John-->>Alice: Great!
+```
 ~~~
+
+i> See [mermaid docs](https://mermaidjs.github.io/) for more details on the supported syntax.
 
 ### Math
 
