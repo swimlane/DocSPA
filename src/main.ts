@@ -8,8 +8,6 @@ if (environment.production) {
   enableProdMode();
 }
 
-window['environment'] = environment; // hack, will remove later
-
 platformBrowserDynamic().bootstrapModule(AppModule).then(ref => {
   // Ensure Angular destroys itself on hot reloads.
   if (window['ngRef']) {
