@@ -107,7 +107,7 @@ describe('DocSPA', () => {
     });
   
     it('runs other plugins', () => {
-      cy.get('@content').find('.mermaid svg').should('have.length', 2);
+      cy.get('@content').find('.mermaid svg').should('have.length', 3);
     });
   
     it('has custom elements', () => {

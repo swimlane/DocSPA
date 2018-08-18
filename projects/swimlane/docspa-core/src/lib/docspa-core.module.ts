@@ -36,6 +36,17 @@ export function createJitCompiler() {
   }]).createCompiler();
 }
 
+const elements = [
+  MadeWithDocSPAComponent,
+  RuntimeContentComponent,
+  TOCComponent,
+  EmbedStackblitzComponent,
+  EmbedMarkdownComponent,
+  EnvVarComponent,
+  TOCSearchComponent,
+  TOCPaginationComponent
+];
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -49,14 +60,7 @@ export function createJitCompiler() {
   declarations: [
     DocSPACoreComponent,
     SafeHtmlPipe,
-    MadeWithDocSPAComponent,
-    RuntimeContentComponent,
-    TOCComponent,
-    EmbedStackblitzComponent,
-    EmbedMarkdownComponent,
-    EnvVarComponent,
-    TOCSearchComponent,
-    TOCPaginationComponent
+    ...elements
   ],
   exports: [
     DocSPACoreComponent,
@@ -70,33 +74,14 @@ export function createJitCompiler() {
     { provide: Compiler, useFactory: createJitCompiler }
   ],
   entryComponents: [
-    MadeWithDocSPAComponent,
-    RuntimeContentComponent,
-    TOCComponent,
-    EmbedStackblitzComponent,
-    EmbedMarkdownComponent,
-    EnvVarComponent,
-    TOCSearchComponent,
-    TOCPaginationComponent
+    ...elements
   ]
 })
 export class DocspaCoreModule {
   constructor(private injector: Injector) {
-    const elements = {
-      'made-with-docspa': MadeWithDocSPAComponent,
-      'runtime-content': RuntimeContentComponent,
-      'md-toc': TOCComponent,
-      'embed-stackblitz': EmbedStackblitzComponent,
-      'md-embed': EmbedMarkdownComponent,
-      'env-var': EnvVarComponent,
-      'md-toc-search': TOCSearchComponent,
-      'md-toc-page': TOCPaginationComponent
-    };
-
-    Object.keys(elements).map((name: string) => {
-      const Constructor = elements[name];
+    elements.map((Constructor: any) => {
       const content = createCustomElement(Constructor, { injector: this.injector });
-      customElements.define(name, content);
+      customElements.define(Constructor.is, content);
     });
   }
 

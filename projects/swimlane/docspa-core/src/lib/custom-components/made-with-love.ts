@@ -34,6 +34,8 @@ import { Component, Input, OnInit } from '@angular/core';
   `]
 })
 export class MadeWithDocSPAComponent implements OnInit {
+  static readonly is = 'made-with-docspa';
+
   @Input()
   public name: string;
 

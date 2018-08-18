@@ -21,6 +21,8 @@ import { SettingsService } from '../services/settings.service';
   encapsulation: ViewEncapsulation.None
 })
 export class RuntimeContentComponent implements OnInit {
+  static readonly is = 'runtime-content';
+
   @Input()
   context: any;
 

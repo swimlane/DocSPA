@@ -49,6 +49,8 @@ import { SettingsService } from '../services/settings.service';
   encapsulation: ViewEncapsulation.None
 })
 export class EmbedStackblitzComponent {
+  static readonly is = 'embed-stackblitz';
+
   static count = 0;
 
   @Input()

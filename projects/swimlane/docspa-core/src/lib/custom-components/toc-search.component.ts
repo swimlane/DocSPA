@@ -47,6 +47,8 @@ import frontmatter from 'remark-frontmatter';
   encapsulation: ViewEncapsulation.None
 })
 export class TOCSearchComponent implements OnInit {
+  static readonly is = 'md-toc-search';
+
   @Input()
   set paths(val: string[]) {
     if (typeof val === 'string') {

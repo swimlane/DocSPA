@@ -23,6 +23,8 @@ import frontmatter from 'remark-frontmatter';
   encapsulation: ViewEncapsulation.None
 })
 export class TOCComponent implements OnInit {
+  static readonly is = 'md-toc';
+
   @Input()
   set path(val: string) {
     if (val !== this._path) {

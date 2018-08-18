@@ -61,3 +61,20 @@ md-toc-search .search {
     text-align: center;
   }
 }
+
+md-toc.collapsible {
+  display: block;
+
+  ul > li > ul {
+    overflow: hidden;
+    line-height: 0;
+    opacity: 0;
+    transition: line-height 0.2s ease-in-out, opacity 0.4s ease-in-out;
+  }
+
+  ul > li.active > ul,
+  ul > li:hover > ul, {
+    opacity: 1;
+    line-height: 2;
+  }
+}

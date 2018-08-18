@@ -19,6 +19,8 @@ import { Page } from '../services/page.model';
   encapsulation: ViewEncapsulation.None
 })
 export class EmbedMarkdownComponent implements OnInit, OnChanges {
+  static readonly is = 'md-embed';
+
   @Input()
   path = '';
 
@@ -96,16 +98,30 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   private markActiveLinks() {
     if (this.activeLink) {
       const aObj = this.elm.nativeElement.getElementsByTagName('a');
+
+      const activeLinks = [];
       for (let i = 0; i < aObj.length; i++) {
         const a = aObj[i];
         const active = this.activeLink.indexOf(a.href) >= 0;
+        if (active) {
+          activeLinks.push(a);
+        }
         this.renderer.setElementClass(a, 'active', active);
 
-        const li = a.closest('li');
-        if (li) {
-          this.renderer.setElementClass(li, 'active', active);
+        let p = a.parentNode;
+        while (p && ['LI', 'UL', 'P'].includes(p.nodeName)) {
+          this.renderer.setElementClass(p, 'active', active);
+          p = p.parentNode;
         }
       }
+
+      activeLinks.forEach(a => {
+        let p = a.parentNode;
+        while (p && ['LI', 'UL', 'P'].includes(p.nodeName)) {
+          this.renderer.setElementClass(p, 'active', true);
+          p = p.parentNode;
+        }
+      });
     }
   }
 }

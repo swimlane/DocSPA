@@ -87,6 +87,8 @@ import { Page } from '../services/page.model';
   encapsulation: ViewEncapsulation.None
 })
 export class TOCPaginationComponent implements OnInit {
+  static readonly is = 'md-toc-page';
+
   @Input()
   set paths(val: string[]) {
     if (typeof val === 'string') {
