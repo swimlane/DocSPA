@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { NgModule, Injector, Compiler } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 import { LoadingBarModule } from '@ngx-loading-bar/core';

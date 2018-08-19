@@ -40,22 +40,22 @@ export class LocationService {
   /**
    * Convert a page string to a virtual file
    */
-  pageToFile(page: string = '') {
-    // TODO: these initial changes should be included in vfile history
-    if (page[0] === '/' && page[1] === '_') {
-      page = this.settings.notFoundPage;
-    }
-
+  pageToFile(page: string = ''): Page {
+    page = page.replace(/^#/, '');
     if (page === '') {
       page = '/';
     }
 
-    if (page.slice(-1) === '/') {
-      page = path.join(page, this.settings.homepage);
-    }
-    page = page.replace(/^#/, '');
-
     const vfile = new Page({ path: page, cwd: this.root });
+
+    // TODO: these initial changes should be included in vfile history
+    if (vfile.path[0] === '/' && vfile.path[1] === '_') {
+      vfile.path = this.settings.notFoundPage;
+    }
+
+    if (vfile.path.slice(-1) === '/') {
+      vfile.path = path.join(vfile.path, this.settings.homepage);
+    }
 
     if (vfile.basename === '') {
       vfile.basename = this.settings.homepage;

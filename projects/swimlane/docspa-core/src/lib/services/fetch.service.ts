@@ -74,7 +74,7 @@ export class FetchService {
    *
    * @param url {string} Full path relitive to root
    */
-  get(url: string): Observable<Page>  {
+  get(url: string, options = { cache: true }): Observable<Page>  {
     // todo: consume a vfile/page
     if (!url) {
       return of(new Page({
@@ -90,43 +90,47 @@ export class FetchService {
       }));
     }
 
-    if (this.cache.has(url)) {
+    if (options.cache && this.cache.has(url)) {
       return of(this.cache.get(url));
     }
 
-    if (this.inFlight.has(url)) {
+    if (options.cache && this.inFlight.has(url)) {
       return this.inFlight.get(url);
     }
 
     let notFound = url === this.path404;
-    const obs = this.http.get(url, {responseType: 'text'})
+    const obs = this.http.get(url, { responseType: 'text' })
       .pipe(
         catchError(() => {
           notFound = true;
           if (this.cache.has(this.path404)) {
             return of(this.cache.get(this.path404).text);
           }
-          return this.http.get(this.path404, {responseType: 'text'});
+          return this.http.get(this.path404, { responseType: 'text' });
         }),
         map((text: string) => {
           return new Page({
             // url,
             timestampCached: Date.now(),
             text,
+            contents: text,
             notFound,
             data: {
               docspa: {
                 url
               }
-            }
+            },
+            resolvedPath: url
           });
         }),
         map((item: Page) => {
-          this.cache.set(url, item);
-          if (notFound) {
-            this.cache.set(this.path404, item);
+          if (options.cache) {
+            this.cache.set(url, item);
+            if (notFound) {
+              this.cache.set(this.path404, item);
+            }
+            this.inFlight.delete(url);
           }
-          this.inFlight.delete(url);
           return item;
         }),
         share()

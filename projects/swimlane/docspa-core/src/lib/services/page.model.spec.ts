@@ -1,6 +1,6 @@
 import { Page } from './page.model';
 
-describe('Page', () => {
+describe('Page Model', () => {
   it('works', () => {
     const page = new Page();
     expect(page).toBeTruthy();
