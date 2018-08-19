@@ -1,5 +1,6 @@
+
 declare module 'vfile' {
-  export default class VFile {
+  class VFile {
     path: string;
     contents: string;
     basename: string;
@@ -8,9 +9,12 @@ declare module 'vfile' {
     dirname: string;
     cwd: string;
     history: string[];
-
+    messages: any[];
+  
     data: { [key: string]: any };
-
+  
     constructor(options: Partial<VFile>) 
   }
+
+  export = VFile;
 }

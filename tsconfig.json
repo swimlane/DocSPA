@@ -10,6 +10,8 @@
     "experimentalDecorators": true,
     "target": "es5",
     "allowJs": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "typeRoots": [
       "node_modules/@types"
     ],

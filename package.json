@@ -16,6 +16,7 @@
     "publish:lib": "cd dist/swimlane/docspa-core && npm publish",
     "test": "start-server-and-test start http-get://localhost:4200 cypress:run",
     "test:deploy": "cross-env CYPRESS_baseUrl=\"https://swimlane.github.io/DocSPA/\" cypress run --browser chrome",
+    "test:lib": "ng test @swimlane/docspa-core",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --browser chrome",
     "lint": "ng lint",

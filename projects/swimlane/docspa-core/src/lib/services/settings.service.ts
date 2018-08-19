@@ -15,8 +15,8 @@ export class SettingsService {
   sideLoad = [];
 
   coverpage = '';
-  basePath = '';
-  nameLink = ''; // window.location.pathname;
+  basePath = 'docs/';
+  nameLink = '';
   ext = '.md';
   notFoundPage = '_404.md';
 
@@ -39,12 +39,12 @@ export class SettingsService {
     highlight: null
   };
 
-  constructor(@Optional() @Inject('config') private config: any) {
+  constructor(@Optional() @Inject('config') config: any) {
     if (window['$docsify']) {
       this.merge(window['$docsify']);
     }
 
-    if (this.config) {
+    if (config) {
       this.merge(config);
     }
 
@@ -52,9 +52,9 @@ export class SettingsService {
       this.sideLoad = [this.sideLoad];
     }
 
-    this.currentTheme = config.theme || {};
+    this.currentTheme = (config && config.theme) || {};
 
-    if (config.themeColor) {
+    if (config && config.themeColor) {
       this.currentTheme['--theme-color'] = config.themeColor;
     }
 

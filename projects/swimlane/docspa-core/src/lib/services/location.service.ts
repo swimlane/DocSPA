@@ -2,7 +2,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common';
 
 import { Page } from './page.model';
-import * as path from 'path';
+import path from 'path';
 import urlResolve from 'url-resolve';
 
 import { SettingsService } from './settings.service';
@@ -41,9 +41,13 @@ export class LocationService {
    * Convert a page string to a virtual file
    */
   pageToFile(page: string = '') {
-    // TODO: these initial chanegs should be included in vfile history
+    // TODO: these initial changes should be included in vfile history
     if (page[0] === '/' && page[1] === '_') {
       page = this.settings.notFoundPage;
+    }
+
+    if (page === '') {
+      page = '/';
     }
 
     if (page.slice(-1) === '/') {

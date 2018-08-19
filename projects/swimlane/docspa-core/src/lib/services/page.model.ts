@@ -1,7 +1,7 @@
 ///<reference path="../../vendor.d.ts"/>
 
 import VFile from 'vfile';
-import * as path from 'path';
+import path from 'path';
 
 // todo: rename VPage
 export class Page extends VFile {
@@ -22,7 +22,8 @@ export class Page extends VFile {
     return this.history[0];
   }
 
-  constructor(options: any) {
+  constructor(options: any = {}) {
     super(options);
   }
 }
+

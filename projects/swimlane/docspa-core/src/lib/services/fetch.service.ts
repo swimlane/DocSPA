@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
 import { map, share, catchError } from 'rxjs/operators';
-import * as path from 'path';
-import * as QuickLRU from 'quick-lru';
+import path from 'path';
+import QuickLRU from 'quick-lru';
 
 import { SettingsService } from './settings.service';
 import { Page } from './page.model';
