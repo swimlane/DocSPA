@@ -43,7 +43,7 @@ describe('DocSPA', () => {
 
       cy.get('app-root').find('.cover-main').as('coverpage');
       cy.get('@coverpage').find('h2').contains('DocSPA');
-      cy.get('@coverpage').find('blockquote').contains('An Angular powerered documentation SPA');
+      cy.get('@coverpage').find('blockquote').contains('An Angular-powered documentation SPA');
     
       cy.get('@coverpage').find('img').should('have.attr', 'data-no-zoom', 'true');
       cy.get('@coverpage').find('img').should('have.attr', 'src', 'docs/logo.png');

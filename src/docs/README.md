@@ -1,6 +1,6 @@
 # DocSPA
 
-> An Angular powered documentation SPA.
+> An Angular-powered documentation SPA.
 
 ## Introduction
 

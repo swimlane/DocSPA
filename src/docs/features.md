@@ -78,7 +78,7 @@ i> Various parts of DocSPA will display a page title.  By default this page titl
 | A warning
 
 [[figure | **Figure 1: Figure Title**]]
-| ![](./logo.png)
+| ![Hello](./logo.png)
 
 [[caption | **Table 1: Table Title**]]
 | Tables        | Are           | Cool  |
@@ -113,7 +113,7 @@ i> The styles of these elements can be customized using CSS.  Additional notices
 
 DocSPA uses [Prism](https://prismjs.com/) for syntax highlighting.
 
-```js
+```javascript
 (function () {
   console.log('Hello');
 })();
@@ -130,7 +130,7 @@ DocSPA uses [Prism](https://prismjs.com/) for syntax highlighting.
 Including extenstions for line numbers and line highlights.
 
 ~~~markdown { playground }
-```javascript { .linenos mark="13-27"}
+```javascript { .linenos mark="13-27" }
 const config = {
   name: 'DocSPA',
   basePath: 'docs/',

@@ -2,7 +2,7 @@
 
 <h2>DocSPA <small><env-var var="version"><env-var></small></h2>
 
-> An Angular powerered documentation SPA
+> An Angular-powered documentation SPA
 
 ---
 

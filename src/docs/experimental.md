@@ -117,3 +117,16 @@ The paragraph starts here and you can <q>mention the in-line quote here</q> and 
 ## Cite
 
 <cite>The impression sunrise</cite> by Monet in 1972.
+
+## Ordered List with Images
+
+1. One
+
+    ![](./logo.png)
+
+2. Two
+
+    ![](./logo.png)
+
+3. Three
+
