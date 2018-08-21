@@ -105,6 +105,7 @@ export class DocSPACoreComponent implements OnInit {
     if ('contentPage' in changes && this.contentPage !== changes.contentPage.currentValue) {
       this.contentPage = changes.contentPage.currentValue;
       this.renderer.setElementClass(document.body, 'ready', false);
+      this.activeLink = document.location.href.replace('#' + changes.anchor.currentValue, '');
     }
 
     if ('coverPage' in changes) {
@@ -122,8 +123,6 @@ export class DocSPACoreComponent implements OnInit {
     if ('anchor' in changes) {
       this.anchor = changes.anchor.currentValue;
     }
-
-    this.activeLink = document.location.href;
 
     // TODO: ready event from sub components?
     setTimeout(() => {

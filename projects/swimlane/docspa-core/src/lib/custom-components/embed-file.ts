@@ -102,7 +102,8 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
       const activeLinks = [];
       for (let i = 0; i < aObj.length; i++) {
         const a = aObj[i];
-        const active = this.activeLink.indexOf(a.href) >= 0;
+        // TODO: Check active page and active anchor separately
+        const active = a.href.indexOf(this.activeLink) >= 0 || this.activeLink.indexOf(a.href) >= 0;
         if (active) {
           activeLinks.push(a);
         }
