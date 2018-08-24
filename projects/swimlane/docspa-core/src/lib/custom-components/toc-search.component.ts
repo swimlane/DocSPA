@@ -10,11 +10,12 @@ import stringify from 'remark-stringify';
 import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
 
+import { getTitle } from '@swimlane/docspa-remark-preset/plugins/frontmatter';
+
 import { Page } from '../services/page.model';
 import { FetchService } from '../services/fetch.service';
 import { LocationService } from '../services/location.service';
 
-import { getTitle } from '../plugins/frontmatter';
 import { links, images } from '../plugins/links';
 import frontmatter from 'remark-frontmatter';
 

@@ -25,6 +25,12 @@
       ],
       "@swimlane/docspa-core/*": [
         "projects/swimlane/docspa-core/src/*"
+      ],
+      "@swimlane/docspa-remark-preset": [
+        "projects/swimlane/docspa-remark-preset/src/index"
+      ],
+      "@swimlane/docspa-remark-preset/*": [
+        "projects/swimlane/docspa-remark-preset/src/*"
       ]
     }
   }

@@ -26,19 +26,6 @@ export class SettingsService {
 
   currentTheme: Theme = {};
 
-  markdown = {
-    pedantic: false,
-    gfm: true,
-    tables: true,
-    breaks: false,
-    sanitize: false,
-    smartLists: false,
-    smartypants: false,
-    xhtml: false,
-    renderer: {},
-    highlight: null
-  };
-
   constructor(@Optional() @Inject('config') config: any) {
     if (window['$docsify']) {
       this.merge(window['$docsify']);

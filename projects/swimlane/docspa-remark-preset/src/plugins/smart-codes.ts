@@ -10,8 +10,19 @@ export const tocSmartCode = () => {
     visit(tree, 'shortcode', (node, index, parent) => {
       if (node.identifier === 'toc') {
         const newNode = {
-          type: 'html',
-          value: `<md-toc path="${file.data.base}"></md-toc>`
+          type: 'toc',
+          data: {
+            hChildren: [
+              {
+                type: 'element',
+                tagName: 'md-toc',
+                properties: {
+                  path: file.data.base,
+                  ...node.data.hProperties
+                }
+              }
+            ]
+          }
         };
         parent.children.splice(index, 1, newNode);
       }
@@ -19,3 +30,13 @@ export const tocSmartCode = () => {
   };
 };
 
+export const smartCodeProps = () => {
+  return (tree, file) => {
+    file.data = file.data || {};
+    visit(tree, 'shortcode', (node, index, parent) => {
+      node.data = node.data || {};
+      node.data.hProperties = node.data.hProperties || {};
+      node.data.hProperties = { ...node.data.hProperties, ...node.attributes };
+    });
+  };
+};

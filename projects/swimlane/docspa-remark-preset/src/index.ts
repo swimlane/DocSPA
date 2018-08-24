@@ -7,15 +7,15 @@ import htmlEmojiImage from 'remark-html-emoji-image';
 import parseFrontmatter from 'remark-parse-yaml';
 import shortcodes from 'remark-shortcodes';
 import slug from 'remark-slug';
+import remarkAttr from 'remark-attr';
 
 import { readMatter, getTitle } from './plugins/frontmatter';
 
 import { infoString, infoStringToAttr, customBlocks } from './plugins/misc';
 import { customBlockquotes } from './plugins/remark-custom-blockquotes';
-// import { runtime } from './plugins/runtime';
-import { tocSmartCode } from './plugins/smart-codes';
-
-// todo: smartcode attributes to hProperties
+import { runtime } from './plugins/runtime';
+import { smartCodeProps, tocSmartCode } from './plugins/smart-codes';
+import { mermaid } from './plugins/mermaid';
 
 export const docspaRemarkPreset = [
   frontmatter,
@@ -23,17 +23,19 @@ export const docspaRemarkPreset = [
   readMatter,
   getTitle,
   infoString,
-  // [remarkAttr, { scope: 'permissive' }],
+  [ remarkAttr, { scope: 'permissive' } ],
   slug,
   [ headings, { behaviour: 'append' } ],
   math,
   katex,
   gemojiToEmoji,
-  [htmlEmojiImage, { base: 'https://assets-cdn.github.com/images/icons/emoji/' }],
+  [ htmlEmojiImage, { base: 'https://assets-cdn.github.com/images/icons/emoji/' }],
   infoStringToAttr,
   customBlocks,
   customBlockquotes,
   // runtime,
+  mermaid,
   shortcodes,
+  smartCodeProps,
   tocSmartCode
 ];

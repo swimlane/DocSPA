@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from './environments/environment';
+import { docspaRemarkPreset } from '@swimlane/docspa-remark-preset';
 
 import {
-  defaultRemarkPlugins,
-  mermaid, mermaidHook, prism, tabsHook
+  runtime, mermaidHook, prism, tabsHook
 } from '@swimlane/docspa-core';
 
 export const config = {
@@ -26,8 +26,8 @@ export const config = {
     tabsHook
   ],
   remarkPlugins: [
-    ...defaultRemarkPlugins,
-    mermaid,
+    ...docspaRemarkPreset,
+    runtime,
     prism
   ],
   runtimeModules: [
