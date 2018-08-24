@@ -1,12 +1,14 @@
 import { expect } from 'chai';
 import stripIndent from 'common-tags/lib/stripIndent';
+import { runtime } from '../src/plugins/runtime';
 
 const remark = require('remark');
 const html = require('remark-html');
-const { docspaRemarkPreset } = require('./');
+const { docspaRemarkPreset } = require('../src/');
 
 const processor = remark()
   .use(docspaRemarkPreset)
+  .use(runtime)
   .use(html);
 
 describe('3rd party', () => {
@@ -112,7 +114,7 @@ describe('internal', () => {
     expect(String(vfile)).to.contain(`<div class="test-shortcode-class"></div>`);
   });
 
-  /* it('runtime, html', async () => {
+  it('runtime, html', async () => {
     const contents = stripIndent`
     ~~~html { run }
     function() {};
@@ -156,7 +158,7 @@ describe('internal', () => {
     const out = String(vfile);
     expect(out).to.contain(`<div class="custom-block playground">`);
     expect(out).to.contain(`<p><strong>Hello</strong></p>\n`);
-  }); */
+  });
 
   it('mermaid', async () => {
     const contents = stripIndent`

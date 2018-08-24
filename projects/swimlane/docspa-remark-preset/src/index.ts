@@ -13,7 +13,6 @@ import { readMatter, getTitle } from './plugins/frontmatter';
 
 import { infoString, infoStringToAttr, customBlocks } from './plugins/misc';
 import { customBlockquotes } from './plugins/remark-custom-blockquotes';
-import { runtime } from './plugins/runtime';
 import { smartCodeProps, tocSmartCode } from './plugins/smart-codes';
 import { mermaid } from './plugins/mermaid';
 

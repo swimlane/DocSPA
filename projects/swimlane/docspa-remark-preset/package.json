@@ -1,13 +1,18 @@
 {
   "name": "@swimlane/docspa-remark-preset",
   "version": "1.0.0",
-  "description": "",
-  "main": "src/indexts",
+  "description": "Remark preset for DocSPA",
+  "main": "dist/main/index.js",
+  "typings": "dist/main/index.d.ts",
+  "module": "dist/module/index.js",
   "scripts": {
-    "test": "mocha -r ts-node/register src/test.ts",
-    "test:watch": "mocha ./src/test.ts --compilers ts:ts-node/register --watch"
+    "clean": "trash dist",
+    "build": "npm run clean && npm run build:main && npm run build:module",
+    "build:main": "tsc -p tsconfig.json",
+    "build:module": "tsc -p tsconfig.module.json",
+    "test": "mocha -r ts-node/register ./tests/**/*.ts",
+    "test:watch": "mocha ./tests/**/*.ts --compilers ts:ts-node/register --watch"
   },
-  "author": "J. Harshbarger",
   "license": "MIT",
   "devDependencies": {
     "@types/chai": "^4.1.4",
@@ -17,7 +22,43 @@
     "common-tags": "^1.8.0",
     "mocha": "^5.2.0",
     "nyc": "^12.0.2",
+    "trash-cli": "^1.4.0",
     "ts-node": "^7.0.1",
     "typescript": "^3.0.1"
-  }
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@rigor789/remark-autolink-headings": "^5.1.0",
+    "md-attr-parser": "^1.1.5",
+    "mdast-util-to-string": "^1.0.5",
+    "remark-attr": "^0.6.2",
+    "remark-custom-blocks": "^2.2.3",
+    "remark-frontmatter": "^1.2.1",
+    "remark-gemoji-to-emoji": "^1.1.0",
+    "remark-html-emoji-image": "^1.0.0",
+    "remark-html-katex": "^1.1.1",
+    "remark-math": "^1.0.4",
+    "remark-parse": "^5.0.0",
+    "remark-parse-yaml": "0.0.1",
+    "remark-shortcodes": "^0.2.1",
+    "remark-slug": "^5.1.0",
+    "unist-util-visit": "^1.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swimlane/docspa.git"
+  },
+  "keywords": [
+    "angular",
+    "documentation"
+  ],
+  "authors": [
+    "Jayson Harshbarger"
+  ],
+  "bugs": {
+    "url": "https://github.com/swimlane/docspa/issues"
+  },
+  "homepage": "https://swimlane.github.io/DocSPA/"
 }
