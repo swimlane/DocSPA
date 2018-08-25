@@ -29,7 +29,7 @@ export class DocSPACoreComponent implements OnInit {
   anchor: string;
 
   activeLink: string;
-  activeSubLink: string;
+  activeAnchors: string;
 
   contentHeadings: any;
 
@@ -61,11 +61,11 @@ export class DocSPACoreComponent implements OnInit {
       const current = this.contentHeadings.filter(link => {
         const offsetBottom = link.offsetTop + link.offsetHeight;
         return link.offsetTop >= fromTop && offsetBottom <= fromBottom;
-      });
+      }).map(link => this.splitHash(link.hash)[1]);
       if (current && current.length > 0) {
-        this.activeSubLink = current.join(';');
+        this.activeAnchors = current.join(';');
       } else {
-        this.activeSubLink = '';
+        this.activeAnchors = '';
       }
     }
   }
@@ -105,7 +105,7 @@ export class DocSPACoreComponent implements OnInit {
     if ('contentPage' in changes && this.contentPage !== changes.contentPage.currentValue) {
       this.contentPage = changes.contentPage.currentValue;
       this.renderer.setElementClass(document.body, 'ready', false);
-      this.activeLink = document.location.href.replace('#' + changes.anchor.currentValue, '');
+      this.activeLink = this.splitHash(document.location.hash)[0];
     }
 
     if ('coverPage' in changes) {
@@ -130,5 +130,15 @@ export class DocSPACoreComponent implements OnInit {
         this.onWindowScroll();
       }
     }, 30);
+  }
+
+  private splitHash(hash: string) {
+    const arr = ['', ''];
+    const idx = hash.indexOf('#', 1);
+    if (idx > 0) {
+      arr[0] = hash.slice(0, idx);
+      arr[1] = hash.slice(idx);
+    }
+    return arr;
   }
 }

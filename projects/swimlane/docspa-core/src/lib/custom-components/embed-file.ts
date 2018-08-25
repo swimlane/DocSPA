@@ -36,6 +36,9 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   @Input()
   activeLink: string;
 
+  @Input()
+  activeAnchors: string = null;
+
   @Output() done: EventEmitter<Page> = new EventEmitter();
 
   content: Observable<string | SafeHtml>;
@@ -59,7 +62,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
       if ('scrollTo' in changes) {
         this.doScroll();
       }
-      if ('activeLink' in changes) {
+      if ('activeLink' in changes || 'activeAnchors' in changes) {
         this.markActiveLinks();
       }
     }
@@ -94,6 +97,16 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
     }
   }
 
+  private isHashActive(hash: string) {
+    const parts = this.splitHash(hash);
+    if (this.activeLink === parts[0]) {
+      return !this.activeAnchors ?
+        true :
+        this.activeAnchors.split(';').includes(parts[1]);
+    }
+    return false;
+  }
+
   // Add 'active' class to links
   private markActiveLinks() {
     if (this.activeLink) {
@@ -102,8 +115,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
       const activeLinks = [];
       for (let i = 0; i < aObj.length; i++) {
         const a = aObj[i];
-        // TODO: Check active page and active anchor separately
-        const active = a.href.indexOf(this.activeLink) >= 0 || this.activeLink.indexOf(a.href) >= 0;
+        const active = this.isHashActive(a.hash);
         if (active) {
           activeLinks.push(a);
         }
@@ -124,5 +136,15 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
         }
       });
     }
+  }
+
+  private splitHash(hash: string) {
+    const arr = ['', ''];
+    const idx = hash.indexOf('#', 1);
+    if (idx > 0) {
+      arr[0] = hash.slice(0, idx);
+      arr[1] = hash.slice(idx);
+    }
+    return arr;
   }
 }
