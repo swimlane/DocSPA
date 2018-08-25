@@ -264,7 +264,7 @@ The slug for a header can be set by adding an id.
 
 DocSPA supports custom elements (part of the [web components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) suite of technologies).  Once a custom component is loaded they may be embedded directly into the markdown.
 
-i> Custom elements can be defined using `window.customElements.define` or from [angular elements](https://angular.io/guide/elements).
+i> Custom elements can be defined using `window.customElements.define` or from [angular elements](https://angular.io/guide/elements).  Many custom elements are also defined a short codes as noted below.
 
 ### `md-toc`
 
@@ -272,33 +272,27 @@ The `md-toc` is used to include the table of contents for a give path.
 
 ```markdown { playground }
 <md-toc path="features" max-depth="2"></md-toc>
-
-[[toc path="features" max-depth="2"]]
 ```
 
-i> The path is always relative to the root docs folder.  Including `md-toc` without a path will load the TOC for the current page (main content).  Use the shortcode `[[toc]]` to load the TOC for the page the shortcodes is found in.
+i> The path is always relative to the root docs folder.  Including `md-toc` without a path will load the TOC for the current page (main content).  `[[toc path="features" max-depth="2"]]` the same as the example above, however, using the shortcode `[[toc]]` (without a path) will insert TOC for the page the shortcodes is found in.
 
 ### `md-embed`
 
 ```markdown { playground }
 <md-embed path="embed"></md-embed>
-
-[[include path="embed"]]
 ```
+
+i> `[[include path="embed"]]` the same as the example above.
 
 ### `env-var`
 
 The `env-var` component allows displaying variables defined in the `environment` property of the config file.
 
 ```markdown { playground }
-DocSPA version:
-
-<env-var var="version"></env-var>
-
-[[var var="version"]]
+DocSPA version: <env-var var="version"></env-var>
 ```
 
-!> It is usally expected that `environment` property will contain the contents of your project's `environment.ts`.  `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.  The list of file replacements can be found in `angular.json`.
+!> `[[var var="version"]]` the same as the example above with the exception that short-codes are block elements.  It is usally expected that `environment` property will contain the contents of your project's `environment.ts`.  `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.  The list of file replacements can be found in `angular.json`.
 
 ### `runtime-content`
 
@@ -359,6 +353,8 @@ The `embed-stackblitz` component may be used to embed StackBlitz projects within
 </embed-stackblitz>
 ```
 
+i> You may also use the `[[stackblitz]]` short-code.
+
 or a path to a project payload (`JSON` file) in the documentation local files (relative to the document root folder):
 
 ```markdown { playground }
@@ -366,8 +362,6 @@ or a path to a project payload (`JSON` file) in the documentation local files (r
   title='Local StackBlitz Project<br />DocSPA'
   project-path="examples/folder/stackblitz">
 </embed-stackblitz>
-
-[[stackblitz title='Local StackBlitz Project<br />DocSPA' project-path="examples/folder/stackblitz"]]
 ```
 
 i> When providing a payload path, if the `files` property of the payload contains an array, this is treated as an array of relative paths from which the file content will be loaded.
