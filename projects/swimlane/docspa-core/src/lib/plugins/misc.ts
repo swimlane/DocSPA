@@ -1,3 +1,10 @@
+export { infoString, infoStringToAttr } from '@swimlane/docspa-remark-preset/plugins/misc';
+import { customBlocksOptions } from '@swimlane/docspa-remark-preset/plugins/remark-custom-blocks';
+
+import remarkCustomBlocks from 'remark-custom-blocks';
+
+export const customBlocks = [remarkCustomBlocks, customBlocksOptions];
+
 export function tabsHook(hook, vm) {
   const toggleState = function(tabs) {
     tabs.forEach(tab => {
