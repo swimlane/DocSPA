@@ -130,3 +130,37 @@ The paragraph starts here and you can <q>mention the in-line quote here</q> and 
 
 3. Three
 
+```javascript { .linenos mark="13-27" }
+const config = {
+  name: 'DocSPA',
+  basePath: 'docs/',
+  homepage: 'README.md',
+  notFoundPage: '_404.md',
+  sideLoad: [
+    '_sidebar.md',
+    '_navbar.md',
+    '_right_sidebar.md',
+    '_footer.md'
+  ],
+  coverpage: '_coverpage.md',
+  plugins: [
+    mermaidHook,
+    tabsHook
+  ],
+  remarkPlugins: [
+    ...defaultRemarkPlugins,
+    mermaid,
+    prism
+  ],
+  runtimeModules: [
+    CommonModule,
+    NgxChartsModule,
+    BrowserAnimationsModule
+  ],
+  environment,
+  theme: {
+    '--theme-color': '#0089FF',
+    '--theme-color-secondary-light': '#0074d92e'
+  }
+};
+```

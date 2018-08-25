@@ -81,6 +81,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
         this.done.emit(vfile);
       }, 30);
       this.html = this.safe ? this.sanitizer.bypassSecurityTrustHtml(vfile.html) : vfile.html;
+      // console.log(String(this.html));
     });
   }
 

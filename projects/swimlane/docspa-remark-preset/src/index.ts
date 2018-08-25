@@ -17,6 +17,8 @@ import { customBlockquotes, customBlockquotesOptions } from './plugins/remark-cu
 import { shortCodeProps, tocSmartCode, customSmartCodes, customSmartCodesOptions } from './plugins/short-codes';
 import { mermaid } from './plugins/mermaid';
 
+export * from './plugins/prism';
+
 export const docspaRemarkPreset = [
   frontmatter,
   parseFrontmatter,
