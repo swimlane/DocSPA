@@ -272,6 +272,8 @@ The `md-toc` is used to include the table of contents for a give path.
 
 ```markdown { playground }
 <md-toc path="features" max-depth="2"></md-toc>
+
+[[toc path="features" max-depth="2"]]
 ```
 
 i> The path is always relative to the root docs folder.  Including `md-toc` without a path will load the TOC for the current page (main content).  Use the shortcode `[[toc]]` to load the TOC for the page the shortcodes is found in.
@@ -280,15 +282,21 @@ i> The path is always relative to the root docs folder.  Including `md-toc` with
 
 ```markdown { playground }
 <md-embed path="embed"></md-embed>
+
+[[include path="embed"]]
 ```
 
 ### `env-var`
 
 The `env-var` component allows displaying variables defined in the `environment` property of the config file.
 
-~~~markdown { playground }
-DocSPA version: <env-var var="version"></env-var>
-~~~
+```markdown { playground }
+DocSPA version:
+
+<env-var var="version"></env-var>
+
+[[var var="version"]]
+```
 
 !> It is usally expected that `environment` property will contain the contents of your project's `environment.ts`.  `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.  The list of file replacements can be found in `angular.json`.
 
@@ -358,6 +366,8 @@ or a path to a project payload (`JSON` file) in the documentation local files (r
   title='Local StackBlitz Project<br />DocSPA'
   project-path="examples/folder/stackblitz">
 </embed-stackblitz>
+
+[[stackblitz title='Local StackBlitz Project<br />DocSPA' project-path="examples/folder/stackblitz"]]
 ```
 
 i> When providing a payload path, if the `files` property of the payload contains an array, this is treated as an array of relative paths from which the file content will be loaded.

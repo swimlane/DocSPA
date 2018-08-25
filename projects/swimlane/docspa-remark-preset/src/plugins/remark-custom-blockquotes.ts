@@ -3,7 +3,7 @@
 
 import visit from 'unist-util-visit';
 
-function _customBlockquotes({ mapping }) {
+export function customBlockquotes({ mapping }) {
   return function transformer(tree) {
     visit(tree, 'paragraph', visitor);
 
@@ -37,10 +37,10 @@ function _customBlockquotes({ mapping }) {
   };
 }
 
-export const customBlockquotes = [_customBlockquotes, { mapping: {
+export const customBlockquotesOptions = { mapping: {
   'i>': 'info',
   '!>': 'tip',
   '?>': 'warn',
   '->': 'box',
   '<>': 'box-left'
-}}];
+}};

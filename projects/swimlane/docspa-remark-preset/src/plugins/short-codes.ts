@@ -9,15 +9,25 @@ export const tocSmartCode = () => {
     file.data = file.data || {};
     visit(tree, 'shortcode', (node, index, parent) => {
       if (node.identifier === 'toc') {
+        node.attributes.path = node.attributes.path || file.data.base;
+      }
+    });
+  };
+};
+
+export const customSmartCodes = (codes) => {
+  return (tree, file) => {
+    file.data = file.data || {};
+    visit(tree, 'shortcode', (node, index, parent) => {
+      if (node.identifier in codes) {
         const newNode = {
-          type: 'toc',
+          type: node.identifier,
           data: {
             hChildren: [
               {
                 type: 'element',
-                tagName: 'md-toc',
+                tagName: codes[node.identifier],
                 properties: {
-                  path: file.data.base,
                   ...node.data.hProperties
                 }
               }
@@ -30,7 +40,7 @@ export const tocSmartCode = () => {
   };
 };
 
-export const smartCodeProps = () => {
+export const shortCodeProps = () => {
   return (tree, file) => {
     file.data = file.data || {};
     visit(tree, 'shortcode', (node, index, parent) => {
@@ -39,4 +49,11 @@ export const smartCodeProps = () => {
       node.data.hProperties = { ...node.data.hProperties, ...node.attributes };
     });
   };
+};
+
+export const customSmartCodesOptions = {
+  toc: 'md-toc',
+  include: 'md-embed',
+  var: 'env-var',
+  stackblitz: 'embed-stackblitz'
 };

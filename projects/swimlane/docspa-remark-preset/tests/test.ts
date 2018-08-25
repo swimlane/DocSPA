@@ -101,11 +101,18 @@ describe('internal', () => {
     expect(String(vfile)).to.contain(`<code class="language-js" id="test">function() {};`);
   });
 
+  it('includeSmartCode', async () => {
+    const contents = `[[ include path="testBasePath" ]]`;
+    const file = { contents, data: { base: 'testBasePath' } };
+    const vfile = await processor.process(file);
+    expect(String(vfile)).to.contain(`<md-embed path="testBasePath"></md-embed>`);
+  });
+
   it('tocSmartCode', async () => {
     const contents = `[[toc class="collapsable"]]`;
     const file = { contents, data: { base: 'testBasePath' } };
     const vfile = await processor.process(file);
-    expect(String(vfile)).to.contain(`<md-toc path="testBasePath" class="collapsable"></md-toc>`);
+    expect(String(vfile)).to.contain(`<md-toc class="collapsable" path="testBasePath"></md-toc>`);
   });
 
   it('smartCodeProps', async () => {

@@ -8,12 +8,13 @@ import parseFrontmatter from 'remark-parse-yaml';
 import shortcodes from 'remark-shortcodes';
 import slug from 'remark-slug';
 import remarkAttr from 'remark-attr';
+import customBlocks from 'remark-custom-blocks';
 
 import { readMatter, getTitle } from './plugins/frontmatter';
-
-import { infoString, infoStringToAttr, customBlocks } from './plugins/misc';
-import { customBlockquotes } from './plugins/remark-custom-blockquotes';
-import { smartCodeProps, tocSmartCode } from './plugins/smart-codes';
+import { infoString, infoStringToAttr } from './plugins/misc';
+import { customBlocksOptions } from './plugins/remark-custom-blocks';
+import { customBlockquotes, customBlockquotesOptions } from './plugins/remark-custom-blockquotes';
+import { shortCodeProps, tocSmartCode, customSmartCodes, customSmartCodesOptions } from './plugins/short-codes';
 import { mermaid } from './plugins/mermaid';
 
 export const docspaRemarkPreset = [
@@ -30,11 +31,11 @@ export const docspaRemarkPreset = [
   gemojiToEmoji,
   [ htmlEmojiImage, { base: 'https://assets-cdn.github.com/images/icons/emoji/' }],
   infoStringToAttr,
-  customBlocks,
-  customBlockquotes,
-  // runtime,
+  [ customBlocks, customBlocksOptions ],
+  [ customBlockquotes, customBlockquotesOptions ],
   mermaid,
   shortcodes,
-  smartCodeProps,
-  tocSmartCode
+  tocSmartCode,
+  shortCodeProps,
+  [ customSmartCodes, customSmartCodesOptions ]
 ];
