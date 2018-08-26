@@ -9,10 +9,11 @@ import visit from 'unist-util-visit';
 import stringify from 'remark-stringify';
 import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
+import path from 'path';
 
 import { getTitle } from '@swimlane/docspa-remark-preset/plugins/frontmatter';
 
-import { Page } from '../services/page.model';
+
 import { FetchService } from '../services/fetch.service';
 import { LocationService } from '../services/location.service';
 
@@ -173,25 +174,14 @@ export class TOCSearchComponent implements OnInit {
       return;
     }
     const promises = paths.map(_ => {
-      const url = this.locationService.makePath(_);
-      return this.fetchService.get(url)
+      const vfile = this.locationService.pageToFile(_);
+      const fullPath = path.join(vfile.cwd, vfile.path);
+      return this.fetchService.get(fullPath)
         .pipe(
-          flatMap(page => {
-            const p = new Page({ ...page, path: _, contents: page.text });
-            p.data = p.data || {};
-
-            p.data.docspa.url = url;
-
-            // hack until fetchService consumes vpage
-            const base = this.locationService.stripBaseHref(url);
-            const initialPath = this.locationService.fixPage(base);
-
-            page.resolvedPath = url;
-            page.history = [base, initialPath];
-            page.cwd = this.locationService.root;
-
-            // TODO: might nee to run plugins if headers change
-            return page.notFound ? of(null) : this.processor.process(p);
+          flatMap(resource => {
+            vfile.contents = resource.contents;
+            vfile.data = vfile.data || {};
+            return resource.notFound ? of(null) : this.processor.process(vfile);
           })
         ).toPromise();
     });

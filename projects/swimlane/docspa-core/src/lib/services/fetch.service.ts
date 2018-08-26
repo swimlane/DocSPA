@@ -7,14 +7,20 @@ import path from 'path';
 import QuickLRU from 'quick-lru';
 
 import { SettingsService } from './settings.service';
-import { Page } from './page.model';
+
+export interface CachePage {
+  resolvedPath: string;
+  timestampCached: Date;
+  notFound: boolean;
+  contents: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class FetchService {
-  private cache = new QuickLRU<string, Page>({maxSize: 100});
-  private inFlight = new Map<string, Observable<Page>>();
+  private cache = new QuickLRU<string, CachePage>({maxSize: 100});
+  private inFlight = new Map<string, Observable<CachePage>>();
 
   get root() {
     return path.join(this.settings.nameLink, this.settings.basePath);
@@ -72,22 +78,16 @@ export class FetchService {
 
   /**
    *
-   * @param url {string} Full path relitive to root
+   * @param url {string} Full path relative to root
    */
-  get(url: string, options = { cache: true }): Observable<Page>  {
-    // todo: consume a vfile/page
+  get(url: string, options = { cache: true }): Observable<CachePage>  {
     if (!url) {
-      return of(new Page({
-        // url,
-        timestampCached: Date.now(),
-        text: '',
-        notFound: false,
-        data: {
-          docspa: {
-            url
-          }
-        }
-      }));
+      return of({
+        resolvedPath: url,
+        timestampCached: new Date(),
+        contents: '',
+        notFound: false
+      });
     }
 
     if (options.cache && this.cache.has(url)) {
@@ -99,31 +99,24 @@ export class FetchService {
     }
 
     let notFound = url === this.path404;
-    const obs = this.http.get(url, { responseType: 'text' })
+    const obs: Observable<CachePage> = this.http.get(url, { responseType: 'text' })
       .pipe(
         catchError(() => {
           notFound = true;
           if (this.cache.has(this.path404)) {
-            return of(this.cache.get(this.path404).text);
+            return of(this.cache.get(this.path404).contents);
           }
           return this.http.get(this.path404, { responseType: 'text' });
         }),
-        map((text: string) => {
-          return new Page({
-            // url,
+        map((contents: string) => {
+          return {
             timestampCached: Date.now(),
-            text,
-            contents: text,
+            contents,
             notFound,
-            data: {
-              docspa: {
-                url
-              }
-            },
             resolvedPath: url
-          });
+          };
         }),
-        map((item: Page) => {
+        map((item: CachePage) => {
           if (options.cache) {
             this.cache.set(url, item);
             if (notFound) {

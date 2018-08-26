@@ -4,17 +4,18 @@ import { Observable, of } from 'rxjs';
 import { flatMap, map, share } from 'rxjs/operators';
 import { NGXLogger } from 'ngx-logger';
 import reporter from 'vfile-reporter';
+import * as path from 'path';
 
 import unified from 'unified';
 import markdown from 'remark-parse';
 import html from 'remark-html';
 
 import { LocationService } from './location.service';
-import { FetchService } from './fetch.service';
+import { FetchService, CachePage } from './fetch.service';
 import { SettingsService } from './settings.service';
 import { links, images } from '../plugins/links';
 
-import { Page } from './page.model';
+import VFile from 'vfile';
 
 @Injectable({
   providedIn: 'root'
@@ -59,50 +60,37 @@ export class MarkdownService {
       .use(html);
   }
 
-  getMd(url: string, plugins = true): Observable<Page>  {
-    let o: Observable<Page>;
-    if (!url) {
-      o = of(new Page({
-        // url,
-        timestampCached: Date.now(),
-        text: '',
-        html: '',
-        notFound: false
-      }));
+  /**
+   *
+   * @param page The page content path
+   * @param plugins Run plugins?
+   */
+  getMd(page: string, plugins = true): Observable<VFile>  {
+    let o: Observable<VFile>;
+    if (!page) {
+      o = of(new VFile(''));
     } else {
+      const vfile = this.locationService.pageToFile(page);
+      const url = path.join(vfile.cwd, vfile.path);
       o = this.fetchService.get(url)
         .pipe(
-          flatMap((page: Page): Promise<Page> => {
-            page.data = page.data || {};
-            page.data.docspa = {};
+          flatMap((res: CachePage): Promise<VFile> => {
+            vfile.data = vfile.data || {};
+            vfile.data.docspa = {};
 
-            plugins = page.notFound ? false : plugins;
+            plugins = res.notFound ? false : plugins;
 
-            // hack until fetchService consumes vpage
-            const initialPath = this.locationService.stripBaseHref(url);
-            const base = this.locationService.fixPage(initialPath);
+            this.logger.debug(`Processing started: ${vfile.path}`);
+            vfile.contents = plugins ?
+              this.processBeforeEach(res.contents) :
+              res.contents;
 
-            page.resolvedPath = url;
-            page.history = [base, initialPath];
-            page.cwd = this.locationService.root;
-
-            // todo: caching of md -> html, beware of plugins that change content
-            // todo: generate a cache TOC here?
-            /* if (page.html) {
-              return Promise.resolve(page);
-            } */
-
-            this.logger.debug(`Processing started: ${page.path}`);
-            page.contents = plugins ?
-              this.processBeforeEach(page.text) :
-              page.text;
-
-            return this.processor.process(page).then((err): Page => {
-              page.html = plugins ?
-                this.processAfterEach(String(page)) :
-                String(page);
+            return this.processor.process(vfile).then((err): VFile => {
+              vfile.contents = plugins ?
+                this.processAfterEach(String(vfile)) :
+                String(vfile);
               this.logger.debug(reporter(err || page));
-              return page;
+              return vfile;
             });
           }),
           share()

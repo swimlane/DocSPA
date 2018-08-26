@@ -1,5 +1,5 @@
 import visit from 'unist-util-visit';
-import { Page } from '../services/page.model';
+import VFile from 'vfile';
 
 export function runtime() {
   const processor = this;
@@ -23,7 +23,7 @@ export function runtime() {
       if (isRun || isPlayground) {
         const cls = hProperties.class = hProperties.class || (isPlayground ? 'custom-block playground' : '');
         if (lang === 'markdown') {
-          const f = new Page({ ...file, contents: node.value });
+          const f = new VFile({ ...file, contents: node.value });
           value = processor.processSync(f).contents;
         } else {
           const context = JSON.stringify({

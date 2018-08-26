@@ -13,7 +13,7 @@ declare module 'vfile' {
   
     data: { [key: string]: any };
   
-    constructor(options: Partial<VFile>) 
+    constructor(options: any) 
   }
 
   export = VFile;

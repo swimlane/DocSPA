@@ -8,8 +8,8 @@ import html from 'remark-html';
 import toc from 'mdast-util-toc';
 import visit from 'unist-util-visit';
 import slug from 'remark-slug';
+import path from 'path';
 
-import { Page } from '../services/page.model';
 import { FetchService } from '../services/fetch.service';
 import { RouterService } from '../services/router.service';
 import { LocationService } from '../services/location.service';
@@ -89,10 +89,10 @@ export class TOCComponent implements OnInit {
 
   ngOnInit() {
     if (!this.path) {
-      this.path = this.routerService.file;
+      this.path = this.routerService.contentPage;
       this.routerService.changed.subscribe((changes: SimpleChanges) => {
-        if ('contentPath' in changes) {
-          this.path = changes.file.currentValue;
+        if ('contentPage' in changes) {
+          this.path = changes.contentPage.currentValue;
         }
       });
     } else {
@@ -100,27 +100,21 @@ export class TOCComponent implements OnInit {
     }
   }
 
-  private load(path: string) {
-    if (typeof path !== 'string' || path.trim() === '') {
+  private load(page: string) {
+    if (typeof page !== 'string' || page.trim() === '') {
       return of(null);
     }
-    const url = this.locationService.makePath(path);
-    this.fetchService.get(url)
+
+    const vfile = this.locationService.pageToFile(page);
+    const fullpath = path.join(vfile.cwd, vfile.path);
+    this.fetchService.get(fullpath)
       .pipe(
-        flatMap(page => {
-          const p = new Page({ ...page, path, contents: page.text });
-          p.data = p.data || {};
-
-          // hack until fetchService consumes vpage
-          const initialPath = this.locationService.stripBaseHref(url);
-          const base = this.locationService.fixPage(initialPath);
-
-          page.resolvedPath = url;
-          page.history = [base, initialPath];
-          page.cwd = this.locationService.root;
+        flatMap(resource => {
+          vfile.contents = resource.contents;
+          vfile.data = vfile.data || {};
 
           // TODO: might need to run plugins if headers change
-          return page.notFound ? of('') : this.processor.process(p);
+          return resource.notFound ? of('') : this.processor.process(vfile);
         }),
         map(String),
         share()

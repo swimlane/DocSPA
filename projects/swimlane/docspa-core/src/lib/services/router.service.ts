@@ -22,7 +22,8 @@ export class RouterService {
   anchor: string;
   file: string;
 
-  contentPath: string;
+  contentPage: string;
+
   coverPath: string;
   sidebarPath: string;
   navbarPath: string;
@@ -49,24 +50,16 @@ export class RouterService {
 
   private hashchange() {
     const changes: SimpleChanges = {};
-    const url = window.location.hash || '#' + this.settings.homepage;
+    const url = window.location.hash || '#/#';
 
     if (this.url !== url) {
       changes.url = new SimpleChange(this.url, this.url = url, false);
     }
 
-    const [, _page, _anchor = ''] = url.split(/[#\?]/);
+    const [, page, _anchor = ''] = url.split(/[#\?]/);
     let anchor = _anchor || '';
 
-    const vfile = this.locationService.pageToFile(_page);
-
-    if (this.page !== vfile.stem) {
-      changes.page = new SimpleChange(this.page, this.page = vfile.stem, false);
-    }
-
-    if (this.file !== vfile.path) {
-      changes.file = new SimpleChange(this.file, this.file = vfile.path, false);
-    }
+    const vfile = this.locationService.pageToFile(page);
 
     if (anchor.includes('id=')) {
       const params = new URLSearchParams(anchor);
@@ -76,17 +69,17 @@ export class RouterService {
       changes.anchor = new SimpleChange(this.anchor, this.anchor = anchor, false);
     }
 
-    const contentPath = vfile.fullpath;
-    if (this.contentPath !== contentPath) {
-      changes.contentPage = new SimpleChange(null, this.file, false);
-      changes.contentPath = new SimpleChange(this.contentPath, this.contentPath = contentPath, false);
+    if (this.contentPage !== page) {
+      changes.contentPage = new SimpleChange(this.contentPage, this.contentPage = page, false);
+
+      const fullPath = path.join(vfile.cwd, vfile.dirname);
 
       const cover = vfile.basename === this.settings.homepage ?
-        this.fetchService.find(path.join(vfile.cwd, vfile.dirname), this.settings.coverpage) :
+        this.fetchService.find(fullPath, this.settings.coverpage) :
         null;
 
       const promises = this.settings.sideLoad.map(s => {
-        return this.fetchService.findup(path.join(vfile.cwd, vfile.dirname), s);
+        return this.fetchService.findup(fullPath, s);
       });
 
       Promise.all([cover, ...promises]).then(([coverPage, ...sideLoad]) => {

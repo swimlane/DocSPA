@@ -1,7 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common';
+import VFile from 'vfile';
 
-import { Page } from './page.model';
 import path from 'path';
 import urlResolve from 'url-resolve';
 
@@ -40,18 +40,17 @@ export class LocationService {
   /**
    * Convert a page string to a virtual file
    */
-  pageToFile(page: string = ''): Page {
+  pageToFile(page: string = ''): VFile {
     page = page.replace(/^#/, '');
     if (page === '') {
       page = '/';
     }
 
-    const vfile = new Page({ path: page, cwd: this.root });
+    const vfile = new VFile({ path: page, cwd: this.root });
 
-    // TODO: these initial changes should be included in vfile history
-    if (vfile.path[0] === '/' && vfile.path[1] === '_') {
+    /* if (vfile.path[0] === '/' && vfile.path[1] === '_') {
       vfile.path = this.settings.notFoundPage;
-    }
+    } */
 
     if (vfile.path.slice(-1) === '/') {
       vfile.path = path.join(vfile.path, this.settings.homepage);

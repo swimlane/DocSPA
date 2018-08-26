@@ -16,7 +16,7 @@ describe('DocSPA', () => {
     cy.get('@sidebar').find('md-toc a').should('have.length', 29);
     cy.get('@sidebar').find('md-toc a').should('have.attr', 'href').and('matches',/^#.*/);
 
-    cy.get('@sidebar').find('md-toc a').first().should('have.attr', 'href', '#/README#introduction');
+    cy.get('@sidebar').find('md-toc a').first().should('have.attr', 'href', '#/#introduction');
     cy.get('@sidebar').find('md-toc a').last().should('have.attr', 'href', '#/features#docsify-plugins');
 
     cy.get('@rightbar').find('md-toc').should('have.length', 1);
@@ -59,7 +59,7 @@ describe('DocSPA', () => {
       cy.get('@content').find('h1').contains('DocSPA');
       cy.get('@content').find('footer').contains('Made with DocSPA');
 
-      cy.get('@content').find('h1 a, h2 a, h3 a').first().should('have.attr', 'href').and('matches', /^#\/README#.*/);
+      cy.get('@content').find('h1 a, h2 a, h3 a').first().should('have.attr', 'href').and('matches', /^#\/#.*/);
       cy.get('@content').find('docspa-md-embed > p a').first().should('have.attr', 'href', 'https://custom-elements-everywhere.com/#angular');
       cy.get('@content').find('docspa-md-embed > p a').last().should('have.attr', 'href', 'https://www.swimlane.com');
       cy.get('@content').find('docspa-md-embed > p a').eq(1).should('have.attr', 'href', '#/quickstart');
@@ -188,7 +188,7 @@ describe('DocSPA', () => {
   
     it('has content', () => {
       cy.get('@content').find('h1').contains('This is the sub readme');
-      cy.get('@content').find('h1 a').should('have.attr', 'href', '#/sub/README#sub');
+      cy.get('@content').find('h1 a').should('have.attr', 'href', '#/sub/#sub');
       cy.get('@content').find('footer').contains('Made with DocSPA');
       cy.get('@content').find('p > a').each(($el, index, $list) => {
         (index > 0) && cy.wrap($el).should('have.attr', 'href').and('matches', /^[\/]?#\/sub\/.*/);

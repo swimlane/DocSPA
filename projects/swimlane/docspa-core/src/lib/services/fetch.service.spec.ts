@@ -3,8 +3,7 @@ import { Location, LocationStrategy, HashLocationStrategy } from '@angular/commo
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
-import { FetchService } from './fetch.service';
-import { Page } from './page.model';
+import { FetchService, CachePage } from './fetch.service';
 
 describe('FetchService', () => {
   let fetchService: FetchService;
@@ -34,7 +33,7 @@ describe('FetchService', () => {
   it('should load a file', () => {
     const text = '## Hello';
 
-    fetchService.get('docs/README.md').subscribe((res: Page) => {
+    fetchService.get('docs/README.md').subscribe((res: CachePage) => {
       expect(res).toBeTruthy();
       expect(res.resolvedPath).toEqual('docs/README.md');
       expect(res.contents).toEqual(text);
@@ -50,13 +49,13 @@ describe('FetchService', () => {
   it('should load and cache a file', () => {
     const text = '## Hello';
 
-    fetchService.get('docs/README.md').subscribe((res: Page) => {
+    fetchService.get('docs/README.md').subscribe((res: CachePage) => {
       expect(res).toBeTruthy();
       expect(res.resolvedPath).toEqual('docs/README.md');
       expect(res.contents).toEqual(text);
     });
 
-    fetchService.get('docs/README.md').subscribe((res: Page) => {
+    fetchService.get('docs/README.md').subscribe((res: CachePage) => {
       expect(res).toBeTruthy();
       expect(res.resolvedPath).toEqual('docs/README.md');
       expect(res.contents).toEqual(text);
@@ -72,13 +71,13 @@ describe('FetchService', () => {
   it('should disable cache', () => {
     const text = '## Hello';
 
-    fetchService.get('docs/README.md', { cache: false }).subscribe((res: Page) => {
+    fetchService.get('docs/README.md', { cache: false }).subscribe((res: CachePage) => {
       expect(res).toBeTruthy();
       expect(res.resolvedPath).toEqual('docs/README.md');
       expect(res.contents).toEqual(text);
     });
 
-    fetchService.get('docs/README.md', { cache: false }).subscribe((res: Page) => {
+    fetchService.get('docs/README.md', { cache: false }).subscribe((res: CachePage) => {
       expect(res).toBeTruthy();
       expect(res.resolvedPath).toEqual('docs/README.md');
       expect(res.contents).toEqual(text);

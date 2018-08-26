@@ -5,8 +5,7 @@ import { flatMap } from 'rxjs/operators';
 import { LocationService } from '../services/location.service';
 import { RouterService } from '../services/router.service';
 import { MarkdownService } from '../services/markdown.service';
-
-import { Page } from '../services/page.model';
+import VFile from 'vfile';
 
 @Component({
   selector: 'md-toc-page', // tslint:disable-line
@@ -112,7 +111,7 @@ export class TOCPaginationComponent implements OnInit {
   private processor: any;
   private _paths: string[];
 
-  files: Page[];
+  files: VFile[];
 
   next: any;
   prev: any;
@@ -128,41 +127,32 @@ export class TOCPaginationComponent implements OnInit {
     this.generatePageIndex(this.paths).then(files => {
       this.files = files;
       this.routerService.changed.subscribe((changes: SimpleChanges) => {
-        if ('contentPath' in changes) {
-          this.pathChanges(changes.contentPath.currentValue);
+        if ('contentPage' in changes) {
+          this.pathChanges(changes.contentPage.currentValue);
         }
       });
-      this.pathChanges(this.routerService.contentPath);
+      this.pathChanges(this.routerService.contentPage);
     });
   }
 
   private pathChanges(path: string) {
-    const index = this.files.findIndex(file => file.resolvedPath === path);
+    const index = this.files.findIndex(file => file.history[0] === path);
     this.prev = index > 0 ? this.files[index - 1] : null;
     this.next = index < this.files.length ? this.files[index + 1] : null;
   }
 
-  private generatePageIndex(paths: string[]): Promise<Page[]> {
+  private generatePageIndex(paths: string[]): Promise<VFile[]> {
     if (!paths) {
       this.files = null;
       return;
     }
 
     return Promise.all(paths.map(_ => {
-      const url = this.locationService.makePath(_);
-
       // TODO: all I need is the title
       // should be able to avoid this
       // Need to run plugins incase title is changed?
-      return this.markdownService.getMd(url, true)
-        .pipe(
-          flatMap((page: Page) => {
-            if (page.notFound) {
-              return;
-            }
-            return of(page);
-          })
-        ).toPromise();
+      return this.markdownService.getMd(_, true)
+        .toPromise();
     }));
   }
 }

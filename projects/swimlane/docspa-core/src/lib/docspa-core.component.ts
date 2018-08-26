@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild, Renderer, HostListener, ViewEncapsulation, SimpleChanges } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import VFile from 'vfile';
 
 import { RouterService } from './services/router.service';
 import { SettingsService } from './services/settings.service';
-
-import { Page } from './services/page.model';
 
 interface Changes {
   contentPage: string;
@@ -80,7 +79,7 @@ export class DocSPACoreComponent implements OnInit {
     this.routerService.onInit();
   }
 
-  mainContentLoaded(page: Page) {
+  mainContentLoaded(page: VFile) {
     let title = this.settings.name;
     let subTitle;
     if (page.data) {
@@ -102,7 +101,7 @@ export class DocSPACoreComponent implements OnInit {
   }
 
   private pathChanges(changes: SimpleChanges) {
-    if ('contentPage' in changes && this.contentPage !== changes.contentPage.currentValue) {
+    if ('contentPage' in changes) {
       this.contentPage = changes.contentPage.currentValue;
       this.renderer.setElementClass(document.body, 'ready', false);
       this.activeLink = this.splitHash(document.location.hash)[0];

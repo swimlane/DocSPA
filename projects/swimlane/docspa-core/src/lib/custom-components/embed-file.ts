@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 import { LocationService } from '../services/location.service';
 import { MarkdownService } from '../services/markdown.service';
 
-import { Page } from '../services/page.model';
+import VFile from 'vfile';
 
 @Component({
   selector: 'docspa-md-embed', // tslint:disable-line
@@ -39,7 +39,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   @Input()
   activeAnchors: string = null;
 
-  @Output() done: EventEmitter<Page> = new EventEmitter();
+  @Output() done: EventEmitter<VFile> = new EventEmitter();
 
   content: Observable<string | SafeHtml>;
 
@@ -73,15 +73,13 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   }
 
   private load() {
-    const path = this.locationService.makePath(this.path);
-    this.markdownService.getMd(path, this.plugins).subscribe(vfile => {
+    this.markdownService.getMd(this.path, this.plugins).subscribe(vfile => {
       setTimeout(() => {
         this.markActiveLinks();
         this.doScroll();
         this.done.emit(vfile);
       }, 30);
-      this.html = this.safe ? this.sanitizer.bypassSecurityTrustHtml(vfile.html) : vfile.html;
-      // console.log(String(this.html));
+      this.html = this.safe ? this.sanitizer.bypassSecurityTrustHtml(vfile.contents) : vfile.contents;
     });
   }
 

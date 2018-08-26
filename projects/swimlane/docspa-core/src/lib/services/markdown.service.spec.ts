@@ -2,9 +2,10 @@ import { TestBed, inject } from '@angular/core/testing';
 import { Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import VFile from 'vfile';
+import path from 'path';
 
 import { MarkdownService } from './markdown.service';
-import { Page } from './page.model';
 
 describe('MarkdownService', () => {
   let markdownService: MarkdownService;
@@ -33,15 +34,14 @@ describe('MarkdownService', () => {
 
   it('should load and process a file', () => {
     const text = '## Hello';
-    markdownService.getMd('docs/README.md').subscribe((res: Page) => {
+    markdownService.getMd('/').subscribe((res: VFile) => {
       expect(res).toBeTruthy();
-      expect(res.resolvedPath).toEqual('docs/README.md');
+      expect(path.join(res.cwd, res.path)).toEqual('docs/README.html');
       expect(res.contents).toEqual('<h2>Hello</h2>\n');
 
-      expect(res.path).toEqual('README.html');
-      expect(res.base).toEqual('README');
-      expect(res.fullpath).toEqual('docs/README.html');
-      expect(res.text).toEqual(text);
+      expect(res.path).toEqual('/README.html');
+      expect(res.stem).toEqual('README');
+      expect(path.join(res.cwd, res.path)).toEqual('docs/README.html');
     });
 
     const countryRequest = httpMock.expectOne('docs/README.md');
