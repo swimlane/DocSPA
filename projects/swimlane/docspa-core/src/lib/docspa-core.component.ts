@@ -57,12 +57,21 @@ export class DocSPACoreComponent implements OnInit {
     if (this.contentHeadings) {
       const fromTop = window.scrollY - 60;
       const fromBottom = window.scrollY + window.innerHeight + 60;
-      const current = this.contentHeadings.filter(link => {
-        const offsetBottom = link.offsetTop + link.offsetHeight;
-        return link.offsetTop >= fromTop && offsetBottom <= fromBottom;
-      }).map(link => this.splitHash(link.hash)[1]);
+
+      let lastLink = null;
+      const current = this.contentHeadings
+        .filter(link => {
+          const offsetBottom = link.offsetTop + link.offsetHeight;
+          const past = offsetBottom <= fromBottom;
+          if (past) lastLink = link;
+          return link.offsetTop >= fromTop && offsetBottom <= fromBottom;
+        })
+        .map(link => this.splitHash(link.hash)[1]);
+      
       if (current && current.length > 0) {
         this.activeAnchors = current.join(';');
+      } else if (lastLink) {
+        this.activeAnchors = this.splitHash(lastLink.hash)[1]);
       } else {
         this.activeAnchors = '';
       }

@@ -97,10 +97,9 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   }
 
   private isHashActive(hash: string) {
-    console.log(hash)
     const parts = this.splitHash(hash);
     if (this.activeLink === parts[0]) {
-      return (this.activeAnchors === undefined) ?
+      return (this.activeAnchors === undefined || this.activeAnchors === null) ?
         true :
         this.activeAnchors.split(';').includes(parts[1]);
     }
