@@ -1,4 +1,5 @@
 import 'jest-preset-angular';
+import { environment } from './environments/environment';
 
 /* global mocks for jsdom */
 const mock = () => {
@@ -24,6 +25,15 @@ Object.defineProperty(document.body.style, 'transform', {
       configurable: true,
     };
   },
+});
+
+jest.mock('./environments/environment', () => {
+  return {
+    environment: {
+      production: true,
+      version: require('../../package.json').version
+    }
+  };
 });
 
 /* output shorter and more meaningful Zone error stack traces */

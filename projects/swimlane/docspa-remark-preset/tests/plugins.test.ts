@@ -1,9 +1,6 @@
-import { expect } from 'chai';
 import stripIndent from 'common-tags/lib/stripIndent';
 import { runtime } from '../src/plugins/runtime';
 import { prism } from '../src/plugins/prism';
-
-global.window = {};
 
 const { mermaid } = require('../src/plugins/mermaid');
 
@@ -22,15 +19,13 @@ describe('3rd party', () => {
   it('remark-slug', async () => {
     const contents = '## Hello World!';
     const vfile = await processor.process(contents);
-    expect(String(vfile)).to
-      .contain(`<a href="#hello-world" aria-hidden="true"><span class="icon icon-link"></span></a>`);
+    expect(String(vfile)).toContain(`<a href="#hello-world" aria-hidden="true"><span class="icon icon-link"></span></a>`);
   });
 
   it('remark-autolink-headings', async () => {
     const contents = '## Hello World!';
     const vfile = await processor.process(contents);
-    expect(String(vfile)).to
-      .contain(`id="hello-world`);
+    expect(String(vfile)).toContain(`id="hello-world`);
   });
 
   it('remark-math', async () => {
@@ -39,7 +34,7 @@ describe('3rd party', () => {
       L = \\frac{1}{2} \\rho v^2 S C_L
       $$`;
     const vfile = await processor.process(contents);
-    expect(String(vfile)).to.contain(`<div class="math">`);
+    expect(String(vfile)).toContain(`<div class="math">`);
   });
 
   it('remark-html-katex', async () => {
@@ -48,8 +43,8 @@ describe('3rd party', () => {
       L = \\frac{1}{2} \\rho v^2 S C_L
       $$`;
     const vfile = await processor.process(contents);
-    expect(String(vfile)).to.contain(`<span class="katex-display">`);
-    expect(String(vfile)).to.contain(`<math>`);
+    expect(String(vfile)).toContain(`<span class="katex-display">`);
+    expect(String(vfile)).toContain(`<math>`);
   });
 
   it('remark-gemoji-to-emoji, remark-html-emoji-image', async () => {
@@ -57,9 +52,9 @@ describe('3rd party', () => {
     const vfile = await processor.process(contents);
     const out = String(vfile);
     expect(out)
-      .to.contain(`<img src="https://assets-cdn.github.com/images/icons/emoji/smile.png"`);
+      .toContain(`<img src="https://assets-cdn.github.com/images/icons/emoji/smile.png"`);
     expect(out)
-      .to.contain(`<img src="https://assets-cdn.github.com/images/icons/emoji/+1.png"`);
+      .toContain(`<img src="https://assets-cdn.github.com/images/icons/emoji/+1.png"`);
   });
 
   it('remark-custom-blocks', async () => {
@@ -68,25 +63,25 @@ describe('3rd party', () => {
     | Note
     `;
     const vfile = await processor.process(contents);
-    expect(String(vfile)).to.equal(`<div class="custom-block notice note"><div class="custom-block-body"><p>Note</p></div></div>\n`);
+    expect(String(vfile)).toEqual(`<div class="custom-block notice note"><div class="custom-block-body"><p>Note</p></div></div>\n`);
   });
 
   it('remark-custom-blockquotes', async () => {
     const contents = `!> Note`;
     const vfile = await processor.process(contents);
-    expect(String(vfile)).to.equal(`<blockquote class="tip">\n Note\n</blockquote>\n`);
+    expect(String(vfile)).toEqual(`<blockquote class="tip">\n Note\n</blockquote>\n`);
   });
 
   it('remark-attr', async () => {
     const contents = `*bold*{ .bold }`;
     const vfile = await processor.process(contents);
-    expect(String(vfile)).to.equal(`<p><em class="bold">bold</em></p>\n`);
+    expect(String(vfile)).toEqual(`<p><em class="bold">bold</em></p>\n`);
   });
 
   it('remark-shortcodes', async () => {
     const contents = `[[ shortcode ]]`;
     const vfile = await processor.process(contents);
-    expect(String(vfile)).to.equal(`<div></div>\n`);
+    expect(String(vfile)).toEqual(`<div></div>\n`);
   });
 });
 
@@ -97,7 +92,7 @@ describe('internal', () => {
       title: Hello
       ---`;
     const vfile = await processor.process(contents);
-    expect(vfile.data.matter).to.deep.equal({title: 'Hello'});
+    expect(vfile.data.matter).toEqual({title: 'Hello'});
   });
 
   it('infoStringToAttr', async () => {
@@ -106,27 +101,27 @@ describe('internal', () => {
       function() {};
       ~~~`;
     const vfile = await processor.process(contents);
-    expect(String(vfile)).to.contain(`<pre class="language-js" id="test" data-lang="js" v-pre="true">`);
+    expect(String(vfile)).toContain(`<pre class="language-js" id="test" data-lang="js" v-pre="true">`);
   });
 
   it('includeSmartCode', async () => {
     const contents = `[[ include path="testBasePath" ]]`;
     const file = { contents, data: { base: 'testBasePath' } };
     const vfile = await processor.process(file);
-    expect(String(vfile)).to.equal(`<div><md-embed path="testBasePath"></md-embed></div>\n`);
+    expect(String(vfile)).toEqual(`<div><md-embed path="testBasePath"></md-embed></div>\n`);
   });
 
   it('tocSmartCode', async () => {
     const contents = `[[toc class="collapsable"]]`;
     const file = { contents, data: { base: 'testBasePath' } };
     const vfile = await processor.process(file);
-    expect(String(vfile)).to.equal(`<div><md-toc class="collapsable" path="testBasePath"></md-toc></div>\n`);
+    expect(String(vfile)).toEqual(`<div><md-toc class="collapsable" path="testBasePath"></md-toc></div>\n`);
   });
 
   it('smartCodeProps', async () => {
     const contents = `[[ shortcode class="test-shortcode-class" ]]`;
     const vfile = await processor.process(contents);
-    expect(String(vfile)).to.equal(`<div class="test-shortcode-class"></div>\n`);
+    expect(String(vfile)).toEqual(`<div class="test-shortcode-class"></div>\n`);
   });
 
   it('runtime, html', async () => {
@@ -136,9 +131,9 @@ describe('internal', () => {
     ~~~`;
     const vfile = await processor.process(contents);
     const out = String(vfile);
-    expect(out).to.not.contain(`data-lang="html"`);
-    expect(out).to.contain(`<runtime-content`);
-    expect(out).to.contain(`template="function() {};"`);
+    expect(out).not.toContain(`data-lang="html"`);
+    expect(out).toContain(`<runtime-content`);
+    expect(out).toContain(`template="function() {};"`);
   });
 
   it('runtime, html, playground', async () => {
@@ -148,9 +143,9 @@ describe('internal', () => {
     ~~~`;
     const vfile = await processor.process(contents);
     const out = String(vfile);
-    expect(out).to.contain(`<div class="custom-block playground language-html" data-lang="html" v-pre="true">`);
-    expect(out).to.contain(`<runtime-content`);
-    expect(out).to.contain(`template="function() {};"`);
+    expect(out).toContain(`<div class="custom-block playground language-html" data-lang="html" v-pre="true">`);
+    expect(out).toContain(`<runtime-content`);
+    expect(out).toContain(`template="function() {};"`);
   });
 
   it('runtime, markdown', async () => {
@@ -160,7 +155,7 @@ describe('internal', () => {
     ~~~`;
     const vfile = await processor.process(contents);
     const out = String(vfile);
-    expect(out).to.equal(`<p><strong>Hello</strong></p>\n`);
+    expect(out).toEqual(`<p><strong>Hello</strong></p>\n`);
   });
 
   it('runtime, markdown, playground', async () => {
@@ -170,8 +165,8 @@ describe('internal', () => {
     ~~~`;
     const vfile = await processor.process(contents);
     const out = String(vfile);
-    expect(out).to.contain(`<div class="custom-block playground language-markdown" data-lang="markdown" v-pre="true">`);
-    expect(out).to.contain(`<p><strong>Hello</strong></p>\n`);
+    expect(out).toContain(`<div class="custom-block playground language-markdown" data-lang="markdown" v-pre="true">`);
+    expect(out).toContain(`<p><strong>Hello</strong></p>\n`);
   });
 
   it('mermaid', async () => { // Can't really test mermaid in node env
@@ -181,6 +176,6 @@ describe('internal', () => {
     ~~~`;
     const vfile = await processor.process(contents);
     const out = String(vfile);
-    expect(out).to.equal(`<div class="mermaid">**Hello**</div>\n`);
+    expect(out).toEqual(`<div class="mermaid">**Hello**</div>\n`);
   });
 });

@@ -15,7 +15,7 @@ describe('MarkdownService', () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        LoggerModule.forRoot({ level: NgxLoggerLevel.TRACE })
+        LoggerModule.forRoot({ level: NgxLoggerLevel.WARN })
       ],
       providers: [
         Location,
