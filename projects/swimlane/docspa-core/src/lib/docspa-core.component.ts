@@ -63,15 +63,17 @@ export class DocSPACoreComponent implements OnInit {
         .filter(link => {
           const offsetBottom = link.offsetTop + link.offsetHeight;
           const past = offsetBottom <= fromBottom;
-          if (past) lastLink = link;
+          if (past) {
+            lastLink = link;
+          }
           return link.offsetTop >= fromTop && offsetBottom <= fromBottom;
         })
         .map(link => this.splitHash(link.hash)[1]);
-      
+
       if (current && current.length > 0) {
         this.activeAnchors = current.join(';');
       } else if (lastLink) {
-        this.activeAnchors = this.splitHash(lastLink.hash)[1]);
+        this.activeAnchors = this.splitHash(lastLink.hash)[1];
       } else {
         this.activeAnchors = '';
       }
