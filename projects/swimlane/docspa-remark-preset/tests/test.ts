@@ -3,6 +3,10 @@ import stripIndent from 'common-tags/lib/stripIndent';
 import { runtime } from '../src/plugins/runtime';
 import { prism } from '../src/plugins/prism';
 
+global.window = {};
+
+const { mermaid } = require('../src/plugins/mermaid');
+
 const remark = require('remark');
 const html = require('remark-html');
 const { docspaRemarkPreset } = require('../src/');
@@ -10,6 +14,7 @@ const { docspaRemarkPreset } = require('../src/');
 const processor = remark()
   .use(docspaRemarkPreset)
   .use(runtime)
+  .use(mermaid)
   .use(prism)
   .use(html);
 
@@ -169,7 +174,7 @@ describe('internal', () => {
     expect(out).to.contain(`<p><strong>Hello</strong></p>\n`);
   });
 
-  it('mermaid', async () => {
+  it('mermaid', async () => { // Can't really test mermaid in node env
     const contents = stripIndent`
     ~~~mermaid
     **Hello**

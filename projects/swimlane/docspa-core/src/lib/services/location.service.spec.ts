@@ -47,23 +47,6 @@ describe('LocationService', () => {
     expect(vfile.path).toBe('/features/README.md');
   }));
 
-  it('#makePath', inject([LocationService], (service: LocationService) => {
-    // expect(service.makePath('')).toBe('docs/.md');
-    expect(service.makePath('/')).toBe('docs/README.md');
-    expect(service.makePath('/README')).toBe('docs/README.md');
-    expect(service.makePath('/README.md')).toBe('docs/README.md');
-    expect(service.makePath('/features')).toBe('docs/features.md');
-    expect(service.makePath('/features/')).toBe('docs/features/README.md');
-  }));
-
-  it('#fixPage', inject([LocationService], (service: LocationService) => {
-    expect(service.fixPage('README.md')).toBe('README');
-  }));
-
-  it('#fixPath', inject([LocationService], (service: LocationService) => {
-    expect(service.fixPage('README.md')).toBe('README');
-  }));
-
   it('#prepareLink', inject([LocationService], (service: LocationService) => {
     expect(service.prepareLink('thepage', '/')).toBe('#/thepage');
     expect(service.prepareLink('thepage', '/features/')).toBe('#/features/thepage');

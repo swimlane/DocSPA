@@ -13,8 +13,8 @@ const ctx =
       : self
     : window;
 
-if (window['Prism']) {
-  document.removeEventListener('DOMContentLoaded', window['Prism'].highlightAll);
+if (ctx['Prism']) {
+  document.removeEventListener('DOMContentLoaded', ctx['Prism'].highlightAll);
 }
 
 export function prism({classPrefix = 'language'} = {}) {
