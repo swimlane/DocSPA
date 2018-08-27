@@ -2,11 +2,9 @@ import { CommonModule } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from './environments/environment';
-import { docspaRemarkPreset, prism } from '@swimlane/docspa-remark-preset';
+import { docspaRemarkPreset, prism, runtime, mermaid } from '@swimlane/docspa-remark-preset';
 
-import {
-  runtime, mermaidHook, tabsHook
-} from '@swimlane/docspa-core';
+import { tabsHook } from '@swimlane/docspa-core';
 
 export const config = {
   name: 'DocSPA',
@@ -21,13 +19,13 @@ export const config = {
   ],
   coverpage: '_coverpage.md',
   plugins: [
-    mermaidHook,
     window['EditOnGithubPlugin'].create('https://github.com/swimlane/docspa/blob/master/src/docs/', null, '✎ Edit this page'),
     tabsHook
   ],
   remarkPlugins: [
     ...docspaRemarkPreset,
     runtime,
+    mermaid,
     prism
   ],
   runtimeModules: [

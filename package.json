@@ -48,6 +48,7 @@
     "deepmerge": "^2.1.1",
     "md-attr-parser": "^1.1.5",
     "mdast-util-toc": "^2.0.1",
+    "mermaid": "^8.0.0-rc.8",
     "ngx-logger": "^3.0.5",
     "parse-numeric-range": "0.0.2",
     "path": "^0.12.7",

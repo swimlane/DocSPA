@@ -1,12 +1,23 @@
 import visit from 'unist-util-visit';
+import VFile from 'vfile';
 
-export function runtime(this: any) {
+export function runtime() {
   const processor = this;
 
-  return function(tree, file) {
-    visit(tree, 'code', visitor);
+  return function(tree, file, next) {
+    const items = [];
 
-    function visitor (node, index, parent) {
+    visit(tree, 'code', (node, index, parent) => {
+      items.push({node, index, parent});
+    });
+
+    const res = items.map(({node, index, parent}) => {
+      return visitor(node, index, parent);
+    });
+
+    Promise.all(res).then(() => next());
+
+    async function visitor(node, index, parent) {
       const { lang, data } = node;
 
       if (!data || !data.hProperties) {
@@ -22,8 +33,9 @@ export function runtime(this: any) {
       if (isRun || isPlayground) {
         const cls = hProperties.class = hProperties.class || (isPlayground ? 'custom-block playground' : '');
         if (lang === 'markdown') {
-          const f = { ...file, contents: node.value };
-          value = processor.processSync(f).contents;
+          const f = new VFile({ ...file, contents: node.value });
+          const vfile = await processor.process(f);
+          value = vfile.contents;
         } else {
           const context = JSON.stringify({
             $page: file.data || {}
