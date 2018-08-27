@@ -95,37 +95,4 @@ export class LocationService {
     const basePath = this.basePath;
     return basePath && url.startsWith(basePath) ? url.substring(basePath.length) : url;
   }
-
-  /**
-   * Convert a page path into a url
-   */
-  makePath(page: string) {
-    page = this.fixPath(page);
-    return path.join(this.root, page);
-  }
-
-  /**
-   * Convert a file name into a page
-   */
-  fixPage(file: string) {
-    if (path.extname(file) === this.settings.ext) {
-      return file.slice(0, -this.settings.ext.length);
-    }
-    // TODO: strip this.settings.homepage
-    return file;
-  }
-
-  /**
-   * Convert a path into a page
-   */
-  fixPath(_: string) {
-    if (_.slice(-1) === '/') {
-      _ = path.join(_, this.settings.homepage);
-    }
-    const ext = path.extname(_);
-    if (!ext) {
-      _ += this.ext;
-    }
-    return _.replace(/^#/, '');
-  }
 }
