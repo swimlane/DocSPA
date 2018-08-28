@@ -11,8 +11,7 @@ import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
 import path from 'path';
 
-import { getTitle } from '@swimlane/docspa-remark-preset/plugins/frontmatter';
-
+import { getTitle } from '@swimlane/docspa-remark-preset/dist/module/plugins/frontmatter';
 
 import { FetchService } from '../services/fetch.service';
 import { LocationService } from '../services/location.service';

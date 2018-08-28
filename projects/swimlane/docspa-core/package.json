@@ -1,6 +1,6 @@
 {
   "name": "@swimlane/docspa-core",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "peerDependencies": {
     "@angular/common": "^6.0.0",
     "@angular/core": "^6.0.0",
@@ -9,6 +9,7 @@
     "@mapbox/rehype-prism": "^0.2.0",
     "@ngx-loading-bar/http-client": "^2.1.0",
     "@stackblitz/sdk": "^1.2.0",
+    "@swimlane/docspa-remark-preset": "^1.0.0",
     "@webcomponents/custom-elements": "^1.1.2",
     "deepmerge": "^2.1.1",
     "ngx-logger": "^3.0.5",

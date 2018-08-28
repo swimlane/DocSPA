@@ -1,7 +1,7 @@
 {
   "name": "docspa",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "An Angular-powered documentation SPA",
   "scripts": {
     "ng": "ng",
@@ -43,6 +43,7 @@
     "@ngx-loading-bar/http-client": "^2.1.0",
     "@rigor789/remark-autolink-headings": "^5.1.0",
     "@stackblitz/sdk": "^1.2.0",
+    "@swimlane/docspa-remark-preset": "^1.0.0",
     "@swimlane/ngx-charts": "^8.1.0",
     "@webcomponents/custom-elements": "^1.1.2",
     "core-js": "^2.5.4",

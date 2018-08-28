@@ -1,17 +1,14 @@
-export * from './mermaid';
-// export * from './prisim';
-export * from './runtime';
 export * from './misc';
 export * from './links';
+export * from './mermaid';
 
-// For backwards compatibility pre-docspa-remark-preset, remove in v2
-export * from '@swimlane/docspa-remark-preset';
-import { docspaRemarkPreset, prism } from '@swimlane/docspa-remark-preset';
-import { runtime } from './runtime';
+export { runtime } from '@swimlane/docspa-remark-preset/dist/module/plugins/runtime';
+export { prism } from '@swimlane/docspa-remark-preset/dist/module/plugins/prism';
+
+import { docspaRemarkPreset, runtime } from '@swimlane/docspa-remark-preset';
 
 export const defaultRemarkPlugins = [
   ...docspaRemarkPreset,
-  runtime,
-  prism
+  runtime
 ];
 

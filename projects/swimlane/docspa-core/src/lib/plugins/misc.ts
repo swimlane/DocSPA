@@ -1,5 +1,5 @@
-export { infoString, infoStringToAttr } from '@swimlane/docspa-remark-preset/plugins/misc';
-import { customBlocksOptions } from '@swimlane/docspa-remark-preset/plugins/remark-custom-blocks';
+export { infoString, infoStringToAttr } from '@swimlane/docspa-remark-preset/dist/module/plugins/misc';
+import { customBlocksOptions } from '@swimlane/docspa-remark-preset/dist/module/plugins/remark-custom-blocks';
 
 import remarkCustomBlocks from 'remark-custom-blocks';
 

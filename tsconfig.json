@@ -18,20 +18,6 @@
     "lib": [
       "es2017",
       "dom"
-    ],
-    "paths": {
-      "@swimlane/docspa-core": [
-        "projects/swimlane/docspa-core/src/public_api"
-      ],
-      "@swimlane/docspa-core/*": [
-        "projects/swimlane/docspa-core/src/*"
-      ],
-      "@swimlane/docspa-remark-preset": [
-        "projects/swimlane/docspa-remark-preset/src/index"
-      ],
-      "@swimlane/docspa-remark-preset/*": [
-        "projects/swimlane/docspa-remark-preset/src/*"
-      ]
-    }
+    ]
   }
 }

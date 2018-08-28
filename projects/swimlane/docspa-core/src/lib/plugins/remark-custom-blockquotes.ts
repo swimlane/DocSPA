@@ -3,6 +3,6 @@
 import {
   customBlockquotes as _customBlockquotes,
   customBlockquotesOptions
-} from '@swimlane/docspa-remark-preset/plugins/remark-custom-blockquotes';
+} from '@swimlane/docspa-remark-preset/dist/module/plugins/remark-custom-blockquotes';
 
 export const customBlockquotes = [_customBlockquotes, customBlockquotesOptions];
