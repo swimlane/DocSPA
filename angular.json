@@ -119,6 +119,9 @@
           }
         }
       }
+    },
+    "@swimlane/docspa-remark-preset": {
+      "root": "projects/swimlane/docspa-remark-preset"
     }
   },
   "defaultProject": "docspa"
