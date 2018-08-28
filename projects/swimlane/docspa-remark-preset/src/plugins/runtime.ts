@@ -1,11 +1,17 @@
 import visit from 'unist-util-visit';
 import VFile from 'vfile';
 
-export function runtime() {
+interface VNode {
+  node: any,
+  index: number
+  parent: any
+}
+
+export function runtime(this: any) {
   const processor = this;
 
   return function(tree, file, next) {
-    const items = [];
+    const items: VNode[] = [];
 
     visit(tree, 'code', (node, index, parent) => {
       items.push({node, index, parent});
