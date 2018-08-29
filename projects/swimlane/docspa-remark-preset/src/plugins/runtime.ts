@@ -2,9 +2,9 @@ import visit from 'unist-util-visit';
 import VFile from 'vfile';
 
 interface VNode {
-  node: any,
-  index: number
-  parent: any
+  node: any;
+  index: number;
+  parent: any;
 }
 
 export function runtime(this: any) {
@@ -43,13 +43,17 @@ export function runtime(this: any) {
           const vfile = await processor.process(f);
           value = vfile.contents;
         } else {
-          const context = JSON.stringify({
+          const context = {
             $page: file.data || {}
-          });
+          };
+          try {
+            Object.assign(context, JSON.parse(hProperties.context));
+          } catch (e) {
+          }
           value = escape(value, true);
           value = `<runtime-content
             template="${value}"
-            context="${escape(context, true)}">
+            context="${escape(JSON.stringify(context), true)}">
           </runtime-content>`;
         }
 

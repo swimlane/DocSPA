@@ -309,35 +309,25 @@ Hello, {{name}}.
 Or by adding `{ run }` to `HTML` fenced code:
 
 ~~~markdown { playground }
-```html { run }
-<button (click)="count = !count ? 1 : count + 1">Click me: {{count || 0}}</button>
+```html { run context='{ "count": 0 }' }
+<button (click)="count = count + 1">Click me: {{count}}</button>
 ```
 ~~~
 
 Use `{ playground }` to create a section containing both the code and the runtime result:
 
-```html { playground }
+```html { playground context='{"data": [{"name":"Germany","value": 8940000},{"name":"USA","value":5000000},{"name":"France","value":7200000}]}' }
 <div style="width: 100%; height: 200px">
   <ngx-charts-bar-vertical
-      [legend]="true"
-      [xAxis]="true"
-      [yAxis]="true"
-      [results]="[
-        {
-          'name': 'Germany',
-          'value': 8940000
-        },
-        {
-          'name': 'USA',
-          'value': 5000000
-        },
-        {
-          'name': 'France',
-          'value': 7200000
-        }
-      ]">
+    [legend]="true"
+    [xAxis]="true"
+    [yAxis]="true"
+    [results]="data">
   </ngx-charts-bar-vertical>
 </div>
+<pre>
+{{data | json}}
+</pre>
 ```
 
 i> The components available within a runtime element are controlled by the `runtimeModules` array in the `docspa.config.ts` configuration file.  These modules must also be added to your root app module.

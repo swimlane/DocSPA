@@ -15,13 +15,13 @@ i> You should now have a fresh angular app visible at http://localhost:4200/.
 First install DocSPA core:
 
 ```sh
-npm install --save @swimlane/docspa-core
+npm install --save @swimlane/docspa-core @swimlane/docspa-remark-preset
 ```
 
 Then peer dependencies:
 
 ```sh
-npm install --save  @ngx-loading-bar/core @ngx-loading-bar/http-client @angular/elements unified remark-parse remark-html ngx-logger parse-numeric-range mdast-util-to-string quick-lru vfile vfile-reporter url-resolve deepmerge path process smoothscroll-polyfill @stackblitz/sdk @webcomponents/custom-elements mdast-util-toc remark-shortcodes remark-stringify @rigor789/remark-autolink-headings remark-attr remark-frontmatter remark-gemoji-to-emoji remark-html-emoji-image remark-html-katex remark-math remark-parse-yaml remark-slug remark-custom-blocks github-slugger remark-stringify remark-shortcodes
+npm install --save @ngx-loading-bar/core @ngx-loading-bar/http-client @angular/elements quick-lru ngx-logger quick-lru vfile-reporter url-resolve deepmerge path process smoothscroll-polyfill @stackblitz/sdk @webcomponents/custom-elements
 ```
 
 2) Add a `docspa.config.ts` to the `src` folder

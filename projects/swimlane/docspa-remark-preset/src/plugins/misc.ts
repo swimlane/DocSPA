@@ -46,18 +46,36 @@ export function infoStringToAttr() {
   return function(tree) {
     visit(tree, 'code', node => {
       if (node.infoString) {
-        const hProperties = mdAttrParser(node.infoString).prop;
+        const info = encode(node.infoString);
+        const hProperties = mdAttrParser(info).prop;
 
-        // Delete dangerous
+        // Delete dangerous, decode
         Object.getOwnPropertyNames(hProperties).forEach(p => {
           if (isDangerous(p)) {
             delete hProperties[p];
+          } else if (typeof hProperties[p] === 'string') {
+            hProperties[p] = decode(hProperties[p]);
           }
         });
-
         node.data = { ...node.data, hProperties };
       }
     });
   };
 }
 
+const SALT = '%RUNTIME-ENCODE%';
+
+function encode(text: string) {
+  const start = text.indexOf('{') + 1;
+  const end = text.lastIndexOf('}');
+  text = text.slice(start, end);
+  return text
+    .replace('{', `${SALT}-%7B`)
+    .replace('}', `${SALT}-%7D`);
+}
+
+function decode(text: string) {
+  return text
+    .replace(`${SALT}-%7B`, '{')
+    .replace(`${SALT}-%7D`, '}');
+}
