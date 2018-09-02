@@ -23,7 +23,9 @@
 </section>
 
 <main>
-  <button *ngIf="sidebarPage" class="sidebar-toggle" (click)="toggleSidebar()"><div class="sidebar-toggle-button"><span></span><span></span><span></span></div></button>
+  <button *ngIf="sidebarPage" class="sidebar-toggle" aria-hidden="true" (click)="toggleSidebar()">
+    <div class="sidebar-toggle-button"><span></span><span></span><span></span></div>
+  </button>
   <aside *ngIf="sidebarPage" class="sidebar left-sidebar">
     <docspa-md-embed
       class="sidebar-nav"

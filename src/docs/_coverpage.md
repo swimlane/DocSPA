@@ -1,4 +1,4 @@
-![](./logo.png){ data-no-zoom="true" }
+![DocSPA Logo](./logo.png){ data-no-zoom="true" }
 
 <h2>DocSPA <small><env-var var="version"><env-var></small></h2>
 

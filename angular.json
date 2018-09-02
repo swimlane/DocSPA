@@ -22,7 +22,8 @@
               "src/favicon.ico",
               "src/assets",
               "src/docs",
-              "src/.nojekyll"
+              "src/.nojekyll",
+              "src/manifest.json"
             ],
             "styles": [
               "src/styles.css"
@@ -45,7 +46,8 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "serviceWorker": true
             }
           }
         },
@@ -75,6 +77,14 @@
             ],
             "exclude": [
               "**/node_modules/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "assets": [
+              "src/manifest.json"
             ]
           }
         }

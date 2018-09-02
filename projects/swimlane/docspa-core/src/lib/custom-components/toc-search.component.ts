@@ -29,6 +29,7 @@ import frontmatter from 'remark-frontmatter';
         type="search"
         value=""
         placeholder="Search topics"
+        aria-label="Search topics"
         (keyup)="search($event.target.value)"
         (search)="search($event.target.value)">
     </div>

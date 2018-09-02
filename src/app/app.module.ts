@@ -10,6 +10,8 @@ import { AppComponent } from './app.component';
 import { DocspaCoreModule } from '@swimlane/docspa-core';
 
 import { config } from '../docspa.config';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,8 @@ import { config } from '../docspa.config';
     BrowserModule,
     FormsModule,
     NgxChartsModule,
-    LoadingBarModule.forRoot()
+    LoadingBarModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     Location,

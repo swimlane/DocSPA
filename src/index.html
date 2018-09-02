@@ -8,9 +8,14 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="//unpkg.com/docsify/themes/buble.css" />
-  <link rel="stylesheet" href="//unpkg.com/prismjs/themes/prism.css" />
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css">
+  <link rel="preconnect" href="//unpkg.com/">
+  <link rel="preconnect" href="https://static.hotjar.com">
+  <link rel="preconnect" href="https://vars.hotjar.com/">
+  <link rel="preconnect" href="https://script.hotjar.com/">
+  <link rel="preconnect" href="https://static.hotjar.com/">
+  <link rel="preload" as="style" href="//unpkg.com/docsify/lib/themes/buble.css" onload="this.rel='stylesheet'" />
+  <link rel="preload" as="style" href="//unpkg.com/prismjs/themes/prism.css" onload="this.rel='stylesheet'" />
+  <link rel="preload" as="style" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css" onload="this.rel='stylesheet'" />
   <script src="//unpkg.com/docsify-edit-on-github@1.0.1/index.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-beta/dist/katex.min.css" integrity="sha384-9tPv11A+glH/on/wEu99NVwDPwkMQESOocs/ZGXPoIiLE8MU/qkqUcZ3zzL+6DuH" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -25,16 +30,82 @@
         a.appendChild(r);
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
   </script>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1976d2">
+
+  <style type="text/css">
+    body, html {
+      height: 100%;
+    }
+    .app-loading {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+    .app-loading .spinner {
+      height: 200px;
+      width: 200px;
+      animation: rotate 2s linear infinite;
+      transform-origin: center center;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+    .app-loading .spinner .path {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+      animation: dash 1.5s ease-in-out infinite;
+      stroke-linecap: round;
+      stroke: #ddd;
+    }
+    @keyframes rotate {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    @keyframes dash {
+      0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+      }
+      50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35px;
+      }
+      100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <app-root></app-root>
+  <app-root>
+    <div class="app-loading">
+      <div class="logo"></div>
+      <svg class="spinner" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+      </svg>
+    </div>
+  </app-root>
+  <noscript>
+    <h3 style="color: #673ab7; font-family: Helvetica; margin: 2rem;">
+      Sorry, but app is not available without javascript
+    </h3>
+  </noscript>
   <script>
     // support $docsify plugins
     window.$docsify = { plugins: [] };
   </script>
   <script src="//unpkg.com/docsify/lib/plugins/zoom-image.min.js"></script>
-  <!-- script src="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script -->
   <script src="//unpkg.com/docsify-copy-code"></script>
   <script src="https://cdn.jsdelivr.net/npm/katex@0.10.0-beta/dist/katex.min.js" integrity="sha384-U8Vrjwb8fuHMt6ewaCy8uqeUXv4oitYACKdB0VziCerzt011iQ/0TqlSlv8MReCm" crossorigin="anonymous"></script>
+  <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
 </body>
 </html>

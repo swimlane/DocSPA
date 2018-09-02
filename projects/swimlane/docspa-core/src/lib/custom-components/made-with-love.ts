@@ -14,7 +14,7 @@ import { Component, Input, OnInit } from '@angular/core';
       <span [style.color]="'blue'">SPA</span></a>
       <ng-container *ngIf="url && url.length > 0; else noUrl">
         by
-        <a [attr.href]="url" target="_blank" [style.color]="color">
+        <a [attr.href]="url" target="_blank" [style.color]="color" rel="noopener">
           <ng-content></ng-content>
           <slot></slot>
           {{name}}
