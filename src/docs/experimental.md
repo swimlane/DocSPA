@@ -164,3 +164,19 @@ const config = {
   }
 };
 ```
+
+## Links
+
+[Inline link](content)
+
+[Inline link with title](content "Google")
+
+[Reference link by name][link1]
+
+[Reference link by number][1]
+
+[Reference link by self]
+
+[link1]: content
+[1]: content
+[Reference link by self]: content
