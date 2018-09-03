@@ -1,6 +1,6 @@
 import visit from 'unist-util-visit';
 import mdAttrParser from 'md-attr-parser';
-import remarkCustomBlocks from 'remark-custom-blocks';
+import { MDAST } from 'mdast';
 
 // The list of DOM Event handler
 const DOMEventHandler = [
@@ -31,13 +31,14 @@ const isDangerous = p => DOMEventHandler.indexOf(p) >= 0;
 
 export function infoString() {
   return function(tree) {
-    visit(tree, 'code', node => {
+    visit(tree, 'code', (node: MDAST.Code) => {
       const idx = node.lang ? node.lang.search(/\s/) : -1;
       if (idx > -1) {
-        const [lang, _infoString] = node.lang.slice(idx);
+        // @ts-ignore
         node.infoString = node.lang.slice(idx);
-        node.lang = node.lang.slice(0, idx);
+        node.lang = (node.lang || '').slice(0, idx);
       }
+      return true;
     });
   };
 }
@@ -45,7 +46,9 @@ export function infoString() {
 export function infoStringToAttr() {
   return function(tree) {
     visit(tree, 'code', node => {
+      // @ts-ignore
       if (node.infoString) {
+        // @ts-ignore
         const info = encode(node.infoString);
         const hProperties = mdAttrParser(info).prop;
 
@@ -59,6 +62,7 @@ export function infoStringToAttr() {
         });
         node.data = { ...node.data, hProperties };
       }
+      return true;
     });
   };
 }

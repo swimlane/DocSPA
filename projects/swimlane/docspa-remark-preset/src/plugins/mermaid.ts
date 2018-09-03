@@ -1,5 +1,6 @@
 import visit from 'unist-util-visit';
 import mermaidApi from 'mermaid';
+import { MDAST } from 'mdast';
 
 mermaidApi.initialize({
   startOnLoad: false
@@ -10,10 +11,11 @@ export function mermaid() {
     const hostElem = getHostElm();
     const items: any[] = [];
 
-    visit(tree, 'code', (node, index, parent) => {
+    visit(tree, 'code', (node: MDAST.Code, index, parent) => {
       if (node.lang === 'mermaid') {
         items.push({node, index, parent});
       }
+      return true;
     });
 
     const promises = items.map(async ({node, index, parent}) => {

@@ -16,6 +16,7 @@ import { LocationService } from '../services/location.service';
 
 import { links, images } from '../plugins/links';
 import frontmatter from 'remark-frontmatter';
+import { MDAST } from 'mdast';
 
 @Component({
   selector: 'md-toc', // tslint:disable-line
@@ -68,10 +69,11 @@ export class TOCComponent implements OnInit {
 
     const removeMinNodes = () => {
       return tree => {
-        visit(tree, 'heading', (node, index, parent) => {
+        visit(tree, 'heading', (node: MDAST.Heading, index, parent) => {
           if (node.depth < this.minDepth) {
             parent.children.splice(index, 1);
           }
+          return true;
         });
       };
     };

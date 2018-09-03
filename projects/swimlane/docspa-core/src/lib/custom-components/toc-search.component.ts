@@ -18,6 +18,7 @@ import { LocationService } from '../services/location.service';
 
 import { links, images } from '../plugins/links';
 import frontmatter from 'remark-frontmatter';
+import { MDAST } from 'mdast';
 
 @Component({
   selector: 'md-toc-search', // tslint:disable-line
@@ -94,10 +95,11 @@ export class TOCSearchComponent implements OnInit {
     const removeMinNodes = () => {
       return (tree, file) => {
         file.data = file.data || {};
-        visit(tree, 'heading', (node, index, parent) => {
+        visit(tree, 'heading', (node: MDAST.Heading, index, parent) => {
           if (node.depth < this.minDepth) {
             parent.children.splice(index, 1);
           }
+          return true;
         });
       };
     };
@@ -106,7 +108,7 @@ export class TOCSearchComponent implements OnInit {
       return (tree, file) => {
         file.data = file.data || {};
         file.data.tocSearch = [];
-        visit(tree, 'link', (node) => {
+        visit(tree, 'link', (node: MDAST.Link) => {
           const url = node.url;
           const content = toString(node);
           const name = (file.data.matter ? file.data.matter.title : false) || file.data.title || file.path;
@@ -114,8 +116,9 @@ export class TOCSearchComponent implements OnInit {
             name,
             url,
             content,
-            depth: node.depth
+            depth: (node as any).depth
           });
+          return true;
         });
       };
     };

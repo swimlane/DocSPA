@@ -43,6 +43,7 @@
     "@angular/service-worker": "^6.1.1",
     "@mapbox/rehype-prism": "^0.2.0",
     "@ngx-loading-bar/http-client": "^2.1.0",
+    "@paperist/types-remark": "^0.1.3",
     "@rigor789/remark-autolink-headings": "^5.1.0",
     "@stackblitz/sdk": "^1.2.0",
     "@swimlane/docspa-remark-preset": "^1.0.0",

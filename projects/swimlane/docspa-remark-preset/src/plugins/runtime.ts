@@ -1,9 +1,10 @@
 import visit from 'unist-util-visit';
 import VFile from 'vfile';
+import { MDAST } from 'mdast';
 
 interface VNode {
-  node: any;
-  index: number;
+  node: MDAST.Code;
+  index: number | undefined;
   parent: any;
 }
 
@@ -13,8 +14,9 @@ export function runtime(this: any) {
   return function(tree, file, next) {
     const items: VNode[] = [];
 
-    visit(tree, 'code', (node, index, parent) => {
+    visit(tree, 'code', (node: MDAST.Code, index, parent) => {
       items.push({node, index, parent});
+      return true;
     });
 
     const res = items.map(({node, index, parent}) => {
