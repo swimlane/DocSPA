@@ -1,18 +1,16 @@
 import { Component, Input, OnInit, ViewEncapsulation, SimpleChanges } from '@angular/core';
 
-import { of } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
-import { LocationService } from '../services/location.service';
 import { RouterService } from '../services/router.service';
 import { MarkdownService } from '../services/markdown.service';
 import VFile from 'vfile';
+import { getBasePath } from '../utils';
 
 @Component({
   selector: 'md-toc-page', // tslint:disable-line
   template: `
     <div class="docsify-pagination-container">
       <div class="pagination-item pagination-item--previous" *ngIf="prev">
-        <a class="prev" [href]="'#/' + prev.stem + '#main'" >
+        <a class="prev" [href]="'#' + getBasePath(prev) + '#main'" >
           <div class="pagination-item-label">
             <span>« PREVIOUS</span>
           </div>
@@ -20,7 +18,7 @@ import VFile from 'vfile';
         </a>
       </div>
       <div class="pagination-item pagination-item--next" *ngIf="next">
-        <a class="next" [href]="'#/' + next.stem + '#main'" >
+        <a class="next" [href]="'#' + getBasePath(next) + '#main'" >
           <div class="pagination-item-label">
             <span>NEXT »</span>
           </div>
@@ -102,12 +100,6 @@ export class TOCPaginationComponent implements OnInit {
     return this._paths;
   }
 
-  /* @Input()
-  minDepth = 1;
-
-  @Input()
-  maxDepth = 6; */
-
   private processor: any;
   private _paths: string[];
 
@@ -116,8 +108,9 @@ export class TOCPaginationComponent implements OnInit {
   next: any;
   prev: any;
 
+  getBasePath = getBasePath;
+
   constructor(
-    private locationService: LocationService,
     private routerService: RouterService,
     private markdownService: MarkdownService,
   ) {

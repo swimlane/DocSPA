@@ -1,6 +1,6 @@
 {
   "name": "@swimlane/docspa-remark-preset",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Remark preset for DocSPA",
   "main": "dist/main/index.js",
   "typings": "dist/main/index.d.ts",
