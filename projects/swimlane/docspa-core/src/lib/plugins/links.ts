@@ -5,7 +5,7 @@ import path from 'path';
 
 export const links = (locationService: LocationService) => {
   return (tree, vfile: VFile) => {
-    visit(tree, 'link', node => {
+    visit(tree, ['link', 'definition'], node => {
       // links are not relative to base path
       node.url = locationService.prepareLink(node.url, vfile.history[0]);
     });
