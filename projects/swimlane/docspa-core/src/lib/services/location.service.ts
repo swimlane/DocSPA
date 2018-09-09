@@ -2,7 +2,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common';
 import VFile from 'vfile';
 
-import path from 'path';
+import { join } from '../utils';
 import urlResolve from 'url-resolve';
 
 import { SettingsService } from './settings.service';
@@ -20,7 +20,7 @@ export class LocationService {
   }
 
   get root() {
-    return path.join(this.settings.nameLink, this.settings.basePath);
+    return this.settings.root;
   }
 
   get basePath() {
@@ -53,7 +53,7 @@ export class LocationService {
     } */
 
     if (vfile.path.slice(-1) === '/') {
-      vfile.path = path.join(vfile.path, this.settings.homepage);
+      vfile.path = join(vfile.path, this.settings.homepage);
     }
 
     if (vfile.basename === '') {

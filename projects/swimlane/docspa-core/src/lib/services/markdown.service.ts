@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { flatMap, map, share } from 'rxjs/operators';
 import { NGXLogger } from 'ngx-logger';
 import reporter from 'vfile-reporter';
-import * as path from 'path';
+import { join } from '../utils';
 
 import unified from 'unified';
 import markdown from 'remark-parse';
@@ -71,7 +71,7 @@ export class MarkdownService {
       o = of(new VFile(''));
     } else {
       const vfile = this.locationService.pageToFile(page);
-      const url = path.join(vfile.cwd, vfile.path);
+      const url = join(vfile.cwd, vfile.path);
       o = this.fetchService.get(url)
         .pipe(
           flatMap((res: CachePage): Promise<VFile> => {

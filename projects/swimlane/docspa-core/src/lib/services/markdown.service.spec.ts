@@ -3,7 +3,7 @@ import { Location, LocationStrategy, HashLocationStrategy } from '@angular/commo
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import VFile from 'vfile';
-import path from 'path';
+import { join } from '../utils';
 
 import { MarkdownService } from './markdown.service';
 
@@ -36,12 +36,12 @@ describe('MarkdownService', () => {
     const text = '## Hello';
     markdownService.getMd('/').subscribe((res: VFile) => {
       expect(res).toBeTruthy();
-      expect(path.join(res.cwd, res.path)).toEqual('docs/README.html');
+      expect(join(res.cwd, res.path)).toEqual('docs/README.html');
       expect(res.contents).toEqual('<h2>Hello</h2>\n');
 
       expect(res.path).toEqual('/README.html');
       expect(res.stem).toEqual('README');
-      expect(path.join(res.cwd, res.path)).toEqual('docs/README.html');
+      expect(join(res.cwd, res.path)).toEqual('docs/README.html');
     });
 
     const countryRequest = httpMock.expectOne('docs/README.md');

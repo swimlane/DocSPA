@@ -2,7 +2,7 @@ import { Injectable, EventEmitter, SimpleChange, SimpleChanges } from '@angular/
 import { Location } from '@angular/common';
 import { URLSearchParams } from '@angular/http';
 
-import * as path from 'path';
+import { join } from '../utils';
 
 import { SettingsService } from './settings.service';
 import { FetchService } from './fetch.service';
@@ -72,7 +72,7 @@ export class RouterService {
     if (this.contentPage !== page) {
       changes.contentPage = new SimpleChange(this.contentPage, this.contentPage = page, false);
 
-      const fullPath = path.join(vfile.cwd, vfile.dirname);
+      const fullPath = join(vfile.cwd, vfile.dirname);
 
       const cover = vfile.basename === this.settings.homepage ?
         this.fetchService.find(fullPath, this.settings.coverpage) :

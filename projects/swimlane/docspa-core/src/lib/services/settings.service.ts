@@ -1,6 +1,7 @@
 import { Injectable, Inject, Optional } from '@angular/core';
 
 import deepmerge from 'deepmerge'; // use xtend?
+import { join } from '../utils';
 
 export interface Theme {
   [key: string]: string;
@@ -25,6 +26,10 @@ export class SettingsService {
   runtimeModules = [];
 
   currentTheme: Theme = {};
+
+  get root() {
+    return join(this.nameLink, this.basePath);
+  }
 
   constructor(@Optional() @Inject('config') config: any) {
     if (window['$docsify']) {

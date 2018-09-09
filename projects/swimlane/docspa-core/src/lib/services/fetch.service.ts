@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
 import { map, share, catchError } from 'rxjs/operators';
-import path from 'path';
+import { join } from '../utils';
+import { basename } from 'path';
 import QuickLRU from 'quick-lru';
 
 import { SettingsService } from './settings.service';
@@ -23,11 +24,11 @@ export class FetchService {
   private inFlight = new Map<string, Observable<CachePage>>();
 
   get root() {
-    return path.join(this.settings.nameLink, this.settings.basePath);
+    return this.settings.root;
   }
 
   get path404() {
-    return path.join(this.settings.nameLink, this.settings.basePath, this.settings.notFoundPage);
+    return join(this.settings.root, this.settings.notFoundPage);
   }
 
   constructor(
@@ -44,7 +45,7 @@ export class FetchService {
    * @param filename
    */
   find(dir: string, filename: string): Promise<string> {
-    const url = filename ? path.join(dir, filename) : null;
+    const url = filename ? join(dir, filename) : null;
     return this.get(url).toPromise().then(item => {
       if (item.notFound) {
         return null;
@@ -62,13 +63,13 @@ export class FetchService {
    * @param filename
    */
   findup(dir: string, filename: string) {
-    const url = filename ? path.join(dir, filename) : null;
+    const url = filename ? join(dir, filename) : null;
     return this.get(url).toPromise().then(item => {
       if (item.notFound) {
-        if (dir === path.basename(this.settings.basePath)) {
+        if (dir === basename(this.settings.basePath)) {
           return null;
         } else {
-          dir = path.join(dir, '..');
+          dir = join(dir, '..');
           return (dir === '.') ? this.find(dir, filename) : this.findup(dir, filename);
         }
       }

@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 
 import sdk from '@stackblitz/sdk';
 import { Project } from '@stackblitz/sdk/typings/interfaces';
-import * as path from 'path';
+import { join } from '../utils';
+import { dirname } from 'path';
 
 import { SettingsService } from '../services/settings.service';
 
@@ -78,13 +79,15 @@ export class EmbedStackblitzComponent {
 
   opened = false;
 
-  private root: string;
   private _project: Project;
 
   id = `embed-stackblitz-${EmbedStackblitzComponent.count++}+${Math.random()}`;
 
+  private get root() {
+    return this.settings.root;
+  }
+
   constructor(private http: HttpClient, private settings: SettingsService) {
-    this.root = path.join(this.settings.nameLink, this.settings.basePath);
   }
 
   load() {
@@ -122,11 +125,11 @@ export class EmbedStackblitzComponent {
   }
 
   private loadProjectFile(file: string): Promise<Project> {
-    const url = path.join(this.root, `${this.projectPath}.json`);
+    const url = join(this.root, `${this.projectPath}.json`);
     return this.http.get(url, {responseType: 'json'}).toPromise().then((project: any) => {
       if (Array.isArray(project.files)) {
         return Promise.all(project.files.map(f => {
-          const u = path.join(this.root, path.dirname(this.projectPath), f);
+          const u = join(join(this.root, dirname(this.projectPath)), f);
           return this.http.get(u, {responseType: 'text'}).toPromise().then(text => [f, text]);
         })).then(f => {
           const files = f.reduce((acc, val: [string, string]) => {

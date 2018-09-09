@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation, HostBinding } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { of } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
@@ -9,7 +9,7 @@ import visit from 'unist-util-visit';
 import stringify from 'remark-stringify';
 import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
-import path from 'path';
+import { join } from '../utils';
 
 import { getTitle } from '@swimlane/docspa-remark-preset/dist/module/plugins/frontmatter';
 
@@ -175,7 +175,7 @@ export class TOCSearchComponent implements OnInit {
     }
     const promises = paths.map(_ => {
       const vfile = this.locationService.pageToFile(_);
-      const fullPath = path.join(vfile.cwd, vfile.path);
+      const fullPath = join(vfile.cwd, vfile.path);
       return this.fetchService.get(fullPath)
         .pipe(
           flatMap(resource => {

@@ -8,7 +8,7 @@ import html from 'remark-html';
 import toc from 'mdast-util-toc';
 import visit from 'unist-util-visit';
 import slug from 'remark-slug';
-import path from 'path';
+import { join } from '../utils';
 
 import { FetchService } from '../services/fetch.service';
 import { RouterService } from '../services/router.service';
@@ -106,7 +106,7 @@ export class TOCComponent implements OnInit {
     }
 
     const vfile = this.locationService.pageToFile(page);
-    const fullpath = path.join(vfile.cwd, vfile.path);
+    const fullpath = join(vfile.cwd, vfile.path);
     this.fetchService.get(fullpath)
       .pipe(
         flatMap(resource => {
