@@ -108,7 +108,7 @@ export class TOCPaginationComponent implements OnInit {
   next: any;
   prev: any;
 
-  getBasePath = getBasePath;
+  getBasePath: (vfile: VFile) => string = getBasePath;
 
   constructor(
     private routerService: RouterService,

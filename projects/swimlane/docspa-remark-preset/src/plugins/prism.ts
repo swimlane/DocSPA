@@ -5,6 +5,8 @@ import Prism from 'prismjs';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-markdown';
 import 'prismjs/components/prism-json';
+import { MDAST } from 'mdast';
+import { UNIST } from 'unist';
 
 const ctx =
   typeof window === 'undefined'
@@ -22,7 +24,7 @@ export function prism({classPrefix = 'language'} = {}) {
     visit(tree, 'code', visitor);
   };
 
-  function visitor(node, index, parent) {
+  function visitor(node: MDAST.Code, index, parent) {
     let { lang, value } = node;
     const hl = Prism.highlight;
     if (hl) {
@@ -47,7 +49,7 @@ export function prism({classPrefix = 'language'} = {}) {
       }).join('\n');
 
       const data = {
-        hProperties: {},
+        hProperties: {} as UNIST.Data,
         ...node.data,
         hName: 'pre'
       };
@@ -77,8 +79,8 @@ export function prism({classPrefix = 'language'} = {}) {
       };
 
       parent.children.splice(index, 1, n);
-      return n;
     }
+    return true;
   }
 }
 

@@ -1,5 +1,6 @@
 import visit from 'unist-util-visit';
 import toString from 'mdast-util-to-string';
+import { MDAST } from 'mdast';
 
 export function readMatter() {
   return function transformer({children}, file) {
@@ -12,10 +13,11 @@ export function readMatter() {
 export const getTitle = () => {
   return (tree, file) => {
     file.data = file.data || {};
-    visit(tree, 'heading', node => {
+    visit(tree, 'heading', (node: MDAST.Heading) => {
       if (node.depth === 1 && !file.data.title) {
         file.data.title = toString(node);
       }
+      return true;
     });
   };
 };

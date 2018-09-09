@@ -1,4 +1,12 @@
 import visit from 'unist-util-visit';
+import { MDAST } from 'mdast';
+import { UNIST } from 'unist';
+
+interface ShortCode extends UNIST.Parent {
+  type: 'shortcode';
+  identifier: string;
+  attributes: { [key: string]: any };
+}
 
 /**
  * Convert [[toc]] smart-code to a TOC
@@ -7,10 +15,11 @@ import visit from 'unist-util-visit';
 export const tocSmartCode = () => {
   return (tree, file) => {
     file.data = file.data || {};
-    visit(tree, 'shortcode', (node, index, parent) => {
+    visit(tree, 'shortcode', (node: ShortCode) => {
       if (node.identifier === 'toc') {
         node.attributes.path = node.attributes.path || file.data.base;
       }
+      return true;
     });
   };
 };
@@ -18,19 +27,20 @@ export const tocSmartCode = () => {
 export const customSmartCodes = (codes) => {
   return (tree, file) => {
     file.data = file.data || {};
-    visit(tree, 'shortcode', (node, index, parent) => {
-      if (node.identifier in codes) {
+    visit(tree, 'shortcode', (node: ShortCode, index, parent) => {
+      if (node && parent && index !== undefined && node.identifier in codes) {
         const child = {
           type: 'element',
           ...codes[node.identifier]
         };
-        child.properties = {...(child.properties || {}), ...node.data.hProperties };
+        child.properties = {...(child.properties || {}), ...(node.data ? node.data.hProperties : {}) };
         const newNode = {
           type: node.identifier,
           data: { hChildren: [child] }
         };
         parent.children.splice(index, 1, newNode);
       }
+      return true;
     });
   };
 };
@@ -38,10 +48,11 @@ export const customSmartCodes = (codes) => {
 export const shortCodeProps = () => {
   return (tree, file) => {
     file.data = file.data || {};
-    visit(tree, 'shortcode', (node, index, parent) => {
+    visit(tree, 'shortcode', (node: ShortCode) => {
       node.data = node.data || {};
       node.data.hProperties = node.data.hProperties || {};
       node.data.hProperties = { ...node.data.hProperties, ...node.attributes };
+      return true;
     });
   };
 };

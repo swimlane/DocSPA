@@ -2,17 +2,18 @@
 // https://github.com/montogeek/remark-custom-blockquotes/pull/2 pending merge
 
 import visit from 'unist-util-visit';
+import { MDAST } from 'mdast';
 
 export function customBlockquotes({ mapping }) {
   return function transformer(tree) {
     visit(tree, 'paragraph', visitor);
 
-    function visitor(node) {
+    function visitor(node: any) {
       const { children } = node;
       const textNode = children[0].value;
 
       if (!textNode) {
-        return;
+        return true;
       }
 
       const substr = textNode.substr(0, 2);
@@ -29,10 +30,12 @@ export function customBlockquotes({ mapping }) {
 
         const r = new RegExp(`^\\${substr}\\s`, 'gm');
 
-        visit(node, 'text', function (cld) {
+        visit(node, 'text', (cld: MDAST.TextNode) => {
           cld.value = cld.value.replace(r, ' ');
+          return true;
         });
       }
+      return true;
     }
   };
 }
