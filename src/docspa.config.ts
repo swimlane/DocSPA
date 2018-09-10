@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from './environments/environment';
 import { docspaRemarkPreset, prism, runtime, mermaid } from '@swimlane/docspa-remark-preset';
 
-import { tabsHook } from '@swimlane/docspa-core';
+import { tabsHook } from './app/plugins';
 
 export const config = {
   name: 'DocSPA',

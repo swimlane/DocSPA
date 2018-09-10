@@ -19,7 +19,8 @@ describe('3rd party', () => {
   it('remark-slug', async () => {
     const contents = '## Hello World!';
     const vfile = await processor.process(contents);
-    expect(String(vfile)).toContain(`<a href="#hello-world" aria-hidden="true"><span class="icon icon-link"></span></a>`);
+    expect(String(vfile)).toContain(`<a href="#hello-world" aria-hidden`);
+    expect(String(vfile)).toContain(`<span class="icon icon-link"></span>`);
   });
 
   it('remark-autolink-headings', async () => {
@@ -101,7 +102,7 @@ describe('internal', () => {
       function() {};
       ~~~`;
     const vfile = await processor.process(contents);
-    expect(String(vfile)).toContain(`<pre class="language-js" id="test" data-lang="js" v-pre="true">`);
+    expect(String(vfile)).toContain(`<pre class="language-js" id="test" data-lang="js" v-pre`);
   });
 
   it('includeSmartCode', async () => {
@@ -143,7 +144,7 @@ describe('internal', () => {
     ~~~`;
     const vfile = await processor.process(contents);
     const out = String(vfile);
-    expect(out).toContain(`<div class="custom-block playground language-html" data-lang="html" v-pre="true">`);
+    expect(out).toContain(`<div class="custom-block playground language-html" data-lang="html" v-pre`);
     expect(out).toContain(`<runtime-content`);
     expect(out).toContain(`template="function() {};"`);
   });
@@ -165,7 +166,7 @@ describe('internal', () => {
     ~~~`;
     const vfile = await processor.process(contents);
     const out = String(vfile);
-    expect(out).toContain(`<div class="custom-block playground language-markdown" data-lang="markdown" v-pre="true">`);
+    expect(out).toContain(`<div class="custom-block playground language-markdown" data-lang="markdown" v-pre`);
     expect(out).toContain(`<p><strong>Hello</strong></p>\n`);
   });
 
