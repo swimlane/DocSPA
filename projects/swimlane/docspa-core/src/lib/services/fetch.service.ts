@@ -44,14 +44,23 @@ export class FetchService {
    * @param dir
    * @param filename
    */
+  findPath(dir: string, filename: string): Promise<string> {
+    const url = filename ? join(dir, filename + this.settings.ext) : dir;
+    return this.get(url).toPromise().then(item => {
+      return item.notFound ? this.find(join(dir, filename), this.settings.homepage) : url;
+    });
+  }
+
+  /**
+   * Finds a file returning a prmomise of the url
+   * Returns null in the file is not found
+   *
+   * @param dir
+   * @param filename
+   */
   find(dir: string, filename: string): Promise<string> {
     const url = filename ? join(dir, filename) : null;
-    return this.get(url).toPromise().then(item => {
-      if (item.notFound) {
-        return null;
-      }
-      return url;
-    });
+    return this.get(url).toPromise().then(item => item.notFound ? null : url);
   }
 
   /**

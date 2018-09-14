@@ -1,5 +1,12 @@
 ---
 title: Test Sub Page
+description: This is only for testing
+keywords:
+  - testing
+  - one
+  - two
+  - three
+author: J. Harshbarger
 ---
 
 # This is the sub readme

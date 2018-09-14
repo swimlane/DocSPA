@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Renderer, HostListener, ViewEncapsulation, SimpleChanges } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { Title, Meta } from '@angular/platform-browser';
 import VFile from 'vfile';
 
 import { RouterService } from './services/router.service';
@@ -40,7 +40,8 @@ export class DocSPACoreComponent implements OnInit {
     private settings: SettingsService,
     private routerService: RouterService,
     private renderer: Renderer,
-    private titleService: Title
+    private titleService: Title,
+    private metaService: Meta
   ) {
   }
 
@@ -105,6 +106,15 @@ export class DocSPACoreComponent implements OnInit {
     }
     this.titleService.setTitle(title);
 
+    ['description', 'keywords', 'author'].forEach(name => {
+      const content = page.data && page.data.matter && page.data.matter[name] || this.settings.meta[name];
+      if (content) {
+        this.metaService.updateTag({ name: name, content });
+      } else {
+        this.metaService.removeTag(name);
+      }
+    });
+
     this.renderer.setElementClass(document.body, 'ready', true);
     this.contentHeadings = [].slice.call(document.querySelectorAll('h1[id] > a, h2[id] > a, h3[id] > a'));
 
@@ -112,9 +122,9 @@ export class DocSPACoreComponent implements OnInit {
   }
 
   private pathChanges(changes: SimpleChanges) {
-    if ('contentPage' in changes) {
-      this.contentPage = changes.contentPage.currentValue;
+    if ('contentPage' in changes && this.contentPage !== changes.contentPage.currentValue) {
       this.renderer.setElementClass(document.body, 'ready', false);
+      this.contentPage = changes.contentPage.currentValue;
       this.activeLink = this.splitHash(document.location.hash)[0];
     }
 

@@ -34,8 +34,14 @@ describe('DocSPA', () => {
   describe('The Home page', () => {
     before(() => cy.visit('/'));
 
-    it('has a title', () => {
-      cy.title().should('eq', 'DocSPA')
+    it('has a title and metadata', () => {
+      cy.title().should('eq', 'DocSPA');
+      cy.get('head meta[name="description"]')
+        .should('have.attr', 'content', 'An Angular-powered documentation SPA.');
+      cy.get('head meta[name="keywords"]')
+        .should('have.attr', 'content', 'documentation,angular,spa');
+      cy.get('head meta[name="author"]')
+        .should('have.attr', 'content', 'Swimlane');
     });
     
     it('has a coverpage', () => {
@@ -168,7 +174,13 @@ describe('DocSPA', () => {
     before(() => cy.visit('/#/sub/'));
 
     it('has a title', () => {
-      cy.title().should('eq', 'DocSPA - Test Sub Page')
+      cy.title().should('eq', 'DocSPA - Test Sub Page');
+      cy.get('head meta[name="description"]')
+        .should('have.attr', 'content', 'This is only for testing');
+      cy.get('head meta[name="keywords"]')
+        .should('have.attr', 'content', 'testing,one,two,three');
+      cy.get('head meta[name="author"]')
+        .should('have.attr', 'content', 'J. Harshbarger');
     });
   
     it('has a cover', () => {

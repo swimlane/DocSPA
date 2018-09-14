@@ -1,6 +1,7 @@
 import { Injectable, EventEmitter, SimpleChange, SimpleChanges } from '@angular/core';
 import { Location } from '@angular/common';
 import { URLSearchParams } from '@angular/http';
+import { NGXLogger } from 'ngx-logger';
 
 import { join } from '../utils';
 
@@ -32,32 +33,47 @@ export class RouterService {
   changed = new EventEmitter<SimpleChanges>();
 
   constructor(
-    location: Location,
+    private location: Location,
     private settings: SettingsService,
     private fetchService: FetchService,
-    private locationService: LocationService
+    private locationService: LocationService,
+    private logger: NGXLogger,
   ) {
     location.subscribe(v => {
       if (v.type === 'hashchange') {
-        this.hashchange();
+        this.hashchange(v.url);
       }
     });
   }
 
   onInit() {
-    this.hashchange();
+    this.hashchange(this.location.path(true) || '/');
   }
 
-  private hashchange() {
+  private isDirname(href: string, page: string) {
+    return href[href.indexOf(page) + page.length] === '/';
+  }
+
+  private async hashchange(url: string = '/') {
     const changes: SimpleChanges = {};
-    const url = window.location.hash || '#/#';
+
+    this.logger.debug(`location changed: ${url}`);
 
     if (this.url !== url) {
       changes.url = new SimpleChange(this.url, this.url = url, false);
     }
 
-    const [, page, _anchor = ''] = url.split(/[#\?]/);
-    let anchor = _anchor || '';
+    let [page = '/', anchor = ''] = url.split(/[#\?]/);
+    anchor = anchor || '';
+    page = page || '/';
+
+    // If the current URL end in a slash, the page is a directory, not a file.
+    if (this.isDirname(window.location.href, page) && page.slice(-1) !== '/') {
+      page += '/';
+    }
+
+    this.logger.debug(`page: ${page}`);
+    this.logger.debug(`anchor: ${anchor}`);
 
     const vfile = this.locationService.pageToFile(page);
 

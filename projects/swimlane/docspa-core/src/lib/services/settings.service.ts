@@ -1,4 +1,5 @@
-import { Injectable, Inject, Optional } from '@angular/core';
+import { Injectable, Inject, Optional, forwardRef } from '@angular/core';
+import { Title, Meta } from '@angular/platform-browser';
 
 import deepmerge from 'deepmerge'; // use xtend?
 import { join } from '../utils';
@@ -12,6 +13,8 @@ export interface Theme {
 })
 export class SettingsService {
   name = '';
+  meta = {};
+
   homepage = 'README.md';
   sideLoad = [];
 
@@ -31,7 +34,11 @@ export class SettingsService {
     return join(this.nameLink, this.basePath);
   }
 
-  constructor(@Optional() @Inject('config') config: any) {
+  constructor(
+    metaService: Meta,
+    titleService: Title,
+    @Optional() @Inject('config') config: any
+  ) {
     if (window['$docsify']) {
       this.merge(window['$docsify']);
     }
@@ -56,6 +63,14 @@ export class SettingsService {
         document.body.style.setProperty(key, this.currentTheme[key]);
       }
     }
+
+    this.name = this.name || titleService.getTitle();
+
+    // Get intial meta tags for later
+    metaService.getTags('name').forEach(elm => {
+      const name = elm.name;
+      this.meta[name] = this.meta[name] || elm.content;
+    });
   }
 
   private merge(opts: Partial<SettingsService>) {

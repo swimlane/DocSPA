@@ -7,7 +7,6 @@ import { docspaRemarkPreset, prism, runtime, mermaid } from '@swimlane/docspa-re
 import { tabsHook } from './app/plugins';
 
 export const config = {
-  name: 'DocSPA',
   basePath: 'docs/',
   homepage: 'README.md',
   notFoundPage: '_404.md',
