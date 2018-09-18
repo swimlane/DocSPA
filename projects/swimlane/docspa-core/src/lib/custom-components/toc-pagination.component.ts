@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewEncapsulation, SimpleChanges } from '@ang
 
 import { RouterService } from '../services/router.service';
 import { MarkdownService } from '../services/markdown.service';
+import { LocationService } from '../services/location.service';
 import VFile from 'vfile';
 import { getBasePath } from '../utils';
 
@@ -10,7 +11,7 @@ import { getBasePath } from '../utils';
   template: `
     <div class="docsify-pagination-container">
       <div class="pagination-item pagination-item--previous" *ngIf="prev">
-        <a class="prev" [href]="'#' + getBasePath(prev) + '#main'" >
+        <a class="prev" [href]="prepareLink(prev) + '#main'" >
           <div class="pagination-item-label">
             <span>« PREVIOUS</span>
           </div>
@@ -18,7 +19,7 @@ import { getBasePath } from '../utils';
         </a>
       </div>
       <div class="pagination-item pagination-item--next" *ngIf="next">
-        <a class="next" [href]="'#' + getBasePath(next) + '#main'" >
+        <a class="next" [href]="prepareLink(next) + '#main'" >
           <div class="pagination-item-label">
             <span>NEXT »</span>
           </div>
@@ -113,6 +114,7 @@ export class TOCPaginationComponent implements OnInit {
   constructor(
     private routerService: RouterService,
     private markdownService: MarkdownService,
+    private locationService: LocationService
   ) {
   }
 
@@ -126,6 +128,10 @@ export class TOCPaginationComponent implements OnInit {
       });
       this.pathChanges(this.routerService.contentPage);
     });
+  }
+
+  prepareLink(vfile: VFile) {
+    return this.locationService.prepareLink(vfile.history[0]);
   }
 
   private pathChanges(path: string) {
