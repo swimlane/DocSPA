@@ -5,6 +5,9 @@ import Prism from 'prismjs';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-markdown';
 import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-diff';
+import 'prismjs/components/prism-c';
+
 import { MDAST } from 'mdast';
 import { UNIST } from 'unist';
 
@@ -28,8 +31,22 @@ export function prism({classPrefix = 'language'} = {}) {
     let { lang, value } = node;
     const hl = Prism.highlight;
     if (hl) {
-      const out = hl(value, Prism.languages[lang] || Prism.languages.markup, lang);
+      const data = {
+        hProperties: {} as UNIST.Data,
+        ...node.data,
+        hName: 'pre'
+      };
+
+      let prismLang = Prism.languages[lang] || Prism.languages['markup'];
+
+      // If attr of diff is added, combine languages
+      if ('diff' in data.hProperties) {
+        lang = 'diff' + (lang || 'markup');
+        prismLang = Prism.languages[lang] = Prism.languages[lang] || Prism.languages.extend('diff', prismLang);
+      }
+
       let escaped = false;
+      const out = hl(value, prismLang, lang);
       if (out != null && out !== value) {
         escaped = true;
         value = out;
@@ -37,22 +54,13 @@ export function prism({classPrefix = 'language'} = {}) {
 
       value = (escaped ? value : escape(value, true));
 
-      const mark = (node.data && node.data.hProperties && node.data.hProperties.mark) ?
-        node.data.hProperties.mark :
-        '';
-      const lines = rangeParser.parse(mark);
+      const lines = rangeParser.parse(data.hProperties.mark || '');
 
       value = value.split('\n').map((line, i) => {
         // todo: line start
         const c = lines.includes(i + 1) ? 'class="line-highlight"' : '';
         return `<span data-line="${i + 1}" ${c}>${line}</span>`;
       }).join('\n');
-
-      const data = {
-        hProperties: {} as UNIST.Data,
-        ...node.data,
-        hName: 'pre'
-      };
 
       if (!lang) {
         value = `<code>${value}</code>`;

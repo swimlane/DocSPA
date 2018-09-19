@@ -1,5 +1,43 @@
 # Experimental
 
+## Diff
+
+Diff:
+
+```diff
+- import { Hello } from './hello';
++ import { GoodBye } from './hello';
+
+(function(win) {
+-  win['hello'] = new Hello();
++  win['goodbye'] = new GoodBye();
+})(this);
+```
+
+JS:
+
+```js
+- import { Hello } from './hello';
++ import { GoodBye } from './hello';
+
+(function(win) {
+-  win['hello'] = new Hello();
++  win['goodbye'] = new GoodBye();
+})(this);
+```
+
+JS + Diff
+
+```js { diff }
+- import { Hello } from './hello';
++ import { GoodBye } from './hello';
+
+(function(win) {
+-  win['hello'] = new Hello();
++  win['goodbye'] = new GoodBye();
+})(this);
+```
+
 ## Tabs
 
 [[tabs | Tab Set 1]]
