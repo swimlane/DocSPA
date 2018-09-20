@@ -202,8 +202,23 @@ describe('DocSPA', () => {
       cy.get('@content').find('h1').contains('This is the sub readme');
       cy.get('@content').find('h1 a').should('have.attr', 'href', '#/sub/#sub');
       cy.get('@content').find('footer').contains('Made with DocSPA');
-      cy.get('@content').find('p > a').each(($el, index, $list) => {
-        (index > 0) && cy.wrap($el).should('have.attr', 'href').and('matches', /^[\/]?#\/sub\/.*/);
+    });
+
+    it('images', () => {
+      cy.get('@content').find('img[data-cy]').should($lis => {
+        expect($lis).to.have.length(3);
+        expect($lis.eq(0)).to.have.attr('src', 'docs/sub/logo.png');
+        expect($lis.eq(1)).to.have.attr('src', 'docs/logo.png');
+        expect($lis.eq(2)).to.have.attr('src', 'docs/logo.png');
+      });
+    });
+
+    it('links', () => {
+      cy.get('@content').find('a[data-cy]').should($lis => {
+        expect($lis).to.have.length(3);
+        expect($lis.eq(0)).to.have.attr('href', '#/sub/');
+        expect($lis.eq(1)).to.have.attr('href', '#/');
+        expect($lis.eq(2)).to.have.attr('href', '#/');
       });
     });
   });

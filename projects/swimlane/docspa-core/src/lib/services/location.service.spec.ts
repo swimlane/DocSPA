@@ -18,6 +18,10 @@ describe('LocationService', () => {
 
   it('isAbsolutePath', () => {
     expect(LocationService.isAbsolutePath('./')).toBeFalsy();
+    expect(LocationService.isAbsolutePath('./test/')).toBeFalsy();
+    expect(LocationService.isAbsolutePath('test/')).toBeFalsy();
+    expect(LocationService.isAbsolutePath('/')).toBeFalsy();
+    expect(LocationService.isAbsolutePath('/test/')).toBeFalsy();
     expect(LocationService.isAbsolutePath('http://www.swimlane.com')).toBeTruthy();
   });
 
@@ -51,19 +55,24 @@ describe('LocationService', () => {
     expect(service.prepareLink('thepage', '/')).toBe('#/thepage');
     expect(service.prepareLink('thepage', '/features/')).toBe('#/features/thepage');
     expect(service.prepareLink('../thepage', '/features/sub/')).toBe('#/features/thepage');
+    expect(service.prepareLink('/thepage', '/features/sub/')).toBe('#/thepage');
 
+    expect(service.prepareLink('http://www.swimlane.com', '/')).toBe('http://www.swimlane.com');
+  }));
+
+  it('#prepareLink with anchors', inject([LocationService], (service: LocationService) => {
     expect(service.prepareLink('thepage#anchor', '/')).toBe('#/thepage#anchor');
     expect(service.prepareLink('thepage#anchor', '/features/')).toBe('#/features/thepage#anchor');
     expect(service.prepareLink('../thepage#anchor', '/features/sub/')).toBe('#/features/thepage#anchor');
 
     expect(service.prepareLink('#anchor', '/')).toBe('#/#anchor');
-    expect(service.prepareLink('http://www.swimlane.com', '/')).toBe('http://www.swimlane.com');
   }));
 
-  it('#prepareLink', inject([LocationService], (service: LocationService) => {
-    expect(service.prepareSrc('image.png', '/')).toBe('/image.png');
-    expect(service.prepareSrc('image.png', '/features/')).toBe('/features/image.png');
-    expect(service.prepareSrc('../image.png', '/features/sub/')).toBe('/features/image.png');
+  it('#prepareSrc', inject([LocationService], (service: LocationService) => {
+    expect(service.prepareSrc('image.png', '/')).toBe('docs/image.png');
+    expect(service.prepareSrc('image.png', '/features/')).toBe('docs/features/image.png');
+    expect(service.prepareSrc('../image.png', '/features/sub/')).toBe('docs/features/image.png');
+    expect(service.prepareSrc('/image.png', '/features/sub/')).toBe('docs/image.png');
   }));
 
   it('#stripBaseHref', inject([LocationService], (service: LocationService) => {

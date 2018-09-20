@@ -18,7 +18,7 @@ export const images = (locationService: LocationService) => {
   return (tree, vfile: VFile) => {
     visit(tree, 'image', (node: MDAST.Image) => {
       // src urls are relative to fullpath
-      node.url = locationService.prepareSrc(node.url, join(vfile.cwd, vfile.path));
+      node.url = locationService.prepareSrc(node.url, vfile.path);
       return true;
     });
   };

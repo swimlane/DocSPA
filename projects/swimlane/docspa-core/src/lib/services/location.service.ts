@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import VFile from 'vfile';
 
 import { join } from '../utils';
-import urlResolve from 'url-resolve';
+import { resolve } from 'url';
 
 import { SettingsService } from './settings.service';
 
@@ -72,17 +72,16 @@ export class LocationService {
   prepareLink(href: string, base: string = '') {
     return LocationService.isAbsolutePath(href) ?
       href :
-      this.location.prepareExternalUrl(urlResolve(base, href));
+      this.location.prepareExternalUrl(resolve(base, href));
   }
 
   /**
    * Return a resolved url relative to the base path
    */
   prepareSrc(src: string, base: string = '') {
-    // TODO: make static
     return LocationService.isAbsolutePath(src) ?
       src :
-      urlResolve(base, src);
+      join(this.basePath, resolve(base, src));
   }
 
   /**
