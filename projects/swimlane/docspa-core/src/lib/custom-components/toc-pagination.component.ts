@@ -3,12 +3,29 @@ import { Component, Input, OnInit, ViewEncapsulation, SimpleChanges } from '@ang
 import { RouterService } from '../services/router.service';
 import { MarkdownService } from '../services/markdown.service';
 import { LocationService } from '../services/location.service';
+import { FetchService } from '../services/fetch.service';
+
 import VFile from 'vfile';
 import { getBasePath } from '../utils';
+
+import unified from 'unified';
+import markdown from 'remark-parse';
+import toc from 'mdast-util-toc';
+import visit from 'unist-util-visit';
+import stringify from 'remark-stringify';
+import toString from 'mdast-util-to-string';
+import slug from 'remark-slug';
+import { join } from '../utils';
+import { MDAST } from 'mdast';
+import frontmatter from 'remark-frontmatter';
+
+import { of } from 'rxjs';
+import { flatMap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'md-toc-page', // tslint:disable-line
   template: `
+    {{paths | json}}
     <div class="docsify-pagination-container">
       <div class="pagination-item pagination-item--previous" *ngIf="prev">
         <a class="prev" [href]="prepareLink(prev) + '#main'" >
@@ -101,7 +118,11 @@ export class TOCPaginationComponent implements OnInit {
     return this._paths;
   }
 
-  private processor: any;
+  @Input()
+  summary: string;
+
+  private processLinks: any;
+
   private _paths: string[];
 
   files: VFile[];
@@ -112,14 +133,40 @@ export class TOCPaginationComponent implements OnInit {
   getBasePath: (vfile: VFile) => string = getBasePath;
 
   constructor(
+    private fetchService: FetchService,
     private routerService: RouterService,
     private markdownService: MarkdownService,
     private locationService: LocationService
   ) {
+    const getLinks = () => {
+      return (tree, file) => {
+        file.data = file.data || {};
+        file.data.tocSearch = [];
+        visit(tree, 'link', (node: MDAST.Link) => {
+          const url = node.url;
+          const content = toString(node);
+          const name = (file.data.matter ? file.data.matter.title : false) || file.data.title || file.path;
+          file.data.tocSearch.push({
+            name,
+            url,
+            content,
+            depth: (node as any).depth
+          });
+          return true;
+        });
+      };
+    };
+
+    this.processLinks = unified()
+      .use(markdown)
+      .use(frontmatter)
+      .use(slug)
+      .use(getLinks)
+      .use(stringify);
   }
 
   ngOnInit() {
-    this.generatePageIndex(this.paths).then(files => {
+    const processFiles = files => {
       this.files = files;
       this.routerService.changed.subscribe((changes: SimpleChanges) => {
         if ('contentPage' in changes) {
@@ -127,11 +174,37 @@ export class TOCPaginationComponent implements OnInit {
         }
       });
       this.pathChanges(this.routerService.contentPage);
-    });
+    };
+
+    if (!this.paths && this.summary) {
+      this.loadSummary(this.summary).then(paths => {
+        this.paths = paths;
+        this.generatePageIndex(this.paths).then(processFiles);
+      });
+    } else {
+      this.generatePageIndex(this.paths).then(processFiles);
+    }
   }
 
   prepareLink(vfile: VFile) {
     return this.locationService.prepareLink(vfile.history[0]);
+  }
+
+  private loadSummary(summary: string) {
+    const vfile = this.locationService.pageToFile(summary);
+    const fullPath = join(vfile.cwd, vfile.path);
+    return this.fetchService.get(fullPath).pipe(
+      flatMap(resource => {
+        vfile.contents = resource.contents;
+        vfile.data = vfile.data || {};
+        return resource.notFound ? of(null) : this.processLinks.process(vfile);
+      }),
+      map((_: any) => {
+        return _.data.tocSearch.map(__ => {
+          return __.url[0] === '/' ? __.url : '/' + __.url;
+        }).join(',');
+      })
+    ).toPromise();
   }
 
   private pathChanges(path: string) {

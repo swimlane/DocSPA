@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { of } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { flatMap, map } from 'rxjs/operators';
 import unified from 'unified';
 import markdown from 'remark-parse';
 import toc from 'mdast-util-toc';
@@ -67,12 +67,17 @@ export class TOCSearchComponent implements OnInit {
   }
 
   @Input()
+  summary: string;
+
+  @Input()
   minDepth = 1;
 
   @Input()
   maxDepth = 6;
 
   private processor: any;
+  private processLinks: any;
+
   private _paths: string[];
 
   searchIndex: any[];
@@ -134,10 +139,24 @@ export class TOCSearchComponent implements OnInit {
       .use(images, locationService)
       .use(getLinks)
       .use(stringify);
+
+    this.processLinks = unified()
+      .use(markdown)
+      .use(frontmatter)
+      .use(slug)
+      .use(getLinks)
+      .use(stringify);
   }
 
   ngOnInit() {
-    this.generateSearchIndex(this.paths);
+    if (!this.paths && this.summary) {
+      this.loadSummary(this.summary).then(paths => {
+        this.paths = paths;
+        this.generateSearchIndex(this.paths);
+      });
+    } else {
+      this.generateSearchIndex(this.paths);
+    }
   }
 
   search(query: string) {
@@ -171,6 +190,21 @@ export class TOCSearchComponent implements OnInit {
     this.searchResults = matchingResults;
   }
 
+  private loadSummary(summary: string) {
+    const vfile = this.locationService.pageToFile(summary);
+    const fullPath = join(vfile.cwd, vfile.path);
+    return this.fetchService.get(fullPath).pipe(
+      flatMap(resource => {
+        vfile.contents = resource.contents;
+        vfile.data = vfile.data || {};
+        return resource.notFound ? of(null) : this.processLinks.process(vfile);
+      }),
+      map((_: any) => {
+        return _.data.tocSearch.map(__ => __.url).join(',');
+      })
+    ).toPromise();
+  }
+
   private generateSearchIndex(paths) {
     if (!paths) {
       this.searchIndex = null;
@@ -189,7 +223,7 @@ export class TOCSearchComponent implements OnInit {
         ).toPromise();
     });
 
-    Promise.all(promises).then(files => {
+    return Promise.all(promises).then(files => {
       this.searchIndex = (files.reduce((acc: any[], file: any): any[] => {
         return file ? acc.concat(file.data.tocSearch) : acc;
       }, []) as any[]);

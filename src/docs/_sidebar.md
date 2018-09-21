@@ -1,6 +1,6 @@
 <h1><a class="app-name-link" href="">DocSPA</a></h1>
 
-<md-toc-search paths="/,quickstart,content,customization,features"></md-toc-search>
+<md-toc-search summary="SUMMARY"></md-toc-search>
 
 ---
 

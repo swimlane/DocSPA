@@ -1,5 +1,9 @@
 # Experimental
 
+## Search
+
+<md-toc-search summary="SUMMARY"></md-toc-search>
+
 ## Diff
 
 Diff:
