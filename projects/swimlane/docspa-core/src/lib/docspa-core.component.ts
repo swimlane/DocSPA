@@ -158,7 +158,6 @@ export class DocSPACoreComponent implements OnInit {
     if (idx > 0) {
       arr[0] = hash.slice(0, idx);
       arr[1] = hash.slice(idx);
-      return arr;
     }
     return arr;
   }

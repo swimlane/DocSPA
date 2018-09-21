@@ -138,7 +138,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   }
 
   private splitHash(hash: string) {
-    const arr = ['', ''];
+    const arr = [hash, ''];
     const idx = hash.indexOf('#', 1);
     if (idx > 0) {
       arr[0] = hash.slice(0, idx);
