@@ -153,11 +153,12 @@ export class DocSPACoreComponent implements OnInit {
   }
 
   private splitHash(hash: string) {
-    const arr = ['', ''];
+    const arr = [hash, ''];
     const idx = hash.indexOf('#', 1);
     if (idx > 0) {
       arr[0] = hash.slice(0, idx);
       arr[1] = hash.slice(idx);
+      return arr;
     }
     return arr;
   }
