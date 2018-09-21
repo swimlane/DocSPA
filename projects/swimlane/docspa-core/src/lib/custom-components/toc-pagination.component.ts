@@ -25,7 +25,6 @@ import { flatMap, map } from 'rxjs/operators';
 @Component({
   selector: 'md-toc-page', // tslint:disable-line
   template: `
-    {{paths | json}}
     <div class="docsify-pagination-container">
       <div class="pagination-item pagination-item--previous" *ngIf="prev">
         <a class="prev" [href]="prepareLink(prev) + '#main'" >
