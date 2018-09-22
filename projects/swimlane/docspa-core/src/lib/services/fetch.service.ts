@@ -51,7 +51,7 @@ export class FetchService {
     const url = filename ? resolve(dir, filename) : null;
     return this.get(url)
       .toPromise()
-      .then(item => (item.notFound ? null : normalize(url)));
+      .then(item => ((item.notFound || !url) ? null : normalize(url)));
   }
 
   /**
