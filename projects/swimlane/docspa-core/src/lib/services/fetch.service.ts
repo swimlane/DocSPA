@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, share, catchError } from 'rxjs/operators';
 import { join } from '../utils';
+import { normalize } from 'path';
 import { basename } from 'path';
 import QuickLRU from 'quick-lru';
 
@@ -60,7 +61,7 @@ export class FetchService {
    */
   find(dir: string, filename: string): Promise<string> {
     const url = filename ? join(dir, filename) : null;
-    return this.get(url).toPromise().then(item => item.notFound ? null : url);
+    return this.get(url).toPromise().then(item => item.notFound ? null : normalize(url));
   }
 
   /**
@@ -82,7 +83,7 @@ export class FetchService {
           return (dir === '.') ? this.find(dir, filename) : this.findup(dir, filename);
         }
       }
-      return url;
+      return normalize(url);
     });
   }
 

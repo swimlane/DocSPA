@@ -73,6 +73,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   }
 
   private load() {
+    console.log(this.path);
     this.markdownService.getMd(this.path, this.plugins).subscribe(vfile => {
       setTimeout(() => {
         this.markActiveLinks();
