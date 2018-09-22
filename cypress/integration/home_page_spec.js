@@ -169,6 +169,30 @@ describe('DocSPA', () => {
       cy.get('@content').find('h1', { timeout: 6000 }).contains('ERROR 404');
     });
   });
+
+  describe('Page not found in subdir', () => {
+    before(() => cy.visit('/#/sub/here-too'));
+
+    it('has a title', () => {
+      cy.title().should('eq', 'DocSPA - ERROR 404')
+    });
+  
+    it('has no cover', noCover);
+
+    it('has a sidebar', () => {
+      cy.get('@sidebar').find('.sidebar-nav li a').should('have.length', 6);
+      cy.get('@sidebar').find('.sidebar-nav li a').should('have.attr', 'href').and('matches', /^[\/]?#\/sub\/.*/); 
+    });
+  
+    it('has a navbar', () => {
+      cy.get('@navbar').find('a').should('have.length', 6);
+      cy.get('@navbar').find('a').should('have.attr', 'href').and('matches', /^[\/]?#\/sub\/.*/);
+    });
+  
+    it('has content', () => {
+      cy.get('@content').find('h1', { timeout: 6000 }).contains('ERROR 404');
+    });
+  });
   
   describe('The Sub page', () => {
     before(() => cy.visit('/#/sub/'));

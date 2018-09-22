@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 
 import { LocationService } from '../services/location.service';
 import { MarkdownService } from '../services/markdown.service';
+import { splitHash } from '../utils';
 
 import VFile from 'vfile';
 
@@ -73,8 +74,8 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   }
 
   private load() {
-    console.log(this.path);
-    this.markdownService.getMd(this.path, this.plugins).subscribe(vfile => {
+    this.markdownService.getMd(this.path, this.plugins)
+    .subscribe(vfile => {
       setTimeout(() => {
         this.markActiveLinks();
         this.doScroll();
@@ -98,7 +99,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   }
 
   private isHashActive(hash: string) {
-    const parts = this.splitHash(hash);
+    const parts = splitHash(hash);
     if (this.activeLink === parts[0]) {
       return (this.activeAnchors === undefined || this.activeAnchors === null) ?
         true :
@@ -136,15 +137,5 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
         }
       });
     }
-  }
-
-  private splitHash(hash: string) {
-    const arr = [hash, ''];
-    const idx = hash.indexOf('#', 1);
-    if (idx > 0) {
-      arr[0] = hash.slice(0, idx);
-      arr[1] = hash.slice(idx);
-    }
-    return arr;
   }
 }

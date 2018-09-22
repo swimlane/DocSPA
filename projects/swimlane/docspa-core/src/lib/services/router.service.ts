@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { URLSearchParams } from '@angular/http';
 import { NGXLogger } from 'ngx-logger';
 
-import { join } from '../utils';
+import { join, getFullPath } from '../utils';
 
 import { SettingsService } from './settings.service';
 import { FetchService } from './fetch.service';
@@ -88,14 +88,12 @@ export class RouterService {
     if (this.contentPage !== page) {
       changes.contentPage = new SimpleChange(this.contentPage, this.contentPage = page, false);
 
-      const fullPath = join(vfile.cwd, vfile.dirname);
-
       const cover = vfile.basename === this.settings.homepage ?
-        this.fetchService.find(fullPath, this.settings.coverpage) :
+        this.fetchService.find(getFullPath(vfile), this.settings.coverpage) :
         null;
 
       const promises = this.settings.sideLoad.map(s => {
-        return this.fetchService.findup(fullPath, s);
+        return this.fetchService.findup(vfile.cwd, vfile.path, s);
       });
 
       Promise.all([cover, ...promises]).then(([coverPage, ...sideLoad]) => {

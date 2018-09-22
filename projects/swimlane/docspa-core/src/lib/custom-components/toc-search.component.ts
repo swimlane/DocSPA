@@ -128,7 +128,7 @@ export class TOCSearchComponent implements OnInit {
       };
     };
 
-    this.processor = unified()
+    this.processor = unified() // md -> toc -> md + links
       .use(markdown)
       .use(frontmatter)
       .use(slug)
@@ -140,7 +140,7 @@ export class TOCSearchComponent implements OnInit {
       .use(getLinks)
       .use(stringify);
 
-    this.processLinks = unified()
+    this.processLinks = unified() // md -> md + links
       .use(markdown)
       .use(frontmatter)
       .use(slug)

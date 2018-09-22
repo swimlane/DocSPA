@@ -13,8 +13,8 @@ export const config = {
   sideLoad: [
     '_sidebar.md',
     '_navbar.md',
-    '_right_sidebar.md',
-    '_footer.md'
+    '/_right_sidebar.md',
+    '/_footer.md'
   ],
   coverpage: '_coverpage.md',
   plugins: [
@@ -37,8 +37,11 @@ export const config = {
     '--theme-color': '#0089FF',
     '--theme-color-secondary-light': '#0074d92e',
     '--sidebar-width': '16rem',
+    '--right-sidebar-width': '16rem',
+    '--right-sidebar-border-color': 'none',
     '--base-background-color': '#F5F7F9',
     '--sidebar-background': '#F5F7F9',
+    '--right-sidebar-background': '#FFF',
     '--cover-background-color': 'linear-gradient(to left bottom, hsl(211, 100%, 85%) 0%,hsl(169, 100%, 85%) 100%)'
   }
 };

@@ -4,6 +4,7 @@ import VFile from 'vfile';
 
 import { RouterService } from './services/router.service';
 import { SettingsService } from './services/settings.service';
+import { splitHash } from './utils';
 
 interface Changes {
   contentPage: string;
@@ -48,16 +49,17 @@ export class DocSPACoreComponent implements OnInit {
   @HostListener('window:scroll', [])
   onWindowScroll() {
     let add = true;
+    let coverHeight = 0;
     if (this.coverMain) {
       const cover = this.coverMain.nativeElement;
-      const coverHeight = cover.getBoundingClientRect().height;
+      coverHeight = cover.getBoundingClientRect().height;
       add = window.pageYOffset >= coverHeight || cover.classList.contains('hidden');
     }
     this.renderer.setElementClass(document.body, 'sticky', add);
 
     if (this.contentHeadings) {
-      const fromTop = window.scrollY - 60;
-      const fromBottom = window.scrollY + window.innerHeight + 60;
+      const fromTop = window.scrollY - 60 - coverHeight;
+      const fromBottom = window.scrollY + window.innerHeight + 60 - coverHeight;
 
       let lastLink = null;
       const current = this.contentHeadings
@@ -69,12 +71,12 @@ export class DocSPACoreComponent implements OnInit {
           }
           return link.offsetTop >= fromTop && offsetBottom <= fromBottom;
         })
-        .map(link => this.splitHash(link.hash)[1]);
+        .map(link => splitHash(link.hash)[1]);
 
       if (current && current.length > 0) {
         this.activeAnchors = current.join(';');
       } else if (lastLink) {
-        this.activeAnchors = this.splitHash(lastLink.hash)[1];
+        this.activeAnchors = splitHash(lastLink.hash)[1];
       } else {
         this.activeAnchors = '';
       }
@@ -123,9 +125,8 @@ export class DocSPACoreComponent implements OnInit {
 
   private pathChanges(changes: SimpleChanges) {
     if ('contentPage' in changes && this.contentPage !== changes.contentPage.currentValue) {
-      this.renderer.setElementClass(document.body, 'ready', false);
       this.contentPage = changes.contentPage.currentValue;
-      this.activeLink = this.splitHash(document.location.hash)[0];
+      this.activeLink = splitHash(document.location.hash)[0];
     }
 
     if ('coverPage' in changes) {
@@ -150,15 +151,5 @@ export class DocSPACoreComponent implements OnInit {
         this.onWindowScroll();
       }
     }, 30);
-  }
-
-  private splitHash(hash: string) {
-    const arr = [hash, ''];
-    const idx = hash.indexOf('#', 1);
-    if (idx > 0) {
-      arr[0] = hash.slice(0, idx);
-      arr[1] = hash.slice(idx);
-    }
-    return arr;
   }
 }

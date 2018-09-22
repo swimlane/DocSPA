@@ -23,6 +23,7 @@ export class SettingsService {
   nameLink = '';
   ext = '.md';
   notFoundPage = '_404.md';
+  maxPageCacheSize = 100;
 
   plugins = [];
   remarkPlugins = [];

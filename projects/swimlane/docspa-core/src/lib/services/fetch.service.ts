@@ -4,8 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, share, catchError } from 'rxjs/operators';
 import { join } from '../utils';
-import { normalize } from 'path';
-import { basename } from 'path';
+import { normalize, basename } from 'path';
+import { resolve } from 'url';
 import QuickLRU from 'quick-lru';
 
 import { SettingsService } from './settings.service';
@@ -21,7 +21,7 @@ export interface CachePage {
   providedIn: 'root'
 })
 export class FetchService {
-  private cache = new QuickLRU<string, CachePage>({maxSize: 100});
+  private cache: QuickLRU<string, CachePage>;
   private inFlight = new Map<string, Observable<CachePage>>();
 
   get root() {
@@ -36,20 +36,8 @@ export class FetchService {
     private http: HttpClient,
     private settings: SettingsService
   ) {
-  }
-
-  /**
-   * Finds a file returning a prmomise of the url
-   * Returns null in the file is not found
-   *
-   * @param dir
-   * @param filename
-   */
-  findPath(dir: string, filename: string): Promise<string> {
-    const url = filename ? join(dir, filename + this.settings.ext) : dir;
-    return this.get(url).toPromise().then(item => {
-      return item.notFound ? this.find(join(dir, filename), this.settings.homepage) : url;
-    });
+    const maxSize = settings.maxPageCacheSize || 100;
+    this.cache = new QuickLRU<string, CachePage>({ maxSize });
   }
 
   /**
@@ -60,8 +48,10 @@ export class FetchService {
    * @param filename
    */
   find(dir: string, filename: string): Promise<string> {
-    const url = filename ? join(dir, filename) : null;
-    return this.get(url).toPromise().then(item => item.notFound ? null : normalize(url));
+    const url = filename ? resolve(dir, filename) : null;
+    return this.get(url)
+      .toPromise()
+      .then(item => (item.notFound ? null : normalize(url)));
   }
 
   /**
@@ -69,29 +59,33 @@ export class FetchService {
    * If the file is not found in the given dir, will look up a directory
    * Returns null in the file is not found up to the root
    *
-   * @param dir
-   * @param filename
+   * @param root {string} root directory to search up to
+   * @param from {string} Base URL (excluding root) being resolved against.
+   * @param to {string} the filename to resolve.
    */
-  findup(dir: string, filename: string) {
-    const url = filename ? join(dir, filename) : null;
-    return this.get(url).toPromise().then(item => {
-      if (item.notFound) {
-        if (dir === basename(this.settings.basePath)) {
-          return null;
-        } else {
-          dir = join(dir, '..');
-          return (dir === '.') ? this.find(dir, filename) : this.findup(dir, filename);
+  findup(root: string, from: string, to: string) {
+    const url = to ? join(root, resolve(from, to)) : null;
+    return this.get(url)
+      .toPromise()
+      .then(item => {
+        if (item.notFound) {
+          if (from === '/') {
+            return null;
+          }
+          from = normalize(join(from, '..'));
+          return from === '/'
+            ? this.find(join(root, from), to)
+            : this.findup(root, from, to);
         }
-      }
-      return normalize(url);
-    });
+        return normalize(url);
+      });
   }
 
   /**
    *
    * @param url {string} Full path relative to root
    */
-  get(url: string, options = { cache: true }): Observable<CachePage>  {
+  get(url: string, options = { cache: true }): Observable<CachePage> {
     if (!url) {
       return of({
         resolvedPath: url,
@@ -110,7 +104,8 @@ export class FetchService {
     }
 
     let notFound = url === this.path404;
-    const obs: Observable<CachePage> = this.http.get(url, { responseType: 'text' })
+    const obs: Observable<CachePage> = this.http
+      .get(url, { responseType: 'text' })
       .pipe(
         catchError(() => {
           notFound = true;
