@@ -9,9 +9,7 @@ npm install
 npm start
 ```
 
-i> If you want to hack on DocSPA core components clone `https://github.com/swimlane/DocSPA` instead.
-
-i> If you would like to setup DocSPA in your own angular cli app see [angular-cli-install](angular-cli-install).
+i> If you want to hack on DocSPA core components clone `https://github.com/swimlane/DocSPA` instead.  If you would like to setup DocSPA in your own angular cli app see [angular-cli-install](angular-cli-install).
 
 ## View Your Site
 

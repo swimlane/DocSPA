@@ -89,7 +89,9 @@ export class MarkdownService {
               vfile.contents = plugins ?
                 this.processAfterEach(String(vfile)) :
                 String(vfile);
-              this.logger.debug(reporter(err || page));
+              if (plugins) {
+                this.logger.info(reporter(err || page));
+              }
               return vfile;
             });
           }),

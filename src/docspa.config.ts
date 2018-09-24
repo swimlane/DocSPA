@@ -3,6 +3,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from './environments/environment';
 import { docspaRemarkPreset, prism, runtime, mermaid } from '@swimlane/docspa-remark-preset';
+import style from './app/plugins/markdown-style';
 
 import { tabsHook } from './app/plugins';
 
@@ -18,10 +19,12 @@ export const config = {
   ],
   coverpage: '_coverpage.md',
   plugins: [
-    window['EditOnGithubPlugin'].create('https://github.com/swimlane/docspa/blob/master/src/docs/', null, '✎ Edit this page'),
+    window['EditOnGithubPlugin']
+      .create('https://github.com/swimlane/docspa/blob/master/src/docs/', null, '✎ Edit this page'),
     tabsHook
   ],
   remarkPlugins: [
+    style,
     ...docspaRemarkPreset,
     runtime,
     mermaid,

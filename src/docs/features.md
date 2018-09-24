@@ -402,10 +402,3 @@ i> Add the `data-no-zoom` attribute to exclude an image `![](./logo.png){ data-n
 ### Edit on Github
 
 <small>import [docsify-edit-on-github](https://github.com/njleonzhang/docsify-edit-on-github)</small>
-
-
-
-
-
-
-

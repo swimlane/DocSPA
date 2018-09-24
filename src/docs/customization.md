@@ -47,4 +47,4 @@ Custom Elements defined within or imported to the application are available to u
 
 ## Runtime code
 
-DocSPA includes a custom element for embedded Angular templates. To make angular modules available to the runtime component include the module in `runtimeModules` array in `docspa.config.ts`.
+DocSPA includes a custom element for embedded Angular templates.  To make angular modules available to the runtime component include the module in `runtimeModules` array in `docspa.config.ts`.

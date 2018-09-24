@@ -35,4 +35,3 @@ DocSPA is not SEO-friendly, if you need a pregenerate SEO-friendly site without 
 DocSPA is a Swimlane open-source project; we believe in giving back to the open-source community by sharing some of the projects we build for our application. Swimlane is an automated cyber security operations and incident response platform that enables cyber security teams to leverage threat intelligence, speed up incident response and automate security operations.
 
 DocSPA was developed in Angular following inspiration from [docsify](https://docsify.js.org/) by [QingWei-Li](https://github.com/QingWei-Li) and contributors.
-

@@ -221,8 +221,8 @@ export class TOCPaginationComponent implements OnInit {
     return Promise.all(paths.map(_ => {
       // TODO: all I need is the title
       // should be able to avoid this
-      // Need to run plugins incase title is changed?
-      return this.markdownService.getMd(_, true)
+      // Need to run plugins in case title is changed?
+      return this.markdownService.getMd(_, false)
         .toPromise();
     }));
   }

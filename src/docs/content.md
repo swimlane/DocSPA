@@ -39,10 +39,10 @@ i> The default page can be set using the `homepage` property set in `docspa.conf
 
 Additional content is loaded from each directory.  In the default configuration the following files are loaded:
 
-- `_sidebar.md`
-- `_navbar.md`
-- `_right_sidebar.md`
-- `_footer.md`
+    - `_sidebar.md`
+    - `_navbar.md`
+    - `_right_sidebar.md`
+    - `_footer.md`
 
 If the current directory doesn't have a given file, it will fall back to the parent directory recursively until the content is found.
 
@@ -52,4 +52,5 @@ i> The files to load can be set using the `sideLaod` property set in `docspa.con
 
 When viewing to a homepage (`/` or `README`), if the current directory contains a `_coverpage.md` file it is loaded as an overlay over the `README.md` file.
 
-i> The cover page can be set using the `coverpage` property set in `docspa.config.ts`.  Set this value to `false` to turn off the coverpage feature.
+i> The cover page can be set using the `coverpage` property set in `docspa.config.ts`.
+i> Set this value to `false` to turn off the coverpage feature.
