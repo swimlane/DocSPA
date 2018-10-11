@@ -26,6 +26,7 @@ import { EmbedStackblitzComponent } from './custom-components/embed-stackblitz.c
 import { EmbedMarkdownComponent } from './custom-components/embed-file';
 import { EnvVarComponent } from './custom-components/env-var.component';
 import { MdLinkComponent } from './custom-components/md-link.component';
+import { MdPrintComponent } from './custom-components/md-print.component';
 
 import { DocSPACoreComponent } from './docspa-core.component';
 import { SafeHtmlPipe } from './services/safe-html.pipe';
@@ -46,7 +47,8 @@ const elements = [
   EnvVarComponent,
   TOCSearchComponent,
   TOCPaginationComponent,
-  MdLinkComponent
+  MdLinkComponent,
+  MdPrintComponent
 ];
 
 @NgModule({
@@ -83,8 +85,10 @@ const elements = [
 export class DocspaCoreModule {
   constructor(private injector: Injector) {
     elements.map((Constructor: any) => {
-      const content = createCustomElement(Constructor, { injector: this.injector });
-      customElements.define(Constructor.is, content);
+      if (Constructor.is) {
+        const content = createCustomElement(Constructor, { injector: this.injector });
+        customElements.define(Constructor.is, content);
+      }
     });
   }
 

@@ -6,9 +6,6 @@ import {
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
-import { Observable } from 'rxjs';
-
-import { LocationService } from '../services/location.service';
 import { MarkdownService } from '../services/markdown.service';
 import { splitHash } from '../utils';
 
@@ -42,13 +39,10 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
 
   @Output() done: EventEmitter<VFile> = new EventEmitter();
 
-  content: Observable<string | SafeHtml>;
-
   @HostBinding('innerHTML')
   html: string | SafeHtml;
 
   constructor(
-    private locationService: LocationService,
     private markdownService: MarkdownService,
     private sanitizer: DomSanitizer,
     private elm: ElementRef,
