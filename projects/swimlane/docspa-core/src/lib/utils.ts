@@ -24,3 +24,4 @@ export function splitHash(hash: string) {
   }
   return arr;
 }
+

@@ -14,10 +14,10 @@ describe('DocSPA', () => {
     cy.get('@sidebar').find('md-toc').should('have.length', 5);
 
     cy.get('@sidebar').find('md-toc a').should('have.length', 29);
-    cy.get('@sidebar').find('md-toc a').should('have.attr', 'href').and('matches',/^#.*/);
+    cy.get('@sidebar').find('md-toc a').should('have.attr', 'href').and('matches',/^\/.*/);
 
-    cy.get('@sidebar').find('md-toc a').first().should('have.attr', 'href', '#/#introduction');
-    cy.get('@sidebar').find('md-toc a').last().should('have.attr', 'href', '#/features#docsify-plugins');
+    cy.get('@sidebar').find('md-toc a').first().should('have.attr', 'href', '/#introduction');
+    cy.get('@sidebar').find('md-toc a').last().should('have.attr', 'href', 'features#docsify-plugins');
 
     cy.get('@rightbar').find('md-toc').should('have.length', 1);
   };
@@ -65,10 +65,10 @@ describe('DocSPA', () => {
       cy.get('@content').find('h1').contains('DocSPA');
       cy.get('@content').find('footer').contains('Made with DocSPA');
 
-      cy.get('@content').find('h1 a, h2 a, h3 a').first().should('have.attr', 'href').and('matches', /^#\/#.*/);
+      cy.get('@content').find('h1 a, h2 a, h3 a').first().should('have.attr', 'href').and('matches', /^\/#.*/);
       cy.get('@content').find('docspa-md-embed > p a').first().should('have.attr', 'href', 'https://custom-elements-everywhere.com/#angular');
-      cy.get('@content').find('docspa-md-embed > p a').last().should('have.attr', 'href', 'https://www.swimlane.com');
-      cy.get('@content').find('docspa-md-embed > p a').eq(1).should('have.attr', 'href', '#/quickstart');
+      // cy.get('@content').find('docspa-md-embed > p a').last().should('have.attr', 'href', 'https://www.swimlane.com');
+      cy.get('@content').find('docspa-md-embed > p a').eq(1).should('have.attr', 'href', '/quickstart');
     });
 
     it('can search', () => {
@@ -89,7 +89,7 @@ describe('DocSPA', () => {
   });
   
   describe('The Features page', () => {
-    before(() => cy.visit('/#/features'));
+    before(() => cy.visit('/features'));
 
     it('has a title', () => {
       cy.title().should('eq', 'DocSPA - Content Features')
@@ -103,7 +103,7 @@ describe('DocSPA', () => {
       cy.get('@content').find('h1').contains('Features');
       cy.get('@content').find('footer').contains('Made with DocSPA');
 
-      cy.get('@content').find('h1 a, h2 a, h3 a').first().should('have.attr', 'href').and('matches', /^#\/features#.*/);
+      cy.get('@content').find('h1 a, h2 a, h3 a').first().should('have.attr', 'href').and('matches', /^\/features#.*/);
     });
   
     it('runs remark plugins', () => {
@@ -130,7 +130,7 @@ describe('DocSPA', () => {
   });
 
   describe('The quickstart page', () => {
-    before(() => cy.visit('/#/quickstart'));
+    before(() => cy.visit('/quickstart'));
 
     it('has a title', () => {
       cy.title().should('eq', 'DocSPA - Quick start')
@@ -144,7 +144,7 @@ describe('DocSPA', () => {
       cy.get('@content').find('h1').contains('Quick start');
       cy.get('@content').find('footer').contains('Made with DocSPA');
 
-      cy.get('@content').find('h1 a, h2 a, h3 a').first().should('have.attr', 'href').and('matches', /^#\/quickstart#.*/);
+      cy.get('@content').find('h1 a, h2 a, h3 a').first().should('have.attr', 'href').and('matches', /^\/quickstart#.*/);
     });
   
     it('has pagination', () => {
@@ -155,7 +155,7 @@ describe('DocSPA', () => {
   });
   
   describe('Page not found', () => {
-    before(() => cy.visit('/#/not-found'));
+    before(() => cy.visit('/not-found'));
 
     it('has a title', () => {
       cy.title().should('eq', 'DocSPA - ERROR 404')
@@ -171,7 +171,7 @@ describe('DocSPA', () => {
   });
 
   describe('Page not found in subdir', () => {
-    before(() => cy.visit('/#/sub/here-too'));
+    before(() => cy.visit('/sub/here-too'));
 
     it('has a title', () => {
       cy.title().should('eq', 'DocSPA - ERROR 404')
@@ -181,12 +181,12 @@ describe('DocSPA', () => {
 
     it('has a sidebar', () => {
       cy.get('@sidebar').find('.sidebar-nav li a').should('have.length', 6);
-      cy.get('@sidebar').find('.sidebar-nav li a').should('have.attr', 'href').and('matches', /^[\/]?#\/sub\/.*/); 
+      cy.get('@sidebar').find('.sidebar-nav li a').should('have.attr', 'href').and('matches', /^[\/]?sub\/.*/); 
     });
   
     it('has a navbar', () => {
       cy.get('@navbar').find('a').should('have.length', 6);
-      cy.get('@navbar').find('a').should('have.attr', 'href').and('matches', /^[\/]?#\/sub\/.*/);
+      cy.get('@navbar').find('a').should('have.attr', 'href').and('matches', /^[\/]?sub\/.*/);
     });
   
     it('has content', () => {
@@ -195,7 +195,7 @@ describe('DocSPA', () => {
   });
   
   describe('The Sub page', () => {
-    before(() => cy.visit('/#/sub/'));
+    before(() => cy.visit('/sub/'));
 
     it('has a title', () => {
       cy.title().should('eq', 'DocSPA - Test Sub Page');
@@ -214,17 +214,17 @@ describe('DocSPA', () => {
   
     it('has a sidebar', () => {
       cy.get('@sidebar').find('.sidebar-nav li a').should('have.length', 6);
-      cy.get('@sidebar').find('.sidebar-nav li a').should('have.attr', 'href').and('matches', /^[\/]?#\/sub\/.*/); 
+      cy.get('@sidebar').find('.sidebar-nav li a').should('have.attr', 'href').and('matches', /^[\/]?sub\/.*/); 
     });
   
     it('has a navbar', () => {
       cy.get('@navbar').find('a').should('have.length', 6);
-      cy.get('@navbar').find('a').should('have.attr', 'href').and('matches', /^[\/]?#\/sub\/.*/);
+      cy.get('@navbar').find('a').should('have.attr', 'href').and('matches', /^[\/]?sub\/.*/);
     });
   
     it('has content', () => {
       cy.get('@content').find('h1').contains('This is the sub readme');
-      cy.get('@content').find('h1 a').should('have.attr', 'href', '#/sub/#sub');
+      cy.get('@content').find('h1 a').should('have.attr', 'href').and('matches', /^[\/]?sub\/#sub/);
       cy.get('@content').find('footer').contains('Made with DocSPA');
     });
 
@@ -240,15 +240,15 @@ describe('DocSPA', () => {
     it('links', () => {
       cy.get('@content').find('a[data-cy]').should($lis => {
         expect($lis).to.have.length(3);
-        expect($lis.eq(0)).to.have.attr('href', '#/sub/');
-        expect($lis.eq(1)).to.have.attr('href', '#/');
-        expect($lis.eq(2)).to.have.attr('href', '#/');
+        expect($lis.eq(0)).to.have.attr('href', '/sub/');
+        expect($lis.eq(1)).to.have.attr('href', '/');
+        expect($lis.eq(2)).to.have.attr('href', '/');
       });
     });
   });
   
   describe('The Sub-sub A page', () => {
-    before(() => cy.visit('/#/sub/sub/a'));
+    before(() => cy.visit('/sub/sub/a'));
 
     it('has a title', () => {
       cy.title().should('eq', 'DocSPA - Sub A')
@@ -258,19 +258,19 @@ describe('DocSPA', () => {
   
     it('has a sidebar', () => {
       cy.get('@sidebar').find('.sidebar-nav li a').should('have.length', 6);
-      cy.get('@sidebar').find('.sidebar-nav li a').should('have.attr', 'href').and('matches', /^[\/]?#\/sub\/.*/); 
+      cy.get('@sidebar').find('.sidebar-nav li a').should('have.attr', 'href').and('matches', /^[\/]?sub\/.*/); 
     });
   
     it('has a navbar', () => {
       cy.get('@navbar').find('a').should('have.length', 6);
-      cy.get('@navbar').find('a').should('have.attr', 'href').and('matches', /^[\/]?#\/sub\/.*/);
+      cy.get('@navbar').find('a').should('have.attr', 'href').and('matches', /^[\/]?sub\/.*/);
     });
   
     it('has content', () => {
       cy.get('@content').find('h1').contains('Sub A');
       cy.get('@content').find('footer').contains('Made with DocSPA');
       cy.get('@content').find('p > a').each(($el, index, $list) => {
-        (index > 0) && cy.wrap($el).should('have.attr', 'href').and('matches', /^[\/]?#\/sub\/.*/);
+        (index > 0) && cy.wrap($el).should('have.attr', 'href').and('matches', /^[\/]?sub\/.*/);
       });
     });
   });

@@ -1,4 +1,4 @@
-* [DocSPA](README)
+* [DocSPA](/)
 * [quickstart](quickstart)
 * [content](content)
 * [customization](customization)
