@@ -1,5 +1,7 @@
 # DocSPA
 
+<md-link href="/quickstart#quick-start">link to user component</a>
+
 > An Angular-powered documentation SPA.
 
 ## Introduction
@@ -12,7 +14,7 @@ See the [Quick start](quickstart) for details on how to get up and running quick
 
 A DocSPA site is a <abbr title="Single Page Application">SPA</abbr> powered by Angular and the Angular CLI.  If you've used the Angular CLI before you already know a lot about the DocSPA infrastructure.  If you built Angular applications before, customizing a DocSPA site will be a familiar experience.  If you are not familar with Angular, no worries, out-of-the-box DocSPA provides a simple experience so you can get right to your [content](content).
 
-As mentioned DocSPA is a Angular SPA.  It uses Angular CLI tools for the build process.  Once built and deployed the DocSPA site will generate HTML content on-the-fly from your markdown content.  Markdown files are converted to HTML using (remark)[https://remark.js.org/].  Remark plugins (both DocSPA internal and third-party) handle all markdown extensions.  In addition, the DocSPA site supports custom elements (one of the key features of the Web Components standard) and includes custom elements that allows [live Angular examples](features#runtime-content) within markdown!
+As mentioned DocSPA is a Angular SPA.  It uses Angular CLI tools for the build process.  Once built and deployed the DocSPA site will generate HTML content on-the-fly from your markdown content.  Markdown files are converted to HTML using [remark][https://remark.js.org/].  Remark plugins (both DocSPA internal and third-party) handle all markdown extensions.  In addition, the DocSPA site supports custom elements (one of the key features of the Web Components standard) and includes custom elements that allows [live Angular examples](features#runtime-content) within markdown!
 
 ## Features
 

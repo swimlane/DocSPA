@@ -1,9 +1,9 @@
 import { Injectable, EventEmitter, SimpleChange, SimpleChanges } from '@angular/core';
-import { Location } from '@angular/common';
+import { Location, PopStateEvent } from '@angular/common';
 import { URLSearchParams } from '@angular/http';
 import { NGXLogger } from 'ngx-logger';
 
-import { join, getFullPath } from '../utils';
+import { getFullPath } from '../utils';
 
 import { SettingsService } from './settings.service';
 import { FetchService } from './fetch.service';
@@ -37,9 +37,9 @@ export class RouterService {
     private settings: SettingsService,
     private fetchService: FetchService,
     private locationService: LocationService,
-    private logger: NGXLogger,
+    private logger: NGXLogger
   ) {
-    location.subscribe(v => {
+    location.subscribe((v: PopStateEvent) => {
       if (v.type === 'hashchange') {
         this.hashchange(v.url);
       }
@@ -47,6 +47,11 @@ export class RouterService {
   }
 
   onInit() {
+    this.hashchange(this.location.path(true) || '/');
+  }
+
+  go(url: string = '/') {
+    this.location.go(url);
     this.hashchange(this.location.path(true) || '/');
   }
 

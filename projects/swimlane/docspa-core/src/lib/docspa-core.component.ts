@@ -71,12 +71,12 @@ export class DocSPACoreComponent implements OnInit {
           }
           return link.offsetTop >= fromTop && offsetBottom <= fromBottom;
         })
-        .map(link => splitHash(link.hash)[1]);
+        .map(link => splitHash(link.getAttribute('href'))[1]);
 
       if (current && current.length > 0) {
         this.activeAnchors = current.join(';');
       } else if (lastLink) {
-        this.activeAnchors = splitHash(lastLink.hash)[1];
+        this.activeAnchors = splitHash(lastLink.getAttribute('href'))[1];
       } else {
         this.activeAnchors = '';
       }
@@ -118,7 +118,7 @@ export class DocSPACoreComponent implements OnInit {
     });
 
     this.renderer.setElementClass(document.body, 'ready', true);
-    this.contentHeadings = [].slice.call(document.querySelectorAll('h1[id] > a, h2[id] > a, h3[id] > a'));
+    this.contentHeadings = [].slice.call(document.querySelectorAll('h1[id] a, h2[id] a, h3[id] a'));
 
     this.onWindowScroll();
   }
@@ -126,7 +126,7 @@ export class DocSPACoreComponent implements OnInit {
   private pathChanges(changes: SimpleChanges) {
     if ('contentPage' in changes && this.contentPage !== changes.contentPage.currentValue) {
       this.contentPage = changes.contentPage.currentValue;
-      this.activeLink = splitHash(document.location.hash)[0];
+      this.activeLink = this.contentPage;
     }
 
     if ('coverPage' in changes) {

@@ -25,6 +25,7 @@ import { TOCPaginationComponent } from './custom-components/toc-pagination.compo
 import { EmbedStackblitzComponent } from './custom-components/embed-stackblitz.component';
 import { EmbedMarkdownComponent } from './custom-components/embed-file';
 import { EnvVarComponent } from './custom-components/env-var.component';
+import { MdLinkComponent } from './custom-components/md-link.component';
 
 import { DocSPACoreComponent } from './docspa-core.component';
 import { SafeHtmlPipe } from './services/safe-html.pipe';
@@ -44,7 +45,8 @@ const elements = [
   EmbedMarkdownComponent,
   EnvVarComponent,
   TOCSearchComponent,
-  TOCPaginationComponent
+  TOCPaginationComponent,
+  MdLinkComponent
 ];
 
 @NgModule({
@@ -64,7 +66,8 @@ const elements = [
   ],
   exports: [
     DocSPACoreComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    ...elements
   ],
   providers: [
     SettingsService,

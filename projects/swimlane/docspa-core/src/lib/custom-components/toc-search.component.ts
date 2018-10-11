@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { of } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
+
 import unified from 'unified';
 import markdown from 'remark-parse';
 import toc from 'mdast-util-toc';
@@ -9,19 +10,18 @@ import visit from 'unist-util-visit';
 import stringify from 'remark-stringify';
 import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
-import { join } from '../utils';
-
+import { links, images } from '../plugins/links';
+import frontmatter from 'remark-frontmatter';
+import { MDAST } from 'mdast';
 import { getTitle } from '@swimlane/docspa-remark-preset/dist/module/plugins/frontmatter';
+
+import { join } from '../utils';
 
 import { FetchService } from '../services/fetch.service';
 import { LocationService } from '../services/location.service';
 
-import { links, images } from '../plugins/links';
-import frontmatter from 'remark-frontmatter';
-import { MDAST } from 'mdast';
-
 @Component({
-  selector: 'md-toc-search', // tslint:disable-line
+  selector: 'docspa-toc-search', // tslint:disable-line
   template: `
   <div class="search" *ngIf="searchIndex">
     <div class="input-wrap">
@@ -38,10 +38,12 @@ import { MDAST } from 'mdast';
     <div class="results-panel" [class.show]="searchResults">
       <p class="empty" *ngIf="searchResults?.length === 0">No results!</p>
       <div class="matching-post" *ngFor="let result of searchResults | slice:0:9">
-        <a href="{{ result.url }}" (click)="search(searchInput.value = '')">
-          <h2 [innerHTML]="result.name"></h2>
-          <p [innerHTML]="result.content"></p>
-        </a>
+        <docspa-link [href]="result.url" (click)="search(searchInput.value = '')">
+          <a [attr.href]="result.url">
+            <h2 [innerHTML]="result.name"></h2>
+            <p [innerHTML]="result.content"></p>
+          </a>
+        </docspa-link>
       </div>
     </div>
   </div>

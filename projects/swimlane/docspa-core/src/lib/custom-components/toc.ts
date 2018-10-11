@@ -9,6 +9,7 @@ import toc from 'mdast-util-toc';
 import visit from 'unist-util-visit';
 import slug from 'remark-slug';
 import { join } from '../utils';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { FetchService } from '../services/fetch.service';
 import { RouterService } from '../services/router.service';
@@ -47,7 +48,7 @@ export class TOCComponent implements OnInit {
   public tight = false;
 
   @HostBinding('innerHTML')
-  html: string;
+  html: SafeHtml;
 
   private processor: any;
   private _path: string;
@@ -56,7 +57,8 @@ export class TOCComponent implements OnInit {
   constructor(
     private fetchService: FetchService,
     private routerService: RouterService,
-    private locationService: LocationService
+    private locationService: LocationService,
+    private sanitizer: DomSanitizer,
   ) {
     const toToc = () => {
       return (tree) => {
@@ -122,7 +124,7 @@ export class TOCComponent implements OnInit {
         map(String),
         share()
       ).subscribe(_ => {
-        this.html = _;
+        this.html = this.sanitizer.bypassSecurityTrustHtml(_);
       });
   }
 }

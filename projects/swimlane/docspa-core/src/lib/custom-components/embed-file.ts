@@ -99,11 +99,13 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   }
 
   private isHashActive(hash: string) {
+    const activeLink = this.activeLink.replace(/^\//, '');
     const parts = splitHash(hash);
-    if (this.activeLink === parts[0]) {
+    parts[0] = parts[0].replace(/^\//, '');
+    if (activeLink === parts[0]) {
       return (this.activeAnchors === undefined || this.activeAnchors === null) ?
         true :
-        this.activeAnchors.split(';').includes(parts[1]);
+        this.activeAnchors.split(';').includes(parts[1]); // todo: split once
     }
     return false;
   }
@@ -116,14 +118,14 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
       const activeLinks = [];
       for (let i = 0; i < aObj.length; i++) {
         const a = aObj[i];
-        const active = this.isHashActive(a.hash);
+        const active = this.isHashActive(a.getAttribute('href'));
         if (active) {
           activeLinks.push(a);
         }
         this.renderer.setElementClass(a, 'active', active);
 
         let p = a.parentNode;
-        while (p && ['LI', 'UL', 'P'].includes(p.nodeName)) {
+        while (p && ['LI', 'UL', 'P', 'MD-LINK'].includes(p.nodeName)) {
           this.renderer.setElementClass(p, 'active', active);
           p = p.parentNode;
         }
@@ -131,7 +133,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
 
       activeLinks.forEach(a => {
         let p = a.parentNode;
-        while (p && ['LI', 'UL', 'P'].includes(p.nodeName)) {
+        while (p && ['LI', 'UL', 'P', 'MD-LINK'].includes(p.nodeName)) {
           this.renderer.setElementClass(p, 'active', true);
           p = p.parentNode;
         }

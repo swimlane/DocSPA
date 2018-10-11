@@ -62,3 +62,9 @@ section.content footer {
 ::-webkit-scrollbar-thumb:hover {
     background: #555; 
 }
+
+@media print {
+  #_hj_feedback_container {
+    display: none;
+  }
+}

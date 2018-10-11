@@ -23,24 +23,28 @@ import { of } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 
 @Component({
-  selector: 'md-toc-page', // tslint:disable-line
+  selector: 'docspa-toc-page', // tslint:disable-line
   template: `
     <div class="docsify-pagination-container">
       <div class="pagination-item pagination-item--previous" *ngIf="prev">
-        <a class="prev" [href]="prepareLink(prev) + '#main'" >
-          <div class="pagination-item-label">
-            <span>« PREVIOUS</span>
-          </div>
-          <div class="pagination-item-title">{{prev.data.title}}</div>
-        </a>
+        <docspa-link [href]="prepareLink(prev) + '#main'">
+          <a class="prev" [attr.href]="prepareLink(prev)" >
+            <div class="pagination-item-label">
+              <span>« PREVIOUS</span>
+            </div>
+            <div class="pagination-item-title">{{prev.data.title}}</div>
+          </a>
+        </docspa-link>
       </div>
       <div class="pagination-item pagination-item--next" *ngIf="next">
-        <a class="next" [href]="prepareLink(next) + '#main'" >
-          <div class="pagination-item-label">
-            <span>NEXT »</span>
-          </div>
-          <div class="pagination-item-title">{{next.data.title}}</div>
-        </a>
+        <docspa-link [href]="prepareLink(next) + '#main'">
+          <a class="next" [attr.href]="prepareLink(next)" >
+            <div class="pagination-item-label">
+              <span>NEXT »</span>
+            </div>
+            <div class="pagination-item-title">{{next.data.title}}</div>
+          </a>
+        </docspa-link>
       </div>
     </div>
   `,
@@ -56,6 +60,7 @@ import { flatMap, map } from 'rxjs/operators';
     }
     .pagination-item {
       margin-top: 2.5em;
+      max-width: 50%;
     }
     .pagination-item a,
     .pagination-item a:hover {

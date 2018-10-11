@@ -72,7 +72,7 @@ export class LocationService {
   prepareLink(href: string, base: string = '') {
     return LocationService.isAbsolutePath(href) ?
       href :
-      this.location.prepareExternalUrl(resolve(base, href));
+      resolve(base, href);
   }
 
   /**
