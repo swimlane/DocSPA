@@ -1,0 +1,110 @@
+@media print {
+  #_hj_feedback_container, .markdown-section > * > div[style], .docsify-pagination-container {
+    display: none !important;
+  }
+
+  /* Setting content width, unsetting floats and margins */
+  #main {
+    width: 100%; 
+    margin: 0; 
+    float: none;
+    max-width: 100%;
+  }
+
+  .content {
+    left: 0 !important;
+    right: 0 !important;
+  }
+
+  /** Setting margins */ 
+  @page { margin: 2cm }
+
+  /* Set font to 16px/13pt, set background to white and font to black.*/
+  /* This saves ink */
+  body {
+    font: 13pt Georgia, "Times New Roman", Times, serif;
+    line-height: 1.3;
+    background: #fff !important;
+    color: #000;
+  }
+
+  h1 {
+    font-size: 24pt;
+  }
+    
+  h2, h3, h4 {
+    font-size: 14pt;
+    margin-top: 25px;
+  }
+
+  /* Defining all page breaks */
+  a {
+    page-break-inside:avoid
+  }
+  blockquote {
+    page-break-inside: avoid;
+  }
+  h1, h2, h3, h4, h5, h6 { page-break-after:avoid; 
+    page-break-inside:avoid }
+  img { page-break-inside:avoid; 
+    page-break-after:avoid; }
+  table, pre { page-break-inside:avoid }
+  ul, ol, dl  { page-break-before:avoid }
+  article.print-page {
+    page-break-inside: avoid;
+    page-break-after: always;
+    break-after: always;
+  }
+
+  /* Displaying link color and link behaviour */
+  a:link, a:visited, a {
+    background: transparent;
+    color: #520;
+    font-weight: bold;
+    text-decoration: underline;
+    text-align: left;
+  }
+  
+  a {
+      page-break-inside:avoid
+  }
+  
+  a[href^=http]:after {
+        content:" < " attr(href) "> ";
+  }
+  
+  a:after > img {
+     content: "";
+  }
+  
+  article a[href^="#"]:after {
+     content: "";
+  }
+  
+  a:not(:local-link):after {
+     content:" < " attr(href) "> ";
+  }
+
+  /**
+  * Making intergated videos disappear, and removing the iframes' whitespace to zero. 
+  */
+  .entry iframe, ins {
+    display: none;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    line-height: 0pt !important;
+    white-space: nowrap;
+  }
+  .embed-example,.embed-youtube, .embed-responsive, embed-stackblitz {
+    position: absolute;
+    height: 0;
+    overflow: hidden;
+  }
+
+  .embed-plnkr {
+    display: none;
+  }
+
+  details, details > * { display:block !important; }
+}

@@ -30,6 +30,7 @@ Acronyms: <abbr title="Three Letter Acronym">TLA</abbr>
   <iframe
     width="620"
     height="315"
+    class="embed-youtube"
     src="https://www.youtube.com/embed/qfYRSDMghQs">
   </iframe>
 </div>
@@ -37,6 +38,7 @@ Acronyms: <abbr title="Three Letter Acronym">TLA</abbr>
 <iframe src="https://embed.plnkr.co/plunk/2eQ9jheOTm8i74vp2EmP?autoCloseSidebar&deferRun&show=preview"
   style="width: 100%; height: 400px;"
   allowfullscreen
+  class="embed-plnkr"
   scrolling="no"></iframe>
 ```
 

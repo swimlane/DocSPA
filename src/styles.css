@@ -62,14 +62,3 @@ section.content footer {
 ::-webkit-scrollbar-thumb:hover {
     background: #555; 
 }
-
-@media print {
-  #_hj_feedback_container, .markdown-section > * > div[style], .docsify-pagination-container {
-    display: none !important;
-  }
-
-  .content {
-    left: 0 !important;
-    right: 0 !important;
-  }
-}

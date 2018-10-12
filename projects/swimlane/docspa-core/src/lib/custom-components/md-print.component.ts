@@ -90,7 +90,7 @@ export class MdPrintComponent implements OnInit {
         visit(tree, 'link', (node: MDAST.Link) => {
           if (node && !LocationService.isAbsolutePath(node.url)) {
             const url = locationService.prepareLink(node.url, file.history[0]).replace(/[\/#]/g, '--');
-            node.url = `${this.page}#${url}`;
+            node.url = `#${url}`;
           }
           return true;
         });
@@ -150,10 +150,10 @@ export class MdPrintComponent implements OnInit {
     });
 
     const files = await Promise.all(p);
-    const contents = files.map(f => {
+    const contents = files.map((f, i) => {
       const id = f.history[0].replace(/^\//, '');
-      return `<a id="--${id}"></a><a id="${id}"></a>${f.contents}<hr>`;
-    }).join('\n\n');
+      return `<article class="print-page" id="${id}"><a id="--${id}"></a>${f.contents}</article>`;
+    }).join('<hr class="page-break">');
 
     this.html = this.safe ? this.sanitizer.bypassSecurityTrustHtml(contents) : contents;
   }
