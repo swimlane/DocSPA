@@ -134,8 +134,7 @@
     display: none;
   }
 
-  details,
-  details > * {
-    display: block !important;
+  details > summary {
+    display: none;
   }
 }

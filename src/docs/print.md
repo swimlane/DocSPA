@@ -1,1 +1,1 @@
-<md-print summary="SUMMARY"></md-print>
+<md-print summary="SUMMARY" print-on-load="true"></md-print>

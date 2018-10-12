@@ -1,1 +1,2 @@
+- [<i class="fas fa-print"></i>](print){ name="docspa github" target="_blank" }
 - [<i class="fab fa-github"></i>](https://github.com/swimlane/docspa){ name="docspa github" }

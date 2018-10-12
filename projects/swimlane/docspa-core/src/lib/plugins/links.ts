@@ -3,25 +3,15 @@ import { LocationService } from '../services/location.service';
 import VFile from 'vfile';
 import { MDAST } from 'mdast';
 
-/* export const links = (locationService: LocationService) => {
-  return (tree, vfile: VFile) => {
-    visit(tree, ['link', 'definition'] as any, (node: MDAST.Link) => {
-
-
-
-      // links are not relative to base path
-      node.url = locationService.prepareLink(node.url, vfile.history[0]);
-      return true;
-    });
-  };
-}; */
-
 export const links = (locationService: LocationService) => {
   return (tree, vfile: VFile) => {
     visit(tree, ['link', 'definition'] as any, (node: MDAST.Link, index, parent) => {
       if (node && parent && index !== undefined && !LocationService.isAbsolutePath(node.url)) {
+
         node.data = node.data || {};
-        if (node.data.originalUrl) {
+        node.data.hProperties = node.data.hProperties || {};
+
+        if (node.data.originalUrl || node.data.hProperties.target) {
           return;
         }
 

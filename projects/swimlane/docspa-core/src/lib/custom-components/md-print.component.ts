@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, HostBinding } from '@angular/core';
+import { Component, Input, OnInit, HostBinding, ElementRef } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { of } from 'rxjs';
@@ -49,6 +49,16 @@ export class MdPrintComponent implements OnInit {
   }
 
   @Input()
+  set printOnLoad(val: string | boolean) {
+    this._printOnLoad = typeof val === 'string' ?
+      val.toLowerCase() === 'true' :
+      Boolean(val);
+  }
+  get printOnLoad(): string | boolean {
+    return this._printOnLoad;
+  }
+
+  @Input()
   set paths(val: string[]) {
     if (typeof val === 'string') {
       val = (val as string).split(',');
@@ -73,13 +83,19 @@ export class MdPrintComponent implements OnInit {
 
   private _paths: string[];
   private _showToc = true;
+  private _printOnLoad = false;
+
+  private get path() {
+    return this.routerService.contentPage;
+  }
 
   constructor (
     private settings: SettingsService,
     private routerService: RouterService,
     private fetchService: FetchService,
     private locationService: LocationService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private elm: ElementRef
   ) {
     const getLinks = () => {
       return (tree: any, file: VFile) => {
@@ -141,7 +157,6 @@ export class MdPrintComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.page = this.routerService.contentPage;
     if (this.summary) {
       this.load();
     }
@@ -175,6 +190,19 @@ export class MdPrintComponent implements OnInit {
     }).join('<hr class="page-break">');
 
     this.html = this.safe ? this.sanitizer.bypassSecurityTrustHtml(contents) : contents;
+
+    setTimeout(() => {
+      const elms = this.elm.nativeElement.getElementsByTagName('details');
+      for (let i = 0; i < elms.length; i++) {
+        elms[i].setAttribute('open', 'true');
+      }
+
+      if (this.printOnLoad) {
+        window.print();
+      }
+    });
+
+
   }
 
   private loadSummary(summary: string): Promise<string[]> {
