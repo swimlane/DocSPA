@@ -26,7 +26,7 @@ import { join } from '../utils';
 
 @Component({
   selector: 'docspa-print', // tslint:disable-line
-  template: `{{paths | json}}`,
+  template: `<!-- -->`,
   styles: []
 })
 export class MdPrintComponent implements OnInit {
@@ -34,6 +34,19 @@ export class MdPrintComponent implements OnInit {
 
   @Input()
   summary = '';
+
+  @Input()
+  coverpage = this.settings.coverpage;
+
+  @Input()
+  set showToc(val: string | boolean) {
+    this._showToc = typeof val === 'string' ?
+      val.toLowerCase() === 'true' :
+      Boolean(val);
+  }
+  get showToc(): string | boolean {
+    return this._showToc;
+  }
 
   @Input()
   set paths(val: string[]) {
@@ -56,8 +69,10 @@ export class MdPrintComponent implements OnInit {
 
   private processor: any;
   private processLinks: any;
+  // private page = '';
+
   private _paths: string[];
-  private page = '';
+  private _showToc = true;
 
   constructor (
     private settings: SettingsService,
@@ -126,7 +141,7 @@ export class MdPrintComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.page = this.routerService.contentPage;
+    // this.page = this.routerService.contentPage;
     if (this.summary) {
       this.load();
     }
@@ -135,10 +150,14 @@ export class MdPrintComponent implements OnInit {
   private async load() {
     const paths = await this.loadSummary(this.summary);
 
-    this.paths = [this.summary, ...paths];
+    this.paths = [...paths];
 
-    if (this.settings.coverpage) {
-      this.paths.unshift(this.settings.coverpage);
+    if (this.showToc) {
+      this.paths.unshift(this.summary);
+    }
+
+    if (this.coverpage) {
+      this.paths.unshift(this.coverpage);
     }
 
     const p = this.paths.map(async (path: string) => {
@@ -151,7 +170,7 @@ export class MdPrintComponent implements OnInit {
 
     const files = await Promise.all(p);
     const contents = files.map((f, i) => {
-      const id = f.history[0].replace(/^\//, '');
+      const id = f.history[0].replace(/^\//, '').replace(/[\/#]/g, '--');
       return `<article class="print-page" id="${id}"><a id="--${id}"></a>${f.contents}</article>`;
     }).join('<hr class="page-break">');
 
@@ -175,5 +194,4 @@ export class MdPrintComponent implements OnInit {
     ).toPromise();
   }
 }
-
 
