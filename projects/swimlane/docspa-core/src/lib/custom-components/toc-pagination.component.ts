@@ -27,24 +27,20 @@ import { flatMap, map } from 'rxjs/operators';
   template: `
     <div class="docsify-pagination-container">
       <div class="pagination-item pagination-item--previous" *ngIf="prev">
-        <docspa-link [href]="prepareLink(prev) + '#main'">
-          <a class="prev" [attr.href]="prepareLink(prev)" >
-            <div class="pagination-item-label">
-              <span>« PREVIOUS</span>
-            </div>
-            <div class="pagination-item-title">{{prev.data.title}}</div>
-          </a>
-        </docspa-link>
+        <a class="prev" [attr.href]="prepareLink(prev) + '#main'" >
+          <div class="pagination-item-label">
+            <span>« PREVIOUS</span>
+          </div>
+          <div class="pagination-item-title">{{prev.data.title}}</div>
+        </a>
       </div>
       <div class="pagination-item pagination-item--next" *ngIf="next">
-        <docspa-link [href]="prepareLink(next) + '#main'">
-          <a class="next" [attr.href]="prepareLink(next)" >
-            <div class="pagination-item-label">
-              <span>NEXT »</span>
-            </div>
-            <div class="pagination-item-title">{{next.data.title}}</div>
-          </a>
-        </docspa-link>
+        <a class="next" [attr.href]="prepareLink(next) + '#main'" >
+          <div class="pagination-item-label">
+            <span>NEXT »</span>
+          </div>
+          <div class="pagination-item-title">{{next.data.title}}</div>
+        </a>
       </div>
     </div>
   `,

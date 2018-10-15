@@ -38,12 +38,10 @@ import { LocationService } from '../services/location.service';
     <div class="results-panel" [class.show]="searchResults">
       <p class="empty" *ngIf="searchResults?.length === 0">No results!</p>
       <div class="matching-post" *ngFor="let result of searchResults | slice:0:9">
-        <docspa-link [href]="result.url" (click)="search(searchInput.value = '')">
-          <a [attr.href]="result.url">
-            <h2 [innerHTML]="result.name"></h2>
-            <p [innerHTML]="result.content"></p>
-          </a>
-        </docspa-link>
+        <a [attr.href]="result.url" (click)="search(searchInput.value = '')">
+          <h2 [innerHTML]="result.name"></h2>
+          <p [innerHTML]="result.content"></p>
+        </a>
       </div>
     </div>
   </div>

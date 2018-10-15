@@ -23,8 +23,8 @@ describe('DocSPA', () => {
   };
 
   const navbar = () => {
-    cy.get('@navbar').find('a').should('have.length', 1);
-    cy.get('@navbar').find('a').should('have.attr', 'href', 'https://github.com/swimlane/docspa') 
+    cy.get('@navbar').find('a').should('have.length', 2);
+    cy.get('@navbar').find('a').last().should('have.attr', 'href', 'https://github.com/swimlane/docspa') 
   };
 
   const noCover = () => {
@@ -79,7 +79,7 @@ describe('DocSPA', () => {
       cy.get('@search').find('.results-panel a').should('have.length', 0);
       
       cy.get('@input').type('doc', { force: true });
-      cy.get('@search').find('.results-panel a').should('have.length', 3);
+      cy.get('@search').find('.results-panel a').should('have.length', 4);
     });
 
     it('has pagination', () => {

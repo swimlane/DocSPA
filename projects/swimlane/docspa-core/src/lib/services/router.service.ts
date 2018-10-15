@@ -32,6 +32,35 @@ export class RouterService {
 
   changed = new EventEmitter<SimpleChanges>();
 
+  clickHandler = event => {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.shiftKey ||
+      event.ctrlKey ||
+      event.altKey ||
+      event.metaKey
+    ) {
+      return;
+    }
+
+    let anchor = event.target;
+    while (anchor && anchor.nodeName.toLowerCase() !== 'a') {
+      anchor = anchor.parentNode;
+    }
+
+    if (
+      !anchor ||
+      anchor.nodeName.toLowerCase() !== 'a' ||
+      anchor.target && anchor.target.toLowerCase() !== '_self' ||
+      anchor.hasAttribute('download')) {
+      return;
+    }
+
+    event.preventDefault();
+    this.go(anchor.getAttribute('href'));
+  }
+
   constructor(
     private location: Location,
     private settings: SettingsService,

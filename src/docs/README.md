@@ -1,7 +1,5 @@
 # DocSPA
 
-<md-link href="/quickstart#quick-start">link to user component</a>
-
 > An Angular-powered documentation SPA.
 
 ## Introduction

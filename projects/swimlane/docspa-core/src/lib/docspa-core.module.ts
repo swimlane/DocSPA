@@ -25,7 +25,6 @@ import { TOCPaginationComponent } from './custom-components/toc-pagination.compo
 import { EmbedStackblitzComponent } from './custom-components/embed-stackblitz.component';
 import { EmbedMarkdownComponent } from './custom-components/embed-file';
 import { EnvVarComponent } from './custom-components/env-var.component';
-import { MdLinkComponent } from './custom-components/md-link.component';
 import { MdPrintComponent } from './custom-components/md-print.component';
 
 import { DocSPACoreComponent } from './docspa-core.component';
@@ -47,7 +46,6 @@ const elements = [
   EnvVarComponent,
   TOCSearchComponent,
   TOCPaginationComponent,
-  MdLinkComponent,
   MdPrintComponent
 ];
 

@@ -1,12 +1,13 @@
 import {
   Component, ViewEncapsulation,
-  OnInit, OnChanges, HostBinding,
+  OnInit, OnChanges, HostBinding, HostListener,
   Input, Output, EventEmitter,
   ElementRef, Renderer
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { MarkdownService } from '../services/markdown.service';
+import { RouterService } from '../services/router.service';
 import { splitHash } from '../utils';
 
 import VFile from 'vfile';
@@ -42,8 +43,12 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   @HostBinding('innerHTML')
   html: string | SafeHtml;
 
+  @HostListener('click', ['$event'])
+  onClickBtn = this.routerService.clickHandler;
+
   constructor(
     private markdownService: MarkdownService,
+    private routerService: RouterService,
     private sanitizer: DomSanitizer,
     private elm: ElementRef,
     private renderer: Renderer
@@ -119,7 +124,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
         this.renderer.setElementClass(a, 'active', active);
 
         let p = a.parentNode;
-        while (p && ['LI', 'UL', 'P', 'MD-LINK'].includes(p.nodeName)) {
+        while (p && ['LI', 'UL', 'P'].includes(p.nodeName)) {
           this.renderer.setElementClass(p, 'active', active);
           p = p.parentNode;
         }
@@ -127,7 +132,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
 
       activeLinks.forEach(a => {
         let p = a.parentNode;
-        while (p && ['LI', 'UL', 'P', 'MD-LINK'].includes(p.nodeName)) {
+        while (p && ['LI', 'UL', 'P'].includes(p.nodeName)) {
           this.renderer.setElementClass(p, 'active', true);
           p = p.parentNode;
         }

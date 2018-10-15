@@ -6,4 +6,3 @@ export * from './embed-file';
 export * from './env-var.component';
 export * from './toc-search.component';
 export * from './toc-pagination.component';
-export * from './md-link.component';
