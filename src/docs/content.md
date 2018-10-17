@@ -2,9 +2,9 @@
 
 ## Pages
 
-Documents within the `./src/docs` folder are available at within the application.  By default directory links resolve to `README.md`.  Inter-document links in the can be relative or absolute. You can nest documents within sub folders.
+Documents within the `./src/docs` folder are available within the application. By default, directory links resolve to `README.md`.  Inter-document links can be relative or absolute. You can nest documents within subfolders.
 
-For example given the file structure:
+For example, given the following file structure:
 
 ```
 .
@@ -16,7 +16,7 @@ For example given the file structure:
         └── page.md
 ```
 
-These are the matching routes:
+Here are the matching routes:
 
 ```
 docs/README.md     => http://domain.com/
@@ -37,7 +37,7 @@ i> The default page can be set using the `homepage` property set in `docspa.conf
 
 ## Side Content
 
-Additional content is loaded from each directory.  In the default configuration the following files are loaded:
+Additional content is loaded from each directory. In the default configuration the following files are loaded:
 
     - `_sidebar.md`
     - `_navbar.md`
@@ -46,7 +46,7 @@ Additional content is loaded from each directory.  In the default configuration 
 
 If the current directory doesn't have a given file, it will fall back to the parent directory recursively until the content is found.
 
-i> The files to load can be set using the `sideLaod` property set in `docspa.config.ts`.  The default order of content is as shown above.  Set a value to false to turn off the feature.
+i> The files to load can be set using the `sideLoad` property set in `docspa.config.ts`.  The default order of content is as shown above. Set a value to false to turn off the feature.
 
 ## Coverpage
 
