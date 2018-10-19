@@ -1,4 +1,4 @@
-![DocSPA Logo](./assets/docspa_mark-only.png){ data-no-zoom="true" width="250px"}
+![DocSPA Logo](./assets/docspa_mark-only.png){ data-no-zoom="true" .docspa-logo }
 
 <h2>DocSPA <small><env-var var="version"><env-var></small></h2>
 
@@ -6,9 +6,16 @@
 
 ---
 
-- Live Angular examples in markdown
-- Custom elements and Angular Elements
-- Remark plugins
-- Compatible with many docsify plugins and themes
+[GitHub](https://github.com/swimlane/docspa){ .btn } [Get Started](/#docspa){ .btn .btn-primary }
 
-[GitHub](https://github.com/swimlane/docspa) [Get Started](/#docspa)
+[[grid]]
+| ![](./assets/2000px-Markdown-mark-solid.svg.png) | ![](./assets/angular2.png) |
+|-|-|
+| **Markdown** | **Angular** |
+| Focus on your project's documentation, write your docs with Markdown. | Powered by the tools you know, Angular and Angular CLI. Embed live Angular code. |
+
+[[grid]]
+| ![](./assets/remark.svg) | ![](./assets/Creating-custom-HTML-180x180.png) |
+|-|-|
+| **Remark plugins** | **Custom elements** |
+| Extend markdown using Remark plugins. | Further customize using custom elements.| 

@@ -74,7 +74,9 @@ body {
 
 .markdown-section  {
   max-width: 850px;
+}
 
+.markdown-section, .cover-main  {
   h1, h2, h3, h4, h5, h6 {
     a {
       font-weight: 600;
@@ -218,6 +220,16 @@ body {
       position: absolute;
       left: 0;
       bottom: 1.5em;
+    }
+
+    &.grid table {
+      margin-top: 10px;
+      width: 100%;
+      table-layout: fixed;
+
+      > * > tr > td {
+        vertical-align: top;
+      }
     }
   }
 

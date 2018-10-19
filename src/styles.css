@@ -18,6 +18,27 @@ body {
   position: fixed;
 }
 
+section.cover .cover-main {
+  padding: 0 40px;
+}
+
+section.cover td {
+  padding: 0 40px;
+}
+
+section.cover .custom-block.grid strong {
+  font-size: 24px;
+}
+
+section.cover .custom-block.grid img {
+  max-width: 80px;
+  margin-top: 40px;
+}
+
+section.cover .docspa-logo {
+  max-width: 250px;
+}
+
 /* Move edit button */
 .markdown-section > * > div[style] {
   float: right;
@@ -27,7 +48,8 @@ body {
   text-decoration: none;
 }
 
-section.cover hr, footer hr {
+section.cover hr,
+footer hr {
   border: none;
   border-bottom: 1px solid var(--theme-color-secondary-light, #0074d92e);
   margin: 2em 20%;
@@ -72,3 +94,34 @@ section.content footer {
 ::-webkit-scrollbar-thumb:hover {
     background: #555; 
 }
+
+/* Buttons */
+a.btn {
+  border-color: var(--theme-color, #0074d9);
+  border-radius: 2rem;
+  border-style: solid;
+  border-width: 1px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  color: var(--theme-color, #0074d9);
+  display: inline-block;
+  font-size: 1.05rem;
+  letter-spacing: 0.1rem;
+  margin: 0.5rem 1rem;
+  padding: 0.75em 2rem;
+  text-decoration: none;
+  -webkit-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+}
+a.btn.btn-primary {
+  background-color: var(--theme-color, #0074d9);
+  color: #fff;
+}
+a.btn.btn-primary:hover {
+  color: inherit;
+  opacity: 0.8;
+}
+a.btn:hover {
+  color: inherit;
+}
+
