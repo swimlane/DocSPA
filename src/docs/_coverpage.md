@@ -1,4 +1,4 @@
-![DocSPA Logo](./logo.png){ data-no-zoom="true" }
+![DocSPA Logo](./assets/docspa_mark-only.png){ data-no-zoom="true" width="250px"}
 
 <h2>DocSPA <small><env-var var="version"><env-var></small></h2>
 

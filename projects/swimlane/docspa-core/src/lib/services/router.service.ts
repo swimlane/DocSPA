@@ -57,8 +57,14 @@ export class RouterService {
       return;
     }
 
+    const href = anchor.getAttribute('href');
+
+    if (!href || LocationService.isAbsolutePath(href)) {
+      return;
+    }
+
     event.preventDefault();
-    this.go(anchor.getAttribute('href'));
+    this.go(href);
   }
 
   constructor(

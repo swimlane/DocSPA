@@ -46,6 +46,7 @@ export class DocSPACoreComponent implements OnInit {
   ) {
   }
 
+  // TODO: Move to a scroll spy event on EmbedMarkdownComponent
   @HostListener('window:scroll', [])
   onWindowScroll() {
     let add = true;

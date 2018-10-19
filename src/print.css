@@ -61,7 +61,7 @@
   }
   img {
     page-break-inside: avoid;
-    page-break-after: avoid;
+    page-break-before: avoid;
   }
   table,
   pre {
@@ -136,5 +136,10 @@
 
   details > summary {
     display: none;
+  }
+
+  .custom-block {
+    page-break-inside: avoid;
+    page-break-before: avoid;
   }
 }

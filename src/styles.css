@@ -44,6 +44,16 @@ section.content footer {
   text-align: center;
 }
 
+.left-sidebar {
+  padding: 0;
+}
+
+.left-sidebar .docspa-logo {
+    text-align: center;
+    width: 100%;
+    display: block;
+}
+
 ::-webkit-scrollbar {
     width: 5px;
 }

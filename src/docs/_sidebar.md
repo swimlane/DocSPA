@@ -1,4 +1,5 @@
-<h1><a class="app-name-link" href="">DocSPA</a></h1>
+[![DocSPA Logo](./assets/docspa-inline-125px.png){ data-no-zoom="true" }](/){ .docspa-logo }
+
 <md-toc-search summary="SUMMARY"></md-toc-search>
 
 ---
