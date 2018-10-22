@@ -5,9 +5,11 @@
 
   // Cover
   --cover-background-color: linear-gradient(to left bottom, hsl(28, 100%, 85%) 0%,hsl(149, 100%, 85%) 100%);
+  --cover-border-inset: 50px;
 
   // Sidebar
   --sidebar-width: 300px;
+  --sidebar-offset: calc(-1 * var(--sidebar-width, 300px));
   --sidebar-background: #fff;
   --sidebar-border-color: rgba(0,0,0,0.07);
   --sidebar-border-width: 1px;
@@ -317,6 +319,8 @@ body {
   width: var(--sidebar-width, 300px);
   transition: transform var(--sidebar-transition-duration, 250ms) ease-out;
   border-right: var(--sidebar-border-width, 1px) solid var(--sidebar-border-color, rgba(0,0,0,0.07));
+  left: auto;
+  transform: translateX(0);
 }
 
 .sidebar.right-sidebar {
@@ -332,10 +336,17 @@ body {
   transition: transform var(--sidebar-transition-duration, 250ms) ease-out;
   width: var(--right-sidebar-width, 300px);
   z-index: 20;
+  transform: translateX(0);
 }
 
 section.cover {
+  padding: calc(var(--cover-border-inset, 0px) + var(--cover-border-width, 0px));
   background: var(--cover-background-color);
+  min-height: 100vh;
+  height: unset;
+  color: var(--cover-color, inherit);
+  text-align: var(--cover-text-align, center);
+  align-items: unset;
 }
 
 section.cover.show {
@@ -348,11 +359,11 @@ section.cover.show {
 
 body.close {
   .sidebar.left-sidebar {
-    transform: translateX(calc(-1 * var(--sidebar-width, 300px)));
+    transform: translateX(-100%);
   }
 
   .sidebar.right-sidebar {
-    transform: translateX(var(--sidebar-width, 300px));
+    transform: translateX(100%);
   }
 
   .content {

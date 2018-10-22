@@ -20,7 +20,7 @@ export const config = {
   coverpage: '_coverpage.md',
   plugins: [
     window['EditOnGithubPlugin']
-      .create('https://github.com/swimlane/docspa/blob/master/src/docs/', null, '✎ Edit this page'),
+      .create('https://github.com/swimlane/docspa/blob/master/src/docs/', null, '✎'),
     tabsHook
   ],
   remarkPlugins: [
