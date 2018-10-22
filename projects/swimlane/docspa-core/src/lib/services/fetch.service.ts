@@ -116,7 +116,7 @@ export class FetchService {
         }),
         map((contents: string) => {
           return {
-            timestampCached: Date.now(),
+            timestampCached: new Date(),
             contents,
             notFound,
             resolvedPath: url

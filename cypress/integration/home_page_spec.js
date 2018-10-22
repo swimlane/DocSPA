@@ -10,7 +10,7 @@ describe('DocSPA', () => {
   });
 
   const sidebar = () => { // TODO: check active link
-    cy.get('@sidebar').find('h1').contains('DocSPA');
+    cy.get('@sidebar').find('img').should('have.attr', 'src', 'docs/assets/docspa-inline-125px.png');
     cy.get('@sidebar').find('md-toc').should('have.length', 5);
 
     cy.get('@sidebar').find('md-toc a').should('have.length', 29);
@@ -52,7 +52,7 @@ describe('DocSPA', () => {
       cy.get('@coverpage').find('blockquote').contains('An Angular-powered documentation SPA');
     
       cy.get('@coverpage').find('img').should('have.attr', 'data-no-zoom', 'true');
-      cy.get('@coverpage').find('img').should('have.attr', 'src', 'docs/logo.png');
+      cy.get('@coverpage').find('img').should('have.attr', 'src', 'docs/assets/docspa_mark-only.png');
       cy.get('@coverpage').find('a').should('have.length', 2);
 
       cy.get('@coverpage').find('env-var').contains(pkg.version);
