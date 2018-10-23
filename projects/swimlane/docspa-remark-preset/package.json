@@ -36,7 +36,7 @@
     "mermaid": "^8.0.0-rc.8",
     "parse-numeric-range": "0.0.2",
     "prismjs": "^1.15.0",
-    "remark-attr": "^0.6.2",
+    "remark-attr": "^0.7.1",
     "remark-custom-blocks": "^2.2.3",
     "remark-frontmatter": "^1.2.1",
     "remark-gemoji-to-emoji": "^1.1.0",
