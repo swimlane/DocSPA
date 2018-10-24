@@ -9,6 +9,8 @@ import { SettingsService } from './settings.service';
 import { FetchService } from './fetch.service';
 import { LocationService } from './location.service';
 
+import VFile from 'vfile';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -25,10 +27,10 @@ export class RouterService {
 
   contentPage: string;
 
-  coverPath: string;
+  /* coverPath: string;
   sidebarPath: string;
   navbarPath: string;
-  rightSidebarPath: string;
+  rightSidebarPath: string; */
 
   changed = new EventEmitter<SimpleChanges>();
 
@@ -128,23 +130,41 @@ export class RouterService {
     if (this.contentPage !== page) {
       changes.contentPage = new SimpleChange(this.contentPage, this.contentPage = page, false);
 
-      const cover = vfile.basename === this.settings.homepage ?
-        this.fetchService.find(getFullPath(vfile), this.settings.coverpage) :
-        null;
+      const [coverPage, sideLoads] = await Promise.all([
+        this.resolveCoverPath(vfile),
+        this.resolveSideloadPaths(vfile)
+      ]);
 
-      const promises = this.settings.sideLoad.map(s => {
-        return this.fetchService.findup(vfile.cwd, vfile.path, s);
-      });
-
-      Promise.all([cover, ...promises]).then(([coverPage, ...sideLoad]) => {
-        changes.coverPage = new SimpleChange(null, this.locationService.stripBaseHref(coverPage as any), false);
-        changes.sideLoad = new SimpleChange(null, sideLoad.map((x: any) => this.locationService.stripBaseHref(x)), false);
-        this.changed.emit(changes);
-      });
+      changes.coverPage = new SimpleChange(null, coverPage, false);
+      changes.sideLoad = new SimpleChange(null, sideLoads, false);
     }
 
     if (Object.keys(changes).length > 0) {
       this.changed.emit(changes);
     }
+  }
+
+  private async resolveCoverPath(vfile: VFile) {
+    const path = vfile.basename === this.settings.homepage ?
+      await this.fetchService.find(getFullPath(vfile), this.settings.coverpage) :
+      null;
+    return this.locationService.stripBaseHref(path as any);
+  }
+
+  private async resolveSideloadPaths(vfile: VFile) {
+    const sideLoad = this.settings.sideLoad;
+    const keys = Object.keys(sideLoad);
+
+    const promises = keys.map(key => {
+      return this.fetchService.findup(vfile.cwd, vfile.path, sideLoad[key]);
+    });
+
+    const sideLoadPathsArr = await Promise.all(promises);
+
+    return sideLoadPathsArr.reduce((acc: {[key: string]: string}, path: any, idx: number) => {
+      const key = keys[idx];
+      acc[key] = this.locationService.stripBaseHref(path);
+      return acc;
+    }, {} as {[key: string]: string});
   }
 }

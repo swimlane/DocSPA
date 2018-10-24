@@ -10,7 +10,7 @@ interface Changes {
   contentPage: string;
   coverPage: string;
   anchor: string;
-  sideLoad: [string];
+  sideLoad: {[key: string]: string};
 }
 
 @Component({
@@ -136,10 +136,10 @@ export class DocSPACoreComponent implements OnInit {
 
     if (changes.sideLoad) {
       const sideLoad = changes.sideLoad.currentValue;
-      this.sidebarPage = sideLoad[0];
-      this.navbarPage = sideLoad[1];
-      this.rightSidebarPage = sideLoad[2];
-      this.footerPage = sideLoad[3];
+      this.sidebarPage = sideLoad.sidebar;
+      this.navbarPage = sideLoad.navbar;
+      this.rightSidebarPage = sideLoad.rightSidebar;
+      this.footerPage = sideLoad.footer;
     }
 
     if ('anchor' in changes) {

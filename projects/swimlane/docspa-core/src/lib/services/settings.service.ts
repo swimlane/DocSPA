@@ -16,7 +16,7 @@ export class SettingsService {
   meta = {};
 
   homepage = 'README.md';
-  sideLoad = [];
+  sideLoad: {[key: string]: string } = {};
 
   coverpage = '';
   basePath = 'docs/';
@@ -48,9 +48,22 @@ export class SettingsService {
       this.merge(config);
     }
 
-    if (!Array.isArray(this.sideLoad)) {
-      this.sideLoad = [this.sideLoad];
+    let sideLoad: any = this.sideLoad;
+
+    if (typeof sideLoad !== 'object') { // legacy
+      sideLoad = [sideLoad];
     }
+
+    if (Array.isArray(sideLoad)) {  // legacy
+      sideLoad = ['sidebar', 'navbar', 'rightSidebar', 'footer'].reduce((acc, key, idx) => {
+        if (sideLoad[idx]) {
+          acc[key] = sideLoad[idx];
+        }
+        return acc;
+      }, {});
+    }
+
+    this.sideLoad = sideLoad;
 
     this.currentTheme = (config && config.theme) || {};
 

@@ -1,5 +1,4 @@
-import { Injectable, EventEmitter } from '@angular/core';
-import { Location } from '@angular/common';
+import { Injectable } from '@angular/core';
 import VFile from 'vfile';
 
 import { join } from '../utils';
@@ -32,7 +31,6 @@ export class LocationService {
   }
 
   constructor(
-    private location: Location,
     private settings: SettingsService
   ) {
   }

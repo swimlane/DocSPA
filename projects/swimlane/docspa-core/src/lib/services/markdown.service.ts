@@ -24,6 +24,13 @@ export class MarkdownService {
   processor: any;
   mdastProcessor: any;
 
+  vm = {  // Mock docsify vm for docsify plugins
+    config: this.settings,
+    route: {
+      file: ''
+    }
+  };
+
   private beforeEach = [];
   private afterEach = [];
   private doneEach = [];
@@ -35,10 +42,6 @@ export class MarkdownService {
     private settings: SettingsService
   ) {
     if (settings.plugins.length > 0) {
-      const vm = {
-        config: settings,
-        route: locationService
-      };
       const hook = {
         init: fn => fn(), // Called when the script starts running, only trigger once, no arguments
         beforeEach: fn => this.beforeEach.push(fn), // Invoked each time before parsing the Markdown file
@@ -49,7 +52,7 @@ export class MarkdownService {
       };
 
       // initialize docsify-link plugins
-      settings.plugins.forEach(plugin => plugin(hook, vm));
+      settings.plugins.forEach(plugin => plugin(hook, this.vm));
     }
 
     this.processor = unified()
@@ -74,7 +77,7 @@ export class MarkdownService {
       const url = join(vfile.cwd, vfile.path);
       o = this.fetchService.get(url)
         .pipe(
-          flatMap((res: CachePage): Promise<VFile> => {
+          flatMap(async (res: CachePage) => {
             vfile.data = vfile.data || {};
             vfile.data.docspa = {};
 
@@ -82,18 +85,19 @@ export class MarkdownService {
 
             this.logger.debug(`Processing started: ${vfile.path}`);
             vfile.contents = plugins ?
-              this.processBeforeEach(res.contents) :
+              this.processBeforeEach(res) :
               res.contents;
 
-            return this.processor.process(vfile).then((err): VFile => {
-              vfile.contents = plugins ?
-                this.processAfterEach(String(vfile)) :
-                String(vfile);
-              if (plugins) {
-                this.logger.info(reporter(err || page));
-              }
-              return vfile;
-            });
+            const err = await this.processor.process(vfile);
+
+            vfile.contents = plugins ?
+              this.processAfterEach(vfile) :
+              String(vfile);
+
+            if (plugins) {
+              this.logger.info(reporter(err || page));
+            }
+            return vfile;
           }),
           share()
         );
@@ -110,11 +114,13 @@ export class MarkdownService {
     return o;
   }
 
-  private processBeforeEach(_: string) {
-    return this.beforeEach.reduce((_md, fn) => fn(_md), _);
+  private processBeforeEach(page: CachePage) {
+    this.vm.route.file = page.resolvedPath;
+    return this.beforeEach.reduce((_md, fn) => fn(_md), page.contents);
   }
 
-  private processAfterEach(_: string) {
-    return this.afterEach.reduce((_html, fn) => fn(_html), _);
+  private processAfterEach(page: VFile) {
+    this.vm.route.file = page.history[1].replace(/^\//, '');
+    return this.afterEach.reduce((_html, fn) => fn(_html), page.contents);
   }
 }

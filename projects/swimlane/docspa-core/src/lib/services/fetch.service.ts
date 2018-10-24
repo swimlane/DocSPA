@@ -47,11 +47,10 @@ export class FetchService {
    * @param dir
    * @param filename
    */
-  find(dir: string, filename: string): Promise<string> {
+  async find(dir: string, filename: string): Promise<string> {
     const url = filename ? resolve(dir, filename) : null;
-    return this.get(url)
-      .toPromise()
-      .then(item => ((item.notFound || !url) ? null : normalize(url)));
+    const item = await this.get(url).toPromise();
+    return item.notFound || !url ? null : normalize(url);
   }
 
   /**
@@ -63,22 +62,19 @@ export class FetchService {
    * @param from {string} Base URL (excluding root) being resolved against.
    * @param to {string} the filename to resolve.
    */
-  findup(root: string, from: string, to: string) {
+  async findup(root: string, from: string, to: string): Promise<string> {
     const url = to ? join(root, resolve(from, to)) : null;
-    return this.get(url)
-      .toPromise()
-      .then(item => {
-        if (item.notFound) {
-          if (from === '/') {
-            return null;
-          }
-          from = normalize(join(from, '..'));
-          return from === '/'
-            ? this.find(join(root, from), to)
-            : this.findup(root, from, to);
-        }
-        return normalize(url);
-      });
+    const item = await this.get(url).toPromise();
+    if (item.notFound) {
+      if (from === '/') {
+        return null;
+      }
+      from = normalize(join(from, '..'));
+      return from === '/'
+        ? await this.find(join(root, from), to)
+        : await this.findup(root, from, to);
+    }
+    return normalize(url);
   }
 
   /**
