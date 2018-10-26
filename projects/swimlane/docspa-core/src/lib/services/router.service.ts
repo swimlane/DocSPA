@@ -2,6 +2,7 @@ import { Injectable, EventEmitter, SimpleChange, SimpleChanges } from '@angular/
 import { Location, PopStateEvent } from '@angular/common';
 import { URLSearchParams } from '@angular/http';
 import { NGXLogger } from 'ngx-logger';
+import { ReplaySubject } from 'rxjs';
 
 import { getFullPath } from '../utils';
 
@@ -33,6 +34,17 @@ export class RouterService {
   rightSidebarPath: string; */
 
   changed = new EventEmitter<SimpleChanges>();
+
+  private readonly urlParser = document.createElement('a');
+  private urlSubject = new ReplaySubject<string>(1);
+
+  private get locationPath() {
+    let url = this.location.path(true);
+    if (this.isDirname(window.location.href, url) && url.slice(-1) !== '/') {
+      url += '/';
+    }
+    return url;
+  }
 
   clickHandler = event => {
     if (
@@ -76,20 +88,34 @@ export class RouterService {
     private locationService: LocationService,
     private logger: NGXLogger
   ) {
-    location.subscribe((v: PopStateEvent) => {
-      if (v.type === 'hashchange') {
-        this.hashchange(v.url);
+    location.subscribe((state: PopStateEvent) => {
+      if (state.type === 'hashchange') {
+        return this.urlSubject.next(this.locationPath || '');
       }
+    });
+
+    // TODO: move this.... could be in the docspa-page
+    this.urlSubject.subscribe(path => {
+      this.hashchange(path || '/');
     });
   }
 
   onInit() {
-    this.hashchange(this.location.path(true) || '/');
+    this.urlSubject.next(this.locationPath || '');
   }
 
   go(url: string = '/') {
-    this.location.go(url);
-    this.hashchange(this.location.path(true) || '/');
+    if (!url) { return; }
+    if (LocationService.isAbsolutePath(url)) {
+      this.goExternal(url);
+    } else {
+      this.location.go(url);
+      this.urlSubject.next(url);
+    }
+  }
+
+  private goExternal(url: string) {
+    window.location.assign(url);
   }
 
   private isDirname(href: string, page: string) {
@@ -108,11 +134,6 @@ export class RouterService {
     let [page = '/', anchor = ''] = url.split(/[#\?]/);
     anchor = anchor || '';
     page = page || '/';
-
-    // If the current URL end in a slash, the page is a directory, not a file.
-    if (this.isDirname(window.location.href, page) && page.slice(-1) !== '/') {
-      page += '/';
-    }
 
     this.logger.debug(`page: ${page}`);
     this.logger.debug(`anchor: ${anchor}`);

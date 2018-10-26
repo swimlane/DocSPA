@@ -2,7 +2,7 @@ import { NgModule, Compiler, Injector, ModuleWithProviders } from '@angular/core
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JitCompilerFactory } from '@angular/platform-browser-dynamic';
 import { createCustomElement } from '@angular/elements';
 
@@ -15,6 +15,7 @@ import { SettingsService } from './services/settings.service';
 import { FetchService } from './services/fetch.service';
 import { MarkdownService } from './services/markdown.service';
 import { RouterService } from './services/router.service';
+import { CacheInterceptor } from './services/cache.interceptor';
 
 // Custom Elements
 import { MadeWithDocSPAComponent } from './custom-components/made-with-love';
@@ -74,7 +75,10 @@ const elements = [
     FetchService,
     MarkdownService,
     RouterService,
-    { provide: Compiler, useFactory: createJitCompiler }
+    { provide: Compiler, useFactory: createJitCompiler },
+    [
+      { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }
+    ]
   ],
   entryComponents: [
     ...elements

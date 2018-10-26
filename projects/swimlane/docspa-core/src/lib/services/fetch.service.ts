@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
 import { map, share, catchError } from 'rxjs/operators';
-import { join } from '../utils';
-import { normalize, basename } from 'path';
+import { normalize } from 'path';
 import { resolve } from 'url';
-import QuickLRU from 'quick-lru';
 
+import { join } from '../utils';
 import { SettingsService } from './settings.service';
 
 export interface CachePage {
   resolvedPath: string;
-  timestampCached: Date;
   notFound: boolean;
   contents: string;
 }
@@ -21,7 +19,6 @@ export interface CachePage {
   providedIn: 'root'
 })
 export class FetchService {
-  private cache: QuickLRU<string, CachePage>;
   private inFlight = new Map<string, Observable<CachePage>>();
 
   get root() {
@@ -36,8 +33,6 @@ export class FetchService {
     private http: HttpClient,
     private settings: SettingsService
   ) {
-    const maxSize = settings.maxPageCacheSize || 100;
-    this.cache = new QuickLRU<string, CachePage>({ maxSize });
   }
 
   /**
@@ -50,7 +45,10 @@ export class FetchService {
   async find(dir: string, filename: string): Promise<string> {
     const url = filename ? resolve(dir, filename) : null;
     const item = await this.get(url).toPromise();
-    return item.notFound || !url ? null : normalize(url);
+    if (!item) {
+      throw new Error('Possible chache error');
+    }
+    return item.notFound || !url ? null : item.resolvedPath;
   }
 
   /**
@@ -65,6 +63,9 @@ export class FetchService {
   async findup(root: string, from: string, to: string): Promise<string> {
     const url = to ? join(root, resolve(from, to)) : null;
     const item = await this.get(url).toPromise();
+    if (!item) {
+      throw new Error('Possible chache error');
+    }
     if (item.notFound) {
       if (from === '/') {
         return null;
@@ -74,28 +75,23 @@ export class FetchService {
         ? await this.find(join(root, from), to)
         : await this.findup(root, from, to);
     }
-    return normalize(url);
+    return item.resolvedPath;
   }
 
   /**
    *
    * @param url {string} Full path relative to root
    */
-  get(url: string, options = { cache: true }): Observable<CachePage> {
+  get(url: string): Observable<CachePage> {
     if (!url) {
       return of({
         resolvedPath: url,
-        timestampCached: new Date(),
         contents: '',
         notFound: false
       });
     }
 
-    if (options.cache && this.cache.has(url)) {
-      return of(this.cache.get(url));
-    }
-
-    if (options.cache && this.inFlight.has(url)) {
+    if (this.inFlight.has(url)) {
       return this.inFlight.get(url);
     }
 
@@ -105,31 +101,19 @@ export class FetchService {
       .pipe(
         catchError(() => {
           notFound = true;
-          if (this.cache.has(this.path404)) {
-            return of(this.cache.get(this.path404).contents);
-          }
           return this.http.get(this.path404, { responseType: 'text' });
         }),
         map((contents: string) => {
+          this.inFlight.delete(url);
           return {
-            timestampCached: new Date(),
             contents,
             notFound,
             resolvedPath: url
           };
         }),
-        map((item: CachePage) => {
-          if (options.cache) {
-            this.cache.set(url, item);
-            if (notFound) {
-              this.cache.set(this.path404, item);
-            }
-            this.inFlight.delete(url);
-          }
-          return item;
-        }),
         share()
       );
+
     this.inFlight.set(url, obs);
     return obs;
   }

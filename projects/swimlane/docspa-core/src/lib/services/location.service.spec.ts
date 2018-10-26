@@ -52,20 +52,20 @@ describe('LocationService', () => {
   }));
 
   it('#prepareLink', inject([LocationService], (service: LocationService) => {
-    expect(service.prepareLink('thepage', '/')).toBe('#/thepage');
-    expect(service.prepareLink('thepage', '/features/')).toBe('#/features/thepage');
-    expect(service.prepareLink('../thepage', '/features/sub/')).toBe('#/features/thepage');
-    expect(service.prepareLink('/thepage', '/features/sub/')).toBe('#/thepage');
+    expect(service.prepareLink('thepage', '/')).toBe('/thepage');
+    expect(service.prepareLink('thepage', '/features/')).toBe('/features/thepage');
+    expect(service.prepareLink('../thepage', '/features/sub/')).toBe('/features/thepage');
+    expect(service.prepareLink('/thepage', '/features/sub/')).toBe('/thepage');
 
     expect(service.prepareLink('http://www.swimlane.com', '/')).toBe('http://www.swimlane.com');
   }));
 
   it('#prepareLink with anchors', inject([LocationService], (service: LocationService) => {
-    expect(service.prepareLink('thepage#anchor', '/')).toBe('#/thepage#anchor');
-    expect(service.prepareLink('thepage#anchor', '/features/')).toBe('#/features/thepage#anchor');
-    expect(service.prepareLink('../thepage#anchor', '/features/sub/')).toBe('#/features/thepage#anchor');
+    expect(service.prepareLink('thepage#anchor', '/')).toBe('/thepage#anchor');
+    expect(service.prepareLink('thepage#anchor', '/features/')).toBe('/features/thepage#anchor');
+    expect(service.prepareLink('../thepage#anchor', '/features/sub/')).toBe('/features/thepage#anchor');
 
-    expect(service.prepareLink('#anchor', '/')).toBe('#/#anchor');
+    expect(service.prepareLink('#anchor', '/')).toBe('/#anchor');
   }));
 
   it('#prepareSrc', inject([LocationService], (service: LocationService) => {

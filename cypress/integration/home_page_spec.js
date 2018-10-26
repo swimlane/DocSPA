@@ -129,6 +129,45 @@ describe('DocSPA', () => {
     });
   });
 
+  describe('Main navigation', () => {
+    before(() => cy.visit('/'));
+
+    it('start on readme', () => {
+      cy.get('@content').find('h1').contains('DocSPA');
+    });
+
+    it('to features page', () => {
+      cy.get('@sidebar').find('md-toc[path="features"] a').first().click({ force: true });
+      cy.get('@content').find('h1').contains('Features');
+    });
+
+    it('to content page', () => {
+      cy.get('@sidebar').find('md-toc[path="content"] a').first().click({ force: true });
+      cy.get('@content').find('h1').contains('Content');
+    });
+
+    it('to customization page', () => {
+      cy.get('@sidebar').find('md-toc[path="customization"] a').first().click({ force: true });
+      cy.get('@content').find('h1').contains('Customization');
+    });
+
+    it('to quickstart page', () => {
+      cy.get('@sidebar').find('md-toc[path="quickstart"] a').first().click({ force: true });
+      cy.get('@content').find('h1').contains('Quick start');
+    });
+
+    it('content links', () => {
+      cy.get('@sidebar').find('md-toc[path="/"] a').first().click({ force: true });
+      cy.get('@content').find('h1').contains('DocSPA');
+      cy.get('@content').find('a[href="/quickstart"]').click({ force: true });
+      cy.get('@content').find('h1').contains('Quick start');
+      cy.get('@content').find('.info > a').first().click({ force: true });
+      cy.get('@content').find('h1').contains('Adding DocSPA to a angular cli app');
+      cy.get('@content').find(':nth-child(12) > a').click({ force: true });
+      cy.get('@content').find('h1').contains('Config Reference');
+    });
+  });
+
   describe('The quickstart page', () => {
     before(() => cy.visit('/quickstart'));
 
@@ -170,24 +209,16 @@ describe('DocSPA', () => {
     });
   });
 
-  describe('Page not found in subdir', () => {
-    before(() => cy.visit('/sub/here-too'));
+  describe('Sub directory readme not found', () => {
+    before(() => cy.visit('/sub')); // note: this does not match sub/
 
     it('has a title', () => {
       cy.title().should('eq', 'DocSPA - ERROR 404')
     });
   
     it('has no cover', noCover);
-
-    it('has a sidebar', () => {
-      cy.get('@sidebar').find('.sidebar-nav li a').should('have.length', 6);
-      cy.get('@sidebar').find('.sidebar-nav li a').should('have.attr', 'href').and('matches', /^[\/]?sub\/.*/); 
-    });
-  
-    it('has a navbar', () => {
-      cy.get('@navbar').find('a').should('have.length', 6);
-      cy.get('@navbar').find('a').should('have.attr', 'href').and('matches', /^[\/]?sub\/.*/);
-    });
+    it('sidebar', sidebar);
+    it('navbar', navbar);
   
     it('has content', () => {
       cy.get('@content').find('h1', { timeout: 6000 }).contains('ERROR 404');
@@ -272,6 +303,73 @@ describe('DocSPA', () => {
       cy.get('@content').find('p > a').each(($el, index, $list) => {
         (index > 0) && cy.wrap($el).should('have.attr', 'href').and('matches', /^[\/]?sub\/.*/);
       });
+    });
+  });
+
+  describe('Page not found in subdir', () => {
+    before(() => cy.visit('/sub/here-too'));
+
+    it('has a title', () => {
+      cy.title().should('eq', 'DocSPA - ERROR 404')
+    });
+  
+    it('has no cover', noCover);
+
+    it('has a sidebar', () => {
+      cy.get('@sidebar').find('.sidebar-nav li a').should('have.length', 6);
+      cy.get('@sidebar').find('.sidebar-nav li a').should('have.attr', 'href').and('matches', /^[\/]?sub\/.*/); 
+    });
+  
+    it('has a navbar', () => {
+      cy.get('@navbar').find('a').should('have.length', 6);
+      cy.get('@navbar').find('a').should('have.attr', 'href').and('matches', /^[\/]?sub\/.*/);
+    });
+  
+    it('has content', () => {
+      cy.get('@content').find('h1', { timeout: 6000 }).contains('ERROR 404');
+    });
+  });
+
+  describe('Sub navigation', () => {
+    before(() => cy.visit('/sub/'));
+
+    afterEach(() => {
+      cy.get('@sidebar').find('a[href="sub/"]').click({ force: true });
+      cy.get('@content').find('h1[id="sub"]').contains('This is the sub readme');
+    })
+
+    it('start on readme', () => {
+      cy.get('@content').find('h1[id="sub"]').contains('This is the sub readme');
+    });
+
+    it('to page a', () => {
+      cy.get('@content').find('a[href="sub/a"]').click({ force: true });
+      cy.get('@content').find('h1[id="a"]').contains('A');
+    });
+
+    it('to page b', () => {
+      cy.get('@content').find('a[href="sub/b"]').click({ force: true });
+      cy.get('@content').find('h1[id="b"]').contains('B');
+    });
+
+    it('to sub page a', () => {
+      cy.get('@content').find('a[href="sub/sub/a"]').click({ force: true });
+      cy.get('@content').find('h1[id="sub-a"]').contains('Sub A');
+    });
+
+    it('to sub page b', () => {
+      cy.get('@content').find('a[href="sub/sub/b"]').click({ force: true });
+      cy.get('@content').find('h1[id="sub-b"]').contains('Sub B');
+    });
+
+    it('to page missing page a', () => {
+      cy.get('@content').find('a[href="sub/sub/missing_a"]').click({ force: true });
+      cy.get('@content').find('h1[id="error-404"]').contains('ERROR 404');
+    });
+
+    it('to page missing page b', () => {
+      cy.get('@content').find('a[href="sub/sub/missing_b"]').click({ force: true });
+      cy.get('@content').find('h1[id="error-404"]').contains('ERROR 404');
     });
   });
 });

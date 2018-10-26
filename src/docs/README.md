@@ -28,7 +28,7 @@ DocSPA is a work in progress.  DocSPA was developed by [Swimlane](http://swimlan
 
 ## Why not X?
 
-DocSPA is not SEO-friendly, if you need a pregenerate SEO-friendly site without live Angular support you might try [GitBook](https://www.gitbook.com/).  If you don't need a pregenerate site nor embedded Angular code (or prefer Vue) you might try [Docsify](https://docsify.js.org/#/).
+DocSPA is not SEO-friendly, if you need a pregenerated SEO-friendly site without live Angular support you might try [GitBook](https://www.gitbook.com/).  If you don't need a pregenerated site nor embedded Angular code (or prefer Vue) you might try [Docsify](https://docsify.js.org/#/).
 
 ## Credits
 

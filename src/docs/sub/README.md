@@ -18,6 +18,9 @@ author: J. Harshbarger
 [./sub/a](./sub/a)
 [./sub/b](./sub/b)
 
+[./sub/missing_a](./sub/missing_a)
+[./sub/missing_b](./sub/missing_b)
+
 ## Images
 
 ![](./logo.png){ data-cy="image-test" }
