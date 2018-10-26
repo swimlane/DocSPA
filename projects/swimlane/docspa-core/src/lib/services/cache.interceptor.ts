@@ -54,6 +54,6 @@ export class CacheInterceptor implements HttpInterceptor {
   }
 
   isCachable(req: HttpRequest<any>) {
-    return req.method === 'GET' && req.url.endsWith('.md');
+    return req.method === 'GET';
   }
 }
