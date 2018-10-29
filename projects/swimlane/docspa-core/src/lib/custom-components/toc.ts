@@ -52,7 +52,6 @@ export class TOCComponent implements OnInit {
 
   private processor: any;
   private _path: string;
-  private _summary: string;
 
   constructor(
     private fetchService: FetchService,

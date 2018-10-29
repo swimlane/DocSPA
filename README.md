@@ -6,21 +6,21 @@
 
 DocSPA (like it's inspiration docsify) generates your documentation website on the fly. Unlike GitBook, it does not generate static HTML files. Instead, it loads and parses your Markdown files and displays them as website. Unlike docsify, DocSPA generates an Angular SPA, which allows embedded Angular components and excellent [custom element support](https://custom-elements-everywhere.com/#angular).
 
-See the [Quick start](http://localhost:4200/#/quickstart) for details on how to get up and running quickly.
+See the [Quick start](https://swimlane.github.io/DocSPA/quickstart) for details on how to get up and running quickly.
 
 ## How it works
 
-A DocSPA site is a <abbr title="Single Page Application">SPA</abbr> powered by Angular and the Angular CLI.  If you've used the Angular CLI before you already know a lot about the DocSPA infrastructure.  If you built Angular applications before, customizing a DocSPA site will be a familiar experience.  If you are not familar with Angular, no worries, out-of-the-box DocSPA provides a simple experience so you can get right to your [content](http://localhost:4200/#/content).
+A DocSPA site is a <abbr title="Single Page Application">SPA</abbr> powered by Angular and the Angular CLI.  If you've used the Angular CLI before you already know a lot about the DocSPA infrastructure.  If you built Angular applications before, customizing a DocSPA site will be a familiar experience.  If you are not familar with Angular, no worries, out-of-the-box DocSPA provides a simple experience so you can get right to your [content](https://swimlane.github.io/DocSPA/content).
 
-As mentioned DocSPA is a Angular SPA.  It uses Angular CLI tools for the build process.  Once built and deployed the DocSPA site will generate HTML content on-the-fly from your markdown content.  Markdown files are converted to HTML using (remark)[https://remark.js.org/].  Remark plugins (both DocSPA internal and third-party) handle all markdown extensions.  In addition, the DocSPA site supports custom elements (one of the key features of the Web Components standard) and includes custom elements that allows [live Angular examples](http://localhost:4200/#/features#runtime-content) within markdown!
+As mentioned DocSPA is a Angular SPA.  It uses Angular CLI tools for the build process.  Once built and deployed the DocSPA site will generate HTML content on-the-fly from your markdown content.  Markdown files are converted to HTML using (remark)[https://remark.js.org/].  Remark plugins (both DocSPA internal and third-party) handle all markdown extensions.  In addition, the DocSPA site supports custom elements (one of the key features of the Web Components standard) and includes custom elements that allows [live Angular examples](https://swimlane.github.io/DocSPA/features#runtime-content) within markdown!
 
 ## Features
 
-- [Ability to leverage Angular and Web Components in markdown](http://localhost:4200/#/features#custom-elements)
-- [Remark plugins with defaults optimized for technical documentation](http://localhost:4200/#/features#markdown-extensions)
-- [Compatible with many docsify plugins and themes](http://localhost:4200/#/features#docsify-plugins)
+- [Ability to leverage Angular and Web Components in markdown](https://swimlane.github.io/DocSPA/features#custom-elements)
+- [Remark plugins with defaults optimized for technical documentation](https://swimlane.github.io/DocSPA/features#markdown-extensions)
+- [Compatible with many docsify plugins and themes](https://swimlane.github.io/DocSPA/features#docsify-plugins)
 
-[Examples](http://localhost:4200/#/features.md)
+[Examples](https://swimlane.github.io/DocSPA/features)
 
 ## Todo
 

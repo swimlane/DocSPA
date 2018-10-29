@@ -11,16 +11,14 @@ export const config = {
   basePath: 'docs/',
   homepage: 'README.md',
   notFoundPage: '_404.md',
-  sideLoad: [
-    '_sidebar.md',
-    '_navbar.md',
-    '/_right_sidebar.md',
-    '/_footer.md'
-  ],
+  sideLoad: {
+    sidebar: '_sidebar.md',
+    navbar: '_navbar.md',
+    rightSidebar: '/_right_sidebar.md',
+    footer: '/_footer.md'
+  },
   coverpage: '_coverpage.md',
   plugins: [
-    window['EditOnGithubPlugin']
-      .create('https://github.com/swimlane/docspa/blob/master/src/docs/', null, '<i class="fas fa-edit"></i> Suggest Edits'),
     tabsHook
   ],
   remarkPlugins: [

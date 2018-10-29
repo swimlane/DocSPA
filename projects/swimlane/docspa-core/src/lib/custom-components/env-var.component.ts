@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Optional, Inject } from '@angular/core';
+import { Component, Input, Optional, Inject } from '@angular/core';
 
 @Component({
   selector: 'env-var', // tslint:disable-line

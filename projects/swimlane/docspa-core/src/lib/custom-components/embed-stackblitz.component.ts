@@ -1,4 +1,4 @@
-import { Component, Input, HostBinding, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import sdk from '@stackblitz/sdk';
