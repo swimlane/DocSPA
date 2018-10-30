@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, of } from 'rxjs';
-import { flatMap, map, share } from 'rxjs/operators';
+import { flatMap, tap, share } from 'rxjs/operators';
 import { NGXLogger } from 'ngx-logger';
-import reporter from 'vfile-reporter';
-import { join } from '../utils';
 
 import unified from 'unified';
 import markdown from 'remark-parse';
 import html from 'remark-html';
+import reporter from 'vfile-reporter';
+
+import { AsyncSeriesWaterfallHook, SyncHook } from 'tapable';
 
 import { LocationService } from './location.service';
 import { FetchService, CachePage } from './fetch.service';
@@ -22,18 +23,14 @@ import VFile from 'vfile';
 })
 export class MarkdownService {
   processor: any;
-  mdastProcessor: any;
 
-  vm = {  // Mock docsify vm for docsify plugins
-    config: this.settings,
-    route: {
-      file: ''
-    }
+  // Eventually these will be global hooks
+  // Modified by plugins
+  hooks = {
+    beforeEach: new AsyncSeriesWaterfallHook(['vfile']),
+    afterEach: new AsyncSeriesWaterfallHook(['vfile']),
+    doneEach: new SyncHook(['vfile'])
   };
-
-  private beforeEach = [];
-  private afterEach = [];
-  private doneEach = [];
 
   constructor(
     private locationService: LocationService,
@@ -42,18 +39,13 @@ export class MarkdownService {
     private settings: SettingsService
   ) {
     if (settings.plugins.length > 0) {
-      const hook = {
-        init: fn => fn(), // Called when the script starts running, only trigger once, no arguments
-        beforeEach: fn => this.beforeEach.push(fn), // Invoked each time before parsing the Markdown file
-        afterEach: fn => this.afterEach.push(fn), // Invoked each time after the Markdown file is parsed
-        doneEach: fn => this.doneEach.push(fn), // Invoked each time after the data is fully loaded, no arguments
-        // mounted // Called after initial completion. Only trigger once, no arguments.
-        // ready // Called after initial completion, no arguments.
-      };
-
-      // initialize docsify-link plugins
-      settings.plugins.forEach(plugin => plugin(hook, this.vm));
+      this.importDocsifyPlugins(settings.plugins);
     }
+
+    // TODO: make a DocSPA plugin
+    this.hooks.doneEach.tap('logging', page => {
+      this.logger.info(reporter(page));
+    });
 
     this.processor = unified()
       .use(markdown)
@@ -63,64 +55,91 @@ export class MarkdownService {
       .use(html);
   }
 
+  // Convert docsify plugins to internal hooks
+  // This may eventually be a DocSPA plugin
+  importDocsifyPlugins(plugins: any[]) {
+    const vm = {  // Mock docsify vm for docsify plugins
+      config: this.settings,
+      route: {
+        file: ''
+      }
+    };
+
+    const beforeEach = fn => {
+      // todo: async
+      this.hooks.beforeEach.tap('docsify-beforeEach', (vfile: VFile) => {
+        vm.route.file = vfile.data.docspa.url;
+        vfile.contents = fn(vfile.contents);
+        return vfile;
+      });
+    };
+
+    const afterEach = fn => {
+      // todo: async
+      this.hooks.afterEach.tap('docsify-afterEach', (vfile: VFile) => {
+        vm.route.file = vfile.history[1].replace(/^\//, '');
+        vfile.contents = fn(vfile.contents);
+        return vfile;
+      });
+    };
+
+    const doneEach = fn => {
+      this.hooks.doneEach.tap('docsify-doneEach', () => {
+        setTimeout(() => {  // get rid of this, could be called after component renders
+          return fn();
+        }, 30);
+      });
+    };
+
+    const hook = {
+      init: fn => fn(), // Called when the script starts running, only trigger once, no arguments
+      beforeEach, // Invoked each time before parsing the Markdown file
+      afterEach, // Invoked each time after the Markdown file is parsed
+      doneEach, // Invoked each time after the data is fully loaded, no arguments
+      // mounted // Called after initial completion. Only trigger once, no arguments.
+      // ready // Called after initial completion, no arguments.
+    };
+
+    // initialize docsify plugins
+    plugins.forEach(plugin => plugin(hook, vm));
+  }
+
   /**
    *
    * @param page The page content path
-   * @param plugins Run plugins?
+   * @param content Plugins only run if page is the content page
    */
-  getMd(page: string, plugins = true): Observable<VFile>  {
-    let o: Observable<VFile>;
+  getMd(page: string, content = true): Observable<VFile>  {
     if (!page) {
-      o = of(new VFile(''));
-    } else {
-      const vfile = this.locationService.pageToFile(page);
-      const url = join(vfile.cwd, vfile.path);
-      o = this.fetchService.get(url)
-        .pipe(
-          flatMap(async (res: CachePage) => {
-            vfile.data = vfile.data || {};
-            vfile.data.docspa = {};
-
-            plugins = res.notFound ? false : plugins;
-
-            this.logger.debug(`Processing started: ${vfile.path}`);
-            vfile.contents = plugins ?
-              this.processBeforeEach(res) :
-              res.contents;
-
-            const err = await this.processor.process(vfile);
-
-            vfile.contents = plugins ?
-              this.processAfterEach(vfile) :
-              String(vfile);
-
-            if (plugins) {
-              this.logger.info(reporter(err || page));
-            }
-            return vfile;
-          }),
-          share()
-        );
+      const _ = new VFile('');
+      return of(_)
+        .pipe(tap(() => this.hooks.doneEach.call(_)));
     }
 
-    if (plugins) {
-      o.toPromise().then(() => {
-        this.doneEach.forEach(fn => {
-          setTimeout(fn, 30);
-        });
-      });
-    }
+    const vfile = this.locationService.pageToFile(page);
+    return this.fetchService.get(vfile.data.docspa.url)
+      .pipe(
+        flatMap(async (res: CachePage) => {
+          if (res.notFound) {
+            content = false;
+          }
 
-    return o;
-  }
+          this.logger.debug(`Processing started: ${vfile.path}`);
 
-  private processBeforeEach(page: CachePage) {
-    this.vm.route.file = page.resolvedPath;
-    return this.beforeEach.reduce((_md, fn) => fn(_md), page.contents);
-  }
+          vfile.contents = res.contents;
 
-  private processAfterEach(page: VFile) {
-    this.vm.route.file = page.history[1].replace(/^\//, '');
-    return this.afterEach.reduce((_html, fn) => fn(_html), page.contents);
+          if (content) {
+            await this.hooks.beforeEach.promise(vfile);
+          }
+          // This might eventually be a hook as well
+          const err = await this.processor.process(vfile);
+          if (content) {
+            await this.hooks.afterEach.promise(vfile);
+            this.hooks.doneEach.call(err || vfile);
+          }
+          return vfile;
+        }),
+        share()
+      );
   }
 }

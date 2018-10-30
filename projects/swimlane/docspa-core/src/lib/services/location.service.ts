@@ -61,6 +61,12 @@ export class LocationService {
       vfile.extname = this.settings.ext;
     }
 
+    vfile.data = {
+      docspa: {
+        url: join(vfile.cwd, vfile.path)
+      }
+    };
+
     return vfile;
   }
 

@@ -7,6 +7,16 @@ import style from './app/plugins/markdown-style';
 
 import { tabsHook } from './app/plugins';
 
+/* For testing
+export function timestampPlugin(hook) {
+  hook.beforeEach((md) => {
+    return `${md}\n**${new Date()}**`;
+  });
+  hook.afterEach((html) => {
+    return `${html}<!-- HTML generated ${new Date()} -->`;
+  });
+} */
+
 export const config = {
   basePath: 'docs/',
   homepage: 'README.md',
@@ -19,7 +29,8 @@ export const config = {
   },
   coverpage: '_coverpage.md',
   plugins: [
-    tabsHook
+    tabsHook,
+    // timestampPlugin
   ],
   remarkPlugins: [
     style,
