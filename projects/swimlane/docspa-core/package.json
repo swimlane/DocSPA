@@ -16,7 +16,6 @@
     "path-browserify": "^1.0.0",
     "process": "^0.11.10",
     "quick-lru": "^1.1.0",
-    "remark-html": "^7.0.0",
     "remark-parse": "^5.0.0",
     "remark-attr": "^0.7.1",
     "remark-slug": "^5.0.0",

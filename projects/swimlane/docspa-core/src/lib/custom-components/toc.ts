@@ -4,10 +4,13 @@ import { of } from 'rxjs';
 import { flatMap, map, share } from 'rxjs/operators';
 import unified from 'unified';
 import markdown from 'remark-parse';
-import html from 'remark-html';
 import toc from 'mdast-util-toc';
 import visit from 'unist-util-visit';
 import slug from 'remark-slug';
+import rehypeStringify from 'rehype-dom-stringify';
+import remark2rehype from 'remark-rehype';
+import raw from 'rehype-raw';
+
 import { join } from '../utils';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
@@ -88,7 +91,9 @@ export class TOCComponent implements OnInit {
       .use(toToc)
       .use(links, locationService)
       .use(images, locationService)
-      .use(html);
+      .use(remark2rehype, { allowDangerousHTML: true })
+      .use(raw)
+      .use(rehypeStringify);
   }
 
   ngOnInit() {

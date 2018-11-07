@@ -6,8 +6,10 @@ import { NGXLogger } from 'ngx-logger';
 
 import unified from 'unified';
 import markdown from 'remark-parse';
-import html from 'remark-html';
 import reporter from 'vfile-reporter';
+import remark2rehype from 'remark-rehype';
+import rehypeStringify from 'rehype-dom-stringify';
+import raw from 'rehype-raw';
 
 import { AsyncSeriesWaterfallHook, SyncHook } from 'tapable';
 
@@ -52,7 +54,10 @@ export class MarkdownService {
       .use(this.settings.remarkPlugins)
       .use(links, locationService)
       .use(images, locationService)
-      .use(html);
+      .use(remark2rehype, { allowDangerousHTML: true })
+      .use(raw)
+      // TODO: rehype plugins
+      .use(rehypeStringify);
   }
 
   // Convert docsify plugins to internal hooks

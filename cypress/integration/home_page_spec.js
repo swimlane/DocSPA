@@ -163,7 +163,7 @@ describe('DocSPA', () => {
       cy.get('@content').find('h1').contains('Quick start');
       cy.get('@content').find('.info > a').first().click({ force: true });
       cy.get('@content').find('h1').contains('Adding DocSPA to a angular cli app');
-      cy.get('@content').find(':nth-child(12) > a').click({ force: true });
+      cy.get('@content').find('a[href="/config"]').click({ force: true });
       cy.get('@content').find('h1').contains('Config Reference');
     });
   });

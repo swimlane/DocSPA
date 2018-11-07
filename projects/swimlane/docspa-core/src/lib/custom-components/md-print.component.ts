@@ -7,13 +7,14 @@ import { flatMap, map } from 'rxjs/operators';
 import unified from 'unified';
 import markdown from 'remark-parse';
 import visit from 'unist-util-visit';
-import stringify from 'remark-stringify';
 import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
 import { MDAST } from 'mdast';
 import VFile from 'vfile';
 import frontmatter from 'remark-frontmatter';
-import html from 'remark-html';
+import rehypeStringify from 'rehype-dom-stringify';
+import remark2rehype from 'remark-rehype';
+import raw from 'rehype-raw';
 
 import { images } from '../plugins/links';
 
@@ -145,7 +146,9 @@ export class MdPrintComponent implements OnInit {
       .use(frontmatter)
       .use(slug)
       .use(getLinks)
-      .use(stringify);
+      .use(remark2rehype, { allowDangerousHTML: true })
+      .use(raw)
+      .use(rehypeStringify);
 
     this.processor = unified()
       .use(markdown)
@@ -153,7 +156,9 @@ export class MdPrintComponent implements OnInit {
       .use(fixLinks)
       .use(fixIds)
       .use(images, locationService)
-      .use(html);
+      .use(remark2rehype, { allowDangerousHTML: true })
+      .use(raw)
+      .use(rehypeStringify);
   }
 
   ngOnInit() {

@@ -5,7 +5,10 @@ import { prism } from '../src/plugins/prism';
 const { mermaid } = require('../src/plugins/mermaid');
 
 const remark = require('remark');
-const html = require('remark-html');
+import remark2rehype from 'remark-rehype';
+import raw from 'rehype-raw';
+import rehypeStringify from 'rehype-dom-stringify';
+
 const { docspaRemarkPreset } = require('../src/');
 
 const processor = remark()
@@ -13,7 +16,9 @@ const processor = remark()
   .use(runtime)
   .use(mermaid)
   .use(prism)
-  .use(html);
+  .use(remark2rehype, { allowDangerousHTML: true })
+  .use(raw)
+  .use(rehypeStringify);
 
 describe('3rd party', () => {
   it('remark-slug', async () => {
@@ -64,25 +69,25 @@ describe('3rd party', () => {
     | Note
     `;
     const vfile = await processor.process(contents);
-    expect(String(vfile)).toEqual(`<div class="custom-block notice note"><div class="custom-block-body"><p>Note</p></div></div>\n`);
+    expect(String(vfile)).toEqual(`<div class="custom-block notice note"><div class="custom-block-body"><p>Note</p></div></div>`);
   });
 
   it('remark-custom-blockquotes', async () => {
     const contents = `!> Note`;
     const vfile = await processor.process(contents);
-    expect(String(vfile)).toEqual(`<blockquote class="tip">\n Note\n</blockquote>\n`);
+    expect(String(vfile)).toEqual(`<blockquote class="tip">\n Note\n</blockquote>`);
   });
 
   it('remark-attr', async () => {
     const contents = `*bold*{ .bold }`;
     const vfile = await processor.process(contents);
-    expect(String(vfile)).toEqual(`<p><em class="bold">bold</em></p>\n`);
+    expect(String(vfile)).toEqual(`<p><em class="bold">bold</em></p>`);
   });
 
   it('remark-shortcodes', async () => {
     const contents = `[[ shortcode ]]`;
     const vfile = await processor.process(contents);
-    expect(String(vfile)).toEqual(`<div></div>\n`);
+    expect(String(vfile)).toEqual(`<div></div>`);
   });
 });
 
@@ -109,20 +114,20 @@ describe('internal', () => {
     const contents = `[[ include path="testBasePath" ]]`;
     const file = { contents, data: { base: 'testBasePath' } };
     const vfile = await processor.process(file);
-    expect(String(vfile)).toEqual(`<div><md-embed path="testBasePath"></md-embed></div>\n`);
+    expect(String(vfile)).toEqual(`<div><md-embed path="testBasePath"></md-embed></div>`);
   });
 
   it('tocSmartCode', async () => {
     const contents = `[[toc class="collapsable"]]`;
     const file = { contents, data: { base: 'testBasePath' } };
     const vfile = await processor.process(file);
-    expect(String(vfile)).toEqual(`<div><md-toc class="collapsable" path="testBasePath"></md-toc></div>\n`);
+    expect(String(vfile)).toEqual(`<div><md-toc class="collapsable" path="testBasePath"></md-toc></div>`);
   });
 
   it('smartCodeProps', async () => {
     const contents = `[[ shortcode class="test-shortcode-class" ]]`;
     const vfile = await processor.process(contents);
-    expect(String(vfile)).toEqual(`<div class="test-shortcode-class"></div>\n`);
+    expect(String(vfile)).toEqual(`<div class="test-shortcode-class"></div>`);
   });
 
   it('runtime, html', async () => {
@@ -156,7 +161,7 @@ describe('internal', () => {
     ~~~`;
     const vfile = await processor.process(contents);
     const out = String(vfile);
-    expect(out).toEqual(`<p><strong>Hello</strong></p>\n`);
+    expect(out).toEqual(`<p><strong>Hello</strong></p>`);
   });
 
   it('runtime, markdown, playground', async () => {
@@ -167,7 +172,7 @@ describe('internal', () => {
     const vfile = await processor.process(contents);
     const out = String(vfile);
     expect(out).toContain(`<div class="custom-block playground language-markdown" data-lang="markdown" v-pre`);
-    expect(out).toContain(`<p><strong>Hello</strong></p>\n`);
+    expect(out).toContain(`<p><strong>Hello</strong></p>`);
   });
 
   it('mermaid', async () => { // Can't really test mermaid in node env
@@ -177,6 +182,6 @@ describe('internal', () => {
     ~~~`;
     const vfile = await processor.process(contents);
     const out = String(vfile);
-    expect(out).toEqual(`<div class="mermaid">**Hello**</div>\n`);
+    expect(out).toEqual(`<div class="mermaid">**Hello**</div>`);
   });
 });
