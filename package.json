@@ -115,6 +115,7 @@
     "prismjs": "^1.15.0",
     "rimraf": "^2.6.2",
     "start-server-and-test": "^1.7.0",
+    "trash": "^4.3.0",
     "ts-node": "~5.0.1",
     "tsickle": "^0.33.1",
     "tslib": "^1.7.1",

@@ -8,7 +8,7 @@ import unified from 'unified';
 import markdown from 'remark-parse';
 import reporter from 'vfile-reporter';
 import remark2rehype from 'remark-rehype';
-import rehypeStringify from 'rehype-dom-stringify';
+import rehypeStringify from 'rehype-stringify';
 import raw from 'rehype-raw';
 
 import { AsyncSeriesWaterfallHook, SyncHook } from 'tapable';

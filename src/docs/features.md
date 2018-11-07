@@ -1,5 +1,7 @@
 # Content Features
 
+<demo-trafficlight record="{}"></demo-trafficlight>
+
 DocSPA uses [remark](https://remark.js.org/) for markdown rendering which by default supports Github Flavored Markdown.
 
 i> See full suite of [markdown here](markdown)

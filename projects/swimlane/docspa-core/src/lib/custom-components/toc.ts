@@ -7,7 +7,7 @@ import markdown from 'remark-parse';
 import toc from 'mdast-util-toc';
 import visit from 'unist-util-visit';
 import slug from 'remark-slug';
-import rehypeStringify from 'rehype-dom-stringify';
+import rehypeStringify from 'rehype-stringify';
 import remark2rehype from 'remark-rehype';
 import raw from 'rehype-raw';
 

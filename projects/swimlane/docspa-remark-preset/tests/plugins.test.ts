@@ -7,7 +7,7 @@ const { mermaid } = require('../src/plugins/mermaid');
 const remark = require('remark');
 import remark2rehype from 'remark-rehype';
 import raw from 'rehype-raw';
-import rehypeStringify from 'rehype-dom-stringify';
+import rehypeStringify from 'rehype-stringify';
 
 const { docspaRemarkPreset } = require('../src/');
 

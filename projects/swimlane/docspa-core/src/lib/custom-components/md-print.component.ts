@@ -12,7 +12,7 @@ import slug from 'remark-slug';
 import { MDAST } from 'mdast';
 import VFile from 'vfile';
 import frontmatter from 'remark-frontmatter';
-import rehypeStringify from 'rehype-dom-stringify';
+import rehypeStringify from 'rehype-stringify';
 import remark2rehype from 'remark-rehype';
 import raw from 'rehype-raw';
 
