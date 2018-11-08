@@ -38,12 +38,17 @@ export class RouterService {
   private readonly urlParser = document.createElement('a');
   private urlSubject = new ReplaySubject<string>(1);
 
+  /**
+   * Get the current url from the window location
+   * Note: cannot use Location directly at the moment as it drops traling slashes
+   */
   private get locationPath() {
-    let url = this.location.path(true);
-    if (this.isDirname(window.location.href, url) && url.slice(-1) !== '/') {
+    const { pathname, hash } = window.location;
+    let url = this.location.path(false);
+    if (this.isDirname(pathname, url) && url.slice(-1) !== '/') {
       url += '/';
     }
-    return url;
+    return url + hash;
   }
 
   clickHandler = event => {

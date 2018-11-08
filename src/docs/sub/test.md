@@ -10,6 +10,6 @@
 <div>Hello</div>
 ```
 
-[[include path="a.md" codeblock="md" class="linenos" mark="3-4"]]
+<!-- [[include path="a.md" codeblock="md" class="linenos" mark="3-4"]]
 
-[[include path="b.md" codeblock="md"]]
+[[include path="b.md" codeblock="md"]] -->

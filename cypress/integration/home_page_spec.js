@@ -373,8 +373,19 @@ describe('DocSPA', () => {
     });
   });
 
-  describe.only('Test Page', () => {
+  describe('Test Page', () => {
     before(() => cy.visit('/sub/test'));
+
+    it('check links', () => {
+      cy.get('@content').find('a').eq(0).should('have.attr', 'href', '/sub/test#works');
+      cy.get('@content').find('a').eq(1).should('have.attr', 'href', '/sub/logo.png');
+      cy.get('@content').find('a').eq(2).should('have.attr', 'href', 'docs/sub/logo.png');
+      cy.get('@content').find('img').eq(0).should('have.attr', 'src', 'docs/sub/logo.png');
+    });
+  });
+
+  describe('Test Page with hash', () => {
+    before(() => cy.visit('/sub/test#works'));
 
     it('check links', () => {
       cy.get('@content').find('a').eq(0).should('have.attr', 'href', '/sub/test#works');
