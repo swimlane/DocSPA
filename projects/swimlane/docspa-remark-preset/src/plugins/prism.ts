@@ -23,9 +23,7 @@ if (ctx['Prism']) {
 }
 
 export function prism({classPrefix = 'language'} = {}) {
-  return function(tree) {
-    visit(tree, 'code', visitor);
-  };
+  return (tree) => visit(tree, 'code', visitor);
 
   function visitor(node: MDAST.Code, index, parent) {
     let { lang, value } = node;

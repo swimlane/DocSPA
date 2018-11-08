@@ -89,7 +89,7 @@ export class RouterService {
     private logger: NGXLogger
   ) {
     location.subscribe((state: PopStateEvent) => {
-      if (state.type === 'hashchange') {
+      if (state.type === 'hashchange' || state.type === 'popstate') {
         return this.urlSubject.next(this.locationPath || '');
       }
     });

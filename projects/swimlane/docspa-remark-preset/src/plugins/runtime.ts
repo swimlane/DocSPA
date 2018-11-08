@@ -39,7 +39,11 @@ export function runtime(this: any) {
       const isRun = 'run' in hProperties;
 
       if (isRun || isPlayground) {
-        const cls = hProperties.class = hProperties.class || (isPlayground ? 'custom-block playground' : '');
+        const type = isPlayground ? 'playgroundCustomBlock' : 'runtimeCustomBlock';
+
+        hProperties.class = hProperties.class || [];
+        hProperties.class.push('custom-block');
+        hProperties.class.push(isPlayground ? 'playground' : 'runtime');
         if (lang === 'markdown') {
           const f = new VFile({ ...file, contents: node.value });
           const vfile = await processor.process(f);
@@ -59,15 +63,19 @@ export function runtime(this: any) {
           </runtime-content>`;
         }
 
-        const newNode = isPlayground ?
-          {
-          type: 'playgroundCustomBlock',
+        const newNode = {
+          type,
           data: { hProperties },
           children: [
             {
               type: 'html',
               value
-            },
+            }
+          ]
+        };
+
+        if (isPlayground) {
+          newNode.children = newNode.children.concat([
             {
               type: 'html',
               value: '<p></p>'
@@ -93,12 +101,8 @@ export function runtime(this: any) {
               type: 'html',
               value: '</details>'
             }
-          ]
-        } : {
-          type: 'html',
-          value,
-          data: { hProperties }
-        };
+          ]);
+        }
 
         parent.children.splice(index, 1, newNode);
         return node;

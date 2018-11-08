@@ -14,7 +14,7 @@ import { readMatter, getTitle } from './plugins/frontmatter';
 import { infoString, infoStringToAttr } from './plugins/misc';
 import { customBlocksOptions } from './plugins/remark-custom-blocks';
 import { customBlockquotes, customBlockquotesOptions } from './plugins/remark-custom-blockquotes';
-import { shortCodeProps, tocSmartCode, customSmartCodes, customSmartCodesOptions } from './plugins/short-codes';
+import { shortCodeProps, tocSmartCode, customSmartCodes, customSmartCodesOptions, includeShortCode } from './plugins/short-codes';
 
 export * from './plugins/mermaid';
 export * from './plugins/prism';
@@ -39,5 +39,6 @@ export const docspaRemarkPreset = [
   shortcodes,
   tocSmartCode,
   shortCodeProps,
-  [ customSmartCodes, customSmartCodesOptions ]
+  [ customSmartCodes, customSmartCodesOptions ],
+  includeShortCode
 ];

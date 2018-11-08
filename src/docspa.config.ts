@@ -7,6 +7,11 @@ import style from './app/plugins/markdown-style';
 
 import { tabsHook } from './app/plugins';
 
+import visit from 'unist-util-visit';
+
+import { join } from '@swimlane/docspa-core/lib/utils';
+import { resolve } from 'url';
+
 /* For testing
 export function timestampPlugin(hook) {
   hook.beforeEach((md) => {

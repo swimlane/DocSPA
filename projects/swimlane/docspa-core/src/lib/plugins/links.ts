@@ -17,7 +17,10 @@ export const links = (locationService: LocationService) => {
         }
 
         node.data.originalUrl = node.url;
-        node.url = locationService.prepareLink(node.url, vfile.history[0]);
+
+        node.url = ('download' in node.data.hProperties) ?
+          locationService.prepareSrc(node.url, vfile.path) :
+          locationService.prepareLink(node.url, vfile.history[0]);
       }
       return true;
     });

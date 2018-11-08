@@ -372,4 +372,15 @@ describe('DocSPA', () => {
       cy.get('@content').find('h1[id="error-404"]').contains('ERROR 404');
     });
   });
+
+  describe.only('Test Page', () => {
+    before(() => cy.visit('/sub/test'));
+
+    it('check links', () => {
+      cy.get('@content').find('a').eq(0).should('have.attr', 'href', '/sub/test#works');
+      cy.get('@content').find('a').eq(1).should('have.attr', 'href', '/sub/logo.png');
+      cy.get('@content').find('a').eq(2).should('have.attr', 'href', 'docs/sub/logo.png');
+      cy.get('@content').find('img').eq(0).should('have.attr', 'src', 'docs/sub/logo.png');
+    });
+  });
 });
