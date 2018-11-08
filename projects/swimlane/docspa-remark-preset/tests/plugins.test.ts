@@ -2,14 +2,19 @@ import stripIndent from 'common-tags/lib/stripIndent';
 import { runtime } from '../src/plugins/runtime';
 import { prism } from '../src/plugins/prism';
 
-const { mermaid } = require('../src/plugins/mermaid');
-
-const remark = require('remark');
 import remark2rehype from 'remark-rehype';
 import raw from 'rehype-raw';
 import rehypeStringify from 'rehype-stringify';
 
+import fetchMock from 'jest-fetch-mock';
+
+const { mermaid } = require('../src/plugins/mermaid');
+
+const remark = require('remark');
+
 const { docspaRemarkPreset } = require('../src/');
+
+window.fetch = fetchMock;
 
 const processor = remark()
   .use(docspaRemarkPreset)
@@ -111,10 +116,20 @@ describe('internal', () => {
   });
 
   it('includeSmartCode', async () => {
+    fetchMock.mockResponseOnce('**Test**');
     const contents = `[[ include path="testBasePath" ]]`;
-    const file = { contents, data: { base: 'testBasePath' } };
+    const file = { contents, cwd: 'tbd', path: 'test', data: { base: 'testBasePath' } };
     const vfile = await processor.process(file);
-    expect(String(vfile)).toEqual(`<div><md-embed path="testBasePath"></md-embed></div>`);
+    expect(String(vfile)).toEqual(`<div path="testBasePath"><p><strong>Test</strong></p></div>`);
+  });
+
+  it('includeSmartCode, codeblock', async () => {
+    fetchMock.mockResponseOnce('**Test**\n');
+    const contents = `[[ include path="testBasePath" codeblock="md"]]`;
+    const file = { contents, cwd: 'tbd', path: 'test', data: { base: 'testBasePath' } };
+    const vfile = await processor.process(file);
+    expect(String(vfile)).toContain(`<pre path="testBasePath" codeblock="md" class="language-md" data-lang="md" v-pre>`);
+    expect(String(vfile)).toContain(`<span data-line="1">**Test**</span>`);
   });
 
   it('tocSmartCode', async () => {
@@ -161,7 +176,7 @@ describe('internal', () => {
     ~~~`;
     const vfile = await processor.process(contents);
     const out = String(vfile);
-    expect(out).toEqual(`<p><strong>Hello</strong></p>`);
+    expect(out).toEqual(`<div class="custom-block runtime"><p><strong>Hello</strong></p></div>`);
   });
 
   it('runtime, markdown, playground', async () => {
