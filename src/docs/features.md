@@ -1,7 +1,5 @@
 # Content Features
 
-<demo-trafficlight record="{}"></demo-trafficlight>
-
 DocSPA uses [remark](https://remark.js.org/) for markdown rendering which by default supports Github Flavored Markdown.
 
 i> See full suite of [markdown here](markdown)
@@ -174,10 +172,9 @@ const config = {
 
 ~~~markdown { playground }
 ```mermaid
-graph LR
-    A --- B
-    B-->C[fa:fa-ban forbidden]
-    B-->D(fa:fa-spinner);
+sequenceDiagram
+    Alice->>John: Hello John, how are you?
+    John-->>Alice: Great!
 ```
 
 ```mermaid
@@ -190,13 +187,21 @@ gantt
     section Another
     Task in sec      :2014-01-12  , 12d
     another task      : 24d
+        section Another
+    Task in sec      :2014-01-12  , 12d
+    another task      : 24d
+        section Another
+    Task in sec      :2014-01-12  , 12d
+    another task      : 24d
 ```
 
 ```mermaid
-sequenceDiagram
-    Alice->>John: Hello John, how are you?
-    John-->>Alice: Great!
+graph LR
+    A --- B
+    B-->C[fa:fa-ban forbidden]
+    B-->D(fa:fa-spinner);
 ```
+
 ~~~
 
 i> See [mermaid docs](https://mermaidjs.github.io/) for more details on the supported syntax.

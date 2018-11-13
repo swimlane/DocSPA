@@ -1,63 +1,58 @@
 import visit from 'unist-util-visit';
 import mermaidApi from 'mermaid';
-import { MDAST } from 'mdast';
+
+const supportsCustomElements = !!window['customElements'];
 
 mermaidApi.initialize({
   startOnLoad: false
 });
 
-export function mermaid() {
-  return function transformer(tree, file, next) {
-    const hostElem = getHostElm();
-    const items: any[] = [];
+const MERMAID = 'mermaid';
 
-    visit(tree, 'code', (node: MDAST.Code, index, parent) => {
-      if (node.lang === 'mermaid') {
-        items.push({node, index, parent});
+export class MermaidElement extends HTMLElement {
+  static is = 'md-mermaid';
+
+  connectedCallback() {
+    mermaidApi.init(undefined, this);
+  }
+}
+
+export function mermaid(options) {
+  const config = {
+    startOnLoad: false,
+    arrowMarkerAbsolute: false,
+    theme: 'default',
+    useCustomElement: supportsCustomElements,
+    ...options
+  };
+
+  const useCustomElement = supportsCustomElements && config.useCustomElement;
+
+  mermaidApi.initialize(config);
+
+  if (!useCustomElement) {
+    // Fallback: look for unprocessed mermaid elements on a timer.
+    setInterval(() => {
+      mermaidApi.init(undefined, document.getElementsByClassName(MERMAID));
+    }, 200);
+  }
+
+  const template = useCustomElement ?
+    value => `<${MermaidElement.is}>${value}</${MermaidElement.is}>` :
+    value => `<div class="${MERMAID}">${value}</div>`;
+
+  return function transformer(tree) {
+    visit(tree, 'code', (node: any) => {
+      const lang = (node.lang || '').toLowerCase();
+      if (lang === MERMAID) {
+        node.type = 'html';
+        node.value = template(node.value);
       }
       return true;
     });
-
-    const promises = items.map(async ({node, index, parent}) => {
-      let value = node.value;
-      try {
-        value = await createMermaid(node.value);
-        value = `<div class="mermaid" data-processed="true">${value}</div>`;
-      } catch (err) {
-        value = `<div class="mermaid">${value}</div>`;
-      }
-      parent.children.splice(index, 1, {
-        type: 'html',
-        value
-      });
-    });
-
-    return Promise.all(promises).then(() => next());
-
-    function createMermaid(code: string) {
-      return new Promise((resolve, reject) => {
-        mermaidApi.render(`mermaid-${Date.now()}`, code, resolve, hostElem);
-      });
-    }
   };
+}
 
-  function getHostElm() {
-    try {
-      let elm = document.querySelector('#mermaid-host-render');
-      if (elm) {
-        return elm;
-      }
-      elm = document.createElement('div');
-      elm.id = 'mermaid-host-render';
-      const main = document.querySelector('#main') || document.querySelector('body');
-      if (main) {
-        main.appendChild(elm);
-        return elm;
-      } else {
-        return null;
-      }
-    } catch (err) {
-      return null;
-    }
-  }
+if (supportsCustomElements) {
+  customElements.define(MermaidElement.is, MermaidElement);
 }
