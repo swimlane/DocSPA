@@ -26,19 +26,17 @@ export function mermaid(options) {
     ...options
   };
 
-  const useCustomElement = supportsCustomElements && config.useCustomElement;
-
   mermaidApi.initialize(config);
 
-  if (!useCustomElement) {
+  if (!config.useCustomElement) {
     // Fallback: look for unprocessed mermaid elements on a timer.
     setInterval(() => {
       mermaidApi.init(undefined, document.getElementsByClassName(MERMAID));
     }, 200);
   }
 
-  const template = useCustomElement ?
-    value => `<${MermaidElement.is}>${value}</${MermaidElement.is}>` :
+  const template = config.useCustomElement ?
+    value => `<${MermaidElement.is} class="${MERMAID}">${value}</${MermaidElement.is}>` :
     value => `<div class="${MERMAID}">${value}</div>`;
 
   return function transformer(tree) {

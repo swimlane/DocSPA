@@ -1,0 +1,19 @@
+[is="lazyload-image"]:not(.medium-zoom-image--open) {
+  transform: perspective(600px) rotateX(-90deg);
+  transform-origin: 50% 120%;
+  opacity: 0;
+  transition: opacity 600ms, transform 600ms cubic-bezier(.74,.01,.52,2.05);
+}
+
+[is="lazyload-image"].loaded:not(.medium-zoom-image--open) {
+  transform: perspective(600px) rotateX(0deg);
+  opacity: 1;
+}
+
+@media print {
+  [is="lazyload-image"] {
+    transform: unset;
+    opacity: unset;
+    transition: unset;
+  }
+}

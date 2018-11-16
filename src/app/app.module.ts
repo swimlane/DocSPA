@@ -16,6 +16,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AppComponent } from './app.component';
 import { DocspaCoreModule } from '@swimlane/docspa-core';
 import { EditOnGithubComponent } from './plugins/edit-on-github';
+import './plugins/lazy-img';
 
 import { config } from '../docspa.config';
 import { ServiceWorkerModule } from '@angular/service-worker';
