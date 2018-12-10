@@ -58,7 +58,7 @@ const elements = [
     BrowserAnimationsModule,
     LoadingBarModule,
     LoadingBarHttpClientModule,
-    LoggerModule.forRoot({ level: NgxLoggerLevel.TRACE })
+    LoggerModule.forRoot({ level: NgxLoggerLevel.WARN })
   ],
   declarations: [
     DocSPACoreComponent,

@@ -1,5 +1,6 @@
 import { Injectable, Inject, Optional, forwardRef } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
+import { NGXLogger, NgxLoggerLevel } from 'ngx-logger';
 
 import deepmerge from 'deepmerge'; // use xtend?
 import { join } from '../utils';
@@ -31,6 +32,8 @@ export class SettingsService {
 
   currentTheme: Theme = {};
 
+  logLevel: number;
+
   get root() {
     return join(this.nameLink, this.basePath);
   }
@@ -38,6 +41,8 @@ export class SettingsService {
   constructor(
     metaService: Meta,
     titleService: Title,
+    logger: NGXLogger,
+    @Optional() @Inject('environment') environment: any,
     @Optional() @Inject('config') config: any
   ) {
     if (window['$docsify']) {
@@ -85,6 +90,14 @@ export class SettingsService {
       const name = elm.name;
       this.meta[name] = this.meta[name] || elm.content;
     });
+
+    if (typeof this.logLevel !== 'number') {
+      this.logLevel = environment.production ?
+        NgxLoggerLevel.ERROR :
+        NgxLoggerLevel.TRACE;
+    }
+
+    logger.updateConfig({ level: this.logLevel });
   }
 
   private merge(opts: Partial<SettingsService>) {

@@ -208,7 +208,8 @@ export class TOCPaginationComponent implements OnInit {
   }
 
   private pathChanges(path: string) {
-    const index = this.files.findIndex(file => file.history[0] === path);
+    const re = new RegExp(`^/?${path}$`);
+    const index = this.files.findIndex(file => re.test(file.history[0]));
     this.prev = index > 0 ? this.files[index - 1] : null;
     this.next = index < this.files.length ? this.files[index + 1] : null;
   }

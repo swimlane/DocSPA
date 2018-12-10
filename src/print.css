@@ -112,8 +112,7 @@
   /**
   * Making intergated videos disappear, and removing the iframes' whitespace to zero. 
   */
-  .entry iframe,
-  ins {
+  .entry iframe, ins {
     display: none;
     width: 0 !important;
     height: 0 !important;
@@ -142,4 +141,4 @@
     page-break-inside: avoid;
     page-break-before: avoid;
   }
-
+}
