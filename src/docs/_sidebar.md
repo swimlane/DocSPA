@@ -4,7 +4,7 @@
 
 ---
 
-<md-toc class="collapsible" path="/" min-depth="2" max-depth="2"></md-toc>
+<md-toc class="collapsible" path="/" max-depth="2"></md-toc>
 <md-toc class="collapsible" path="quickstart" max-depth="2"></md-toc>
 <md-toc class="collapsible" path="content" max-depth="2"></md-toc>
 <md-toc class="collapsible" path="customization" max-depth="2"></md-toc>
