@@ -267,6 +267,8 @@ The slug for a header can be set by adding an id.
 ![](./logo.png){ width="30px" data-no-zoom }
 
 [www.swimlane.com](http://www.swimlane.com){ target="_blank" }
+
+[ignore](./docs/README.md){ ignore }
 ```
 
 ## Custom Elements

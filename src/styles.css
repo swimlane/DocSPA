@@ -1,5 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
 @import "./app/plugins/lazy-img.css";
+:root {
+  --sidebar-width: 16rem;
+  --right-sidebar-width: 16rem;
+  --right-sidebar-border-color: none;
+  --base-background-color: #F5F7F9;
+  --sidebar-background: #F5F7F9;
+  --right-sidebar-background: #FFF;
+  --cover-background-color: linear-gradient(to left bottom, hsl(211, 100%, 85%) 0%,hsl(169, 100%, 85%) 100%);
+  --sidebar-border-color: rgba(0,0,0,0.07);
+  --sidebar-border-width: 1px;
+  --cover-border-inset: 50px;
+  --cover-background-color: linear-gradient(to left bottom, hsl(211, 100%, 85%) 0%,hsl(169, 100%, 85%) 100%);
+}
+
+:root { /* sidebar pagelinks */
+  --sidebar-nav-pagelink-background-image             : url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11'%3E%3Cpath d='M10.984 5.492c0 .531-.43.961-.962.961h-3.57v3.57a.961.961 0 1 1-1.921 0v-3.57H.96a.958.958 0 0 1-.96-.96C0 4.96.43 4.53.96 4.53h3.57V.96a.961.961 0 0 1 1.922 0v3.57h3.57c.53 0 .96.43.96.961z'  opacity='.3'/%3E%3C/svg%3E");
+  /* --sidebar-nav-pagelink-background-image             : url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='12'%3E%3Cpath d='M10.25 4.784l.557.558a.6.6 0 0 1 0 .851l-4.88 4.882a.6.6 0 0 1-.851 0L.193 6.193a.6.6 0 0 1 0-.851l.558-.558a.603.603 0 0 1 .861.01l2.883 3.027V.603c0-.334.27-.603.603-.603h.804c.334 0 .603.269.603.603V7.82l2.883-3.027a.6.6 0 0 1 .861-.01z' opacity='.2'/%3E%3C/svg%3E"); */
+  --sidebar-nav-pagelink-background-image--active     : var(--sidebar-nav-pagelink-background-image);
+  --sidebar-nav-pagelink-background-image--collapse   : var(--sidebar-nav-pagelink-background-image);
+  --sidebar-nav-pagelink-background-image--loaded     : var(--sidebar-nav-pagelink-background-image);
+  --sidebar-nav-pagelink-background-position: calc(100% - 7px) center;
+  --sidebar-nav-pagelink-background-position--active: var(--sidebar-nav-pagelink-background-position);
+  --sidebar-nav-pagelink-background-position--collapse: var(--sidebar-nav-pagelink-background-position);
+  --sidebar-nav-pagelink-background-position--loaded: var(--sidebar-nav-pagelink-background-position--active);
+  --sidebar-nav-pagelink-padding: 0;
+  --sidebar-nav-pagelink-transition: none;
+  --sidebar-toggle-background: hsl( 113 , 0% , 89%);
+  --sidebar-toggle-border-radius: 0 var(--border-radius-s) var(--border-radius-s) 0;
+  --sidebar-toggle-width: 32px;
+  --sidebar-nav-pagelink-background-repeat: no-repeat;
+}
 
 body, html {
   scroll-behavior: smooth;
@@ -76,9 +107,9 @@ section.content footer {
 }
 
 .left-sidebar .docspa-logo {
-    text-align: center;
-    width: 100%;
-    display: block;
+  text-align: center;
+  width: 100%;
+  display: block;
 }
 
 ::-webkit-scrollbar {
@@ -180,3 +211,55 @@ a.btn:hover {
   width: 600px;
 }
 
+/* Sidebars */
+.sidebar.left-sidebar .sidebar-nav ul > li > ul {
+  overflow: hidden;
+  line-height: 0;
+  opacity: 0;
+  transition: line-height 0.2s ease-in-out, opacity 0.4s ease-in-out;
+}
+
+.sidebar.left-sidebar .sidebar-nav ul > li.active > ul {
+  opacity: 1;
+  line-height: 2;
+}
+
+.sidebar .sidebar-nav ul li:hover > a,
+.sidebar .sidebar-nav ul li.active a {
+  border-right: none !important;
+}
+
+.sidebar .sidebar-nav ul ul {
+  border-right: none !important;
+  border-left: 1px solid var(--theme-color-secondary-light, #29D0CA);
+  margin: 0 0 0 0.5em;
+}
+
+.sidebar .sidebar-nav ul li {
+  padding: 0 0 0 0.5rem !important;
+  margin: 0;
+}
+
+.sidebar .sidebar-nav ul li,
+.sidebar .sidebar-nav ul li > p {
+  font-weight: bold;
+}
+
+.sidebar .sidebar-nav li ul > li,
+.sidebar .sidebar-nav ul ul > li > p {
+  font-weight: normal;
+}
+
+.sidebar-nav li>p {
+  background-image: var(--sidebar-nav-pagelink-background-image--loaded, var(--sidebar-nav-pagelink-background-image));
+  background-position: var(--sidebar-nav-pagelink-background-position--loaded, var(--sidebar-nav-pagelink-background-image));
+  padding: var(--sidebar-nav-pagelink-padding, var(--sidebar-nav-link-padding));
+  transition: var(--sidebar-nav-pagelink-transition);
+  background-repeat: var(--sidebar-nav-pagelink-background-repeat);
+  background-size: var(--sidebar-nav-pagelink-background-size);
+}
+
+.sidebar-nav li > p.active {
+  background-image: var(--sidebar-nav-pagelink-background-image--active, var(--sidebar-nav-pagelink-background-image));
+  background-position: var(--sidebar-nav-pagelink-background-position--active, var(--sidebar-nav-pagelink-background-image));
+}

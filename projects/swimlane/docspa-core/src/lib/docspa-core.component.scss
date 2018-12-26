@@ -1,72 +1,6 @@
-:root {
-  --theme-color: #42b983;
-  --theme-color-secondary-light: #42b983;
-  --base-background-color: #fff;
-
-  // Cover
-  --cover-background-color: linear-gradient(to left bottom, hsl(28, 100%, 85%) 0%,hsl(149, 100%, 85%) 100%);
-  --cover-border-inset: 50px;
-
-  // Sidebar
-  --sidebar-width: 300px;
-  --sidebar-offset: calc(-1 * var(--sidebar-width, 300px));
-  --sidebar-background: #fff;
-  --sidebar-border-color: rgba(0,0,0,0.07);
-  --sidebar-border-width: 1px;
-
-  // Right Sidebar
-  --right-sidebar-width: var(--sidebar-width, 300px);
-  --right-sidebar-background: var(--sidebar-background, #fff);
-  --right-sidebar-border-color: var(--sidebar-border-color, rgba(0,0,0,0.07));
-  --right-sidebar-border-width: var(--sidebar-order-width, 1px);
-
-  // Notices
-  --notice-tip-border-color: #f66;
-  --notice-warn-border-color: #d58181;
-  --notice-note-border-color: #6bb1e0;
-  --notice-info-border-color: #f1b37e;
-
-  --notice-background: #f8f8f8;
-  --notice-border-width: 4px;
-  --notice-warn-background: rgba(66,185,131,.1);
-}
-
-$warn-color: var(--notice-warn-border-color);
-$note-color: var(--notice-note-border-color);
-$info-color: var(--notice-info-border-color);
-$tip-color: var(--notice-tip-border-color);
 
 body {
   overflow: overlay;
-}
-
-@mixin notice($color, $bg, $content) {
-  background-color: $bg;
-  border-left: var(--notice-border-width) solid $color;
-  border-bottom-right-radius: 2px;
-  border-top-right-radius: 2px;
-  margin: 2em 0;
-  padding: 12px 24px 12px 30px;
-  position: relative;
-
-  @if $content != '' {
-    &:before {
-      background-color: $color;
-      content: $content;
-      border-radius: 100%;
-      color: #fff;
-      font-family: 'Dosis', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
-      font-size: 14px;
-      font-weight: bold;
-      left: -12px;
-      line-height: 20px;
-      position: absolute;
-      height: 20px;
-      width: 20px;
-      text-align: center;
-      top: 10px;
-    }
-  }
 }
 
 .sidebar-toggle {
@@ -121,19 +55,19 @@ body {
     font-family: inherit;
 
     &.warn {
-      background: $warn-color;
+      background: var(--notice-warn-border-color, #d58181);;
     }
 
     &.tip {
-      background: $tip-color;
+      background: var(--notice-tip-border-color, #f66);
     }
 
     &.note {
-      background: $note-color;
+      background: var(--notice-note-border-color, #6bb1e0);
     }
 
     &.info {
-      background: $info-color;
+      background: var(--notice-info-border-color, #f1b37e);
     }
   }
 
@@ -187,22 +121,6 @@ body {
       }
     }
 
-    &.notice.note {
-      @include notice($note-color, var(--notice-background), '');
-    }
-
-    &.notice.info {
-      @include notice($info-color, var(--notice-background), '');
-    }
-
-    &.notice.tip {
-      @include notice($tip-color, var(--notice-background), '');
-    }
-
-    &.notice.warn {
-      @include notice($warn-color, var(--notice-background), '');
-    }
-
     &.figure, &.caption {
       position: relative;
       padding: 1.5em 1.5em 3em 1.5em;
@@ -244,18 +162,6 @@ body {
     }
   }
 
-  blockquote.info, p.info {
-    @include notice($info-color, var(--notice-background), 'i');
-  }
-
-  blockquote.tip, p.tip {
-    @include notice($tip-color, var(--notice-background), '!');
-  }
-
-  blockquote.warn, p.warn {
-    @include notice($warn-color, var(--notice-warn-background), '?');
-  }
-
   pre.linenos code {
     counter-reset: line;
 
@@ -291,7 +197,7 @@ body {
 }
 
 .sidebar {
-  background-color: var(--sidebar-background, #F5F7F9);
+  background-color: var(--sidebar-background, unset);
   .sidebar-nav {
     display: block;
     padding-right: 5px;
@@ -318,14 +224,13 @@ body {
 .sidebar.left-sidebar {
   width: var(--sidebar-width, 300px);
   transition: transform var(--sidebar-transition-duration, 250ms) ease-out;
-  border-right: var(--sidebar-border-width, 1px) solid var(--sidebar-border-color, rgba(0,0,0,0.07));
+  border-right: var(--sidebar-border-width, unset) solid var(--sidebar-border-color, unset);
   left: auto;
-  transform: translateX(0);
 }
 
 .sidebar.right-sidebar {
-  background-color: var(--right-sidebar-background, #F5F7F9);
-  border-left: var(--right-sidebar-border-width, 1px) solid var(--right-sidebar-border-color, rgba(0,0,0,0.07));
+  background-color: var(--right-sidebar-background, unset);
+  border-left: var(--right-sidebar-border-width, unset) solid var(--right-sidebar-border-color, unset);
   overflow-y: auto;
   padding: 60px 0 0 10px;
   position: absolute;
@@ -373,24 +278,35 @@ body.close {
 }
 
 @media screen and (max-width: 768px) {
-  .sidebar {
-    &.left-sidebar {
-      transform: translateX(-var(--sidebar-width, 300px));
-    }
-
-    &.right-sidebar {
-      transform: translateX(var(--right-sidebar-width, 300px));
-    }
+  section.cover.show {
+    z-index: 100;
   }
 
-  body.close {
-    .sidebar.left-sidebar {
-      transform: translateX(var(--sidebar-width, 300px));
-    }
+  main {
+    z-index: 200;
+  }
 
-    section.cover.show {
-      transform: translateX(var(--sidebar-width, 300px));
-    }
+  body.close .sidebar-toggle {
+    background-color: transparent;
+  }
+
+  .sidebar-toggle {
+    background-color: transparent;
+  }
+
+  .content,
+  body.close .content {
+    left: 0;
+    right: 0;
+    transform: translateX(0);
+  }
+
+  .sidebar.right-sidebar {
+    transform: translateX(100%);
+  }
+
+  .sidebar-toggle {
+    background-color: transparent;
   }
 }
 

@@ -4,6 +4,8 @@
 
 [download](./logo.png){ download }
 
+[ignore](./logo.png){ ignore }
+
 ![image](./logo.png)
 
 ```html { run .testing } 

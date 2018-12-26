@@ -72,7 +72,8 @@ export class RouterService {
       !anchor ||
       anchor.nodeName.toLowerCase() !== 'a' ||
       anchor.target && anchor.target.toLowerCase() !== '_self' ||
-      anchor.hasAttribute('download')) {
+      anchor.hasAttribute('download') ||
+      anchor.hasAttribute('ignore')) {
       return;
     }
 

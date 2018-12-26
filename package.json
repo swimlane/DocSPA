@@ -7,7 +7,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "postversion": "npm run setMetadata",
+    "postversion": "npm run setMetadata && git add -A .",
     "setMetadata": "ts-node ./tools/set-metadata.ts",
     "build:lib": "ng build @swimlane/docspa-core --prod",
     "prebuild:release": "rimraf dist",

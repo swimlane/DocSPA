@@ -12,7 +12,7 @@ export const links = (locationService: LocationService) => {
         node.data = node.data || {};
         node.data.hProperties = node.data.hProperties || {};
 
-        if (node.data.originalUrl || node.data.hProperties.target) {
+        if ('ignore' in node.data.hProperties || node.data.originalUrl || node.data.hProperties.target) {
           return;
         }
 

@@ -20,9 +20,9 @@ export function customBlockquotes({ mapping }) {
       const className = mapping[substr];
 
       if (className) {
-        node.type = 'blockquote';
+        node.type = 'paragraph';
         node.data = {
-          hName: 'blockquote',
+          hName: 'p',
           hProperties: {
             className
           }
