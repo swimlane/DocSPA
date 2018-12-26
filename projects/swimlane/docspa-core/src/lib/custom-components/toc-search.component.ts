@@ -12,7 +12,7 @@ import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
 import { links, images } from '../plugins/links';
 import frontmatter from 'remark-frontmatter';
-import { MDAST } from 'mdast';
+import MDAST from 'mdast';
 import { getTitle } from '@swimlane/docspa-remark-preset/dist/module/plugins/frontmatter';
 
 import { join } from '../utils';
@@ -132,19 +132,19 @@ export class TOCSearchComponent implements OnInit {
       .use(markdown)
       .use(frontmatter)
       .use(slug)
-      .use(getTitle)
-      .use(removeMinNodes)
-      .use(toToc)
-      .use(links, locationService)
-      .use(images, locationService)
-      .use(getLinks)
+      .use(getTitle as any)
+      .use(removeMinNodes as any)
+      .use(toToc as any)
+      .use(links as any, locationService)
+      .use(images as any, locationService)
+      .use(getLinks as any)
       .use(stringify);
 
     this.processLinks = unified() // md -> md + links
       .use(markdown)
       .use(frontmatter)
       .use(slug)
-      .use(getLinks)
+      .use(getLinks as any)
       .use(stringify);
   }
 

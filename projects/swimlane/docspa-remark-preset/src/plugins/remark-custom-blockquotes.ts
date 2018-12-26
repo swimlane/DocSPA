@@ -2,7 +2,7 @@
 // https://github.com/montogeek/remark-custom-blockquotes/pull/2 pending merge
 
 import visit from 'unist-util-visit';
-import { MDAST } from 'mdast';
+import MDAST from 'mdast';
 
 export function customBlockquotes({ mapping }) {
   return function transformer(tree) {
@@ -30,7 +30,7 @@ export function customBlockquotes({ mapping }) {
 
         const r = new RegExp(`^\\${substr}\\s`, 'gm');
 
-        visit(node, 'text', (cld: MDAST.TextNode) => {
+        visit(node, 'text', (cld: MDAST.Text) => {
           cld.value = cld.value.replace(r, ' ');
           return true;
         });

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import VFile from 'vfile';
+import VFILE, { default as VFile } from 'vfile';
 
 import { join } from '../utils';
 import { resolve } from 'url';
@@ -38,13 +38,13 @@ export class LocationService {
   /**
    * Convert a page string to a virtual file
    */
-  pageToFile(page: string = ''): VFile {
+  pageToFile(page: string = ''): VFILE.VFile {
     page = page.replace(/^#/, '');
     if (page === '') {
       page = '/';
     }
 
-    const vfile = new VFile({ path: page, cwd: this.root });
+    const vfile = VFile({ path: page, cwd: this.root });
 
     /* if (vfile.path[0] === '/' && vfile.path[1] === '_') {
       vfile.path = this.settings.notFoundPage;

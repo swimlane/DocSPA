@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Renderer, HostListener, ViewEncapsulation, SimpleChanges } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
-import VFile from 'vfile';
+import VFILE, { default as VFile } from 'vfile';
 
 import { RouterService } from './services/router.service';
 import { SettingsService } from './services/settings.service';
@@ -11,6 +11,10 @@ interface Changes {
   coverPage: string;
   anchor: string;
   sideLoad: {[key: string]: string};
+}
+
+interface CustomVFile extends VFILE.VFile {
+  data: any;
 }
 
 @Component({
@@ -94,7 +98,7 @@ export class DocSPACoreComponent implements OnInit {
     this.routerService.onInit();
   }
 
-  mainContentLoaded(page: VFile) {
+  mainContentLoaded(page: CustomVFile) {
     let title = this.settings.name;
     let subTitle;
     if (page.data) {

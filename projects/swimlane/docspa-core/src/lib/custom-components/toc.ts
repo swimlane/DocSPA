@@ -20,7 +20,7 @@ import { LocationService } from '../services/location.service';
 
 import { links, images } from '../plugins/links';
 import frontmatter from 'remark-frontmatter';
-import { MDAST } from 'mdast';
+import MDAST from 'mdast';
 
 @Component({
   selector: 'md-toc', // tslint:disable-line
@@ -87,10 +87,10 @@ export class TOCComponent implements OnInit {
       .use(markdown)
       .use(frontmatter)
       .use(slug)
-      .use(removeMinNodes)
-      .use(toToc)
-      .use(links, locationService)
-      .use(images, locationService)
+      .use(removeMinNodes as any)
+      .use(toToc as any)
+      .use(links as any, locationService)
+      .use(images as any, locationService)
       .use(remark2rehype, { allowDangerousHTML: true })
       .use(raw)
       .use(rehypeStringify);

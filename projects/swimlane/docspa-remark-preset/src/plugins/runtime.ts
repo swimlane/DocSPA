@@ -1,6 +1,6 @@
 import visit from 'unist-util-visit';
 import VFile from 'vfile';
-import { MDAST } from 'mdast';
+import MDAST from 'mdast';
 
 interface VNode {
   node: MDAST.Code;
@@ -45,9 +45,9 @@ export function runtime(this: any) {
         hProperties.class.push('custom-block');
         hProperties.class.push(isPlayground ? 'playground' : 'runtime');
         if (lang === 'markdown') {
-          const f = new VFile({ ...file, contents: node.value });
-          const vfile = await processor.process(f);
-          value = vfile.contents;
+          const f = VFile({ ...file, contents: node.value });
+          const v = await processor.process(f);
+          value = v.contents;
         } else {
           const context = {
             $page: file.data || {}

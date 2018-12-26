@@ -18,7 +18,7 @@ import { FetchService, CachePage } from './fetch.service';
 import { SettingsService } from './settings.service';
 import { links, images } from '../plugins/links';
 
-import VFile from 'vfile';
+import VFILE from 'vfile';
 
 @Injectable({
   providedIn: 'root'
@@ -52,8 +52,8 @@ export class MarkdownService {
     this.processor = unified()
       .use(markdown)
       .use(this.settings.remarkPlugins)
-      .use(links, locationService)
-      .use(images, locationService)
+      .use(links as any, locationService)
+      .use(images as any, locationService)
       .use(remark2rehype, { allowDangerousHTML: true })
       .use(raw)
       // TODO: rehype plugins
@@ -72,19 +72,19 @@ export class MarkdownService {
 
     const beforeEach = fn => {
       // todo: async
-      this.hooks.beforeEach.tap('docsify-beforeEach', (vfile: VFile) => {
-        vm.route.file = vfile.data.docspa.url;
-        vfile.contents = fn(vfile.contents);
-        return vfile;
+      this.hooks.beforeEach.tap('docsify-beforeEach', (vf: VFILE.VFile) => {
+        vm.route.file = (vf.data as any).docspa.url;
+        vf.contents = fn(vf.contents);
+        return vf;
       });
     };
 
     const afterEach = fn => {
       // todo: async
-      this.hooks.afterEach.tap('docsify-afterEach', (vfile: VFile) => {
-        vm.route.file = vfile.history[1].replace(/^\//, '');
-        vfile.contents = fn(vfile.contents);
-        return vfile;
+      this.hooks.afterEach.tap('docsify-afterEach', (vf: VFILE.VFile) => {
+        vm.route.file = vf.history[1].replace(/^\//, '');
+        vf.contents = fn(vf.contents);
+        return vf;
       });
     };
 
@@ -114,35 +114,35 @@ export class MarkdownService {
    * @param page The page content path
    * @param content Plugins only run if page is the content page
    */
-  getMd(page: string, content = true): Observable<VFile>  {
+  getMd(page: string, content = true): Observable<VFILE.VFile>  {
     if (!page) {
-      const _ = new VFile('');
+      const _ = VFILE('');
       return of(_)
         .pipe(tap(() => this.hooks.doneEach.call(_)));
     }
 
-    const vfile = this.locationService.pageToFile(page);
-    return this.fetchService.get(vfile.data.docspa.url)
+    const vf = this.locationService.pageToFile(page);
+    return this.fetchService.get((vf as any).data.docspa.url)
       .pipe(
         flatMap(async (res: CachePage) => {
           if (res.notFound) {
             content = false;
           }
 
-          this.logger.debug(`Processing started: ${vfile.path}`);
+          this.logger.debug(`Processing started: ${vf.path}`);
 
-          vfile.contents = res.contents;
+          vf.contents = res.contents;
 
           if (content) {
-            await this.hooks.beforeEach.promise(vfile);
+            await this.hooks.beforeEach.promise(vf);
           }
           // This might eventually be a hook as well
-          const err = await this.processor.process(vfile);
+          const err = await this.processor.process(vf);
           if (content) {
-            await this.hooks.afterEach.promise(vfile);
-            this.hooks.doneEach.call(err || vfile);
+            await this.hooks.afterEach.promise(vf);
+            this.hooks.doneEach.call(err || vf);
           }
-          return vfile;
+          return vf;
         }),
         share()
       );

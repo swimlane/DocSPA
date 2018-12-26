@@ -10,7 +10,7 @@ import { MarkdownService } from '../services/markdown.service';
 import { RouterService } from '../services/router.service';
 import { splitHash } from '../utils';
 
-import VFile from 'vfile';
+import vfile from 'vfile';
 
 @Component({
   selector: 'docspa-md-embed', // tslint:disable-line
@@ -38,7 +38,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   @Input()
   activeAnchors: string = null;
 
-  @Output() done: EventEmitter<VFile> = new EventEmitter();
+  @Output() done: EventEmitter<vfile.VFile> = new EventEmitter();
 
   @HostBinding('innerHTML')
   html: string | SafeHtml;
@@ -74,13 +74,13 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
 
   private load() {
     this.markdownService.getMd(this.path, this.plugins)
-    .subscribe(vfile => {
+    .subscribe(_vfile => {
       setTimeout(() => {
         this.markActiveLinks();
         this.doScroll();
-        this.done.emit(vfile);
+        this.done.emit(_vfile);
       }, 30);
-      this.html = this.safe ? this.sanitizer.bypassSecurityTrustHtml(vfile.contents) : vfile.contents;
+      this.html = this.safe ? this.sanitizer.bypassSecurityTrustHtml(_vfile.contents as string) : vfile.contents;
     });
   }
 

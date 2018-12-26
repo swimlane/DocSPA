@@ -5,7 +5,7 @@ import { MarkdownService } from '../services/markdown.service';
 import { LocationService } from '../services/location.service';
 import { FetchService } from '../services/fetch.service';
 
-import VFile from 'vfile';
+import VFILE, { default as VFile } from 'vfile';
 import { getBasePath } from '../utils';
 
 import unified from 'unified';
@@ -16,7 +16,7 @@ import stringify from 'remark-stringify';
 import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
 import { join } from '../utils';
-import { MDAST } from 'mdast';
+import MDAST from 'mdast';
 import frontmatter from 'remark-frontmatter';
 
 import { of } from 'rxjs';
@@ -125,12 +125,12 @@ export class TOCPaginationComponent implements OnInit {
 
   private _paths: string[];
 
-  files: VFile[];
+  files: VFILE.VFile[];
 
   next: any;
   prev: any;
 
-  getBasePath: (vfile: VFile) => string = getBasePath;
+  getBasePath: (vfile: VFILE.VFile) => string = getBasePath;
 
   constructor(
     private fetchService: FetchService,
@@ -161,7 +161,7 @@ export class TOCPaginationComponent implements OnInit {
       .use(markdown)
       .use(frontmatter)
       .use(slug)
-      .use(getLinks)
+      .use(getLinks as any)
       .use(stringify);
   }
 
@@ -186,7 +186,7 @@ export class TOCPaginationComponent implements OnInit {
     }
   }
 
-  prepareLink(vfile: VFile) {
+  prepareLink(vfile: VFILE.VFile) {
     return this.locationService.prepareLink(vfile.history[0]);
   }
 
@@ -214,7 +214,7 @@ export class TOCPaginationComponent implements OnInit {
     this.next = index < this.files.length ? this.files[index + 1] : null;
   }
 
-  private generatePageIndex(paths: string[]): Promise<VFile[]> {
+  private generatePageIndex(paths: string[]): Promise<VFILE.VFile[]> {
     if (!paths) {
       this.files = null;
       return;

@@ -1,5 +1,5 @@
 import visit from 'unist-util-visit';
-import { UNIST } from 'unist';
+import UNIST from 'unist';
 
 import { resolve } from 'url';
 

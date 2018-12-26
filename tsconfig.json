@@ -17,8 +17,7 @@
     ],
     "types": [
       "node",
-      "jasmine",
-      "@paperist/types-remark"
+      "jasmine"
     ],
     "lib": [
       "es2017",

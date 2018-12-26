@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "module": "es2015",
-    "types": ["node", "@paperist/types-remark"],
+    "types": ["node"],
     "paths": {
       "@swimlane/docspa-core": [
         "projects/swimlane/docspa-core/src/public_api"

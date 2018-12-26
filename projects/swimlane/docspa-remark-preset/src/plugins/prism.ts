@@ -8,8 +8,8 @@ import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-diff';
 import 'prismjs/components/prism-c';
 
-import { MDAST } from 'mdast';
-import { UNIST } from 'unist';
+import MDAST from 'mdast';
+import UNIST from 'unist';
 
 const ctx =
   typeof window === 'undefined'
@@ -30,7 +30,7 @@ export function prism({classPrefix = 'language'} = {}) {
     const hl = Prism.highlight;
     if (hl) {
       const data = {
-        hProperties: {} as UNIST.Data,
+        hProperties: {} as { [key: string]: any},
         ...node.data,
         hName: 'pre'
       };

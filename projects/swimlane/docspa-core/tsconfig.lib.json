@@ -12,7 +12,6 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
-    "types": ["@paperist/types-remark"],
     "lib": [
       "dom",
       "es7"

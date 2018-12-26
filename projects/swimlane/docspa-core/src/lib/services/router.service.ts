@@ -10,7 +10,7 @@ import { SettingsService } from './settings.service';
 import { FetchService } from './fetch.service';
 import { LocationService } from './location.service';
 
-import VFile from 'vfile';
+import { VFile } from 'vfile';
 
 @Injectable({
   providedIn: 'root'

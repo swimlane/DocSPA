@@ -1,6 +1,6 @@
 import visit from 'unist-util-visit';
 import toString from 'mdast-util-to-string';
-import { MDAST } from 'mdast';
+import MDAST from 'mdast';
 
 export function readMatter() {
   return function transformer({children}, file) {
