@@ -1,5 +1,7 @@
 import visit from 'unist-util-visit';
-import UNIST from 'unist';
+import MDAST from 'mdast';
+import VFILE from 'vfile';
+import UNIFIED from 'unified';
 
 import { resolve } from 'url';
 
@@ -26,10 +28,16 @@ function join(start: string, end: string): string {
   return start + '/' + end;
 }
 
-interface ShortCode extends UNIST.Parent {
+interface ShortCode extends MDAST.Parent {
   type: 'shortcode';
   identifier: string;
   attributes: { [key: string]: any };
+}
+
+interface VFile extends VFILE.VFile {
+  data: {
+    base?: string;
+  };
 }
 
 /**
@@ -37,7 +45,7 @@ interface ShortCode extends UNIST.Parent {
  * Must be included after remark-shortcodes but before customSmartCodes
  */
 export const tocSmartCode = () => {
-  return (tree, file) => {
+  return (tree: MDAST.Root, file: VFile) => {
     file.data = file.data || {};
     visit(tree, 'shortcode', (node: ShortCode) => {
       if (node.identifier === 'toc') {
@@ -49,7 +57,7 @@ export const tocSmartCode = () => {
 };
 
 export const customSmartCodes = (codes) => {
-  return (tree, file) => {
+  return (tree: MDAST.Root, file: VFile) => {
     file.data = file.data || {};
     visit(tree, 'shortcode', (node: ShortCode, index, parent) => {
       if (node && parent && index !== undefined && node.identifier in codes) {
@@ -70,7 +78,7 @@ export const customSmartCodes = (codes) => {
 };
 
 export const shortCodeProps = () => {
-  return (tree, file) => {
+  return (tree: MDAST.Root, file: VFile) => {
     file.data = file.data || {};
     visit(tree, 'shortcode', (node: ShortCode) => {
       node.data = node.data || {};
@@ -93,9 +101,9 @@ export const customSmartCodesOptions = {
   }
 };
 
-export const includeShortCode = function (this: any) {
-  const processor: any = this;
-  return async (tree, file) => {
+export const includeShortCode = function (this: UNIFIED.Processor) {
+  const processor = this;
+  return async (tree: MDAST.Root, file: VFile) => {
     file.data = file.data || {};
     const promises: any[] = [];
     visit(tree, 'shortcode', visitor);

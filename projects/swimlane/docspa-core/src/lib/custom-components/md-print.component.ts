@@ -10,7 +10,8 @@ import visit from 'unist-util-visit';
 import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
 import MDAST from 'mdast';
-import VFILE, { default as VFile } from 'vfile';
+import { VFile, Link, Heading } from '../../vendor';
+
 import frontmatter from 'remark-frontmatter';
 import rehypeStringify from 'rehype-stringify';
 import remark2rehype from 'remark-rehype';
@@ -24,20 +25,6 @@ import { SettingsService } from '../services/settings.service';
 import { RouterService } from '../services/router.service';
 
 import { join } from '../utils';
-
-import UNIST from 'unist';
-
-interface CustomVFile extends VFILE.VFile {
-  data: any;
-}
-
-interface Heading extends MDAST.Heading {
-  data: any;
-}
-
-interface Link extends MDAST.Link {
-  data: any;
-}
 
 @Component({
   selector: 'docspa-print', // tslint:disable-line
@@ -113,7 +100,7 @@ export class MdPrintComponent implements OnInit {
     private elm: ElementRef
   ) {
     const getLinks: unified.Attacher = () => {
-      return (tree: UNIST.Node, file: CustomVFile) => {
+      return (tree: MDAST.Root, file: VFile) => {
         file.data = file.data || {};
         file.data.tocSearch = [];
         return visit(tree, 'link', (node: Link) => {
@@ -132,7 +119,7 @@ export class MdPrintComponent implements OnInit {
     };
 
     const fixLinks = () => {
-      return (tree, file: VFILE.VFile) => {
+      return (tree, file: VFile) => {
         return visit(tree, 'link', (node: MDAST.Link) => {
           if (node && !LocationService.isAbsolutePath(node.url)) {
             const url = locationService.prepareLink(node.url, file.history[0]).replace(/[\/#]/g, '--');
@@ -144,7 +131,7 @@ export class MdPrintComponent implements OnInit {
     };
 
     const fixIds = () => {
-      return (tree, file: VFILE.VFile) => {
+      return (tree, file: VFile) => {
         return visit(tree, 'heading', (node: Heading) => {
           if (node && node.data && node.data.hProperties && node.data.hProperties.id) {
             const id = locationService.prepareLink(`#${node.data.hProperties.id}`, file.history[0]).replace(/[\/#]/g, '--');

@@ -5,12 +5,12 @@ import visit from 'unist-util-visit';
 import MDAST from 'mdast';
 
 export function customBlockquotes({ mapping }) {
-  return function transformer(tree) {
-    visit(tree, 'paragraph', visitor);
+  return function transformer(tree: MDAST.Root) {
+    return visit(tree, 'paragraph', visitor);
 
-    function visitor(node: any) {
+    function visitor(node: MDAST.Paragraph) {
       const { children } = node;
-      const textNode = children[0].value;
+      const textNode = children[0].value as string;
 
       if (!textNode) {
         return true;

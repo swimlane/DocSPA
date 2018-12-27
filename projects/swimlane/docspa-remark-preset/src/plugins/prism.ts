@@ -9,7 +9,6 @@ import 'prismjs/components/prism-diff';
 import 'prismjs/components/prism-c';
 
 import MDAST from 'mdast';
-import UNIST from 'unist';
 
 const ctx =
   typeof window === 'undefined'
@@ -23,7 +22,7 @@ if (ctx['Prism']) {
 }
 
 export function prism({classPrefix = 'language'} = {}) {
-  return (tree) => visit(tree, 'code', visitor);
+  return (tree: MDAST.Root) => visit(tree, 'code', visitor);
 
   function visitor(node: MDAST.Code, index, parent) {
     let { lang, value } = node;

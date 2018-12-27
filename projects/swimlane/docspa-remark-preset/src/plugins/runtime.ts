@@ -1,6 +1,7 @@
 import visit from 'unist-util-visit';
 import VFile from 'vfile';
 import MDAST from 'mdast';
+import UNIFIED from 'unified';
 
 interface VNode {
   node: MDAST.Code;
@@ -8,10 +9,10 @@ interface VNode {
   parent: any;
 }
 
-export function runtime(this: any) {
+export function runtime(this: UNIFIED.Processor) {
   const processor = this;
 
-  return function(tree, file, next) {
+  return function(tree: MDAST.Root, file: VFile.VFile, next) {
     const items: VNode[] = [];
 
     visit(tree, 'code', (node: MDAST.Code, index, parent) => {

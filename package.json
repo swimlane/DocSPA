@@ -43,6 +43,8 @@
     "@ngx-loading-bar/http-client": "^2.1.0",
     "@rigor789/remark-autolink-headings": "^5.1.0",
     "@stackblitz/sdk": "^1.2.0",
+    "@swimlane/docspa-core": "^1.7.2",
+    "@swimlane/docspa-remark-preset": "^1.2.0",
     "@swimlane/ngx-charts": "^10.0.0",
     "@types/vfile": "^3.0.2",
     "@webcomponents/custom-elements": "^1.1.2",

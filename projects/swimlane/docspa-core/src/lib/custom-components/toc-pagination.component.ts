@@ -5,7 +5,7 @@ import { MarkdownService } from '../services/markdown.service';
 import { LocationService } from '../services/location.service';
 import { FetchService } from '../services/fetch.service';
 
-import VFILE, { default as VFile } from 'vfile';
+import VFILE from 'vfile';
 import { getBasePath } from '../utils';
 
 import unified from 'unified';

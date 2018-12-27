@@ -19,10 +19,7 @@ import { SettingsService } from './settings.service';
 import { links, images } from '../plugins/links';
 
 import VFILE from 'vfile';
-
-interface CustomVFile extends VFILE.VFile {
-  data: { docspa: { [key: string]: any } };
-}
+import { VFile } from '../../vendor';
 
 @Injectable({
   providedIn: 'root'
@@ -76,7 +73,7 @@ export class MarkdownService {
 
     const beforeEach = fn => {
       // todo: async
-      this.hooks.beforeEach.tap('docsify-beforeEach', (vf: CustomVFile) => {
+      this.hooks.beforeEach.tap('docsify-beforeEach', (vf: VFile) => {
         vm.route.file = vf.data.docspa.url;
         vf.contents = fn(vf.contents);
         return vf;
@@ -85,7 +82,7 @@ export class MarkdownService {
 
     const afterEach = fn => {
       // todo: async
-      this.hooks.afterEach.tap('docsify-afterEach', (vf: VFILE.VFile) => {
+      this.hooks.afterEach.tap('docsify-afterEach', (vf: VFile) => {
         vm.route.file = vf.history[1].replace(/^\//, '');
         vf.contents = fn(vf.contents);
         return vf;
@@ -126,7 +123,7 @@ export class MarkdownService {
     }
 
     const vf = this.locationService.pageToFile(page);
-    return this.fetchService.get((vf as CustomVFile).data.docspa.url)
+    return this.fetchService.get((vf as VFile).data.docspa.url)
       .pipe(
         flatMap(async (res: CachePage) => {
           if (res.notFound) {

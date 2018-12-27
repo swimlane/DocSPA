@@ -2,14 +2,10 @@ import visit from 'unist-util-visit';
 import { LocationService } from '../services/location.service';
 import VFILE, { default as VFile } from 'vfile';
 import MDAST from 'mdast';
-import UNIST from 'unist';
-
-interface Link extends MDAST.Link {
-  data: any;
-}
+import { Link } from '../../vendor';
 
 export const links = (locationService: LocationService) => {
-  return (tree: UNIST.Node, vfile: VFile.VFile) => {
+  return (tree: MDAST.Root, vfile: VFile.VFile) => {
     return visit(tree, ['link', 'definition'], (node: Link, index, parent) => {
       if (node && parent && index !== undefined && !LocationService.isAbsolutePath(node.url)) {
 
@@ -32,7 +28,7 @@ export const links = (locationService: LocationService) => {
 };
 
 export const images = (locationService: LocationService) => {
-  return (tree: UNIST.Node, vfile: VFILE.VFile) => {
+  return (tree: MDAST.Root, vfile: VFILE.VFile) => {
     return visit(tree, 'image', (node: MDAST.Image) => {
       // src urls are relative to fullpath
       node.url = locationService.prepareSrc(node.url, vfile.path);

@@ -30,7 +30,7 @@ const DOMEventHandler = [
 const isDangerous = p => DOMEventHandler.indexOf(p) >= 0;
 
 export function infoString() {
-  return function(tree) {
+  return function(tree: MDAST.Root) {
     visit(tree, 'code', (node: MDAST.Code) => {
       const idx = node.lang ? node.lang.search(/\s/) : -1;
       if (idx > -1) {
@@ -44,8 +44,8 @@ export function infoString() {
 }
 
 export function infoStringToAttr() {
-  return function(tree) {
-    visit(tree, 'code', node => {
+  return function(tree: MDAST.Root) {
+    visit(tree, 'code', (node: MDAST.Code) => {
       // @ts-ignore
       if (node.infoString) {
         // @ts-ignore
