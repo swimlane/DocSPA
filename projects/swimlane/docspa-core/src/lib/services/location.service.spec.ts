@@ -1,5 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 import { LocationService } from './location.service';
 import { SettingsService } from './settings.service';
@@ -7,9 +8,13 @@ import { SettingsService } from './settings.service';
 describe('LocationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        LoggerModule.forRoot({ level: NgxLoggerLevel.WARN })
+      ],
       providers: [
         Location,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
+        { provide: 'environment', useValue: { } },
         SettingsService,
         LocationService
       ]

@@ -1,4 +1,4 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
@@ -18,6 +18,7 @@ describe('FetchService', () => {
       providers: [
         Location,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
+        { provide: 'environment', useValue: { } },
         FetchService
       ]
     });
@@ -71,13 +72,13 @@ describe('FetchService', () => {
   xit('should disable cache', () => {
     const text = '## Hello';
 
-    fetchService.get('docs/README.md', { cache: false }).subscribe((res: CachePage) => {
+    fetchService.get('docs/README.md' /*, { cache: false } */).subscribe((res: CachePage) => {
       expect(res).toBeTruthy();
       expect(res.resolvedPath).toEqual('docs/README.md');
       expect(res.contents).toEqual(text);
     });
 
-    fetchService.get('docs/README.md', { cache: false }).subscribe((res: CachePage) => {
+    fetchService.get('docs/README.md' /*, { cache: false } */).subscribe((res: CachePage) => {
       expect(res).toBeTruthy();
       expect(res.resolvedPath).toEqual('docs/README.md');
       expect(res.contents).toEqual(text);

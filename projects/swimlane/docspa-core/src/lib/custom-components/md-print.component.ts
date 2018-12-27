@@ -25,11 +25,17 @@ import { RouterService } from '../services/router.service';
 
 import { join } from '../utils';
 
+import UNIST from 'unist';
+
 interface CustomVFile extends VFILE.VFile {
   data: any;
 }
 
 interface Heading extends MDAST.Heading {
+  data: any;
+}
+
+interface Link extends MDAST.Link {
   data: any;
 }
 
@@ -106,11 +112,11 @@ export class MdPrintComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private elm: ElementRef
   ) {
-    const getLinks = () => {
-      return (tree: any, file: CustomVFile) => {
+    const getLinks: unified.Attacher = () => {
+      return (tree: UNIST.Node, file: CustomVFile) => {
         file.data = file.data || {};
         file.data.tocSearch = [];
-        visit(tree, 'link', (node: MDAST.Link) => {
+        return visit(tree, 'link', (node: Link) => {
           const url = node.url;
           const content = toString(node);
           const name = (file.data.matter ? file.data.matter.title : false) || file.data.title || file.path;
@@ -118,7 +124,7 @@ export class MdPrintComponent implements OnInit {
             name,
             url,
             content,
-            depth: (node as any).depth
+            depth: node.depth
           });
           return true;
         });
@@ -127,7 +133,7 @@ export class MdPrintComponent implements OnInit {
 
     const fixLinks = () => {
       return (tree, file: VFILE.VFile) => {
-        visit(tree, 'link', (node: MDAST.Link) => {
+        return visit(tree, 'link', (node: MDAST.Link) => {
           if (node && !LocationService.isAbsolutePath(node.url)) {
             const url = locationService.prepareLink(node.url, file.history[0]).replace(/[\/#]/g, '--');
             node.url = `#${url}`;
@@ -139,7 +145,7 @@ export class MdPrintComponent implements OnInit {
 
     const fixIds = () => {
       return (tree, file: VFILE.VFile) => {
-        visit(tree, 'heading', (node: Heading) => {
+        return visit(tree, 'heading', (node: Heading) => {
           if (node && node.data && node.data.hProperties && node.data.hProperties.id) {
             const id = locationService.prepareLink(`#${node.data.hProperties.id}`, file.history[0]).replace(/[\/#]/g, '--');
             node.data.hProperties.id = node.data.id = id;
@@ -153,7 +159,7 @@ export class MdPrintComponent implements OnInit {
       .use(markdown)
       .use(frontmatter)
       .use(slug)
-      .use(getLinks as any)
+      .use(getLinks)
       .use(remark2rehype, { allowDangerousHTML: true })
       .use(raw)
       .use(rehypeStringify);
@@ -161,9 +167,9 @@ export class MdPrintComponent implements OnInit {
     this.processor = unified()
       .use(markdown)
       .use(this.settings.remarkPlugins)
-      .use(fixLinks as any)
-      .use(fixIds as any)
-      .use(images as any, locationService)
+      .use(fixLinks)
+      .use(fixIds)
+      .use(images, locationService)
       .use(remark2rehype, { allowDangerousHTML: true })
       .use(raw)
       .use(rehypeStringify);

@@ -69,12 +69,13 @@ export class TOCComponent implements OnInit {
           tree.children.slice(0, result.index),
           result.map || []
         );
+        return tree;
       };
     };
 
     const removeMinNodes = () => {
       return tree => {
-        visit(tree, 'heading', (node: MDAST.Heading, index, parent) => {
+        return visit(tree, 'heading', (node: MDAST.Heading, index, parent) => {
           if (node.depth < this.minDepth) {
             parent.children.splice(index, 1);
           }
@@ -87,10 +88,10 @@ export class TOCComponent implements OnInit {
       .use(markdown)
       .use(frontmatter)
       .use(slug)
-      .use(removeMinNodes as any)
-      .use(toToc as any)
-      .use(links as any, locationService)
-      .use(images as any, locationService)
+      .use(removeMinNodes)
+      .use(toToc)
+      .use(links, locationService)
+      .use(images, locationService)
       .use(remark2rehype, { allowDangerousHTML: true })
       .use(raw)
       .use(rehypeStringify);

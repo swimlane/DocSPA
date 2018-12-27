@@ -20,6 +20,10 @@ import { links, images } from '../plugins/links';
 
 import VFILE from 'vfile';
 
+interface CustomVFile extends VFILE.VFile {
+  data: { docspa: { [key: string]: any } };
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -52,8 +56,8 @@ export class MarkdownService {
     this.processor = unified()
       .use(markdown)
       .use(this.settings.remarkPlugins)
-      .use(links as any, locationService)
-      .use(images as any, locationService)
+      .use(links, locationService)
+      .use(images, locationService)
       .use(remark2rehype, { allowDangerousHTML: true })
       .use(raw)
       // TODO: rehype plugins
@@ -72,8 +76,8 @@ export class MarkdownService {
 
     const beforeEach = fn => {
       // todo: async
-      this.hooks.beforeEach.tap('docsify-beforeEach', (vf: VFILE.VFile) => {
-        vm.route.file = (vf.data as any).docspa.url;
+      this.hooks.beforeEach.tap('docsify-beforeEach', (vf: CustomVFile) => {
+        vm.route.file = vf.data.docspa.url;
         vf.contents = fn(vf.contents);
         return vf;
       });
@@ -122,7 +126,7 @@ export class MarkdownService {
     }
 
     const vf = this.locationService.pageToFile(page);
-    return this.fetchService.get((vf as any).data.docspa.url)
+    return this.fetchService.get((vf as CustomVFile).data.docspa.url)
       .pipe(
         flatMap(async (res: CachePage) => {
           if (res.notFound) {

@@ -22,6 +22,10 @@ import frontmatter from 'remark-frontmatter';
 import { of } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 
+interface Link extends MDAST.Link {
+  data: any;
+}
+
 @Component({
   selector: 'docspa-toc-page', // tslint:disable-line
   template: `
@@ -142,7 +146,7 @@ export class TOCPaginationComponent implements OnInit {
       return (tree, file) => {
         file.data = file.data || {};
         file.data.tocSearch = [];
-        visit(tree, 'link', (node: MDAST.Link) => {
+        return visit(tree, 'link', (node: Link) => {
           const url = node.url;
           const content = toString(node);
           const name = (file.data.matter ? file.data.matter.title : false) || file.data.title || file.path;
@@ -150,7 +154,7 @@ export class TOCPaginationComponent implements OnInit {
             name,
             url,
             content,
-            depth: (node as any).depth
+            depth: node.depth
           });
           return true;
         });
@@ -161,7 +165,7 @@ export class TOCPaginationComponent implements OnInit {
       .use(markdown)
       .use(frontmatter)
       .use(slug)
-      .use(getLinks as any)
+      .use(getLinks)
       .use(stringify);
   }
 

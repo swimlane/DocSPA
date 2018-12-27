@@ -2,7 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
-import VFile from 'vfile';
+import VFILE from 'vfile';
 import { join } from '../utils';
 
 import { MarkdownService } from './markdown.service';
@@ -20,6 +20,7 @@ describe('MarkdownService', () => {
       providers: [
         Location,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
+        { provide: 'environment', useValue: { } },
         MarkdownService
       ]
     });
@@ -34,7 +35,7 @@ describe('MarkdownService', () => {
 
   it('should load and process a file', () => {
     const text = '## Hello';
-    markdownService.getMd('/').subscribe((res: VFile) => {
+    markdownService.getMd('/').subscribe((res: VFILE.VFile) => {
       expect(res).toBeTruthy();
       expect(join(res.cwd, res.path)).toEqual('docs/README.html');
       expect(res.contents).toEqual('<h2>Hello</h2>\n');

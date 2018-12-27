@@ -10,7 +10,7 @@ interface Link extends MDAST.Link {
 
 export const links = (locationService: LocationService) => {
   return (tree: UNIST.Node, vfile: VFile.VFile) => {
-    visit(tree, ['link', 'definition'] as any, (node: Link, index, parent) => {
+    return visit(tree, ['link', 'definition'], (node: Link, index, parent) => {
       if (node && parent && index !== undefined && !LocationService.isAbsolutePath(node.url)) {
 
         node.data = node.data || {};
@@ -33,7 +33,7 @@ export const links = (locationService: LocationService) => {
 
 export const images = (locationService: LocationService) => {
   return (tree: UNIST.Node, vfile: VFILE.VFile) => {
-    visit(tree, 'image', (node: MDAST.Image) => {
+    return visit(tree, 'image', (node: MDAST.Image) => {
       // src urls are relative to fullpath
       node.url = locationService.prepareSrc(node.url, vfile.path);
       return true;

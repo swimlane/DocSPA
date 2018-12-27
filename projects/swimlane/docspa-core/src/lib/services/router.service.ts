@@ -175,7 +175,7 @@ export class RouterService {
     const path = vfile.basename === this.settings.homepage ?
       await this.fetchService.find(getFullPath(vfile), this.settings.coverpage) :
       null;
-    return this.locationService.stripBaseHref(path as any);
+    return this.locationService.stripBaseHref(path);
   }
 
   private async resolveSideloadPaths(vfile: VFile) {

@@ -20,6 +20,10 @@ import { join } from '../utils';
 import { FetchService } from '../services/fetch.service';
 import { LocationService } from '../services/location.service';
 
+interface Link extends MDAST.Link {
+  data: any;
+}
+
 @Component({
   selector: 'docspa-toc-search', // tslint:disable-line
   template: `
@@ -94,13 +98,14 @@ export class TOCSearchComponent implements OnInit {
           tree.children.slice(0, result.index),
           result.map || []
         );
+        return tree;
       };
     };
 
     const removeMinNodes = () => {
       return (tree, file) => {
         file.data = file.data || {};
-        visit(tree, 'heading', (node: MDAST.Heading, index, parent) => {
+        return visit(tree, 'heading', (node: MDAST.Heading, index, parent) => {
           if (node.depth < this.minDepth) {
             parent.children.splice(index, 1);
           }
@@ -113,7 +118,7 @@ export class TOCSearchComponent implements OnInit {
       return (tree, file) => {
         file.data = file.data || {};
         file.data.tocSearch = [];
-        visit(tree, 'link', (node: MDAST.Link) => {
+        return visit(tree, 'link', (node: Link) => {
           const url = node.url;
           const content = toString(node);
           const name = (file.data.matter ? file.data.matter.title : false) || file.data.title || file.path;
@@ -121,7 +126,7 @@ export class TOCSearchComponent implements OnInit {
             name,
             url,
             content,
-            depth: (node as any).depth
+            depth: node.depth
           });
           return true;
         });
@@ -132,19 +137,19 @@ export class TOCSearchComponent implements OnInit {
       .use(markdown)
       .use(frontmatter)
       .use(slug)
-      .use(getTitle as any)
-      .use(removeMinNodes as any)
-      .use(toToc as any)
-      .use(links as any, locationService)
-      .use(images as any, locationService)
-      .use(getLinks as any)
+      .use(getTitle)
+      .use(removeMinNodes)
+      .use(toToc)
+      .use(links, locationService)
+      .use(images, locationService)
+      .use(getLinks)
       .use(stringify);
 
     this.processLinks = unified() // md -> md + links
       .use(markdown)
       .use(frontmatter)
       .use(slug)
-      .use(getLinks as any)
+      .use(getLinks)
       .use(stringify);
   }
 
