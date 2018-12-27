@@ -13,7 +13,7 @@ export function readMatter() {
 export const getTitle = () => {
   return (tree, file) => {
     file.data = file.data || {};
-    visit(tree, 'heading', (node: MDAST.Heading) => {
+    return visit(tree, 'heading', (node: MDAST.Heading) => {
       if (node.depth === 1 && !file.data.title) {
         file.data.title = toString(node);
       }

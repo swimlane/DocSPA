@@ -22,8 +22,6 @@ import { config } from '../docspa.config';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
-import { ContentLoaderModule } from '@netbasal/ngx-content-loader';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,8 +36,7 @@ import { ContentLoaderModule } from '@netbasal/ngx-content-loader';
     LoadingBarModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production
-    }),
-    ContentLoaderModule
+    })
   ],
   providers: [
     Location,
