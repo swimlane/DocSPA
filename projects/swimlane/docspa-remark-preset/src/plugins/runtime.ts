@@ -2,7 +2,6 @@ import visit from 'unist-util-visit';
 import VFile from 'vfile';
 import MDAST from 'mdast';
 import UNIFIED from 'unified';
-
 interface VNode {
   node: MDAST.Code;
   index: number | undefined;
@@ -24,7 +23,9 @@ export function runtime(this: UNIFIED.Processor) {
       return visitor(node, index, parent);
     });
 
-    Promise.all(res).then(() => next());
+    return Promise.all(res).then(() => {
+      next();
+    });
 
     async function visitor(node, index, parent) {
       const { lang, data } = node;

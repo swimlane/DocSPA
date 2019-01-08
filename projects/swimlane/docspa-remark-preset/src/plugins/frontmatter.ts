@@ -2,6 +2,7 @@ import visit from 'unist-util-visit';
 import toString from 'mdast-util-to-string';
 import MDAST from 'mdast';
 import VFILE from 'vfile';
+import UNIFIED from 'unified';
 
 interface VFile extends VFILE.VFile {
   data: {
@@ -10,15 +11,16 @@ interface VFile extends VFILE.VFile {
   };
 }
 
-export function readMatter() {
-  return function transformer({children}: MDAST.Root, file: VFile) {
-    if (children[0].type === 'yaml') {
-      file.data.matter = children[0].data.parsedValue;
+export const readMatter = (): UNIFIED.Transformer => {
+  return function transformer(node: MDAST.Root, file: VFile) {
+    if (node.children[0].type === 'yaml') {
+      file.data.matter = node.children[0].data.parsedValue;
     }
+    return node;
   };
 }
 
-export const getTitle = () => {
+export const getTitle = (): UNIFIED.Transformer => {
   return (tree: MDAST.Root, file: VFile) => {
     file.data = file.data || {};
     return visit(tree, 'heading', (node: MDAST.Heading) => {

@@ -1,6 +1,7 @@
 import visit from 'unist-util-visit';
 import mdAttrParser from 'md-attr-parser';
 import MDAST from 'mdast';
+import UNIFIED from 'unified';
 
 // The list of DOM Event handler
 const DOMEventHandler = [
@@ -29,9 +30,9 @@ const DOMEventHandler = [
 
 const isDangerous = p => DOMEventHandler.indexOf(p) >= 0;
 
-export function infoString() {
+export function infoString(): UNIFIED.Transformer {
   return function(tree: MDAST.Root) {
-    visit(tree, 'code', (node: MDAST.Code) => {
+    return visit(tree, 'code', (node: MDAST.Code) => {
       const idx = node.lang ? node.lang.search(/\s/) : -1;
       if (idx > -1) {
         // @ts-ignore

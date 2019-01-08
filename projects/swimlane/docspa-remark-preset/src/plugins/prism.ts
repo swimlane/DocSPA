@@ -1,6 +1,7 @@
 import visit from 'unist-util-visit';
 import rangeParser from 'parse-numeric-range';
 import Prism from 'prismjs';
+import UNIFIED from 'unified';
 
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-markdown';
@@ -21,7 +22,7 @@ if (ctx['Prism']) {
   document.removeEventListener('DOMContentLoaded', ctx['Prism'].highlightAll);
 }
 
-export function prism({classPrefix = 'language'} = {}) {
+export function prism({classPrefix = 'language'} = {}): UNIFIED.Transformer {
   return (tree: MDAST.Root) => visit(tree, 'code', visitor);
 
   function visitor(node: MDAST.Code, index, parent) {

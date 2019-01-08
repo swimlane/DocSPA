@@ -3,8 +3,9 @@
 
 import visit from 'unist-util-visit';
 import MDAST from 'mdast';
+import UNIFIED from 'unified';
 
-export function customBlockquotes({ mapping }) {
+export function customBlockquotes({ mapping }): UNIFIED.Transformer {
   return function transformer(tree: MDAST.Root) {
     return visit(tree, 'paragraph', visitor);
 

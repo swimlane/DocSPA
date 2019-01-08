@@ -44,10 +44,10 @@ interface VFile extends VFILE.VFile {
  * Convert [[toc]] smart-code to a TOC
  * Must be included after remark-shortcodes but before customSmartCodes
  */
-export const tocSmartCode = () => {
+export const tocSmartCode = (): UNIFIED.Transformer => {
   return (tree: MDAST.Root, file: VFile) => {
     file.data = file.data || {};
-    visit(tree, 'shortcode', (node: ShortCode) => {
+    return visit(tree, 'shortcode', (node: ShortCode) => {
       if (node.identifier === 'toc') {
         node.attributes.path = node.attributes.path || file.data.base;
       }
@@ -56,10 +56,10 @@ export const tocSmartCode = () => {
   };
 };
 
-export const customSmartCodes = (codes) => {
+export const customSmartCodes = (codes): UNIFIED.Transformer => {
   return (tree: MDAST.Root, file: VFile) => {
     file.data = file.data || {};
-    visit(tree, 'shortcode', (node: ShortCode, index, parent) => {
+    return visit(tree, 'shortcode', (node: ShortCode, index, parent) => {
       if (node && parent && index !== undefined && node.identifier in codes) {
         const child = {
           type: 'element',
@@ -77,17 +77,17 @@ export const customSmartCodes = (codes) => {
   };
 };
 
-export const shortCodeProps = () => {
+export function shortCodeProps(): UNIFIED.Transformer {
   return (tree: MDAST.Root, file: VFile) => {
     file.data = file.data || {};
-    visit(tree, 'shortcode', (node: ShortCode) => {
+    return visit(tree, 'shortcode', (node: ShortCode) => {
       node.data = node.data || {};
       node.data.hProperties = node.data.hProperties || {};
       node.data.hProperties = { ...node.data.hProperties, ...node.attributes };
       return true;
     });
   };
-};
+}
 
 export const customSmartCodesOptions = {
   toc: {
@@ -101,18 +101,17 @@ export const customSmartCodesOptions = {
   }
 };
 
-export const includeShortCode = function (this: UNIFIED.Processor) {
+export function includeShortCode(this: UNIFIED.Processor): UNIFIED.Transformer {
   const processor = this;
   return async (tree: MDAST.Root, file: VFile) => {
     file.data = file.data || {};
     const promises: any[] = [];
     visit(tree, 'shortcode', visitor);
-    await Promise.all(promises);
-    return null;
+    return await Promise.all(promises).then(() => tree);
 
     function visitor(node: ShortCode, index, parent) {
       if (node.identifier === 'include' && node.attributes.path) {
-        const filePath = join(file.cwd, resolve(file.path, node.attributes.path));
+        const filePath = join(file.cwd, resolve(file.path as string, node.attributes.path));
         const p = fetch(filePath).then(res => res.text()).then(res => {
           let newNode: any;
 
@@ -137,4 +136,4 @@ export const includeShortCode = function (this: UNIFIED.Processor) {
       return true;
     }
   };
-};
+}

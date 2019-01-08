@@ -1,5 +1,7 @@
 import visit from 'unist-util-visit';
 import mermaidApi from 'mermaid';
+import UNIFIED from 'unified';
+import MDAST from 'mdast';
 
 const supportsCustomElements = !!window['customElements'];
 
@@ -17,7 +19,7 @@ export class MermaidElement extends HTMLElement {
   }
 }
 
-export function mermaid(options) {
+export function mermaid(options): UNIFIED.Transformer {
   const config = {
     startOnLoad: false,
     arrowMarkerAbsolute: false,
@@ -39,8 +41,8 @@ export function mermaid(options) {
     value => `<${MermaidElement.is} class="${MERMAID}">${value}</${MermaidElement.is}>` :
     value => `<div class="${MERMAID}">${value}</div>`;
 
-  return function transformer(tree) {
-    visit(tree, 'code', (node: any) => {
+  return function transformer(tree: MDAST.Root) {
+    return visit(tree, 'code', (node: any) => {
       const lang = (node.lang || '').toLowerCase();
       if (lang === MERMAID) {
         node.type = 'html';
