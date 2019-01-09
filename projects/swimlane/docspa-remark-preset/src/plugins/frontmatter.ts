@@ -14,11 +14,12 @@ interface VFile extends VFILE.VFile {
 export const readMatter = (): UNIFIED.Transformer => {
   return function transformer(node: MDAST.Root, file: VFile) {
     if (node.children[0].type === 'yaml') {
+      node.children[0].data = node.children[0].data || {};
       file.data.matter = node.children[0].data.parsedValue;
     }
     return node;
   };
-}
+};
 
 export const getTitle = (): UNIFIED.Transformer => {
   return (tree: MDAST.Root, file: VFile) => {
