@@ -2,7 +2,7 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import sdk from '@stackblitz/sdk';
-import { Project } from '@stackblitz/sdk/typings/interfaces';
+import { Project, EmbedOptions } from '@stackblitz/sdk/typings/interfaces';
 import { join } from '../utils';
 import { dirname } from 'path';
 
@@ -69,10 +69,12 @@ export class EmbedStackblitzComponent {
   projectId: string;
 
   @Input()
-  embedOpts = {
-    height: '350px',
-    clickToLoad: false
-  };
+  set embedOpts(val: EmbedOptions) {
+    this._embedOpts = typeof val === 'string' ? JSON.parse(val as string) : val;
+  }
+  get embedOpts(): EmbedOptions {
+    return this._embedOpts;
+  }
 
   @Input()
   title = '';
@@ -80,6 +82,10 @@ export class EmbedStackblitzComponent {
   opened = false;
 
   private _project: Project;
+  private _embedOpts: EmbedOptions = {
+    height: '350px',
+    clickToLoad: false
+  };
 
   id = `embed-stackblitz-${EmbedStackblitzComponent.count++}+${Math.random()}`;
 
