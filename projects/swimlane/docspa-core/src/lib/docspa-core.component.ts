@@ -125,9 +125,18 @@ export class DocSPACoreComponent implements OnInit {
   }
 
   private pathChanges(changes: SimpleChanges) {
+    if ('anchor' in changes) {
+      this.anchor = changes.anchor.currentValue;
+    }
+
     if ('contentPage' in changes && this.contentPage !== changes.contentPage.currentValue) {
       this.contentPage = changes.contentPage.currentValue;
       this.activeLink = this.contentPage;
+
+      // if the page changes, and no anchor is given, scroll top the top
+      if ('anchor' in changes && changes.anchor.currentValue === '') {
+        this.anchor = 'main';
+      }
     }
 
     if ('coverPage' in changes) {
@@ -140,10 +149,6 @@ export class DocSPACoreComponent implements OnInit {
       this.navbarPage = sideLoad.navbar;
       this.rightSidebarPage = sideLoad.rightSidebar;
       this.footerPage = sideLoad.footer;
-    }
-
-    if ('anchor' in changes) {
-      this.anchor = changes.anchor.currentValue;
     }
 
     // TODO: ready event from sub components?
