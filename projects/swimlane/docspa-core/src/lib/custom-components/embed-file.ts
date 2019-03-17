@@ -2,7 +2,7 @@ import {
   Component, ViewEncapsulation,
   OnInit, OnChanges, HostBinding, HostListener,
   Input, Output, EventEmitter,
-  ElementRef, Renderer,
+  ElementRef, Renderer2,
   SimpleChanges
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -52,7 +52,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
     private routerService: RouterService,
     private sanitizer: DomSanitizer,
     private elm: ElementRef,
-    private renderer: Renderer
+    private renderer: Renderer2
   ) {
   }
 
@@ -122,11 +122,19 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
         if (active) {
           activeLinks.push(a);
         }
-        this.renderer.setElementClass(a, 'active', active);
+        if (active) {
+          this.renderer.addClass(a, 'active');
+        } else {
+          this.renderer.removeClass(a, 'active');
+        }
 
         let p = a.parentNode;
         while (p && ['LI', 'UL', 'P'].includes(p.nodeName)) {
-          this.renderer.setElementClass(p, 'active', active);
+          if (active) {
+            this.renderer.addClass(p, 'active');
+          } else {
+            this.renderer.removeClass(p, 'active');
+          }
           p = p.parentNode;
         }
       }
@@ -134,7 +142,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
       activeLinks.forEach(a => {
         let p = a.parentNode;
         while (p && ['LI', 'UL', 'P'].includes(p.nodeName)) {
-          this.renderer.setElementClass(p, 'active', true);
+          this.renderer.addClass(p, 'active');
           p = p.parentNode;
         }
       });

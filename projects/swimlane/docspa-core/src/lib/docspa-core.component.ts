@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Renderer, HostListener, ViewEncapsulation, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, Renderer2, HostListener, ViewEncapsulation, SimpleChanges } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { VFile } from '../vendor';
 
@@ -31,7 +31,7 @@ export class DocSPACoreComponent implements OnInit {
   activeLink: string;
   activeAnchors: string;
 
-  contentHeadings: any;
+  contentHeadings: any[];
 
   @ViewChild('coverMain') coverMain: any;
 
@@ -40,7 +40,7 @@ export class DocSPACoreComponent implements OnInit {
   constructor(
     private settings: SettingsService,
     private routerService: RouterService,
-    private renderer: Renderer,
+    private renderer: Renderer2,
     private titleService: Title,
     private metaService: Meta
   ) {
@@ -56,7 +56,12 @@ export class DocSPACoreComponent implements OnInit {
       coverHeight = cover.getBoundingClientRect().height;
       add = window.pageYOffset >= coverHeight || cover.classList.contains('hidden');
     }
-    this.renderer.setElementClass(document.body, 'sticky', add);
+
+    if (add) {
+      this.renderer.addClass(document.body, 'sticky');
+    } else {
+      this.renderer.removeClass(document.body, 'sticky');
+    }
 
     if (this.contentHeadings) {
       const fromTop = window.scrollY - 60 - coverHeight;
@@ -86,7 +91,11 @@ export class DocSPACoreComponent implements OnInit {
 
   toggleSidebar() {
     this.sidebarClose = !this.sidebarClose;
-    this.renderer.setElementClass(document.body, 'close', this.sidebarClose);
+    if (this.sidebarClose) {
+      this.renderer.addClass(document.body, 'close');
+    } else {
+      this.renderer.removeClass(document.body, 'close');
+    }
   }
 
   ngOnInit() {
@@ -118,7 +127,7 @@ export class DocSPACoreComponent implements OnInit {
       }
     });
 
-    this.renderer.setElementClass(document.body, 'ready', true);
+    this.renderer.addClass(document.body, 'ready');
     this.contentHeadings = [].slice.call(document.querySelectorAll('h1[id] a, h2[id] a, h3[id] a'));
 
     this.onWindowScroll();
