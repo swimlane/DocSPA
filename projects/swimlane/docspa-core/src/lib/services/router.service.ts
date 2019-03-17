@@ -1,6 +1,5 @@
 import { Injectable, EventEmitter, SimpleChange, SimpleChanges } from '@angular/core';
 import { Location, PopStateEvent } from '@angular/common';
-import { URLSearchParams } from '@angular/http';
 import { NGXLogger } from 'ngx-logger';
 import { ReplaySubject } from 'rxjs';
 
