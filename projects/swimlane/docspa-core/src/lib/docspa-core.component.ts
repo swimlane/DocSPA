@@ -96,7 +96,7 @@ export class DocSPACoreComponent implements OnInit {
 
   mainContentLoaded(page: VFile) {
     let title = this.settings.name;
-    let subTitle;
+    let subTitle: string;
     if (page.data) {
       if (page.data.matter && page.data.matter.title) {
         subTitle = page.data.matter.title;
@@ -135,7 +135,7 @@ export class DocSPACoreComponent implements OnInit {
 
       // if the page changes, and no anchor is given, scroll top the top
       if ('anchor' in changes && changes.anchor.currentValue === '') {
-        this.anchor = 'main';
+        this.anchor = 'page-top';
       }
     }
 

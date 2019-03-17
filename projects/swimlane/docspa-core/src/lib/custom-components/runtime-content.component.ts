@@ -27,7 +27,7 @@ export class RuntimeContentComponent implements OnInit {
   context: any;
 
   @Input()
-  template;
+  template: string;
 
   @ViewChild('container', { read: ViewContainerRef })
   container: ViewContainerRef;

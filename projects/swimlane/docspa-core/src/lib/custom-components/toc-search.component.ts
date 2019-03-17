@@ -14,6 +14,7 @@ import { links, images } from '../plugins/links';
 import frontmatter from 'remark-frontmatter';
 import MDAST from 'mdast';
 import { getTitle } from '@swimlane/docspa-remark-preset/dist/module/plugins/frontmatter';
+import { VFile } from '../../vendor';
 
 import { join } from '../utils';
 
@@ -92,7 +93,7 @@ export class TOCSearchComponent implements OnInit {
     private locationService: LocationService
   ) {
     const toToc = () => {
-      return (tree) => {
+      return (tree: MDAST.Root) => {
         const result = toc(tree, { maxDepth: this.maxDepth });
         tree.children = [].concat(
           tree.children.slice(0, result.index),
@@ -103,7 +104,7 @@ export class TOCSearchComponent implements OnInit {
     };
 
     const removeMinNodes = () => {
-      return (tree, file) => {
+      return (tree: MDAST.Root, file: VFile) => {
         file.data = file.data || {};
         return visit(tree, 'heading', (node: MDAST.Heading, index, parent) => {
           if (node.depth < this.minDepth) {
@@ -115,7 +116,7 @@ export class TOCSearchComponent implements OnInit {
     };
 
     const getLinks = () => {
-      return (tree, file) => {
+      return (tree: MDAST.Root, file: VFile) => {
         file.data = file.data || {};
         file.data.tocSearch = [];
         return visit(tree, 'link', (node: Link) => {
@@ -126,7 +127,7 @@ export class TOCSearchComponent implements OnInit {
             name,
             url,
             content,
-            depth: node.depth
+            depth: node.depth as number
           });
           return true;
         });
@@ -210,7 +211,7 @@ export class TOCSearchComponent implements OnInit {
     ).toPromise();
   }
 
-  private generateSearchIndex(paths) {
+  private generateSearchIndex(paths: string[]) {
     if (!paths) {
       this.searchIndex = null;
       return;

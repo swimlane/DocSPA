@@ -119,7 +119,7 @@ export class MdPrintComponent implements OnInit {
     };
 
     const fixLinks = () => {
-      return (tree, file: VFile) => {
+      return (tree: MDAST.Root, file: VFile) => {
         return visit(tree, 'link', (node: MDAST.Link) => {
           if (node && !LocationService.isAbsolutePath(node.url)) {
             const url = locationService.prepareLink(node.url, file.history[0]).replace(/[\/#]/g, '--');
@@ -131,7 +131,7 @@ export class MdPrintComponent implements OnInit {
     };
 
     const fixIds = () => {
-      return (tree, file: VFile) => {
+      return (tree: MDAST.Root, file: VFile) => {
         return visit(tree, 'heading', (node: Heading) => {
           if (node && node.data && node.data.hProperties && node.data.hProperties.id) {
             const id = locationService.prepareLink(`#${node.data.hProperties.id}`, file.history[0]).replace(/[\/#]/g, '--');
@@ -207,8 +207,6 @@ export class MdPrintComponent implements OnInit {
         window.print();
       }
     });
-
-
   }
 
   private loadSummary(summary: string): Promise<string[]> {

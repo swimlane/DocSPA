@@ -5,12 +5,13 @@ import { MarkdownService } from '../services/markdown.service';
 import { LocationService } from '../services/location.service';
 import { FetchService } from '../services/fetch.service';
 
+import { VFile } from '../../vendor';
 import VFILE from 'vfile';
 import { getBasePath } from '../utils';
 
 import unified from 'unified';
 import markdown from 'remark-parse';
-import toc from 'mdast-util-toc';
+// import toc from 'mdast-util-toc';
 import visit from 'unist-util-visit';
 import stringify from 'remark-stringify';
 import toString from 'mdast-util-to-string';
@@ -31,7 +32,7 @@ interface Link extends MDAST.Link {
   template: `
     <div class="docsify-pagination-container">
       <div class="pagination-item pagination-item--previous" *ngIf="prev">
-        <a class="prev" [attr.href]="prepareLink(prev) + '#main'" >
+        <a class="prev" [attr.href]="prepareLink(prev)" >
           <div class="pagination-item-label">
             <span>« PREVIOUS</span>
           </div>
@@ -39,7 +40,7 @@ interface Link extends MDAST.Link {
         </a>
       </div>
       <div class="pagination-item pagination-item--next" *ngIf="next">
-        <a class="next" [attr.href]="prepareLink(next) + '#main'" >
+        <a class="next" [attr.href]="prepareLink(next)" >
           <div class="pagination-item-label">
             <span>NEXT »</span>
           </div>
@@ -143,7 +144,7 @@ export class TOCPaginationComponent implements OnInit {
     private locationService: LocationService
   ) {
     const getLinks = () => {
-      return (tree, file) => {
+      return (tree: MDAST.Root, file: VFile) => {
         file.data = file.data || {};
         file.data.tocSearch = [];
         return visit(tree, 'link', (node: Link) => {
@@ -154,7 +155,7 @@ export class TOCPaginationComponent implements OnInit {
             name,
             url,
             content,
-            depth: node.depth
+            depth: node.depth as number
           });
           return true;
         });
@@ -170,7 +171,7 @@ export class TOCPaginationComponent implements OnInit {
   }
 
   ngOnInit() {
-    const processFiles = files => {
+    const processFiles = (files: any[]) => {
       this.files = files;
       this.routerService.changed.subscribe((changes: SimpleChanges) => {
         if ('contentPage' in changes) {

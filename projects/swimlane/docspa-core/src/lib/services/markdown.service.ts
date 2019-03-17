@@ -71,7 +71,7 @@ export class MarkdownService {
       }
     };
 
-    const beforeEach = fn => {
+    const beforeEach = (fn: Function) => {
       // todo: async
       this.hooks.beforeEach.tap('docsify-beforeEach', (vf: VFile) => {
         vm.route.file = vf.data.docspa.url;
@@ -80,7 +80,7 @@ export class MarkdownService {
       });
     };
 
-    const afterEach = fn => {
+    const afterEach = (fn: Function) => {
       // todo: async
       this.hooks.afterEach.tap('docsify-afterEach', (vf: VFile) => {
         vm.route.file = vf.history[1].replace(/^\//, '');
@@ -89,7 +89,7 @@ export class MarkdownService {
       });
     };
 
-    const doneEach = fn => {
+    const doneEach = (fn: Function) => {
       this.hooks.doneEach.tap('docsify-doneEach', () => {
         setTimeout(() => {  // get rid of this, could be called after component renders
           return fn();
@@ -98,7 +98,7 @@ export class MarkdownService {
     };
 
     const hook = {
-      init: fn => fn(), // Called when the script starts running, only trigger once, no arguments
+      init: (fn: Function) => fn(), // Called when the script starts running, only trigger once, no arguments
       beforeEach, // Invoked each time before parsing the Markdown file
       afterEach, // Invoked each time after the Markdown file is parsed
       doneEach, // Invoked each time after the data is fully loaded, no arguments

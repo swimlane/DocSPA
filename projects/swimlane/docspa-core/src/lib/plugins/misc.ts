@@ -6,9 +6,9 @@ import remarkCustomBlocks from 'remark-custom-blocks';
 export const customBlocks = [remarkCustomBlocks, customBlocksOptions];
 
 // TODO: remove experimental features from core
-export function tabsHook(hook) {
-  const toggleState = function(tabs) {
-    tabs.forEach(tab => {
+export function tabsHook(hook: any) {
+  const toggleState = function(tabs: any[]) {
+    tabs.forEach((tab: any) => {
       const state = this === tab ? 'open' : 'closed';
       tab = tab.closest('.tab');
       tab.setAttribute('data-state', state);
@@ -16,8 +16,8 @@ export function tabsHook(hook) {
   };
 
   hook.doneEach(() => {
-    [].slice.call(document.querySelectorAll('.tabs')).forEach(tabSet => {
-      const tabs = [].slice.call(tabSet.querySelectorAll('.tabs .tab .custom-block-heading'));
+    [].slice.call(document.querySelectorAll('.tabs')).forEach((tabSet: any) => {
+      const tabs: any[] = [].slice.call(tabSet.querySelectorAll('.tabs .tab .custom-block-heading'));
       tabs.forEach((tab, i) => {
         const state = i === 0 ? 'open' : 'closed';
         tab.closest('.tab').setAttribute('data-state', state);

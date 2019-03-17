@@ -9,7 +9,7 @@ export class EnvVarComponent {
   static readonly is = 'env-var';
 
   @Input()
-  var;
+  var: string;
 
   get value() {
     return String(this.var ? this.environment[this.var] : '');

@@ -63,7 +63,7 @@ export class TOCComponent implements OnInit {
     private sanitizer: DomSanitizer,
   ) {
     const toToc = () => {
-      return (tree) => {
+      return (tree: MDAST.Root) => {
         const result = toc(tree, { maxDepth: this.maxDepth, tight: this.tight });
         tree.children = [].concat(
           tree.children.slice(0, result.index),
@@ -74,8 +74,8 @@ export class TOCComponent implements OnInit {
     };
 
     const removeMinNodes = () => {
-      return tree => {
-        return visit(tree, 'heading', (node: MDAST.Heading, index, parent) => {
+      return (tree: MDAST.Root) => {
+        return visit(tree, 'heading', (node: MDAST.Heading, index: number, parent: any) => {
           if (node.depth < this.minDepth) {
             parent.children.splice(index, 1);
           }

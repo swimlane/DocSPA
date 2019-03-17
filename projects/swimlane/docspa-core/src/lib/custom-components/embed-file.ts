@@ -2,7 +2,8 @@ import {
   Component, ViewEncapsulation,
   OnInit, OnChanges, HostBinding, HostListener,
   Input, Output, EventEmitter,
-  ElementRef, Renderer
+  ElementRef, Renderer,
+  SimpleChanges
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
@@ -55,7 +56,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   ) {
   }
 
-  ngOnChanges(changes) {
+  ngOnChanges(changes: SimpleChanges) {
     if ('path' in changes || 'plugins' in changes || 'safe' in changes) {
       this.load();
     } else {
