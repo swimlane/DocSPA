@@ -130,7 +130,7 @@ export class RouterService {
   private async hashchange(url: string = '/') {
     const changes: SimpleChanges = {};
 
-    this.logger.debug(`location changed: ${url}`);
+    // this.logger.debug(`location changed: ${url}`);
 
     if (this.url !== url) {
       changes.url = new SimpleChange(this.url, this.url = url, false);

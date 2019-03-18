@@ -10,16 +10,16 @@ import visit from 'unist-util-visit';
 import stringify from 'remark-stringify';
 import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
-import { links, images } from '../plugins/links';
+import { links, images } from '../../plugins/links';
 import frontmatter from 'remark-frontmatter';
 import MDAST from 'mdast';
 import { getTitle } from '@swimlane/docspa-remark-preset/dist/module/plugins/frontmatter';
-import { VFile } from '../../vendor';
+import { VFile } from '../../../vendor';
 
-import { join } from '../utils';
+import { join } from '../../utils';
 
-import { FetchService } from '../services/fetch.service';
-import { LocationService } from '../services/location.service';
+import { FetchService } from '../../services/fetch.service';
+import { LocationService } from '../../services/location.service';
 
 interface Link extends MDAST.Link {
   data: any;

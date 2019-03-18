@@ -13,20 +13,17 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 // Services
 import { SettingsService } from './services/settings.service';
 import { FetchService } from './services/fetch.service';
-import { MarkdownService } from './services/markdown.service';
+import { MarkdownService } from './modules/markdown/markdown.service';
 import { RouterService } from './services/router.service';
 import { CacheInterceptor } from './services/cache.interceptor';
+import { PluginsService } from './services/plugins.service';
 
-// Custom Elements
-import { MadeWithDocSPAComponent } from './custom-components/made-with-love';
-import { RuntimeContentComponent } from './custom-components/runtime-content.component';
-import { TOCComponent } from './custom-components/toc';
-import { TOCSearchComponent } from './custom-components/toc-search.component';
-import { TOCPaginationComponent } from './custom-components/toc-pagination.component';
-import { EmbedStackblitzComponent } from './custom-components/embed-stackblitz.component';
-import { EmbedMarkdownComponent } from './custom-components/embed-file';
-import { EnvVarComponent } from './custom-components/env-var.component';
-import { MdPrintComponent } from './custom-components/md-print.component';
+// TODO: Make optional
+import { MarkdownElementsModule } from './modules/markdown-elements/markdown-elements.module';
+import { RuntimeContentModule } from './modules/runtime-content/runtime-content.module';
+import { EmbedStackblitzModule } from './modules/embed-stackblitz/embed-stackblitz.module';
+import { UseDocsifyPluginsModule } from './modules/docsify-plugins.module';
+import { MarkdownModule } from './modules/markdown/markdown.module';
 
 import { DocSPACoreComponent } from './docspa-core.component';
 import { SafeHtmlPipe } from './services/safe-html.pipe';
@@ -38,69 +35,52 @@ export function createJitCompiler() {
   }]).createCompiler();
 }
 
-const elements = [
-  MadeWithDocSPAComponent,
-  RuntimeContentComponent,
-  TOCComponent,
-  EmbedStackblitzComponent,
-  EmbedMarkdownComponent,
-  EnvVarComponent,
-  TOCSearchComponent,
-  TOCPaginationComponent,
-  MdPrintComponent
-];
-
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    // Move these:
     LoadingBarModule,
     LoadingBarHttpClientModule,
-    LoggerModule.forRoot({ level: NgxLoggerLevel.WARN })
+    MarkdownModule,
+    LoggerModule.forRoot({ level: NgxLoggerLevel.WARN }),
+    MarkdownElementsModule,
+    RuntimeContentModule,
+    EmbedStackblitzModule,
+    UseDocsifyPluginsModule,
   ],
   declarations: [
     DocSPACoreComponent,
     SafeHtmlPipe,
-    ...elements
   ],
   exports: [
     DocSPACoreComponent,
     SafeHtmlPipe,
-    ...elements
   ],
   providers: [
     SettingsService,
     FetchService,
-    MarkdownService,
     RouterService,
+    PluginsService,
     { provide: Compiler, useFactory: createJitCompiler },
-    [
-      { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }
-    ]
-  ],
-  entryComponents: [
-    ...elements
+    { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }
   ]
 })
 export class DocspaCoreModule {
-  constructor(private injector: Injector) {
-    elements.map((Constructor: any) => {
-      if (Constructor.is) {
-        const content = createCustomElement(Constructor, { injector: this.injector });
-        customElements.define(Constructor.is, content);
-      }
-    });
-  }
-
   static forRoot(config: any = {}, environment: any = {}): ModuleWithProviders {
     return {
       ngModule: DocspaCoreModule,
       providers: [
-        { provide: 'environment', useValue: { ...config.environment, ...config } },
+        { provide: 'environment', useValue: { ...config.environment, ...environment } },
         { provide: 'config', useValue: config }
       ]
     };
+  }
+
+  constructor(/* pluginsService: PluginsService */) {
+    // Plugin service to to used later??
+    // pluginsService.initPlugins();
   }
 }

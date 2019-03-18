@@ -5,7 +5,7 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import VFILE from 'vfile';
 import { join } from '../utils';
 
-import { MarkdownService } from './markdown.service';
+import { MarkdownService } from '../modules/markdown/markdown.service';
 
 describe('MarkdownService', () => {
   let markdownService: MarkdownService;

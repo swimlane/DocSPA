@@ -27,10 +27,6 @@ export class SettingsService {
   maxPageCacheSize = 100;
 
   plugins = [];
-  remarkPlugins = [];
-  runtimeModules = [];
-
-  currentTheme: Theme = {};
 
   logLevel: number;
 
@@ -69,19 +65,6 @@ export class SettingsService {
     }
 
     this.sideLoad = sideLoad;
-
-    this.currentTheme = (config && config.theme) || {};
-
-    if (config && config.themeColor) {
-      this.currentTheme['--theme-color'] = config.themeColor;
-    }
-
-    // todo: make dynamic
-    for (const key in this.currentTheme) {
-      if (this.currentTheme.hasOwnProperty(key)) {
-        document.body.style.setProperty(key, this.currentTheme[key]);
-      }
-    }
 
     this.name = this.name || titleService.getTitle();
 

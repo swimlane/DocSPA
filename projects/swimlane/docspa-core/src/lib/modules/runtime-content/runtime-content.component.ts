@@ -3,10 +3,11 @@ import {
   ViewChild, ViewContainerRef, ComponentRef, OnInit,
   Compiler, NgModule,
   ComponentFactory, ModuleWithComponentFactories,
-  CUSTOM_ELEMENTS_SCHEMA
+  CUSTOM_ELEMENTS_SCHEMA, InjectionToken,
+  Inject
 } from '@angular/core';
 
-import { SettingsService } from '../services/settings.service';
+export const FOR_ROOT_OPTIONS_TOKEN = new InjectionToken<any>( 'forRoot() configuration.' );
 
 @Component({
   selector: 'runtime-content', // tslint:disable-line
@@ -41,7 +42,7 @@ export class RuntimeContentComponent implements OnInit {
 
   constructor(
     private compiler: Compiler,
-    private settings: SettingsService
+    @Inject(FOR_ROOT_OPTIONS_TOKEN) private config: any
   ) {
   }
 
@@ -75,7 +76,7 @@ export class RuntimeContentComponent implements OnInit {
       }
     }
     const decoratedCmp = Component(metadata)(RuntimeComponent);
-    const imports = this.settings.runtimeModules;
+    const imports = this.config.imports;
 
     @NgModule({
       imports,

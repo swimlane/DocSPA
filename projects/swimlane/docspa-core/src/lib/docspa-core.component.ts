@@ -6,13 +6,6 @@ import { RouterService } from './services/router.service';
 import { SettingsService } from './services/settings.service';
 import { splitHash } from './utils';
 
-interface Changes {
-  contentPage: string;
-  coverPage: string;
-  anchor: string;
-  sideLoad: {[key: string]: string};
-}
-
 @Component({
   selector: 'lib-docspa-core,docspa-page,[docspa-page]',
   templateUrl: './docspa-core.component.html',

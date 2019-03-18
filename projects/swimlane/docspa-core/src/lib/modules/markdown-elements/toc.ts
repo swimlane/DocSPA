@@ -11,14 +11,14 @@ import rehypeStringify from 'rehype-stringify';
 import remark2rehype from 'remark-rehype';
 import raw from 'rehype-raw';
 
-import { join } from '../utils';
+import { join } from '../../utils';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
-import { FetchService } from '../services/fetch.service';
-import { RouterService } from '../services/router.service';
-import { LocationService } from '../services/location.service';
+import { FetchService } from '../../services/fetch.service';
+import { RouterService } from '../../services/router.service';
+import { LocationService } from '../../services/location.service';
 
-import { links, images } from '../plugins/links';
+import { links, images } from '../../plugins/links';
 import frontmatter from 'remark-frontmatter';
 import MDAST from 'mdast';
 

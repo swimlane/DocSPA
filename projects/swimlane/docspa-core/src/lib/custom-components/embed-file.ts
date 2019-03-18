@@ -1,5 +1,6 @@
 import {
   Component, ViewEncapsulation,
+  forwardRef, Inject, Injector,
   OnInit, OnChanges, HostBinding, HostListener,
   Input, Output, EventEmitter,
   ElementRef, Renderer2,
@@ -7,7 +8,7 @@ import {
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
-import { MarkdownService } from '../services/markdown.service';
+import { MarkdownService } from '../modules/markdown/markdown.service';
 import { RouterService } from '../services/router.service';
 import { splitHash } from '../utils';
 
@@ -75,14 +76,14 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
 
   private load() {
     this.markdownService.getMd(this.path, this.plugins)
-    .subscribe(_vfile => {
-      setTimeout(() => {
-        this.markActiveLinks();
-        this.doScroll();
-        this.done.emit(_vfile);
-      }, 30);
-      this.html = this.safe ? this.sanitizer.bypassSecurityTrustHtml(_vfile.contents as string) : vfile.contents;
-    });
+      .subscribe(_vfile => {
+        setTimeout(() => {
+          this.markActiveLinks();
+          this.doScroll();
+          this.done.emit(_vfile);
+        }, 30);
+        this.html = this.safe ? this.sanitizer.bypassSecurityTrustHtml(_vfile.contents as string) : _vfile.contents;
+      });
   }
 
   // Scroll to current anchor

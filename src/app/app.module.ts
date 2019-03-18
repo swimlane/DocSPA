@@ -14,7 +14,7 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { AppComponent } from './app.component';
-import { DocspaCoreModule } from '@swimlane/docspa-core';
+import { DocspaCoreModule, RuntimeContentModule, MarkdownModule, ThemeModule } from '@swimlane/docspa-core';
 import { EditOnGithubComponent } from './plugins/edit-on-github';
 import './plugins/lazy-img';
 
@@ -30,6 +30,19 @@ import { environment } from '../environments/environment';
   imports: [
     CommonModule,
     DocspaCoreModule.forRoot(config),
+    RuntimeContentModule.forRoot({
+      imports: config.runtimeModules
+    }),
+    MarkdownModule.forRoot({
+      plugins: config.remarkPlugins,
+      reporter: config.remarkReporter
+    }),
+    ThemeModule.forRoot({ 
+      theme: {
+        '--theme-color': config.themeColor,
+        ...config.theme
+      }
+    }),
     BrowserModule,
     FormsModule,
     NgxChartsModule,

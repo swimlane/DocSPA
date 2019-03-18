@@ -1,13 +1,13 @@
 import { Component, Input, OnInit, ViewEncapsulation, SimpleChanges } from '@angular/core';
 
-import { RouterService } from '../services/router.service';
-import { MarkdownService } from '../services/markdown.service';
-import { LocationService } from '../services/location.service';
-import { FetchService } from '../services/fetch.service';
+import { RouterService } from '../../services/router.service';
+import { MarkdownService } from '../markdown/markdown.service';
+import { LocationService } from '../../services/location.service';
+import { FetchService } from '../../services/fetch.service';
 
-import { VFile } from '../../vendor';
+import { VFile } from '../../../vendor';
 import VFILE from 'vfile';
-import { getBasePath } from '../utils';
+import { getBasePath } from '../../utils';
 
 import unified from 'unified';
 import markdown from 'remark-parse';
@@ -16,7 +16,7 @@ import visit from 'unist-util-visit';
 import stringify from 'remark-stringify';
 import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
-import { join } from '../utils';
+import { join } from '../../utils';
 import MDAST from 'mdast';
 import frontmatter from 'remark-frontmatter';
 

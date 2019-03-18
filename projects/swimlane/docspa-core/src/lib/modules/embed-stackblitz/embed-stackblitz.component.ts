@@ -3,10 +3,10 @@ import { HttpClient } from '@angular/common/http';
 
 import sdk from '@stackblitz/sdk';
 import { Project, EmbedOptions } from '@stackblitz/sdk/typings/interfaces';
-import { join } from '../utils';
+import { join } from '../../utils';
 import { dirname } from 'path';
 
-import { SettingsService } from '../services/settings.service';
+import { SettingsService } from '../../services/settings.service';
 
 @Component({
   selector: 'embed-stackblitz', // tslint:disable-line
