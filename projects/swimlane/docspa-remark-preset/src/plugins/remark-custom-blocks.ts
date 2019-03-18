@@ -39,17 +39,5 @@ export const customBlocksOptions = {
   'note-badge': {
     classes: 'badge note',
     title: 'required'
-  },
-  tabs: {
-    classes: 'tabs',
-    title: 'optional'
-  },
-  tab: {
-    classes: 'tab',
-    title: 'optional'
-  },
-  grid: {
-    classes: 'grid',
-    title: 'optional'
   }
 };

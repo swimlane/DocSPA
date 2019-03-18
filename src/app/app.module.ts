@@ -16,7 +16,6 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AppComponent } from './app.component';
 import { DocspaCoreModule, RuntimeContentModule, MarkdownModule, ThemeModule } from '@swimlane/docspa-core';
 import { EditOnGithubComponent } from './plugins/edit-on-github';
-import './plugins/lazy-img';
 
 import { config } from '../docspa.config';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -37,7 +36,7 @@ import { environment } from '../environments/environment';
       plugins: config.remarkPlugins,
       reporter: config.remarkReporter
     }),
-    ThemeModule.forRoot({ 
+    ThemeModule.forRoot({
       theme: {
         '--theme-color': config.themeColor,
         ...config.theme

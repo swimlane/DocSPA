@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@import "./app/plugins/lazy-img.css";
+
 :root {
   --sidebar-width: 16rem;
   --right-sidebar-width: 16rem;

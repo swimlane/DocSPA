@@ -79,8 +79,7 @@ export class DocspaCoreModule {
     };
   }
 
-  constructor(/* pluginsService: PluginsService */) {
-    // Plugin service to to used later??
-    // pluginsService.initPlugins();
+  constructor(pluginsService: PluginsService) {
+    pluginsService.initPlugins();
   }
 }

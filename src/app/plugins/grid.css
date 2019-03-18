@@ -1,0 +1,11 @@
+.markdown-section .custom-block.grid table {
+  width: 100%;
+}
+
+.markdown-section .custom-block.grid table,
+.markdown-section .custom-block.grid tr,
+.markdown-section .custom-block.grid th,
+.markdown-section .custom-block.grid td {
+  border: none;
+  vertical-align: top;
+}

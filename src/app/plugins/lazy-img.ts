@@ -1,3 +1,5 @@
+require('style-loader!./lazy-img.css');
+
 export default class LazyloadImage extends HTMLImageElement {
   original = '';
   intersectionObserver: IntersectionObserver;
@@ -37,7 +39,7 @@ export default class LazyloadImage extends HTMLImageElement {
     return this.matchMediaPrint;
   }
 
-  constructor(width, height) {
+  constructor(width: number, height: number) {
     super();
     this.original = this.currentSrc || this.src;
     this.src = LazyloadImage.FALLBACK_IMAGE;

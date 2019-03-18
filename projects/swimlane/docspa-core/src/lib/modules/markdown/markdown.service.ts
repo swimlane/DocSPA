@@ -24,11 +24,26 @@ export const FOR_ROOT_OPTIONS_TOKEN = new InjectionToken<any>( 'forRoot() config
   providedIn: 'root'
 })
 export class MarkdownService {
-  processor: any;
+  get processor() {
+    if (this._processor) {
+      return this._processor;
+    }
+    return this._processor = unified()
+      .use(markdown)
+      .use(this.config.plugins)
+      .use(links, this.locationService)
+      .use(images, this.locationService)
+      .use(remark2rehype, { allowDangerousHTML: true })
+      .use(raw)
+      // TODO: rehype plugins
+      .use(rehypeStringify);
+  }
 
   get remarkPlugins() {
     return this.config.plugins;
   }
+
+  private _processor: any;
 
   constructor(
     private locationService: LocationService,
@@ -42,16 +57,6 @@ export class MarkdownService {
         this.logger.info(this.config.reporter(page));
       });
     }
-
-    this.processor = unified()
-      .use(markdown)
-      .use(this.config.plugins)
-      .use(links, locationService)
-      .use(images, locationService)
-      .use(remark2rehype, { allowDangerousHTML: true })
-      .use(raw)
-      // TODO: rehype plugins
-      .use(rehypeStringify);
   }
 
   /**

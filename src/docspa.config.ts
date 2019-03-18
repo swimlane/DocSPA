@@ -7,17 +7,11 @@ import reporter from 'vfile-reporter';
 
 import style from './app/plugins/markdown-style';
 
-import { tabsHook } from './app/plugins';
+import { TabsPluginModule } from './app/plugins/tabs.module';
+import { GridPluginModule } from './app/plugins/grid.module';
 
-/* For testing */
-export function timestampPlugin(hook) {
-  hook.beforeEach((md: string) => {
-    return `**${new Date()}**\n\n${md}`;
-  });
-  hook.afterEach((html: string) => {
-    return `${html}<!-- HTML generated ${new Date()} -->`;
-  });
-}
+// A web component
+import './app/plugins/lazy-img';
 
 export const config = {
   basePath: 'docs/',
@@ -31,8 +25,8 @@ export const config = {
   },
   coverpage: '_coverpage.md',
   plugins: [
-    tabsHook,
-    // timestampPlugin
+    TabsPluginModule,
+    GridPluginModule
   ],
   remarkPlugins: [
     style,
