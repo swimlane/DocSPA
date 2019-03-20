@@ -7,7 +7,7 @@ import { HooksService } from '../services/hooks.service';
 @NgModule({
 })
 export class UseDocsifyPluginsModule {
-  constructor(private settings: SettingsService, private hooksService: HooksService) {
+  constructor(private settings: SettingsService, private hooks: HooksService) {
     const docsifyPlugins = this.settings.plugins.filter((p: any) => !p.__annotations__);
     this.settings.plugins = this.settings.plugins.filter((p: any) => p.__annotations__);
     this.addDocsifyPlugins(docsifyPlugins);
@@ -21,9 +21,17 @@ export class UseDocsifyPluginsModule {
       }
     };
 
+    const init = (fn: Function) => {
+      this.hooks.init.tap('docsify-init', () => {
+        setTimeout(() => {  // get rid of this, could be called after component renders
+          return fn();
+        }, 30);
+      });
+    };
+
     const beforeEach = (fn: Function) => {
       // todo: async
-      this.hooksService.hooks.beforeEach.tap('docsify-beforeEach', (vf: VFile) => {
+      this.hooks.beforeEach.tap('docsify-beforeEach', (vf: VFile) => {
         vm.route.file = vf.data.docspa.url;
         vf.contents = fn(vf.contents);
         return vf;
@@ -32,7 +40,7 @@ export class UseDocsifyPluginsModule {
 
     const afterEach = (fn: Function) => {
       // todo: async
-      this.hooksService.hooks.afterEach.tap('docsify-afterEach', (vf: VFile) => {
+      this.hooks.afterEach.tap('docsify-afterEach', (vf: VFile) => {
         vm.route.file = vf.history[1].replace(/^\//, '');
         vf.contents = fn(vf.contents);
         return vf;
@@ -40,20 +48,32 @@ export class UseDocsifyPluginsModule {
     };
 
     const doneEach = (fn: Function) => {
-      this.hooksService.hooks.doneEach.tap('docsify-doneEach', () => {
+      this.hooks.doneEach.tap('docsify-doneEach', () => {
         setTimeout(() => {  // get rid of this, could be called after component renders
           return fn();
         }, 30);
       });
     };
 
+    const mounted = (fn: Function) => {
+      this.hooks.mounted.tap('docsify-mounted', () => {
+        setTimeout(() => {  // get rid of this, could be called after component renders
+          return fn();
+        }, 30);
+      });
+    };
+
+    const ready = (fn: Function) => {
+      fn();
+    };
+
     const hooks = {
-      init: (fn: Function) => fn(), // Called when the script starts running, only trigger once, no arguments
+      init, // Called when the script starts running, only trigger once, no arguments
       beforeEach, // Invoked each time before parsing the Markdown file
       afterEach, // Invoked each time after the Markdown file is parsed
       doneEach, // Invoked each time after the data is fully loaded, no arguments
-      // mounted // Called after initial completion. Only trigger once, no arguments.
-      // ready // Called after initial completion, no arguments.
+      mounted, // Called after initial completion. Only trigger once, no arguments.
+      ready // Called after initial completion, no arguments.
     };
 
     // initialize docsify plugins

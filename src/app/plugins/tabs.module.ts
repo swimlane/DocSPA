@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { HooksService, MarkdownService } from '@swimlane/docspa-core';
-import customBlocks from 'remark-custom-blocks';
+import customBlocks from './remark-custom-blocks';
 
 @NgModule({
 })
 export class TabsPluginModule {
-  constructor(hooksService: HooksService, markdownService: MarkdownService) {
+  constructor(hooks: HooksService, markdownService: MarkdownService) {
 
     // Adds a remarkplugin to process tab blocks
     markdownService.remarkPlugins.push([customBlocks, {
@@ -19,7 +19,7 @@ export class TabsPluginModule {
       },
     }]);
 
-    const toggleState = function(tabs: any[]) {
+    const toggleState = (tabs: any[]) => {
       tabs.forEach(tab => {
         const state = this === tab ? 'open' : 'closed';
         tab = tab.closest('.tab');
@@ -28,7 +28,7 @@ export class TabsPluginModule {
     };
 
     // hooks up tab blocks
-    hooksService.hooks.doneEach.tap('docsify-doneEach', () => {
+    hooks.doneEach.tap('docsify-doneEach', () => {
       setTimeout(() => {
         [].slice.call(document.querySelectorAll('.tabs')).forEach((tabSet: Element) => {
           const tabs: Element[] = [].slice.call(tabSet.querySelectorAll('.tabs .tab .custom-block-heading'));

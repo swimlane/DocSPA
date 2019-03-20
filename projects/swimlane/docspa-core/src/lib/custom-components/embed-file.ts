@@ -1,6 +1,5 @@
 import {
   Component, ViewEncapsulation,
-  forwardRef, Inject, Injector,
   OnInit, OnChanges, HostBinding, HostListener,
   Input, Output, EventEmitter,
   ElementRef, Renderer2,

@@ -11,10 +11,15 @@ import {
 import { createCustomElement } from '@angular/elements';
 
 import { LoadingBarModule } from '@ngx-loading-bar/core';
+import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 import { AppComponent } from './app.component';
-import { DocspaCoreModule, RuntimeContentModule, MarkdownModule, ThemeModule } from '@swimlane/docspa-core';
+import {
+  DocspaCoreModule, EmbedStackblitzModule, UseDocsifyPluginsModule,
+  RuntimeContentModule, MarkdownModule, ThemeModule
+} from '@swimlane/docspa-core';
 import { EditOnGithubComponent } from './plugins/edit-on-github';
 
 import { config } from '../docspa.config';
@@ -28,6 +33,8 @@ import { environment } from '../environments/environment';
   ],
   imports: [
     CommonModule,
+    BrowserModule,
+    FormsModule,
     DocspaCoreModule.forRoot(config),
     RuntimeContentModule.forRoot({
       imports: config.runtimeModules
@@ -42,13 +49,15 @@ import { environment } from '../environments/environment';
         ...config.theme
       }
     }),
-    BrowserModule,
-    FormsModule,
+    UseDocsifyPluginsModule,
+    EmbedStackblitzModule,
     NgxChartsModule,
     LoadingBarModule.forRoot(),
+    LoadingBarHttpClientModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production
-    })
+    }),
+    LoggerModule.forRoot({ level: NgxLoggerLevel.WARN })
   ],
   providers: [
     Location,

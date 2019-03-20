@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { MarkdownService } from '@swimlane/docspa-core';
-import customBlocks from 'remark-custom-blocks';
+import customBlocks from './remark-custom-blocks';
 
 @NgModule({
 })

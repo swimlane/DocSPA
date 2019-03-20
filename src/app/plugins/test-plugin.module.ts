@@ -7,8 +7,8 @@ import VFILE from 'vfile';
 @NgModule({
 })
 export class TestPluginModule {
-  constructor(hooksService: HooksService) {
-    hooksService.hooks.afterEach.tap('docsify-beforeEach', (vf: VFILE.vfile) => {
+  constructor(hooks: HooksService) {
+    hooks.afterEach.tap('docsify-beforeEach', (vf: VFILE.VFile) => {
       vf.contents += ` HTML generated ${new Date()} `;
       return vf;
     });

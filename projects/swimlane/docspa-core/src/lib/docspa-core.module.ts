@@ -4,26 +4,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JitCompilerFactory } from '@angular/platform-browser-dynamic';
-import { createCustomElement } from '@angular/elements';
 
-import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
-import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
-// Services
+// Internal
+import { MarkdownElementsModule } from './modules/markdown-elements/markdown-elements.module';
+import { MarkdownModule } from './modules/markdown/markdown.module';
+
 import { SettingsService } from './services/settings.service';
 import { FetchService } from './services/fetch.service';
-import { MarkdownService } from './modules/markdown/markdown.service';
 import { RouterService } from './services/router.service';
 import { CacheInterceptor } from './services/cache.interceptor';
 import { PluginsService } from './services/plugins.service';
-
-// TODO: Make optional
-import { MarkdownElementsModule } from './modules/markdown-elements/markdown-elements.module';
-import { RuntimeContentModule } from './modules/runtime-content/runtime-content.module';
-import { EmbedStackblitzModule } from './modules/embed-stackblitz/embed-stackblitz.module';
-import { UseDocsifyPluginsModule } from './modules/docsify-plugins.module';
-import { MarkdownModule } from './modules/markdown/markdown.module';
+import { HooksService } from './services/hooks.service';
 
 import { DocSPACoreComponent } from './docspa-core.component';
 import { SafeHtmlPipe } from './services/safe-html.pipe';
@@ -41,15 +34,9 @@ export function createJitCompiler() {
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    // Move these:
-    LoadingBarModule,
-    LoadingBarHttpClientModule,
     MarkdownModule,
-    LoggerModule.forRoot({ level: NgxLoggerLevel.WARN }),
-    MarkdownElementsModule,
-    RuntimeContentModule,
-    EmbedStackblitzModule,
-    UseDocsifyPluginsModule,
+    LoggerModule,
+    MarkdownElementsModule
   ],
   declarations: [
     DocSPACoreComponent,
@@ -64,6 +51,7 @@ export function createJitCompiler() {
     FetchService,
     RouterService,
     PluginsService,
+    HooksService,
     { provide: Compiler, useFactory: createJitCompiler },
     { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }
   ]
@@ -79,7 +67,8 @@ export class DocspaCoreModule {
     };
   }
 
-  constructor(pluginsService: PluginsService) {
+  constructor(pluginsService: PluginsService, hooks: HooksService) {
     pluginsService.initPlugins();
+    hooks.init.call();
   }
 }

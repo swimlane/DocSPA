@@ -55,7 +55,7 @@ body {
     font-family: inherit;
 
     &.warn {
-      background: var(--notice-warn-border-color, #d58181);;
+      background: var(--notice-warn-border-color, #d58181);
     }
 
     &.tip {
@@ -81,6 +81,32 @@ body {
     
       .custom-block-body > p {
         margin: 0;
+      }
+
+      &.note, &.info, &.tip, &.warn {
+        background-color: var(--notice-background, #f8f8f8);
+        border-left: var(--notice-border-width, 4px) solid var(--theme-color,#42b983);
+        border-bottom-right-radius: 2px;
+        border-top-right-radius: 2px;
+        margin: 2em 0;	
+        padding: 12px 24px 12px 30px;	
+        position: relative;
+      }
+
+      &.note {	
+        border-left-color: var(--notice-note-border-color, #6bb1e0);	
+      }	
+  
+       &.info {	
+        border-left-color: var(--notice-info-border-color, #f1b37e);	
+      }	
+  
+       &.tip {		
+        border-left-color: var(--notice-tip-border-color, #f66);	
+      }	
+  
+       &.warn {	
+        border-left-color: var(--notice-warn-border-color, #d58181);	
       }
     }
 

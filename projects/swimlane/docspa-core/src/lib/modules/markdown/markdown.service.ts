@@ -49,11 +49,11 @@ export class MarkdownService {
     private locationService: LocationService,
     private fetchService: FetchService,
     private logger: NGXLogger,
-    private hooksService: HooksService,
+    private hooks: HooksService,
     @Inject(FOR_ROOT_OPTIONS_TOKEN) private config: any
   ) {
     if (this.config.reporter) {
-      this.hooksService.hooks.doneEach.tap('logging', (page: any) => {
+      this.hooks.doneEach.tap('logging', (page: any) => {
         this.logger.info(this.config.reporter(page));
       });
     }
@@ -68,7 +68,7 @@ export class MarkdownService {
     if (!page) {
       const _ = VFILE('');
       return of(_)
-        .pipe(tap(() => this.hooksService.hooks.doneEach.call(_)));
+        .pipe(tap(() => this.hooks.doneEach.call(_)));
     }
 
     const vf = this.locationService.pageToFile(page);
@@ -84,13 +84,13 @@ export class MarkdownService {
           vf.contents = res.contents;
 
           if (content) {
-            await this.hooksService.hooks.beforeEach.promise(vf);
+            await this.hooks.beforeEach.promise(vf);
           }
           // This might eventually be a hook as well
           const err = await this.processor.process(vf);
           if (content) {
-            await this.hooksService.hooks.afterEach.promise(vf);
-            this.hooksService.hooks.doneEach.call(err || vf);
+            await this.hooks.afterEach.promise(vf);
+            this.hooks.doneEach.call(err || vf);
           }
           return vf;
         }),

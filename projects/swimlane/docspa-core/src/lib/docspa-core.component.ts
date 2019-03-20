@@ -1,7 +1,12 @@
-import { Component, OnInit, ViewChild, Renderer2, HostListener, ViewEncapsulation, SimpleChanges } from '@angular/core';
+import {
+  Component, OnInit, ViewChild, Renderer2,
+  HostListener, ViewEncapsulation, SimpleChanges,
+  AfterViewInit, OnDestroy
+} from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
-import { VFile } from '../vendor';
 
+import { VFile } from '../vendor';
+import { HooksService } from './services/hooks.service';
 import { RouterService } from './services/router.service';
 import { SettingsService } from './services/settings.service';
 import { splitHash } from './utils';
@@ -12,7 +17,7 @@ import { splitHash } from './utils';
   styleUrls: ['./docspa-core.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class DocSPACoreComponent implements OnInit {
+export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
   contentPage: string;
   navbarPage: string;
   coverPage: string;
@@ -35,7 +40,8 @@ export class DocSPACoreComponent implements OnInit {
     private routerService: RouterService,
     private renderer: Renderer2,
     private titleService: Title,
-    private metaService: Meta
+    private metaService: Meta,
+    private hooks: HooksService
   ) {
   }
 
@@ -94,6 +100,15 @@ export class DocSPACoreComponent implements OnInit {
   ngOnInit() {
     this.routerService.changed.subscribe((changes: SimpleChanges) => this.pathChanges(changes));
     this.routerService.onInit();
+    this.hooks.mounted.call();
+  }
+
+  ngAfterViewInit() {
+    this.hooks.ready.call();
+  }
+
+  ngOnDestroy() {
+    this.hooks.destroy.call();
   }
 
   mainContentLoaded(page: VFile) {
