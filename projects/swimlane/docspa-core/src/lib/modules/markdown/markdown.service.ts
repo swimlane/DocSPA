@@ -20,6 +20,10 @@ import { VFile } from '../../../vendor';
 
 export const FOR_ROOT_OPTIONS_TOKEN = new InjectionToken<any>( 'forRoot() configuration.' );
 
+interface Preset extends unified.Preset {
+  reporter?: any;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -30,7 +34,7 @@ export class MarkdownService {
     }
     return this._processor = unified()
       .use(markdown)
-      .use(this.config.plugins)
+      .use(this.config)
       .use(links, this.locationService)
       .use(images, this.locationService)
       .use(remark2rehype, { allowDangerousHTML: true })
@@ -40,6 +44,9 @@ export class MarkdownService {
   }
 
   get remarkPlugins() {
+    if (Array.isArray(this.config)) {
+      return this.config;
+    }
     return this.config.plugins;
   }
 
@@ -50,7 +57,7 @@ export class MarkdownService {
     private fetchService: FetchService,
     private logger: NGXLogger,
     private hooks: HooksService,
-    @Inject(FOR_ROOT_OPTIONS_TOKEN) private config: any
+    @Inject(FOR_ROOT_OPTIONS_TOKEN) private config: Preset
   ) {
     if (this.config.reporter) {
       this.hooks.doneEach.tap('logging', (page: any) => {

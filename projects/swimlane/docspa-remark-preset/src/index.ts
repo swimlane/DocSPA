@@ -8,6 +8,7 @@ import parseFrontmatter from 'remark-parse-yaml';
 import shortcodes from 'remark-shortcodes';
 import slug from 'remark-slug';
 import remarkAttr from 'remark-attr';
+import reporter from 'vfile-reporter';
 
 import customBlocks from './plugins/remark-custom-blocks-plugin';
 
@@ -22,7 +23,7 @@ export * from './plugins/prism';
 export * from './plugins/runtime';
 export { customBlocks, customBlockquotes };
 
-export const docspaRemarkPreset = [
+export const plugins = [
   frontmatter,
   parseFrontmatter,
   readMatter,
@@ -34,7 +35,7 @@ export const docspaRemarkPreset = [
   math,
   katex,
   gemojiToEmoji,
-  [ htmlEmojiImage, { base: 'https://assets-cdn.github.com/images/icons/emoji/' }],
+  [ htmlEmojiImage, { base: 'https://github.com/images/icons/emoji/' }],
   infoStringToAttr,
   [ customBlocks, customBlocksOptions ],
   [ customBlockquotes, customBlockquotesOptions ],
@@ -44,3 +45,15 @@ export const docspaRemarkPreset = [
   [ customSmartCodes, customSmartCodesOptions ],
   includeShortCode
 ];
+
+export const settings = {};
+
+export { reporter };
+
+const preset = {
+  settings,
+  plugins,
+  reporter
+};
+
+export default preset;

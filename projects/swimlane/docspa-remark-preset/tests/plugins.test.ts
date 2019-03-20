@@ -12,12 +12,12 @@ const { mermaid } = require('../src/plugins/mermaid');
 
 const remark = require('remark');
 
-const { docspaRemarkPreset } = require('../src/');
+const { preset } = require('../src/');
 
 window.fetch = fetchMock;
 
 const processor = remark()
-  .use(docspaRemarkPreset)
+  .use(preset)
   .use(runtime)
   .use(mermaid)
   .use(prism)

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { NgModule, Injector } from '@angular/core';
 import {
@@ -20,11 +21,16 @@ import {
   DocspaCoreModule, EmbedStackblitzModule, UseDocsifyPluginsModule,
   RuntimeContentModule, MarkdownModule, ThemeModule
 } from '@swimlane/docspa-core';
-import { EditOnGithubComponent } from './plugins/edit-on-github';
+import { plugins, reporter, prism, runtime, mermaid } from '@swimlane/docspa-remark-preset';
 
 import { config } from '../docspa.config';
+
+import { EditOnGithubComponent } from './plugins/edit-on-github';
+import style from './plugins/markdown-style';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { TabsPluginModule } from './plugins/tabs.module';
+import { GridPluginModule } from './plugins/grid.module';
 
 @NgModule({
   declarations: [
@@ -37,18 +43,23 @@ import { environment } from '../environments/environment';
     FormsModule,
     DocspaCoreModule.forRoot(config),
     RuntimeContentModule.forRoot({
-      imports: config.runtimeModules
+      imports: [
+        CommonModule,
+        NgxChartsModule,
+        BrowserAnimationsModule
+      ],
     }),
     MarkdownModule.forRoot({
-      plugins: config.remarkPlugins,
-      reporter: config.remarkReporter
+      plugins: [
+        style,
+        ...plugins,
+        runtime,
+        mermaid,
+        prism
+      ],
+      reporter
     }),
-    ThemeModule.forRoot({
-      theme: {
-        '--theme-color': config.themeColor,
-        ...config.theme
-      }
-    }),
+    ThemeModule.forRoot(config),
     UseDocsifyPluginsModule,
     EmbedStackblitzModule,
     NgxChartsModule,
@@ -57,7 +68,9 @@ import { environment } from '../environments/environment';
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production
     }),
-    LoggerModule.forRoot({ level: NgxLoggerLevel.WARN })
+    LoggerModule.forRoot({ level: NgxLoggerLevel.WARN }),
+    TabsPluginModule,
+    GridPluginModule
   ],
   providers: [
     Location,
