@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { HooksService, MarkdownService } from '@swimlane/docspa-core';
-import customBlocks from './remark-custom-blocks';
+import { customBlocks } from '@swimlane/docspa-remark-preset';
 
 @NgModule({
 })
@@ -19,7 +19,7 @@ export class TabsPluginModule {
       },
     }]);
 
-    const toggleState = (tabs: any[]) => {
+    const toggleState = function (tabs: any[]) {
       tabs.forEach(tab => {
         const state = this === tab ? 'open' : 'closed';
         tab = tab.closest('.tab');

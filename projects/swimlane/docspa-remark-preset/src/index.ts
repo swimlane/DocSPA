@@ -8,7 +8,8 @@ import parseFrontmatter from 'remark-parse-yaml';
 import shortcodes from 'remark-shortcodes';
 import slug from 'remark-slug';
 import remarkAttr from 'remark-attr';
-import customBlocks from 'remark-custom-blocks';
+
+import customBlocks from './plugins/remark-custom-blocks-plugin';
 
 import { readMatter, getTitle } from './plugins/frontmatter';
 import { infoString, infoStringToAttr } from './plugins/misc';
@@ -19,6 +20,7 @@ import { shortCodeProps, tocSmartCode, customSmartCodes, customSmartCodesOptions
 export * from './plugins/mermaid';
 export * from './plugins/prism';
 export * from './plugins/runtime';
+export { customBlocks, customBlockquotes };
 
 export const docspaRemarkPreset = [
   frontmatter,
