@@ -29,7 +29,7 @@ const config = {
 };
 ```
 
-i> In the quick start the config file is located at `src/docspa.config.ts`.  The location and name of the is arbitrary but must be imported and set used as configuration for the `DocspaCoreModule`.
+i> In the [quick start](../quickstart) the config file is located at `src/docspa.config.ts`.  The location and name of the is arbitrary but must be imported and set used as configuration for the `DocspaCoreModule`.
 
 ## Modules
 
@@ -63,7 +63,7 @@ export class AppModule { }
 
 ### `MarkdownModule`
 
-DocSPA utilizes remark for markdown parsing and, thereby, supports [remark plugins](https://github.com/remarkjs/remark/blob/master/doc/plugins.md#list-of-plugins). To include remark plugins use the `MarkdownModule` module.  The config for the `MarkdownModule` is a [unified preset](https://github.com/unifiedjs/unified#preset) with an additional field for a reporter (for example [vfile-reporter](https://github.com/vfile/vfile-reporter)).
+DocSPA utilizes remark for markdown parsing and, thereby, supports [remark plugins](https://github.com/remarkjs/remark/blob/master/doc/plugins.md#list-of-plugins). To include remark plugins use the `MarkdownModule` module.  The config for the `MarkdownModule` is a [unified preset](https://github.com/unifiedjs/unified#preset) with an additional property for a reporter (for example [vfile-reporter](https://github.com/vfile/vfile-reporter)).
 
 ```js { mark="3-5,16" }
 import { BrowserModule } from '@angular/platform-browser';
@@ -170,7 +170,7 @@ DocSPA uses [Prism](https://prismjs.com/) for syntax highlighting.
 *Hello*
 ```
 
-Including extenstions for line numbers and line highlights.
+Including extensions for line numbers and line highlights.
 
 ~~~markdown { playground }
 ```javascript { .linenos mark="13-27" }
@@ -189,22 +189,7 @@ const config = {
   plugins: [
     mermaidHook,
     tabsHook
-  ],
-  remarkPlugins: [
-    ...defaultRemarkPlugins,
-    mermaid,
-    prism
-  ],
-  runtimeModules: [
-    CommonModule,
-    NgxChartsModule,
-    BrowserAnimationsModule
-  ],
-  environment,
-  theme: {
-    '--theme-color': '#0089FF',
-    '--theme-color-secondary-light': '#0074d92e'
-  }
+  ]
 };
 ```
 ~~~
@@ -300,8 +285,6 @@ The slug for a header can be set by adding an id.
 **warn**{ .badge .warn title="Watch out!!" }
 ```
 
-[[ badge class="badge note" ]]
-
 ##### Attributes
 
 ```markdown { playground }
@@ -347,7 +330,8 @@ import { config } from '../docspa.config';
     DocspaCoreModule.forRoot(config),
     ThemeModule.forRoot({
       theme: {
-        '--theme-color': '#0074d9'
+        '--theme-color': '#0074d9',
+        '--theme-color-secondary-light': '#0074d92e'
       }
     })
   ],
@@ -359,7 +343,7 @@ export class AppModule { }
 
 ### `UseDocsifyPluginsModule`
 
-DocSPA supports many (but not all) [docsify plugins](https://docsify.js.org/#/plugins?id=list-of-plugins).  To include docsify plugins be sure to have a global `$docsify` object defined in `index.html`, add the `UseDocsifyPluginsModule`, and include plugin `<script>` tags in your `index.html` just like you would when running docsify.  This module will load docsify plugins and attach them to internal DocSPA hooks.\
+DocSPA supports many (but not all) [docsify plugins](https://docsify.js.org/#/plugins?id=list-of-plugins).  To include docsify plugins add the `UseDocsifyPluginsModule` and a global `$docsify` and include plugin `<script>` tags in your `index.html` just like you would when running docsify.  This module will load docsify plugins and attach them to internal DocSPA hooks.
 
 !> Not all docsify plugins are supported and in general it is preferred to use remark plugins or custom elements.
 
@@ -419,7 +403,16 @@ i> Add the `data-no-zoom` attribute to exclude an image `![](./logo.png){ data-n
 
 #### Edit on Github
 
-<small>import [docsify-edit-on-github](https://github.com/njleonzhang/docsify-edit-on-github)</small>
+```html
+<script src="//unpkg.com/docsify-edit-on-github@1.0.1/index.js"></script>
+<script>
+  window.$docsify = { 
+    plugins: [
+      EditOnGithubPlugin.create('https://github.com/swimlane/docspa/blob/master/src/docs/', null, '✎ Edit this page')
+    ]
+  };
+</script>
+```
 
 ### `RuntimeContentModule`
 
@@ -494,7 +487,7 @@ i> The components available within a runtime element are controlled by the `Runt
 
 ### `EmbedStackblitzModule`
 
-This module allows embedding stackblitz in markdown. The `embed-stackblitz` component may be used to embed StackBlitz projects within documentation.  The `embed-stackblitz` component accepts a [StackBlitz project payload](https://stackblitz.com/docs#project-payload) as the `project` input.
+This module allows embedding stackblitz in markdown. The `embed-stackblitz` custom component may be used to embed StackBlitz projects within documentation.  The `embed-stackblitz` custom component accepts a [StackBlitz project payload](https://stackblitz.com/docs#project-payload) as the `project` input.
 
 ```js { mark="3,15" }
 import { BrowserModule } from '@angular/platform-browser';
@@ -562,9 +555,9 @@ If a both `project-id` and either a `project-path` or `project` input are provid
 
 ## Custom Elements
 
-DocSPA supports custom elements (part of the [web components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) suite of technologies).  Once a custom component is loaded they may be embedded directly into the markdown.
+DocSPA was designed to work with custom elements (part of the [web components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) suite of technologies).  Once a custom component is loaded they may be embedded directly into the markdown.
 
-i> Custom elements can be defined using `window.customElements.define` or from [angular elements](https://angular.io/guide/elements).  Many custom elements are also defined as short codes as noted below.
+i> Custom elements can be defined using `window.customElements.define` or from [angular elements](https://angular.io/guide/elements).  Many custom elements are also defined and aliased to short codes as noted below.
 
 ### `md-toc`
 
