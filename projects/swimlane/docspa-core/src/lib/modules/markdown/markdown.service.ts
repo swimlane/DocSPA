@@ -21,7 +21,7 @@ import { VFile } from '../../../vendor';
 export const FOR_ROOT_OPTIONS_TOKEN = new InjectionToken<any>( 'forRoot() configuration.' );
 
 interface Preset extends unified.Preset {
-  reporter?: any;
+  reporter?: (vfile: VFile) => {};
 }
 
 @Injectable({
@@ -43,7 +43,7 @@ export class MarkdownService {
       .use(rehypeStringify);
   }
 
-  get remarkPlugins() {
+  get remarkPlugins(): unified.PluggableList {
     if (Array.isArray(this.config)) {
       return this.config;
     }

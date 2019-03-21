@@ -103,7 +103,7 @@ JS + Diff
 | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quis molestie erat. Mauris hendrerit risus vitae est pretium facilisis. Curabitur ac elit congue, pellentesque neque non, tempus mi. In hac habitasse platea dictumst. Duis consectetur elit et turpis fermentum auctor. In nibh magna, bibendum ornare posuere non, vestibulum eu velit. Vivamus tristique id lacus ac egestas. Duis consectetur orci sed dui aliquam, eget porttitor ligula pulvinar. | Suspendisse potenti. Ut dolor est, vehicula in suscipit nec, ornare at libero. Duis eget sollicitudin ex. Etiam vestibulum sagittis quam, quis finibus ligula tincidunt in. Nulla congue non lacus at dictum. Nulla in nulla nulla. Maecenas dignissim vestibulum ornare. Proin vehicula, ex sed faucibus mattis, ex sem sodales leo, eu vehicula erat odio sed metus. | Ut ullamcorper porta ex, ultricies maximus dui placerat vitae. In hac habitasse platea dictumst. Morbi in mi leo. Aliquam erat volutpat. Integer ut leo maximus, ornare arcu in, dignissim urna. Quisque non dapibus mi. Donec semper mauris ipsum, ac sagittis nunc rhoncus sit amet. Morbi nec ipsum vitae velit vulputate posuere quis at mauris. Ut at libero at dui euismod consequat non eget sapien | Curabitur semper tempus orci eget feugiat. Fusce ultrices nulla sed quam pretium vehicula. Curabitur vulputate dolor quis tincidunt faucibus. Quisque sit amet bibendum nulla. Fusce ac sapien fermentum, posuere nulla sed, bibendum leo. Praesent ac elit eu elit vestibulum ultrices non eu leo. Nulla orci nisl, suscipit sed pellentesque vitae, bibendum nec nisl. Aenean vulputate orci nibh, sed lacinia dui iaculis suscipit. Etiam vehicula accumsan finibus. Etiam sit amet dolor orci. In sit amet odio interdum, dignissim arcu eu, congue erat. |
 
 [[grid]]
-| ![](./logo.png) | **DocSPA** is the best<br />Really! |
+| ![](./assets/docspa_mark-only.png) | **DocSPA** is the best<br />Really! |
 | -|-|
 
 ## Pull quote
@@ -150,11 +150,11 @@ The paragraph starts here and you can <q>mention the in-line quote here</q> and 
 
 1. One
 
-    ![](./logo.png)
+    ![](/assets/docspa_mark-only.png)
 
 2. Two
 
-    ![](./logo.png)
+    ![](/assets/docspa_mark-only.png)
 
 3. Three
 

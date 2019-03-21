@@ -1,6 +1,6 @@
 # Modules
 
-The primary method for extending a DocSPA application is via [Angular modules](https://angular.io/guide/architecture-modules).  These modules should be imported to your application's root `NgModule`.  Often a module requires using the `forRoot(config)` static method for supplying additional configuration information.
+The primary method for extending a DocSPA application is via [Angular modules](https://angular.io/guide/architecture-modules).  These modules should be imported to your application's root `NgModule`.  Often a module requires using the `forRoot` static method and supplying additional configuration information.
 
 ## DocspaCoreModule (required)
 
@@ -111,7 +111,7 @@ DocSPA version: <env-var var="version"></env-var>
 
 !> `[[var var="version"]]` the same as the example above with the exception that short-codes are block elements.  It is usally expected that `environment` property will contain the contents of your project's `environment.ts`.  `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.  The list of file replacements can be found in `angular.json`.
 
-## MarkdownModule
+## MarkdownModule (recommended)
 
 DocSPA utilizes [remark](https://remark.js.org/) for markdown parsing and, thereby, supports [remark plugins](https://github.com/remarkjs/remark/blob/master/doc/plugins.md#list-of-plugins). To include remark plugins add the `MarkdownModule` module.  The config for the `MarkdownModule` is a [unified preset](https://github.com/unifiedjs/unified#preset) with an additional property for a reporter (for example [vfile-reporter](https://github.com/vfile/vfile-reporter)).
 
@@ -171,7 +171,7 @@ i> Various parts of DocSPA will display a page title.  By default this page titl
 | A warning
 
 [[figure | **Figure 1: Figure Title**]]
-| ![Hello](../logo.png)
+| ![Hello](../assets/docspa_mark-only.png)
 
 [[caption | **Table 1: Table Title**]]
 | Tables        | Are           | Cool  |
@@ -318,7 +318,7 @@ The slug for a header can be set by adding an id.
 ```markdown { playground }
 *Doc*{style="color:red; font-size: large"}*SPA*{style="color:blue"}
 
-![](../logo.png){ style="border: 10px solid lightgrey; padding: 10px;"}
+![](../assets/docspa_mark-only.png){ style="border: 10px solid lightgrey; padding: 10px;"}
 ```
 
 #### Classes
@@ -338,14 +338,14 @@ The slug for a header can be set by adding an id.
 #### Attributes
 
 ```markdown { playground }
-![](../logo.png){ width="30px" data-no-zoom }
+![](../assets/docspa_mark-only.png){ width="30px" data-no-zoom }
 
 [www.swimlane.com](http://www.swimlane.com){ target="_blank" }
 
 [ignore](./docs/README.md){ ignore }
 ```
 
-## ThemeModule
+## ThemeModule (optional)
 
 DocSPA supports [docsify themes](https://docsify.js.org/#/themes?id=themes). To include a theme add the desired style sheet in your `index.html` file.
 
@@ -391,7 +391,7 @@ import { config } from '../docspa.config';
 export class AppModule { }
 ```
 
-## UseDocsifyPluginsModule
+## UseDocsifyPluginsModule (optional)
 
 DocSPA supports many (but not all) [docsify plugins](https://docsify.js.org/#/plugins?id=list-of-plugins).  To include docsify plugins add the `UseDocsifyPluginsModule` and a global `$docsify` and include plugin `<script>` tags in your `index.html` just like you would when running docsify.  This module will load docsify plugins and attach them to internal DocSPA hooks.
 
@@ -440,10 +440,10 @@ The following docsify plugins are known to work at this time:
 ```
 
 ```markdown { playground }
-![](../logo.png)
+![](../assets/docspa_mark-only.png)
 ```
 
-i> Add the `data-no-zoom` attribute to exclude an image `![](./logo.png){ data-no-zoom="true" }`
+i> Add the `data-no-zoom` attribute to exclude an image `![](../assets/docspa_mark-only.png){ data-no-zoom="true" }`
 
 ### Copy Code
 
@@ -464,7 +464,7 @@ i> Add the `data-no-zoom` attribute to exclude an image `![](./logo.png){ data-n
 </script>
 ```
 
-## RuntimeContentModule
+## RuntimeContentModule (optional)
 
 This module enables embedding runtime Angular templates in markdown content.  As config it requires a list of Angular modules available to the runtime component.
 
@@ -531,7 +531,7 @@ Use `{ playground }` to create a section containing both the code and the runtim
 
 i> The angular components available within a runtime custom element are controlled by the `RuntimeContentModule.forRoot({ import: [...]})` `import` array.  These modules must also be added to your root app module.
 
-## EmbedStackblitzModule
+## EmbedStackblitzModule (optional)
 
 This module allows embedding StackBlitz projects within markdown using a `embed-stackblitz` custom element.
 

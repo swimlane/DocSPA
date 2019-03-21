@@ -27,14 +27,8 @@ export class RouterService {
 
   contentPage: string;
 
-  /* coverPath: string;
-  sidebarPath: string;
-  navbarPath: string;
-  rightSidebarPath: string; */
-
   changed = new EventEmitter<SimpleChanges>();
 
-  private readonly urlParser = document.createElement('a');
   private urlSubject = new ReplaySubject<string>(1);
 
   /**
@@ -50,7 +44,7 @@ export class RouterService {
     return url + hash;
   }
 
-  clickHandler = event => {
+  clickHandler = (event: any) => {
     if (
       event.defaultPrevented ||
       event.button !== 0 ||
@@ -95,7 +89,7 @@ export class RouterService {
   ) {
     location.subscribe((state: PopStateEvent) => {
       if (state.type === 'hashchange' || state.type === 'popstate') {
-        return this.urlSubject.next(this.locationPath || '');
+        this._go(this.locationPath || '');
       }
     });
 
@@ -106,7 +100,7 @@ export class RouterService {
   }
 
   onInit() {
-    this.urlSubject.next(this.locationPath || '');
+    this._go(this.locationPath || '');
   }
 
   go(url: string = '/') {
@@ -114,9 +108,22 @@ export class RouterService {
     if (LocationService.isAbsolutePath(url)) {
       this.goExternal(url);
     } else {
-      this.location.go(url);
-      this.urlSubject.next(url);
+      this._go(url);
     }
+  }
+
+  private _go(url: string) {
+    url = this.canonicalize(url);
+    if (this.locationPath !== url) {
+      this.location.go(url);
+    }
+    this.urlSubject.next(url);
+  }
+
+  private canonicalize(url: string) {
+    const hp = this.settings.homepage.replace(/\.md$/, '');
+    url = url.replace(/\.md$/, '');
+    return url.replace(new RegExp(`${hp}\$`), '');
   }
 
   private goExternal(url: string) {

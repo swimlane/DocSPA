@@ -6,7 +6,7 @@
 
 DocSPA (like it's inspiration docsify) generates your documentation website on the fly. Unlike GitBook, it does not generate static HTML files. Instead, it loads and parses your Markdown files and displays them as website. Unlike docsify, DocSPA generates an Angular SPA, which allows embedded Angular components and excellent [custom element support](https://custom-elements-everywhere.com/#angular).
 
-See the [Quick start](quickstart) for details on how to get up and running quickly.
+See the [Quick start](quickstart.md) for details on how to get up and running quickly.  See [modules](modules/) for details on customizing DocSPA.
 
 ## How it works
 

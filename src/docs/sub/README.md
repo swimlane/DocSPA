@@ -24,8 +24,8 @@ author: J. Harshbarger
 ## Images
 
 ![](./logo.png){ data-cy="image-test" }
-![](../logo.png){ data-cy="image-test" }
-![](/logo.png){ data-cy="image-test" }
+![](../assets/docspa_mark-only.png){ data-cy="image-test" }
+![](/assets/docspa_mark-only.png){ data-cy="image-test" }
 
 ## Links
 

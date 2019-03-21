@@ -11,7 +11,7 @@ import { MdPrintComponent } from './md-print.component';
 import { TOCPaginationComponent } from './toc-pagination.component';
 import { EmbedMarkdownComponent } from './embed-file';
 
-export const FOR_ROOT_OPTIONS_TOKEN = new InjectionToken<any>( 'MarkdownElementsModule.forRoot() configuration.' );
+export const MarkdownElementsModule_FOR_ROOT_OPTIONS_TOKEN = new InjectionToken<any>( 'MarkdownElementsModule.forRoot() configuration.' );
 
 const elements = [
   MadeWithDocSPAComponent,
@@ -43,12 +43,12 @@ export class MarkdownElementsModule {
     return {
       ngModule: MarkdownElementsModule,
       providers: [
-        { provide: FOR_ROOT_OPTIONS_TOKEN, useValue: elements }
+        { provide: MarkdownElementsModule_FOR_ROOT_OPTIONS_TOKEN, useValue: elements }
       ]
     };
   }
 
-  constructor(private injector: Injector, @Optional() @Inject(FOR_ROOT_OPTIONS_TOKEN) _elements: typeof elements) {
+  constructor(private injector: Injector, @Optional() @Inject(MarkdownElementsModule_FOR_ROOT_OPTIONS_TOKEN) _elements: typeof elements) {
     if (_elements) {
       _elements.map((Constructor: any) => {
         if (Constructor.is) {

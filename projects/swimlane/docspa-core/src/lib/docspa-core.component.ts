@@ -124,6 +124,8 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
     if (subTitle && subTitle !== title) {
       title += ' - ' + subTitle;
     }
+
+    // TODO: move these to a plugin, make optional
     this.titleService.setTitle(title);
 
     ['description', 'keywords', 'author'].forEach(name => {

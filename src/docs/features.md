@@ -80,7 +80,7 @@ i> Various parts of DocSPA will display a page title.  By default this page titl
 | A warning
 
 [[figure | **Figure 1: Figure Title**]]
-| ![Hello](./logo.png)
+| ![Hello](./assets/docspa_mark-only.png)
 
 [[caption | **Table 1: Table Title**]]
 | Tables        | Are           | Cool  |
@@ -242,7 +242,7 @@ The slug for a header can be set by adding an id.
 ```markdown { playground }
 *Doc*{style="color:red; font-size: large"}*SPA*{style="color:blue"}
 
-![](./logo.png){ style="border: 10px solid lightgrey; padding: 10px;"}
+![](./assets/docspa_mark-only.png){ style="border: 10px solid lightgrey; padding: 10px;"}
 ```
 
 ### Classes
@@ -264,7 +264,7 @@ The slug for a header can be set by adding an id.
 ### Attributes
 
 ```markdown { playground }
-![](./logo.png){ width="30px" data-no-zoom }
+![](./assets/docspa_mark-only.png){ width="30px" data-no-zoom }
 
 [www.swimlane.com](http://www.swimlane.com){ target="_blank" }
 
@@ -397,10 +397,10 @@ DocSPA supports many [docsify plugins](https://docsify.js.org/#/plugins).  To us
 <small>import `//unpkg.com/docsify/lib/plugins/zoom-image.min.js`</small>
 
 ```markdown { playground }
-![](./logo.png)
+![](./assets/docspa_mark-only.png)
 ```
 
-i> Add the `data-no-zoom` attribute to exclude an image `![](./logo.png){ data-no-zoom="true" }`
+i> Add the `data-no-zoom` attribute to exclude an image `![](./assets/docspa_mark-only.png){ data-no-zoom="true" }`
 
 ### Copy Code
 
