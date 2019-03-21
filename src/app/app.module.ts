@@ -59,18 +59,22 @@ import { GridPluginModule } from './plugins/grid.module';
       ],
       reporter
     }),
-    ThemeModule.forRoot(config),
+    ThemeModule.forRoot({
+      theme: {
+        '--theme-color': '#0074d9'
+      }
+    }),
     UseDocsifyPluginsModule,
     EmbedStackblitzModule,
+    LoggerModule.forRoot({ level: NgxLoggerLevel.WARN }),
+    TabsPluginModule,
+    GridPluginModule,
     NgxChartsModule,
     LoadingBarModule.forRoot(),
     LoadingBarHttpClientModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production
-    }),
-    LoggerModule.forRoot({ level: NgxLoggerLevel.WARN }),
-    TabsPluginModule,
-    GridPluginModule
+    })
   ],
   providers: [
     Location,

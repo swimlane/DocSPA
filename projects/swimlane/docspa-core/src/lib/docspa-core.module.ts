@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JitCompilerFactory } from '@angular/platform-browser-dynamic';
 
-import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { LoggerModule } from 'ngx-logger';
 
 // Internal
 import { MarkdownElementsModule } from './modules/markdown-elements/markdown-elements.module';

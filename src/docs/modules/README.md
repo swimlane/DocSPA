@@ -1,43 +1,10 @@
-# Customization
+# Modules
 
-## Config File
+The primary method for extending a DocSPA application is via [Angular modules](https://angular.io/guide/architecture-modules).  These modules should be imported to your application's root `NgModule`.  Often a module requires using the `forRoot(config)` static method for supplying additional configuration information.
 
-The DocSPA configuration should be modified by editing the `docspa.config.ts` file in the in the `src` folder.  DocSPA settings are derived from the following sources in order of least to highest priority:
+## DocspaCoreModule
 
-- `SetttingService`
-- `window.$docsify`
-- `docspa.config.ts`
-
-### Config Example
-
-Here is a basic `docspa.config.ts` with notes:
-
-```js
-const config = {
-  basePath: 'docs/',              // Where the markdown fiels are located
-  homepage: 'README.md',          // Default page to load when navigating to a directrory
-  sideLoad: [                     // Additional content load (can be set to false)
-    '_sidebar.md',
-    '_navbar.md',
-    '_right_sidebar.md',
-    '_footer.md'
-  ],
-  coverpage: '_coverpage.md',     // Coverpage to loads (can be set to false)
-  plugins: [                      // Docsify plugins
-    window['EditOnGithubPlugin'].create('https://github.com/swimlane/docspa/blob/master/src/docs/', null, '✎ Edit this page')
-  ]
-};
-```
-
-i> In the [quick start](../quickstart) the config file is located at `src/docspa.config.ts`.  The location and name of the is arbitrary but must be imported and set used as configuration for the `DocspaCoreModule`.
-
-## Modules
-
-The primary method for extending a DocSPA application is via [Angular modules](https://angular.io/guide/architecture-modules).  These modules should be imported to your root application module.  Often a module requires using the `forRoot(config)` syntax for supplying additional configuration information.
-
-### `DocspaCoreModule`
-
-This module includes the core services and components required by DocSPA.  This module should be imported using the `forRoot` static method and providing the `config` object described above.
+This module includes the core services and components required by DocSPA.  This module is required and should be imported using the `forRoot()` static method and providing a `config` object described below.
 
 ```js { mark="3,14" }
 import { BrowserModule } from '@angular/platform-browser';
@@ -61,9 +28,33 @@ import { config } from '../docspa.config';
 export class AppModule { }
 ```
 
-### `MarkdownModule`
+DocSPA settings are derived from the following sources in order of least to highest priority:
 
-DocSPA utilizes remark for markdown parsing and, thereby, supports [remark plugins](https://github.com/remarkjs/remark/blob/master/doc/plugins.md#list-of-plugins). To include remark plugins use the `MarkdownModule` module.  The config for the `MarkdownModule` is a [unified preset](https://github.com/unifiedjs/unified#preset) with an additional property for a reporter (for example [vfile-reporter](https://github.com/vfile/vfile-reporter)).
+- `SetttingService`
+- `window.$docsify`
+- `DocspaCoreModule.forRoot(config)`
+
+Here is a basic DocSPA config with notes:
+
+```json
+{
+  "basePath": "docs/",              // Where the markdown files are located
+  "homepage": "README.md",          // Default page to load when navigating to a directrory
+  "sideLoad": [                     // Additional content load (can be set to false)
+    "_sidebar.md",
+    "_navbar.md",
+    "_right_sidebar.md",
+    "_footer.md"
+  ],
+  "coverpage": "_coverpage.md"     // Coverpage to load (can be set to false)
+};
+```
+
+i> In the [quick start](../quickstart) setup the config file is located at `src/docspa.config.ts`.  The location and filename is arbitrary but must be imported and used as a parameter for the `DocspaCoreModule.forRoot()` method.
+
+## MarkdownModule
+
+DocSPA utilizes [remark](https://remark.js.org/) for markdown parsing and, thereby, supports [remark plugins](https://github.com/remarkjs/remark/blob/master/doc/plugins.md#list-of-plugins). To include remark plugins add the `MarkdownModule` module.  The config for the `MarkdownModule` is a [unified preset](https://github.com/unifiedjs/unified#preset) with an additional property for a reporter (for example [vfile-reporter](https://github.com/vfile/vfile-reporter)).
 
 ```js { mark="3-5,16" }
 import { BrowserModule } from '@angular/platform-browser';
@@ -89,7 +80,7 @@ import { config } from '../docspa.config';
 export class AppModule { }
 ```
 
-#### YAML Frontmatter
+### YAML Frontmatter
 
 Included in the default plugins is support for yaml frontmatter
 
@@ -101,7 +92,7 @@ title: Hello
 
 i> Various parts of DocSPA will display a page title.  By default this page title is the first heading of the page.  This can be overidden by setting the `title` in the YAML Frontmatter.
 
-#### Blocks
+### Blocks
 
 <small>using [remark-custom-blocks](https://github.com/zestedesavoir/zmarkdown/tree/master/packages/remark-custom-blocks)</small>
 
@@ -133,7 +124,7 @@ i> Various parts of DocSPA will display a page title.  By default this page titl
 
 i> The styles of these elements can be customized using CSS.  Additional custom blocks can be added by adding and configuring `remark-custom-blocks`.
 
-#### Notices
+### Notices
 
 <small>using [remark-custom-blockquotes](https://github.com/montogeek/remark-custom-blockquotes)</small>
 
@@ -152,7 +143,7 @@ i> unit test
 
 i> The styles of these elements can be customized using CSS.  Additional notices can be added by adding and customizing `remark-custom-blockquotes`.
 
-#### Code highlight
+### Code highlight
 
 DocSPA uses [Prism](https://prismjs.com/) for syntax highlighting.
 
@@ -194,7 +185,7 @@ const config = {
 ```
 ~~~
 
-#### Mermaid
+### Mermaid
 
 ~~~markdown { playground }
 ```mermaid
@@ -224,15 +215,15 @@ gantt
 ```mermaid
 graph LR
     A --- B
-    B-->C[fa:fa-ban forbidden]
-    B-->D(fa:fa-spinner);
+    B-->C
+    B-->D;
 ```
 
 ~~~
 
 i> See [mermaid docs](https://mermaidjs.github.io/) for more details on the supported syntax.
 
-#### Math
+### Math
 
 <small>using [remark-math](https://github.com/Rokt33r/remark-math)</small>
 
@@ -242,7 +233,7 @@ E^2=(mc^2)^2+(pc)^2
 $$
 ```
 
-#### Emoji
+### Emoji
 
 <small>using [remark-gemoji-to-emoji](https://github.com/jackycute/remark-gemoji-to-emoji) and [remark-html-emoji-image](https://github.com/jackycute/remark-html-emoji-image)</small>
 
@@ -250,11 +241,11 @@ $$
 :100: :8ball: :100:
 ```
 
-#### Markdown Attributes
+### Markdown Attributes
 
 The default remark plugins include [remark-attr](https://github.com/arobase-che/remark-attr) which allows adding ids, styles, classes, and other atributes to markdown elements.
 
-##### IDs
+#### IDs
 
 The slug for a header can be set by adding an id.
 
@@ -263,7 +254,7 @@ The slug for a header can be set by adding an id.
 { #number-2 }
 ```
 
-##### Styles
+#### Styles
 
 ```markdown { playground }
 *Doc*{style="color:red; font-size: large"}*SPA*{style="color:blue"}
@@ -271,7 +262,7 @@ The slug for a header can be set by adding an id.
 ![](../logo.png){ style="border: 10px solid lightgrey; padding: 10px;"}
 ```
 
-##### Classes
+#### Classes
 
 ```markdown { playground }
 <span class="badge note">note</span>
@@ -285,7 +276,7 @@ The slug for a header can be set by adding an id.
 **warn**{ .badge .warn title="Watch out!!" }
 ```
 
-##### Attributes
+#### Attributes
 
 ```markdown { playground }
 ![](../logo.png){ width="30px" data-no-zoom }
@@ -295,7 +286,7 @@ The slug for a header can be set by adding an id.
 [ignore](./docs/README.md){ ignore }
 ```
 
-### `ThemeModule`
+## ThemeModule
 
 DocSPA supports [docsify themes](https://docsify.js.org/#/themes?id=themes). To include a theme add the desired style sheet in your `index.html` file.
 
@@ -341,7 +332,7 @@ import { config } from '../docspa.config';
 export class AppModule { }
 ```
 
-### `UseDocsifyPluginsModule`
+## UseDocsifyPluginsModule
 
 DocSPA supports many (but not all) [docsify plugins](https://docsify.js.org/#/plugins?id=list-of-plugins).  To include docsify plugins add the `UseDocsifyPluginsModule` and a global `$docsify` and include plugin `<script>` tags in your `index.html` just like you would when running docsify.  This module will load docsify plugins and attach them to internal DocSPA hooks.
 
@@ -383,7 +374,7 @@ export class AppModule { }
 
 The following docsify plugins are known to work at this time:
 
-#### Zoom Image
+### Zoom Image
 
 ```html
 <script src="//unpkg.com/docsify@4/lib/plugins/zoom-image.min.js"></script>
@@ -395,13 +386,13 @@ The following docsify plugins are known to work at this time:
 
 i> Add the `data-no-zoom` attribute to exclude an image `![](./logo.png){ data-no-zoom="true" }`
 
-#### Copy Code
+### Copy Code
 
 ```html
 <script src="//unpkg.com/docsify-copy-code@2"></script>
 ```
 
-#### Edit on Github
+### Edit on Github
 
 ```html
 <script src="//unpkg.com/docsify-edit-on-github@1.0.1/index.js"></script>
@@ -414,7 +405,7 @@ i> Add the `data-no-zoom` attribute to exclude an image `![](./logo.png){ data-n
 </script>
 ```
 
-### `RuntimeContentModule`
+## RuntimeContentModule
 
 This module enables embedding runtime Angular templates in markdown content.  As config it requires a list of Angular modules available to the runtime component.
 
@@ -447,11 +438,7 @@ import { config } from '../docspa.config';
 export class AppModule { }
 ```
 
-### `runtime-content`
-
-A `runtime-content` component allows embedding Angular template content into the markdown.
-
-The run time component can be added as HTML into the markdown file:
+The `RuntimeContentModule` provides a `runtime-content` custom element that allows embedding Angular template content into markdown.  The `runtime-content` custom element can be added as HTML into the markdown file:
 
 ```markdown { playground }
 <runtime-content context='{ "name": "World" }'>
@@ -483,11 +470,11 @@ Use `{ playground }` to create a section containing both the code and the runtim
 </pre>
 ```
 
-i> The components available within a runtime element are controlled by the `RuntimeContentModule` `import` array.  These modules must also be added to your root app module.
+i> The angular components available within a runtime custom element are controlled by the `RuntimeContentModule.forRoot({ import: [...]})` `import` array.  These modules must also be added to your root app module.
 
-### `EmbedStackblitzModule`
+## EmbedStackblitzModule
 
-This module allows embedding stackblitz in markdown. The `embed-stackblitz` custom component may be used to embed StackBlitz projects within documentation.  The `embed-stackblitz` custom component accepts a [StackBlitz project payload](https://stackblitz.com/docs#project-payload) as the `project` input.
+This module allows embedding StackBlitz projects within markdown using a `embed-stackblitz` custom element.
 
 ```js { mark="3,15" }
 import { BrowserModule } from '@angular/platform-browser';
@@ -512,7 +499,7 @@ import { config } from '../docspa.config';
 export class AppModule { }
 ```
 
-#### Examples
+The `embed-stackblitz` custom element accepts a [StackBlitz project payload](https://stackblitz.com/docs#project-payload) as the `project` input.
 
 ```markdown { playground }
 <embed-stackblitz

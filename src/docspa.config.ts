@@ -16,8 +16,5 @@ export const config = {
   coverpage: '_coverpage.md',
   plugins: [
   ],
-  environment,
-  theme: {
-    '--theme-color': '#0074d9'
-  }
+  environment
 };

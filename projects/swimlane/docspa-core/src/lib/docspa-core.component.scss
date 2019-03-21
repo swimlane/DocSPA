@@ -22,13 +22,6 @@ body {
       text-decoration-line: none;
       opacity: 0;
       transition: opacity .25s ease-in-out;
-
-      .icon.icon-link:after {
-        font-family: "Font Awesome 5 Free";
-        content: "\f0c1";
-        font-size: 0.5em;
-        vertical-align: middle;
-      }
     }
 
     &:hover a {
@@ -428,3 +421,39 @@ md-toc.collapsible {
     line-height: 2;
   }
 }
+
+.icon.icon-link:after,
+i.material-icons {
+  // required
+  font-family: 'Material Icons';
+  font-feature-settings: 'liga';
+  font-weight: normal;
+  font-style: normal;
+  vertical-align: middle;
+  display: inline-block;
+  // resetters
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  // optimizers
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+i.material-icons:not([class*=" md-"]) {
+  font-size: 1em;
+  line-height: inherit;
+  padding-bottom: 0.1em;
+}
+
+.icon.icon-link:after {
+  font-family: 'Material Icons';
+  content: "link";
+  font-size: 0.8em;
+  vertical-align: middle;
+}
+
+

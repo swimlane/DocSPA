@@ -1,4 +1,4 @@
-import { Injectable, InjectionToken, Inject } from '@angular/core';
+import { Injectable, InjectionToken, Inject, Optional } from '@angular/core';
 
 import { Observable, of } from 'rxjs';
 import { flatMap, tap, share } from 'rxjs/operators';
@@ -57,8 +57,11 @@ export class MarkdownService {
     private fetchService: FetchService,
     private logger: NGXLogger,
     private hooks: HooksService,
-    @Inject(FOR_ROOT_OPTIONS_TOKEN) private config: Preset
+    @Optional() @Inject(FOR_ROOT_OPTIONS_TOKEN) private config: Preset
   ) {
+    this.config = this.config || {};
+    this.config.plugins = this.config.plugins || [];
+
     if (this.config.reporter) {
       this.hooks.doneEach.tap('logging', (page: any) => {
         this.logger.info(this.config.reporter(page));

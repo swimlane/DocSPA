@@ -266,3 +266,19 @@ a.btn:hover {
   background-image: var(--sidebar-nav-pagelink-background-image--active, var(--sidebar-nav-pagelink-background-image));
   background-position: var(--sidebar-nav-pagelink-background-position--active, var(--sidebar-nav-pagelink-background-image));
 }
+
+#main-nav .github-icon {
+  width: 16px;
+  height: 16px;
+}
+
+#main-nav .github-icon svg {
+  transform: scale(0.26);
+  display: inline-block;
+  transform-origin: top left;
+  fill: currentColor;
+}
+
+#main-nav li {
+  margin: 0 0.3rem;
+}

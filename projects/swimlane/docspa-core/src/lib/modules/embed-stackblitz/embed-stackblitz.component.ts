@@ -13,7 +13,7 @@ import { SettingsService } from '../../services/settings.service';
   template: `
     <div *ngIf="!opened" class="placeholder" (click)="load()">
       <div *ngIf="title" class="title" [innerHTML]="title"></div>
-      <div class="open-button">Run Project <i class="fas fa-cogs"></i></div>
+      <div class="open-button">Run Project <i class="material-icons">play_arrow</i></div>
     </div>
     <div [attr.id]="id"></div>
   `,
