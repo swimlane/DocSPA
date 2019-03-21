@@ -39,10 +39,10 @@ i> The default page can be set using the `homepage` property set in `docspa.conf
 
 Additional content is loaded from each directory. In the default configuration the following files are loaded:
 
-    - `_sidebar.md`
-    - `_navbar.md`
-    - `_right_sidebar.md`
-    - `_footer.md`
+- `_sidebar.md`
+- `_navbar.md`
+- `_right_sidebar.md`
+- `_footer.md`
 
 If the current directory doesn't have a given file, it will fall back to the parent directory recursively until the content is found.
 
