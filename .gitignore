@@ -42,3 +42,6 @@ Thumbs.db
 # Cypress
 cypress/screenshots/
 cypress/videos/
+
+# Angular Doc
+.angulardoc.json
