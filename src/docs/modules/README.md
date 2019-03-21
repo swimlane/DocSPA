@@ -2,7 +2,7 @@
 
 The primary method for extending a DocSPA application is via [Angular modules](https://angular.io/guide/architecture-modules).  These modules should be imported to your application's root `NgModule`.  Often a module requires using the `forRoot(config)` static method for supplying additional configuration information.
 
-## DocspaCoreModule
+## DocspaCoreModule (required)
 
 This module includes the core services and components required by DocSPA.  This module is required and should be imported using the `forRoot()` static method and providing a `config` object described below.
 
@@ -51,6 +51,65 @@ Here is a basic DocSPA config with notes:
 ```
 
 i> In the [quick start](../quickstart) setup the config file is located at `src/docspa.config.ts`.  The location and filename is arbitrary but must be imported and used as a parameter for the `DocspaCoreModule.forRoot()` method.
+
+## MarkdownElementsModule (recommended)
+
+DocSPA was designed to work with custom elements (part of the [web components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) suite of technologies).  Once a custom component is loaded they may be embedded directly into the markdown.
+
+i> Custom elements can be defined using `window.customElements.define` or from [angular elements](https://angular.io/guide/elements).
+
+This module provides several core angular componets for DocSPA and is already imported by the `DocspaCoreModule` module.  Including this module in your root application module (using `forRoot`) will also make these angular componets available in markdown as custom elements.  Without this module these custom elements are not available for use within markdown.  Many custom elements are also defined and aliased to short codes as noted below.
+
+```js { mark="3,15" }
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { DocspaCoreModule, MarkdownModule } from '@swimlane/docspa-core';
+
+import { AppComponent } from './app.component';
+import { config } from '../docspa.config';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    DocspaCoreModule.forRoot(config),
+    MarkdownModule.forRoot()
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
+### `md-toc`
+
+The `md-toc` is used to include the table of contents for a give path.
+
+```markdown { playground }
+<md-toc path="features" max-depth="2"></md-toc>
+```
+
+i> The path is always relative to the root docs folder.  Including `md-toc` without a path will load the TOC for the current page (main content).  `[[toc path="features" max-depth="2"]]` the same as the example above, however, using the shortcode `[[toc]]` (without a path) will insert TOC for the page the shortcodes is found in.
+
+### `md-embed`
+
+```markdown { playground }
+<md-embed path="embed"></md-embed>
+```
+
+i> `[[include path="embed"]]` the same as the example above.
+
+### `env-var`
+
+The `env-var` component allows displaying variables defined in the `environment` property of the config file.
+
+```markdown { playground }
+DocSPA version: <env-var var="version"></env-var>
+```
+
+!> `[[var var="version"]]` the same as the example above with the exception that short-codes are block elements.  It is usally expected that `environment` property will contain the contents of your project's `environment.ts`.  `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.  The list of file replacements can be found in `angular.json`.
 
 ## MarkdownModule
 
@@ -540,37 +599,4 @@ If a both `project-id` and either a `project-path` or `project` input are provid
 </embed-stackblitz>
 ```
 
-## Custom Elements
-
-DocSPA was designed to work with custom elements (part of the [web components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) suite of technologies).  Once a custom component is loaded they may be embedded directly into the markdown.
-
-i> Custom elements can be defined using `window.customElements.define` or from [angular elements](https://angular.io/guide/elements).  Many custom elements are also defined and aliased to short codes as noted below.
-
-### `md-toc`
-
-The `md-toc` is used to include the table of contents for a give path.
-
-```markdown { playground }
-<md-toc path="features" max-depth="2"></md-toc>
-```
-
-i> The path is always relative to the root docs folder.  Including `md-toc` without a path will load the TOC for the current page (main content).  `[[toc path="features" max-depth="2"]]` the same as the example above, however, using the shortcode `[[toc]]` (without a path) will insert TOC for the page the shortcodes is found in.
-
-### `md-embed`
-
-```markdown { playground }
-<md-embed path="embed"></md-embed>
-```
-
-i> `[[include path="embed"]]` the same as the example above.
-
-### `env-var`
-
-The `env-var` component allows displaying variables defined in the `environment` property of the config file.
-
-```markdown { playground }
-DocSPA version: <env-var var="version"></env-var>
-```
-
-!> `[[var var="version"]]` the same as the example above with the exception that short-codes are block elements.  It is usally expected that `environment` property will contain the contents of your project's `environment.ts`.  `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.  The list of file replacements can be found in `angular.json`.
 

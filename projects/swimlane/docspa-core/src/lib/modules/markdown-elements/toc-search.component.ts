@@ -10,7 +10,7 @@ import visit from 'unist-util-visit';
 import stringify from 'remark-stringify';
 import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
-import { links, images } from '../../plugins/links';
+import { links, images } from '../../shared/links';
 import frontmatter from 'remark-frontmatter';
 import MDAST from 'mdast';
 import { getTitle } from '@swimlane/docspa-remark-preset/dist/module/plugins/frontmatter';

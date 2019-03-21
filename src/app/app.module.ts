@@ -19,7 +19,7 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { AppComponent } from './app.component';
 import {
   DocspaCoreModule, EmbedStackblitzModule, UseDocsifyPluginsModule,
-  RuntimeContentModule, MarkdownModule, ThemeModule
+  RuntimeContentModule, MarkdownModule, ThemeModule, MarkdownElementsModule
 } from '@swimlane/docspa-core';
 import { plugins, reporter, prism, runtime, mermaid } from '@swimlane/docspa-remark-preset';
 
@@ -64,6 +64,7 @@ import { GridPluginModule } from './plugins/grid.module';
         '--theme-color': '#0074d9'
       }
     }),
+    MarkdownElementsModule.forRoot(),
     UseDocsifyPluginsModule,
     EmbedStackblitzModule,
     LoggerModule.forRoot({ level: NgxLoggerLevel.WARN }),

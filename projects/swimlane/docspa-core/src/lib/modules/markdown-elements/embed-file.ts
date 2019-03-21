@@ -7,9 +7,9 @@ import {
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
-import { MarkdownService } from '../modules/markdown/markdown.service';
-import { RouterService } from '../services/router.service';
-import { splitHash } from '../utils';
+import { MarkdownService } from '../markdown/markdown.service';
+import { RouterService } from '../../services/router.service';
+import { splitHash } from '../../utils';
 
 import vfile from 'vfile';
 

@@ -17,7 +17,7 @@ import rehypeStringify from 'rehype-stringify';
 import remark2rehype from 'remark-rehype';
 import raw from 'rehype-raw';
 
-import { images } from '../../plugins/links';
+import { images } from '../../shared/links';
 
 import { LocationService } from '../../services/location.service';
 import { FetchService } from '../../services/fetch.service';

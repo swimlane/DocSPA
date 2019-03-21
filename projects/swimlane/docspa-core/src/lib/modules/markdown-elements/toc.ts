@@ -18,7 +18,7 @@ import { FetchService } from '../../services/fetch.service';
 import { RouterService } from '../../services/router.service';
 import { LocationService } from '../../services/location.service';
 
-import { links, images } from '../../plugins/links';
+import { links, images } from '../../shared/links';
 import frontmatter from 'remark-frontmatter';
 import MDAST from 'mdast';
 

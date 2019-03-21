@@ -13,7 +13,7 @@ import raw from 'rehype-raw';
 import { LocationService } from '../../services/location.service';
 import { FetchService, CachePage } from '../../services/fetch.service';
 import { HooksService } from '../../services/hooks.service';
-import { links, images } from '../../plugins/links';
+import { links, images } from '../../shared/links';
 
 import VFILE from 'vfile';
 import { VFile } from '../../../vendor';
