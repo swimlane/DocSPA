@@ -20,7 +20,6 @@ import { shortCodeProps } from './plugins/short-codes';
 
 export * from './plugins/mermaid';
 export * from './plugins/prism';
-// export * from './plugins/runtime';
 export { customBlocks, customBlockquotes };
 
 export const plugins = [

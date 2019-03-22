@@ -19,6 +19,10 @@ npm start
 
 At that point you will see a message to "open your browser on http://localhost:4200/"
 
+## Customization
+
+This DocSPA instance can be modified change configuaation to teh various DocSPA modules.  See [module](modules) for details on each module and configuration options.
+
 ## Writing Content
 
 Modify content in the 'src/docs' directory.  See [content](content) for more details.

@@ -48,14 +48,32 @@ const elements = [
     CommonModule
   ],
   exports: [
-    ...elements
+    MadeWithDocSPAComponent,
+    TOCComponent,
+    EnvVarComponent,
+    TOCSearchComponent,
+    MdPrintComponent,
+    TOCPaginationComponent,
+    EmbedMarkdownComponent
   ],
   declarations: [
-    ...elements
+    MadeWithDocSPAComponent,
+    TOCComponent,
+    EnvVarComponent,
+    TOCSearchComponent,
+    MdPrintComponent,
+    TOCPaginationComponent,
+    EmbedMarkdownComponent
   ],
   bootstrap: [],
   entryComponents: [
-    ...elements
+    MadeWithDocSPAComponent,
+    TOCComponent,
+    EnvVarComponent,
+    TOCSearchComponent,
+    MdPrintComponent,
+    TOCPaginationComponent,
+    EmbedMarkdownComponent
   ]
 })
 export class MarkdownElementsModule {
@@ -71,7 +89,7 @@ export class MarkdownElementsModule {
   constructor(
     private injector: Injector,
     markdownService: MarkdownService,
-    @Optional() @Inject(MarkdownElementsModule_FOR_ROOT_OPTIONS_TOKEN) _elements: typeof elements
+    @Optional() @Inject(MarkdownElementsModule_FOR_ROOT_OPTIONS_TOKEN) _elements: any
   ) {
     if (_elements) {
       _elements.map((Constructor: any) => {

@@ -1,5 +1,7 @@
 # Adding DocSPA to a angular cli app
 
+!!> Information in the guid may be out of date.  If you are starting a new projetc we recommend looking at the [quick start](quickstart).
+
 0. Generate new Angular app
 
 ```sh
