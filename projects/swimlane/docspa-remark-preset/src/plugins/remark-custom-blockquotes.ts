@@ -17,7 +17,13 @@ export function customBlockquotes({ mapping }): UNIFIED.Transformer {
         return true;
       }
 
-      const substr = textNode.substr(0, 2);
+      const idx = textNode.indexOf('>');
+
+      if (idx < 0 || idx > 5) {
+        return;
+      }
+
+      const substr = textNode.substr(0, idx + 1);
       const className = mapping[substr];
 
       if (className) {
@@ -42,9 +48,8 @@ export function customBlockquotes({ mapping }): UNIFIED.Transformer {
 }
 
 export const customBlockquotesOptions = { mapping: {
+  '+>': 'note',
   'i>': 'info',
   '!>': 'tip',
-  '?>': 'warn',
-  '->': 'box',
-  '<>': 'box-left'
+  '!!>': 'warn'
 }};

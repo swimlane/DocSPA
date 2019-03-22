@@ -75,32 +75,6 @@ body {
       .custom-block-body > p {
         margin: 0;
       }
-
-      &.note, &.info, &.tip, &.warn {
-        background-color: var(--notice-background, #f8f8f8);
-        border-left: var(--notice-border-width, 4px) solid var(--theme-color,#42b983);
-        border-bottom-right-radius: 2px;
-        border-top-right-radius: 2px;
-        margin: 2em 0;	
-        padding: 12px 24px 12px 30px;	
-        position: relative;
-      }
-
-      &.note {	
-        border-left-color: var(--notice-note-border-color, #6bb1e0);	
-      }	
-  
-       &.info {	
-        border-left-color: var(--notice-info-border-color, #f1b37e);	
-      }	
-  
-       &.tip {		
-        border-left-color: var(--notice-tip-border-color, #f66);	
-      }	
-  
-       &.warn {	
-        border-left-color: var(--notice-warn-border-color, #d58181);	
-      }
     }
 
     &.example, &.playground {
@@ -170,6 +144,80 @@ body {
         vertical-align: top;
       }
     }
+  }
+
+  // Move to markdown module
+  .custom-block.notice, p {
+    &.note, &.info, &.tip, &.warn {
+      background-color: var(--notice-background, #f8f8f8);
+      border-left: var(--notice-border-width, 4px) solid var(--theme-color,#42b983);
+      border-bottom-right-radius: 2px;
+      border-top-right-radius: 2px;
+      margin: 2em 0;	
+      padding: 12px 24px 12px 30px;	
+      position: relative;
+    }
+
+    &.note {	
+      border-left-color: var(--notice-note-border-color, #6bb1e0);	
+    }	
+
+     &.info {	
+      border-left-color: var(--notice-info-border-color, #f1b37e);	
+    }	
+
+     &.tip {		
+      border-left-color: var(--notice-tip-border-color, #f66);	
+    }	
+
+     &.warn {	
+      border-left-color: var(--notice-warn-border-color, #d58181);	
+    }
+  }
+
+  // Move to markdown module
+  p {
+    &.info, &.note, &.tip, &.warn {
+      &:before {
+        background-color: #f66;
+        border-radius: 100%;
+        color: #fff;
+        content: "!";
+        font-family: Dosis,Source Sans Pro,Helvetica Neue,Arial,sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        left: -12px;
+        line-height: 20px;
+        position: absolute;
+        height: 20px;
+        width: 20px;
+        text-align: center;
+        top: 14px;
+      }
+    }
+
+    &.info:before {
+      background: var(--notice-info-border-color, #f1b37e);
+      content: "i";
+    }
+
+    &.note:before {
+      background: var(--notice-note-border-color, #6bb1e0);
+      content: "✓";
+      font-size: 0.8em;
+      margin-top: 0.2em;
+    }
+
+    &.tip:before {
+      background: var(--notice-tip-border-color, #f66);
+      content: "!";
+    }
+
+    &.warn:before {
+      background: var(--notice-warn-border-color, #d58181);
+      content: "‼";
+    }
+
   }
 
   blockquote {
@@ -343,6 +391,7 @@ body  {
   }
 }
 
+// TODO: Move to the module
 .custom-block.tabs {
   margin: .5em 0;
   
@@ -406,6 +455,7 @@ body  {
   }
 }
 
+// TODO: Move to the component
 md-toc.collapsible {
   display: block;
 
