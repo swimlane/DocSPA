@@ -1,5 +1,5 @@
 import VFILE from 'vfile';
-import MDAST from 'mdast';
+import * as MDAST from 'mdast';
 
 interface UnknownData {
   [key: string]: unknown;
