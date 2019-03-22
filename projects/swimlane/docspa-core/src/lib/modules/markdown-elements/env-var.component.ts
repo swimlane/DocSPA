@@ -6,7 +6,7 @@ import { Component, Input, Optional, Inject } from '@angular/core';
   styles: []
 })
 export class EnvVarComponent {
-  static readonly is = 'env';
+  static readonly is = 'md-env';
 
   @Input()
   var: string;

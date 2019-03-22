@@ -85,12 +85,14 @@ export class MarkdownElementsModule {
       // Adds a remarkplugin to short codes
       markdownService.remarkPlugins.push([customSmartCodes, {
         env: {
-          tagName: 'env'
+          tagName: 'md-env'
         },
         toc: {
           tagName: 'md-toc'
         }
-      }], includeShortCode);
+      }]);
+
+      markdownService.remarkPlugins.push(includeShortCode);
     }
   }
 }

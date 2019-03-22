@@ -47,7 +47,7 @@ export const settings = {};
 
 export { reporter };
 
-const preset = {
+export const preset = {
   settings,
   plugins,
   reporter

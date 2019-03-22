@@ -234,7 +234,7 @@ Use the `[[env]]` shortcode to display variables defined in the `environment` pr
 
 ```markdown { playground }
 [[env var="version"]]
-Production? <env var="production" />
+Production? <md-env var="production" />
 ```
 
 
