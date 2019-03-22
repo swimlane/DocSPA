@@ -55,7 +55,7 @@ describe('DocSPA', () => {
       cy.get('@coverpage').find('img').should('have.attr', 'src', 'docs/assets/docspa_mark-only.png');
       cy.get('@coverpage').find('a').should('have.length', 2);
 
-      cy.get('@coverpage').find('env-var').contains(pkg.version);
+      cy.get('@coverpage').find('env').contains(pkg.version);
     });
 
     it('has a sidebar', sidebar);
@@ -66,9 +66,9 @@ describe('DocSPA', () => {
       cy.get('@content').find('footer').contains('Made with DocSPA');
 
       cy.get('@content').find('h1 a, h2 a, h3 a').first().should('have.attr', 'href').and('matches', /^\/#.*/);
-      cy.get('@content').find('docspa-md-embed > p a').first().should('have.attr', 'href', 'https://custom-elements-everywhere.com/#angular');
-      // cy.get('@content').find('docspa-md-embed > p a').last().should('have.attr', 'href', 'https://www.swimlane.com');
-      cy.get('@content').find('docspa-md-embed > p a').eq(1).should('have.attr', 'href', '/quickstart');
+      cy.get('@content').find('docspa-md-include > p a').first().should('have.attr', 'href', 'https://custom-elements-everywhere.com/#angular');
+      // cy.get('@content').find('docspa-md-include > p a').last().should('have.attr', 'href', 'https://www.swimlane.com');
+      cy.get('@content').find('docspa-md-include > p a').eq(1).should('have.attr', 'href', '/quickstart');
     });
 
     it('can search', () => {
@@ -118,8 +118,8 @@ describe('DocSPA', () => {
   
     it('has custom elements', () => {
       cy.get('@content').find('md-toc a').should('have.length', 7);
-      cy.get('@content').find('md-embed').contains('This is the contents of embed.md');
-      cy.get('@content').find('env-var').contains(pkg.version);
+      cy.get('@content').find('md-include').contains('This is the contents of embed.md');
+      cy.get('@content').find('env').contains(pkg.version);
       cy.get('@content').find('ngx-charts-bar-vertical svg').should('have.length', 1);
     });
 

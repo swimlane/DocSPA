@@ -2,6 +2,10 @@ import { NgModule, Injector, InjectionToken, Optional, ModuleWithProviders, Inje
 import { createCustomElement } from '@angular/elements';
 import { CommonModule } from '@angular/common';
 
+import { customSmartCodes } from '../../shared/shortcodes';
+import { MarkdownService } from '../../modules/markdown/markdown.service';
+import { includeShortCode } from './include-shortcode-plugin';
+
 // Custom Elements
 import { MadeWithDocSPAComponent } from './made-with-love';
 import { TOCComponent } from './toc';
@@ -10,6 +14,23 @@ import { EnvVarComponent } from './env-var.component';
 import { MdPrintComponent } from './md-print.component';
 import { TOCPaginationComponent } from './toc-pagination.component';
 import { EmbedMarkdownComponent } from './embed-file';
+
+/**
+ * Convert [[toc]] smart-code to a TOC
+ * Must be included after remark-shortcodes but before customSmartCodes
+
+export const tocSmartCode = (): UNIFIED.Transformer => {
+  return (tree: MDAST.Root, file: VFile) => {
+    file.data = file.data || {};
+    return visit(tree, 'shortcode', (node: ShortCode) => {
+      if (node.identifier === 'toc') {
+        node.attributes.path = node.attributes.path || file.data.base;
+      }
+      return true;
+    });
+  };
+};*/
+
 
 export const MarkdownElementsModule_FOR_ROOT_OPTIONS_TOKEN = new InjectionToken<any>( 'MarkdownElementsModule.forRoot() configuration.' );
 
@@ -48,7 +69,11 @@ export class MarkdownElementsModule {
     };
   }
 
-  constructor(private injector: Injector, @Optional() @Inject(MarkdownElementsModule_FOR_ROOT_OPTIONS_TOKEN) _elements: typeof elements) {
+  constructor(
+    private injector: Injector,
+    markdownService: MarkdownService,
+    @Optional() @Inject(MarkdownElementsModule_FOR_ROOT_OPTIONS_TOKEN) _elements: typeof elements
+  ) {
     if (_elements) {
       _elements.map((Constructor: any) => {
         if (Constructor.is) {
@@ -56,6 +81,16 @@ export class MarkdownElementsModule {
           customElements.define(Constructor.is, content);
         }
       });
+
+      // Adds a remarkplugin to short codes
+      markdownService.remarkPlugins.push([customSmartCodes, {
+        env: {
+          tagName: 'env'
+        },
+        toc: {
+          tagName: 'md-toc'
+        }
+      }], includeShortCode);
     }
   }
 }

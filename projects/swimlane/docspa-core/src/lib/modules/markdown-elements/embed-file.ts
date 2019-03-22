@@ -14,12 +14,12 @@ import { splitHash } from '../../utils';
 import vfile from 'vfile';
 
 @Component({
-  selector: 'docspa-md-embed', // tslint:disable-line
+  selector: 'docspa-md-include', // tslint:disable-line
   template: ``,
   encapsulation: ViewEncapsulation.None
 })
 export class EmbedMarkdownComponent implements OnInit, OnChanges {
-  static readonly is = 'md-embed';
+  static readonly is = 'md-include';
 
   @Input()
   path = '';

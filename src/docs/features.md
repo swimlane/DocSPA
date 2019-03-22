@@ -209,3 +209,32 @@ i> Add the `data-no-zoom` attribute to exclude an image `![](./assets/docspa_mar
 <script src="//unpkg.com/docsify-copy-code"></script>
 ```
 
+
+## Table of Contents
+
+Use `[[toc]] to include the table of contents for a give path.
+
+```markdown { playground }
+[[toc path="features" max-depth="2"]]
+```
+
+i> The path is always relative to the root docs folder.  Including `md-toc` without a path will load the TOC for the current page (main content).  Using the shortcode `[[toc]]` without a path will insert TOC for the page the shortcodes is found in.
+
+## Include
+
+Use `[[include]]` shortcode to include other files within markdown.
+
+```markdown { playground }
+[[include path="/embed.md"]]
+```
+
+## Environment Variables
+
+Use the `[[env]]` shortcode to display variables defined in the `environment` property of the config file.
+
+```markdown { playground }
+[[env var="version"]]
+Production? <env var="production" />
+```
+
+

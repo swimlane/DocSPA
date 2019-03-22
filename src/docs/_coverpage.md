@@ -1,6 +1,6 @@
 ![DocSPA Logo](./assets/docspa_mark-only.png){ data-no-zoom="true" .docspa-logo }
 
-<h2>DocSPA <small><env-var var="version"><env-var></small></h2>
+<h2>DocSPA <small><env var="version"><env></small></h2>
 
 > An Angular-powered documentation SPA
 

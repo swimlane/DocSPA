@@ -2,6 +2,8 @@ import { NgModule, Injector } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import { CommonModule } from '@angular/common';
 
+import { MarkdownService } from '../../modules/markdown/markdown.service';
+import { customSmartCodes } from '../../shared/shortcodes';
 import { EmbedStackblitzComponent } from './embed-stackblitz.component';
 
 @NgModule({
@@ -17,8 +19,15 @@ import { EmbedStackblitzComponent } from './embed-stackblitz.component';
   ]
 })
 export class EmbedStackblitzModule {
-  constructor(private injector: Injector) {
+  constructor(private injector: Injector, markdownService: MarkdownService) {
     const content = createCustomElement(EmbedStackblitzComponent, { injector: this.injector });
     customElements.define(EmbedStackblitzComponent.is, content);
+
+    // Adds a remarkplugin to process `[[stack-blitz]]` blocks
+    markdownService.remarkPlugins.push([customSmartCodes, {
+      stackblitz: {
+        tagName: 'embed-stackblitz'
+      }
+    }]);
   }
 }

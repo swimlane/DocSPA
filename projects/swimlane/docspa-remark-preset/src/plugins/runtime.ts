@@ -11,10 +11,10 @@ interface VNode {
 export function runtime(this: UNIFIED.Processor) {
   const processor = this;
 
-  return function(tree: MDAST.Root, file: VFile.VFile, next) {
+  return function(tree: MDAST.Root, file: VFile.VFile, next: Function) {
     const items: VNode[] = [];
 
-    visit(tree, 'code', (node: MDAST.Code, index, parent) => {
+    visit(tree, 'code', (node: MDAST.Code, index: number, parent: MDAST.Parent) => {
       items.push({node, index, parent});
       return true;
     });
@@ -27,7 +27,7 @@ export function runtime(this: UNIFIED.Processor) {
       next();
     });
 
-    async function visitor(node, index, parent) {
+    async function visitor(node: MDAST.Code, index: number, parent: MDAST.Parent) {
       const { lang, data } = node;
 
       if (!data || !data.hProperties) {
@@ -35,7 +35,7 @@ export function runtime(this: UNIFIED.Processor) {
       }
 
       let { value } = node;
-      const { hProperties } = data;
+      const { hProperties } = data as any;
 
       const isPlayground = 'playground' in hProperties;
       const isRun = 'run' in hProperties;
@@ -49,7 +49,7 @@ export function runtime(this: UNIFIED.Processor) {
         if (lang === 'markdown') {
           const f = VFile({ ...file, contents: node.value });
           const v = await processor.process(f);
-          value = v.contents;
+          value = String(v.contents);
         } else {
           const context = {
             $page: file.data || {}
@@ -106,14 +106,14 @@ export function runtime(this: UNIFIED.Processor) {
           ]);
         }
 
-        parent.children.splice(index, 1, newNode);
+        parent.children.splice(index, 1, newNode as MDAST.Content);
         return node;
       }
     }
   };
 }
 
-function escape(html, encode) {
+function escape(html: string, encode: boolean) {
   return html
     .replace(!encode ? /&(?!#?\w+;)/g : /&/g, '&amp;')
     .replace(/</g, '&lt;')

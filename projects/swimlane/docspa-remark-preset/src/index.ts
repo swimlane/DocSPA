@@ -16,7 +16,7 @@ import { readMatter, getTitle } from './plugins/frontmatter';
 import { infoString, infoStringToAttr } from './plugins/misc';
 import { customBlocksOptions } from './plugins/remark-custom-blocks';
 import { customBlockquotes, customBlockquotesOptions } from './plugins/remark-custom-blockquotes';
-import { shortCodeProps, tocSmartCode, customSmartCodes, customSmartCodesOptions, includeShortCode } from './plugins/short-codes';
+import { shortCodeProps } from './plugins/short-codes';
 
 export * from './plugins/mermaid';
 export * from './plugins/prism';
@@ -40,10 +40,7 @@ export const plugins = [
   [ customBlocks, customBlocksOptions ],
   [ customBlockquotes, customBlockquotesOptions ],
   shortcodes,
-  tocSmartCode,
-  shortCodeProps,
-  [ customSmartCodes, customSmartCodesOptions ],
-  includeShortCode
+  shortCodeProps
 ];
 
 export const settings = {};

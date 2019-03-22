@@ -1,12 +1,12 @@
 import { Component, Input, Optional, Inject } from '@angular/core';
 
 @Component({
-  selector: 'env-var', // tslint:disable-line
+  selector: 'docspa-env', // tslint:disable-line
   template: `{{value}}`,
   styles: []
 })
 export class EnvVarComponent {
-  static readonly is = 'env-var';
+  static readonly is = 'env';
 
   @Input()
   var: string;
