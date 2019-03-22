@@ -17,10 +17,10 @@ import { infoString, infoStringToAttr } from './plugins/misc';
 import { customBlocksOptions } from './plugins/remark-custom-blocks';
 import { customBlockquotes, customBlockquotesOptions } from './plugins/remark-custom-blockquotes';
 import { shortCodeProps } from './plugins/short-codes';
+import { prism } from './plugins/prism';
+import { mermaid } from './plugins/mermaid';
 
-export * from './plugins/mermaid';
-export * from './plugins/prism';
-export { customBlocks, customBlockquotes };
+export { customBlocks, customBlockquotes, prism, mermaid };
 
 export const plugins = [
   frontmatter,
@@ -39,7 +39,9 @@ export const plugins = [
   [ customBlocks, customBlocksOptions ],
   [ customBlockquotes, customBlockquotesOptions ],
   shortcodes,
-  shortCodeProps
+  shortCodeProps,
+  prism,
+  mermaid
 ];
 
 export const settings = {};

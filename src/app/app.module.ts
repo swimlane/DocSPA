@@ -21,7 +21,7 @@ import {
   DocspaCoreModule, EmbedStackblitzModule, UseDocsifyPluginsModule,
   RuntimeContentModule, MarkdownModule, ThemeModule, MarkdownElementsModule
 } from '@swimlane/docspa-core';
-import { plugins, reporter, prism, mermaid } from '@swimlane/docspa-remark-preset';
+import { plugins, preset } from '@swimlane/docspa-remark-preset';
 
 import { config } from '../docspa.config';
 
@@ -50,14 +50,11 @@ import { GridPluginModule } from './plugins/grid.module';
       ],
     }),
     MarkdownModule.forRoot({
+      ...preset,
       plugins: [
         style,
         ...plugins,
-        // runtime,
-        mermaid,
-        prism
       ],
-      reporter
     }),
     ThemeModule.forRoot({
       theme: {
