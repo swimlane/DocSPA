@@ -8,6 +8,7 @@ import {
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { MarkdownService } from '../markdown/markdown.service';
+import { LocationService } from '../../services/location.service';
 import { RouterService } from '../../services/router.service';
 import { splitHash } from '../../utils';
 
@@ -39,6 +40,9 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   @Input()
   activeAnchors: string = null;
 
+  @Input()
+  codeblock: string = null;
+
   @Output() done: EventEmitter<vfile.VFile> = new EventEmitter();
 
   @HostBinding('innerHTML')
@@ -52,7 +56,8 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
     private routerService: RouterService,
     private sanitizer: DomSanitizer,
     private elm: ElementRef,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private locationService: LocationService
   ) {
   }
 
@@ -74,15 +79,24 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   }
 
   private load() {
-    this.markdownService.getMd(this.path, this.plugins)
-      .subscribe(_vfile => {
-        setTimeout(() => {
-          this.markActiveLinks();
-          this.doScroll();
-          this.done.emit(_vfile);
-        }, 30);
-        this.html = this.safe ? this.sanitizer.bypassSecurityTrustHtml(_vfile.contents as string) : _vfile.contents;
-      });
+    if (!this.codeblock) {
+      return this.markdownService.getMd(this.path, this.plugins)
+        .subscribe(_vfile => {
+          setTimeout(() => {
+            this.markActiveLinks();
+            this.doScroll();
+            this.done.emit(_vfile);
+          }, 30);
+          this.html = this.safe ? this.sanitizer.bypassSecurityTrustHtml(_vfile.contents as string) : _vfile.contents;
+        });
+    }
+
+    const vf: any = this.locationService.pageToFile(this.path);
+    return fetch(vf.data.docspa.url).then(res => res.text()).then(async contents => {
+      vf.contents = `~~~${this.codeblock}\n${contents}\n~~~`;
+      await this.markdownService.processor.process(vf);
+      this.html = this.safe ? this.sanitizer.bypassSecurityTrustHtml(vf.contents) : vf.contents;
+    });
   }
 
   // Scroll to current anchor

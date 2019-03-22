@@ -25,8 +25,8 @@ describe('Main navigation', () => {
   });
 
   it('to customization page', () => {
-    cy.get('@sidebar').find('md-toc[path="modules/"] a').first().click({ force: true });
-    cy.url().should('include', '/modules/');
+    cy.get('@sidebar').find('md-toc[path="modules"] a').first().click({ force: true });
+    cy.url().should('include', '/modules');
     cy.get('section.content').find('h1[id="modules"]').contains('Modules');
   });
 
@@ -45,8 +45,8 @@ describe('Main navigation', () => {
     cy.get('section.content').find('h1[id="quick-start"]').contains('Quick start');
     cy.get('section.content').find('.info > a').first().click({ force: true });
     cy.get('section.content').find('h1[id="adding-docspa-to-a-angular-cli-app"]').contains('Adding DocSPA to a angular cli app');
-    cy.get('section.content').find('a[href="/modules/#docspacoremodule"]').click({ force: true });
-    cy.url().should('include', 'modules/#docspacoremodule');
+    cy.get('section.content').find('a[href="/modules#docspacoremodule"]').click({ force: true });
+    cy.url().should('include', 'modules#docspacoremodule');
     cy.get('section.content').find('h1[id="modules"]').contains('Modules');
   });
 });

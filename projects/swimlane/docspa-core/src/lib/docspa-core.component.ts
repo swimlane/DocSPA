@@ -88,8 +88,9 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  toggleSidebar() {
-    this.sidebarClose = !this.sidebarClose;
+  toggleSidebar(nextState: boolean = !this.sidebarClose) {
+    this.sidebarClose = nextState;
+    localStorage.setItem('DocSPACoreComponent#sidebarClose', String(this.sidebarClose));
     if (this.sidebarClose) {
       this.renderer.addClass(document.body, 'close');
     } else {
@@ -98,6 +99,8 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+    const sidebar = localStorage.getItem('DocSPACoreComponent#sidebarClose') || 'false';
+    this.toggleSidebar(sidebar === 'true');
     this.routerService.changed.subscribe((changes: SimpleChanges) => this.pathChanges(changes));
     this.routerService.onInit();
     this.hooks.mounted.call();

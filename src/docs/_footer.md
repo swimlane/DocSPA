@@ -1,4 +1,4 @@
-<md-toc-page paths="/,/quickstart,/content,/modules/,/features"></md-toc-page>
+<md-toc-page paths="/,/quickstart,/content,/modules,/features"></md-toc-page>
 
 ---
 

@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 
 import { customSmartCodes } from '../../shared/shortcodes';
 import { MarkdownService } from '../../modules/markdown/markdown.service';
-import { includeShortCode } from './include-shortcode-plugin';
 
 // Custom Elements
 import { MadeWithDocSPAComponent } from './made-with-love';
@@ -89,10 +88,11 @@ export class MarkdownElementsModule {
         },
         toc: {
           tagName: 'md-toc'
+        },
+        include: {
+          tagName: 'md-include'
         }
       }]);
-
-      markdownService.remarkPlugins.push(includeShortCode);
     }
   }
 }

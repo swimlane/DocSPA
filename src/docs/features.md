@@ -1,6 +1,6 @@
 # Content Features
 
-In the [modules](/modules/) section several required, recommended, and option modules are described in detail.  Below we summarize features available in if all modulesa re installed as as shown in the [quick start](/quickstart).
+In the [modules](/modules) section several required, recommended, and option modules are described in detail.  Below we summarize features available in if all modulesa re installed as as shown in the [quick start](/quickstart).
 
 ## Github Flavored Markdown
 
@@ -92,7 +92,7 @@ i> unit test
 !!> **Watch Out!** A warning
 ```
 
-## Code highlight
+## Code
 
 DocSPA uses [Prism](https://prismjs.com/) for syntax highlighting; including extenstions for line numbers and line highlights.
 
@@ -212,7 +212,7 @@ i> Add the `data-no-zoom` attribute to exclude an image `![](./assets/docspa_mar
 
 ## Table of Contents
 
-Use `[[toc]] to include the table of contents for a give path.
+Use `[[toc]]` to include the table of contents for a give path.
 
 ```markdown { playground }
 [[toc path="features" max-depth="2"]]
@@ -226,6 +226,12 @@ Use `[[include]]` shortcode to include other files within markdown.
 
 ```markdown { playground }
 [[include path="/embed.md"]]
+```
+
+Add a `codeblock` to include the file as a code block.
+
+```markdown { playground }
+[[include path="/embed.js" codeblock='js { mark="2" }']]
 ```
 
 ## Environment Variables

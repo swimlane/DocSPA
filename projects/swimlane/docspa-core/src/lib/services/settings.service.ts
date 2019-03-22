@@ -21,8 +21,6 @@ export class SettingsService {
   notFoundPage = '_404.md';
   maxPageCacheSize = 100;
 
-  plugins = [];
-
   get root() {
     return join(this.nameLink, this.basePath);
   }

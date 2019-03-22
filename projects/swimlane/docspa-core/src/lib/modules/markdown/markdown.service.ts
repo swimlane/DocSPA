@@ -28,7 +28,7 @@ interface Preset extends unified.Preset {
   providedIn: 'root'
 })
 export class MarkdownService {
-  get processor() {
+  get processor(): unified.Processor {
     if (this._processor) {
       return this._processor;
     }
@@ -98,6 +98,7 @@ export class MarkdownService {
           }
           // This might eventually be a hook as well
           const err = await this.processor.process(vf);
+
           if (content) {
             await this.hooks.afterEach.promise(vf);
             this.hooks.doneEach.call(err || vf);
