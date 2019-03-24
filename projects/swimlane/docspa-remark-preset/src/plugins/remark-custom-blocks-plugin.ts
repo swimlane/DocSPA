@@ -5,7 +5,7 @@
 
 const spaceSeparated = require('space-separated-tokens');
 
-function escapeRegExp (str) {
+function escapeRegExp (str: string) {
   return str.replace(/[-[]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
 }
 
@@ -19,15 +19,15 @@ function compilerFactory (nodeType) {
   let title;
 
   return {
-    blockHeading (node) {
+    blockHeading (node: any) {
       title = (this as any).all(node).join('');
       return '';
     },
-    blockBody (node) {
+    blockBody (node: any) {
       text = (this as any).all(node).map(s => s.replace(/\n/g, '\n| ')).join('\n|\n| ');
       return text;
     },
-    block (node) {
+    block (node: any) {
       text = '';
       title = '';
       (this as any).all(node);

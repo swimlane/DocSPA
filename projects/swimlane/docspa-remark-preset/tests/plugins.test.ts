@@ -10,7 +10,7 @@ const remark = require('remark');
 
 const preset = require('../src/');
 
-window.fetch = fetchMock;
+window['fetch'] = fetchMock as any;
 
 const processor = remark()
   .use(preset)

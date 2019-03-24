@@ -1,11 +1,16 @@
 module.exports = {
   preset: 'jest-preset-angular',
+  globals: {
+    'ts-jest': {
+      pathRegex: /\.(spec|test)\.ts$/
+    }
+  },
   roots: [
     'src',
     'projects/swimlane/docspa-core/src',
     'projects/swimlane/docspa-remark-preset/tests'
   ],
-  setupTestFrameworkScriptFile: '<rootDir>/src/setup-jest.ts',
+  setupFilesAfterEnv: ['<rootDir>/src/setup-jest.ts'],
   moduleNameMapper: {
     '@app/(.*)': '<rootDir>/src/app/$1',
     '@assets/(.*)': '<rootDir>/src/assets/$1',

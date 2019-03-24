@@ -45,6 +45,6 @@ describe('The Features page', () => {
 
   it('has pagination', () => {
     cy.get('@content').find('.pagination-item-title').should('have.length', 1);
-    cy.get('@content').find('.pagination-item-title').contains('Modules');
+    cy.get('@content').find('.pagination-item-title').contains('Themes');
   });
 });
