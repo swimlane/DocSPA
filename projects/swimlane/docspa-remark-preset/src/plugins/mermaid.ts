@@ -19,7 +19,7 @@ export class MermaidElement extends HTMLElement {
   }
 }
 
-export function mermaid(options): UNIFIED.Transformer {
+export function mermaid(options: { [key: string]: any }): UNIFIED.Transformer {
   const config = {
     startOnLoad: false,
     arrowMarkerAbsolute: false,
@@ -38,8 +38,8 @@ export function mermaid(options): UNIFIED.Transformer {
   }
 
   const template = config.useCustomElement ?
-    value => `<${MermaidElement.is} class="${MERMAID}">${value}</${MermaidElement.is}>` :
-    value => `<div class="${MERMAID}">${value}</div>`;
+    (value: string) => `<${MermaidElement.is} class="${MERMAID}">${value}</${MermaidElement.is}>` :
+    (value: string) => `<div class="${MERMAID}">${value}</div>`;
 
   return function transformer(tree: MDAST.Root) {
     return visit(tree, 'code', (node: any) => {

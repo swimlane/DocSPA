@@ -1,14 +1,10 @@
 import stripIndent from 'common-tags/lib/stripIndent';
-import { runtime } from '../src/plugins/runtime';
-import { prism } from '../src/plugins/prism';
 
 import remark2rehype from 'remark-rehype';
 import raw from 'rehype-raw';
 import rehypeStringify from 'rehype-stringify';
 
 import fetchMock from 'jest-fetch-mock';
-
-const { mermaid } = require('../src/plugins/mermaid');
 
 const remark = require('remark');
 
@@ -18,9 +14,6 @@ window.fetch = fetchMock;
 
 const processor = remark()
   .use(preset)
-  .use(runtime)
-  .use(mermaid)
-  .use(prism)
   .use(remark2rehype, { allowDangerousHTML: true })
   .use(raw)
   .use(rehypeStringify);
@@ -150,7 +143,7 @@ describe('internal', () => {
     expect(String(vfile)).toEqual(`<div class="test-shortcode-class"></div>`);
   });
 
-  it('runtime, html', async () => {
+  /* it('runtime, html', async () => {
     const contents = stripIndent`
     ~~~html { run }
     function() {};
@@ -193,7 +186,7 @@ describe('internal', () => {
     const out = String(vfile);
     expect(out).toContain(`<div class="custom-block playground language-markdown" data-lang="markdown" v-pre`);
     expect(out).toContain(`<p><strong>Hello</strong></p>`);
-  });
+  }); */
 
   it('mermaid', async () => { // Can't really test mermaid in node env
     const contents = stripIndent`

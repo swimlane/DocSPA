@@ -40,8 +40,8 @@ export const plugins = [
   [ customBlockquotes, customBlockquotesOptions ],
   shortcodes,
   shortCodeProps,
-  prism,
-  mermaid
+  mermaid,
+  prism
 ];
 
 export const settings = {};
