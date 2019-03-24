@@ -45,10 +45,10 @@ export class TOCComponent implements OnInit {
   minDepth = 1;
 
   @Input()
-  public maxDepth = 6;
+  maxDepth = 6;
 
   @Input()
-  public tight = false;
+  tight = false;
 
   @HostBinding('innerHTML')
   html: SafeHtml;
@@ -69,7 +69,16 @@ export class TOCComponent implements OnInit {
           tree.children.slice(0, result.index),
           result.map || []
         );
-        return tree;
+        return visit(tree, 'paragraph', (node: MDAST.Heading, index: number, parent: any) => {
+          console.log(parent.children.length);
+          if (parent.children.length > 1) {
+            node.data = node.data || {};
+            node.data.hProperties = node.data.hProperties || {};
+            node.data.hProperties.class = node.data.hProperties.class || [];
+            node.data.hProperties.class.push('has-children');
+          }
+          return true;
+        });
       };
     };
 

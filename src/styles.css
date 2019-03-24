@@ -16,8 +16,8 @@
 }
 
 :root { /* sidebar pagelinks */
-  --sidebar-nav-pagelink-background-image             : url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cg opacity='.3'%3E%3Cpath d='M0 2V0h8v2zM0 5.073V3h8v2.073zM0 7.425V6h8v1.425l-4 .593z'/%3E%3C/g%3E%3C/svg%3E");
-  --sidebar-nav-pagelink-background-image--active     : var(--sidebar-nav-pagelink-background-image);
+  --sidebar-nav-pagelink-background-image             : url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cg opacity='.2'%3E%3Cpath d='M0 2V0h8v2zM0 5.073V3h8v2.073zM0 7.425V6h8v1.425l-4 .593z'/%3E%3C/g%3E%3C/svg%3E");
+  --sidebar-nav-pagelink-background-image--active     : url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' fill='%230074d9' height='8'%3E%3Cg opacity='.6'%3E%3Cpath d='M0 2V0h8v2zM0 5.073V3h8v2.073zM0 7.425V6h8v1.425l-4 .593z'/%3E%3C/g%3E%3C/svg%3E");
   --sidebar-nav-pagelink-background-image--collapse   : var(--sidebar-nav-pagelink-background-image);
   --sidebar-nav-pagelink-background-image--loaded     : var(--sidebar-nav-pagelink-background-image);
   --sidebar-nav-pagelink-background-position: calc(100% - 7px) center;
@@ -250,7 +250,7 @@ a.btn:hover {
   font-weight: normal;
 }
 
-.sidebar-nav li>p {
+.sidebar-nav li>p.has-children {
   background-image: var(--sidebar-nav-pagelink-background-image--loaded, var(--sidebar-nav-pagelink-background-image));
   background-position: var(--sidebar-nav-pagelink-background-position--loaded, var(--sidebar-nav-pagelink-background-image));
   padding: var(--sidebar-nav-pagelink-padding, var(--sidebar-nav-link-padding));
@@ -259,7 +259,7 @@ a.btn:hover {
   background-size: var(--sidebar-nav-pagelink-background-size);
 }
 
-.sidebar-nav li > p.active {
+.sidebar-nav li>p.has-children.active {
   background-image: var(--sidebar-nav-pagelink-background-image--active, var(--sidebar-nav-pagelink-background-image));
   background-position: var(--sidebar-nav-pagelink-background-position--active, var(--sidebar-nav-pagelink-background-image));
 }
@@ -267,15 +267,22 @@ a.btn:hover {
 #main-nav .github-icon {
   width: 16px;
   height: 16px;
+  vertical-align: baseline;
 }
 
 #main-nav .github-icon svg {
-  transform: scale(0.26);
   display: inline-block;
-  transform-origin: top left;
   fill: currentColor;
 }
 
 #main-nav li {
   margin: 0 0.3rem;
+}
+
+#main-nav a {
+  font-size: 21px;
+}
+
+#main-nav {
+  margin: 0 10px;
 }

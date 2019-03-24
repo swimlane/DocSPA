@@ -141,4 +141,8 @@
     page-break-inside: avoid;
     page-break-before: avoid;
   }
+
+  ngx-loading-bar {
+    display: none !important;
+  }
 }
