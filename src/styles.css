@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
+  --theme-color: #0074d9;
   --sidebar-width: 16rem;
   --right-sidebar-width: 16rem;
   --right-sidebar-border-color: none;

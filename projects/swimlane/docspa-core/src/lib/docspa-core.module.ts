@@ -1,4 +1,4 @@
-import { NgModule, Compiler, Injector, ModuleWithProviders } from '@angular/core';
+import { NgModule, Compiler, Injector, ModuleWithProviders, InjectionToken } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
@@ -15,11 +15,12 @@ import { SettingsService } from './services/settings.service';
 import { FetchService } from './services/fetch.service';
 import { RouterService } from './services/router.service';
 import { CacheInterceptor } from './services/cache.interceptor';
-import { PluginsService } from './services/plugins.service';
 import { HooksService } from './services/hooks.service';
 
 import { DocSPACoreComponent } from './docspa-core.component';
 import { SafeHtmlPipe } from './services/safe-html.pipe';
+
+import { DOCSPA_CONFIG_TOKEN, DOCSPA_ENVIRONMENT } from './docspa-core.tokens';
 
 export function createJitCompiler() {
   return new (JitCompilerFactory as any)([{
@@ -50,7 +51,6 @@ export function createJitCompiler() {
     SettingsService,
     FetchService,
     RouterService,
-    PluginsService,
     HooksService,
     { provide: Compiler, useFactory: createJitCompiler },
     { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }
@@ -61,14 +61,13 @@ export class DocspaCoreModule {
     return {
       ngModule: DocspaCoreModule,
       providers: [
-        { provide: 'environment', useValue: { ...config.environment, ...environment } },
-        { provide: 'config', useValue: config }
+        { provide: DOCSPA_ENVIRONMENT, useValue: { ...config.environment, ...environment } },
+        { provide: DOCSPA_CONFIG_TOKEN, useValue: config }
       ]
     };
   }
 
-  constructor(pluginsService: PluginsService, hooks: HooksService) {
-    pluginsService.initPlugins();
+  constructor(hooks: HooksService) {
     hooks.init.call();
   }
 }

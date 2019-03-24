@@ -1,4 +1,4 @@
-import { NgModule, Injector } from '@angular/core';
+import { NgModule, Injector, ModuleWithProviders } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import { CommonModule } from '@angular/common';
 
@@ -19,6 +19,12 @@ import { EmbedStackblitzComponent } from './embed-stackblitz.component';
   ]
 })
 export class EmbedStackblitzModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: EmbedStackblitzModule,
+    };
+  }
+
   constructor(private injector: Injector, markdownService: MarkdownService) {
     const content = createCustomElement(EmbedStackblitzComponent, { injector: this.injector });
     customElements.define(EmbedStackblitzComponent.is, content);

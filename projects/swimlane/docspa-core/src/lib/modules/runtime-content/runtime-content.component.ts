@@ -7,7 +7,7 @@ import {
   Inject
 } from '@angular/core';
 
-export const FOR_ROOT_OPTIONS_TOKEN = new InjectionToken<any>( 'forRoot() configuration.' );
+export const RUNTIMECONTENT_CONFIG_TOKEN = new InjectionToken<any>( 'forRoot() configuration.' );
 
 @Component({
   selector: 'runtime-content', // tslint:disable-line
@@ -42,7 +42,7 @@ export class RuntimeContentComponent implements OnInit {
 
   constructor(
     private compiler: Compiler,
-    @Inject(FOR_ROOT_OPTIONS_TOKEN) private config: any
+    @Inject(RUNTIMECONTENT_CONFIG_TOKEN) private config: any
   ) {
   }
 

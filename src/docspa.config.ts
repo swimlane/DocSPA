@@ -14,7 +14,5 @@ export const config = {
     footer: '/_footer.md'
   },
   coverpage: '_coverpage.md',
-  plugins: [
-  ],
   environment
 };

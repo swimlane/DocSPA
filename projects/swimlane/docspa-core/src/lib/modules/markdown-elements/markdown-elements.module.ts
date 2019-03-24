@@ -31,7 +31,7 @@ export const tocSmartCode = (): UNIFIED.Transformer => {
 };*/
 
 
-export const MarkdownElementsModule_FOR_ROOT_OPTIONS_TOKEN = new InjectionToken<any>( 'MarkdownElementsModule.forRoot() configuration.' );
+export const MARKDOWNELEMENTS_CONFIG_TOKEN = new InjectionToken<any>( 'MarkdownElementsModule.forRoot() configuration.' );
 
 const elements = [
   MadeWithDocSPAComponent,
@@ -81,7 +81,7 @@ export class MarkdownElementsModule {
     return {
       ngModule: MarkdownElementsModule,
       providers: [
-        { provide: MarkdownElementsModule_FOR_ROOT_OPTIONS_TOKEN, useValue: elements }
+        { provide: MARKDOWNELEMENTS_CONFIG_TOKEN, useValue: elements }
       ]
     };
   }
@@ -89,7 +89,7 @@ export class MarkdownElementsModule {
   constructor(
     private injector: Injector,
     markdownService: MarkdownService,
-    @Optional() @Inject(MarkdownElementsModule_FOR_ROOT_OPTIONS_TOKEN) _elements: any
+    @Optional() @Inject(MARKDOWNELEMENTS_CONFIG_TOKEN) _elements: any
   ) {
     if (_elements) {
       _elements.map((Constructor: any) => {

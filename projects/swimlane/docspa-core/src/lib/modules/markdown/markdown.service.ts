@@ -18,7 +18,7 @@ import { links, images } from '../../shared/links';
 import VFILE from 'vfile';
 import { VFile } from '../../../vendor';
 
-export const FOR_ROOT_OPTIONS_TOKEN = new InjectionToken<any>( 'forRoot() configuration.' );
+export const MARKDOWN_CONFIG_TOKEN = new InjectionToken<any>( 'forRoot() configuration.' );
 
 interface Preset extends unified.Preset {
   reporter?: (vfile: VFile) => {};
@@ -57,7 +57,7 @@ export class MarkdownService {
     private fetchService: FetchService,
     private logger: NGXLogger,
     private hooks: HooksService,
-    @Optional() @Inject(FOR_ROOT_OPTIONS_TOKEN) private config: Preset
+    @Optional() @Inject(MARKDOWN_CONFIG_TOKEN) private config: Preset
   ) {
     this.config = this.config || {};
     this.config.plugins = this.config.plugins || [];

@@ -5,6 +5,8 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { LocationService } from './location.service';
 import { SettingsService } from './settings.service';
 
+import { DOCSPA_ENVIRONMENT } from '../docspa-core.tokens';
+
 describe('LocationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -14,7 +16,7 @@ describe('LocationService', () => {
       providers: [
         Location,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
-        { provide: 'environment', useValue: { } },
+        { provide: DOCSPA_ENVIRONMENT, useValue: { } },
         SettingsService,
         LocationService
       ]

@@ -1,15 +1,38 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders, InjectionToken, Optional, Inject } from '@angular/core';
 import { VFile } from '../../vendor';
 
 import { SettingsService } from '../services/settings.service';
 import { HooksService } from '../services/hooks.service';
 
+export const DOCSIFYPLUGINS_CONFIG_TOKEN = new InjectionToken<any>( 'DocsifyPluginsModule.forRoot() configuration.' );
+
 @NgModule({
 })
-export class UseDocsifyPluginsModule {
-  constructor(private settings: SettingsService, private hooks: HooksService) {
-    const docsifyPlugins = this.settings.plugins.filter((p: any) => !p.__annotations__);
-    this.settings.plugins = this.settings.plugins.filter((p: any) => p.__annotations__);
+export class DocsifyPluginsModule {
+  static forRoot(config: any): ModuleWithProviders {
+    return {
+      ngModule: DocsifyPluginsModule,
+      providers: [
+        {
+          provide: DOCSIFYPLUGINS_CONFIG_TOKEN,
+          useValue: config
+        }
+      ]
+    };
+  }
+
+  constructor(
+    private settings: SettingsService,
+    private hooks: HooksService,
+    @Optional() @Inject(DOCSIFYPLUGINS_CONFIG_TOKEN) config: any
+  ) {
+    const docsifyPlugins = [];
+    if (config && config.plugins) {
+      docsifyPlugins.push(...config.plugins);
+    }
+    if (window['$docsify'] && window['$docsify'].plugins) {
+      docsifyPlugins.push(...window['$docsify'].plugins);
+    }
     this.addDocsifyPlugins(docsifyPlugins);
   }
 

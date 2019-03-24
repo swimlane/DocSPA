@@ -4,6 +4,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 import { FetchService, CachePage } from './fetch.service';
+import { DOCSPA_ENVIRONMENT } from '../docspa-core.tokens';
 
 describe('FetchService', () => {
   let fetchService: FetchService;
@@ -18,7 +19,7 @@ describe('FetchService', () => {
       providers: [
         Location,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
-        { provide: 'environment', useValue: { } },
+        { provide: DOCSPA_ENVIRONMENT, useValue: { } },
         FetchService
       ]
     });

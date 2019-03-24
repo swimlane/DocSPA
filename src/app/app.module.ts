@@ -10,27 +10,29 @@ import {
   /// HashLocationStrategy
 } from '@angular/common';
 import { createCustomElement } from '@angular/elements';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
-import { AppComponent } from './app.component';
+import { preset } from '@swimlane/docspa-remark-preset';
 import {
-  DocspaCoreModule, EmbedStackblitzModule, UseDocsifyPluginsModule,
-  RuntimeContentModule, MarkdownModule, ThemeModule, MarkdownElementsModule
+  DocspaCoreModule, EmbedStackblitzModule, DocsifyPluginsModule,
+  RuntimeContentModule, MarkdownModule, MarkdownElementsModule
 } from '@swimlane/docspa-core';
-import { plugins, preset } from '@swimlane/docspa-remark-preset';
+
+import { AppComponent } from './app.component';
 
 import { config } from '../docspa.config';
 
 import { EditOnGithubComponent } from './plugins/edit-on-github';
-import style from './plugins/markdown-style';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
 import { TabsPluginModule } from './plugins/tabs.module';
 import { GridPluginModule } from './plugins/grid.module';
+import { timestampPlugin } from './plugins/test-docsify-plugin';
+
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -49,20 +51,13 @@ import { GridPluginModule } from './plugins/grid.module';
         BrowserAnimationsModule
       ],
     }),
-    MarkdownModule.forRoot({
-      ...preset,
-      plugins: [
-        style,
-        ...plugins,
-      ],
-    }),
-    ThemeModule.forRoot({
-      theme: {
-        '--theme-color': '#0074d9'
-      }
-    }),
+    MarkdownModule.forRoot(preset),
     MarkdownElementsModule.forRoot(),
-    UseDocsifyPluginsModule,
+    DocsifyPluginsModule.forRoot({
+      plugins: [
+        timestampPlugin
+      ]
+    }),
     EmbedStackblitzModule,
     LoggerModule.forRoot({ level: NgxLoggerLevel.WARN }),
     TabsPluginModule,

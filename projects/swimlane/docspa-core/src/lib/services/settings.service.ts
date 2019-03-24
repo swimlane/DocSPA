@@ -4,6 +4,8 @@ import { Title, Meta } from '@angular/platform-browser';
 import deepmerge from 'deepmerge'; // use xtend?
 import { join } from '../utils';
 
+import { DOCSPA_CONFIG_TOKEN } from '../docspa-core.tokens';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -21,8 +23,6 @@ export class SettingsService {
   notFoundPage = '_404.md';
   maxPageCacheSize = 100;
 
-  plugins = [];
-
   get root() {
     return join(this.nameLink, this.basePath);
   }
@@ -30,13 +30,8 @@ export class SettingsService {
   constructor(
     metaService: Meta,
     titleService: Title,
-    @Optional() @Inject('environment') environment: any,
-    @Optional() @Inject('config') config: any
+    @Optional() @Inject(DOCSPA_CONFIG_TOKEN) config: any
   ) {
-    if (window['$docsify']) {
-      this.merge(window['$docsify']);
-    }
-
     if (config) {
       this.merge(config);
     }

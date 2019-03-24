@@ -6,6 +6,7 @@ import VFILE from 'vfile';
 import { join } from '../../utils';
 
 import { MarkdownService } from './markdown.service';
+import { DOCSPA_ENVIRONMENT } from '../../docspa-core.tokens';
 
 describe('MarkdownService', () => {
   let markdownService: MarkdownService;
@@ -20,7 +21,7 @@ describe('MarkdownService', () => {
       providers: [
         Location,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
-        { provide: 'environment', useValue: { } },
+        { provide: DOCSPA_ENVIRONMENT, useValue: { } },
         MarkdownService
       ]
     });

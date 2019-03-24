@@ -403,59 +403,12 @@ Production? <env var="production" />
 
 !> It is usally expected that `environment` property will contain the contents of your project's `environment.ts`.  `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.  The list of file replacements can be found in `angular.json`.
 
-## ThemeModule
+
+## DocsifyPluginsModule
 
 <small>(optional)</small>
 
-DocSPA supports [docsify themes](https://docsify.js.org/#/themes?id=themes). To include a theme add the desired style sheet in your `index.html` file.
-
-```html
-<link rel="stylesheet" href="//unpkg.com/docsify/themes/vue.css">
-<link rel="stylesheet" href="//unpkg.com/docsify/themes/buble.css">
-<link rel="stylesheet" href="//unpkg.com/docsify/themes/dark.css">
-
-<!-- compressed -->
-<link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
-<link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/buble.css">
-<link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/dark.css">
-<link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/pure.css">
-```
-
-Adding the `ThemeModule` allows you to override CSS variables used in internal style definition.
-
-```js { mark="3,15-19" }
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { DocspaCoreModule, ThemeModule } from '@swimlane/docspa-core';
-
-import { AppComponent } from './app.component';
-import { config } from '../docspa.config';
-
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    DocspaCoreModule.forRoot(config),
-    ThemeModule.forRoot({
-      theme: {
-        '--theme-color': '#0074d9',
-        '--theme-color-secondary-light': '#0074d92e'
-      }
-    })
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
-```
-
-## UseDocsifyPluginsModule
-
-<small>(optional)</small>
-
-DocSPA supports many (but not all) [docsify plugins](https://docsify.js.org/#/plugins?id=list-of-plugins).  To include docsify plugins add the `UseDocsifyPluginsModule` and a global `$docsify` and include plugin `<script>` tags in your `index.html` just like you would when running docsify.  This module will load docsify plugins and attach them to internal DocSPA hooks.
+DocSPA supports many (but not all) [docsify plugins](https://docsify.js.org/#/plugins?id=list-of-plugins).  To include docsify plugins add the `DocsifyPluginsModule` and a global `$docsify` and include plugin `<script>` tags in your `index.html` just like you would when running docsify.  This module will load docsify plugins and attach them to internal DocSPA hooks.
 
 !> Not all docsify plugins are supported and in general it is preferred to use remark plugins or custom elements.
 
@@ -473,7 +426,7 @@ DocSPA supports many (but not all) [docsify plugins](https://docsify.js.org/#/pl
 ```js { mark="3,15" }
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { DocspaCoreModule, UseDocsifyPluginsModule } from '@swimlane/docspa-core';
+import { DocspaCoreModule, DocsifyPluginsModule } from '@swimlane/docspa-core';
 
 import { AppComponent } from './app.component';
 import { config } from '../docspa.config';
@@ -485,7 +438,7 @@ import { config } from '../docspa.config';
   imports: [
     BrowserModule,
     DocspaCoreModule.forRoot(config),
-    UseDocsifyPluginsModule
+    DocsifyPluginsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

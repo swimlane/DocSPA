@@ -3,7 +3,7 @@ import { createCustomElement } from '@angular/elements';
 
 import { MarkdownService } from '../../modules/markdown/markdown.service';
 
-import { RuntimeContentComponent, FOR_ROOT_OPTIONS_TOKEN } from './runtime-content.component';
+import { RuntimeContentComponent, RUNTIMECONTENT_CONFIG_TOKEN } from './runtime-content.component';
 import { runtime } from './runtime';
 import { prism } from '@swimlane/docspa-remark-preset';
 
@@ -23,7 +23,7 @@ export class RuntimeContentModule {
       ngModule: RuntimeContentModule,
       providers: [
         {
-          provide: FOR_ROOT_OPTIONS_TOKEN,
+          provide: RUNTIMECONTENT_CONFIG_TOKEN,
           useValue: config
         }
       ]

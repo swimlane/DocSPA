@@ -1,5 +1,5 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { MarkdownService, FOR_ROOT_OPTIONS_TOKEN } from './markdown.service';
+import { MarkdownService, MARKDOWN_CONFIG_TOKEN } from './markdown.service';
 
 @NgModule({
   declarations: [],
@@ -13,7 +13,7 @@ export class MarkdownModule {
       providers: [
         MarkdownService,
         {
-          provide: FOR_ROOT_OPTIONS_TOKEN,
+          provide: MARKDOWN_CONFIG_TOKEN,
           useValue: config
         }
       ]

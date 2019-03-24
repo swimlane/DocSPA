@@ -3,4 +3,3 @@ export * from './markdown-elements/markdown-elements.module';
 export * from './runtime-content/runtime-content.module';
 export * from './markdown/';
 export * from './docsify-plugins.module';
-export * from './theme/theme.module';

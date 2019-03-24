@@ -8,4 +8,5 @@
 <md-toc class="collapsible" path="quickstart" max-depth="2"></md-toc>
 <md-toc class="collapsible" path="content" max-depth="2"></md-toc>
 <md-toc class="collapsible" path="modules" max-depth="3"></md-toc>
+<md-toc class="collapsible" path="themes" max-depth="3"></md-toc>
 <md-toc class="collapsible" path="features" max-depth="3"></md-toc>
