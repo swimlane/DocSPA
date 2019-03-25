@@ -3,7 +3,7 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { of } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 
-import * as unified from 'unified';
+import unified from 'unified';
 import markdown from 'remark-parse';
 import toc from 'mdast-util-toc';
 import visit from 'unist-util-visit';

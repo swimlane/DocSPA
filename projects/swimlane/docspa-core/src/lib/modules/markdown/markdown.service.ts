@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { flatMap, tap, share } from 'rxjs/operators';
 import { NGXLogger } from 'ngx-logger';
 
-import * as unified from 'unified';
+import unified from 'unified';
 import markdown from 'remark-parse';
 import remark2rehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
@@ -15,7 +15,7 @@ import { FetchService, CachePage } from '../../services/fetch.service';
 import { HooksService } from '../../services/hooks.service';
 import { links, images } from '../../shared/links';
 
-import * as VFILE from 'vfile';
+import VFILE from 'vfile';
 import { VFile } from '../../../vendor';
 
 export const MARKDOWN_CONFIG_TOKEN = new InjectionToken<any>( 'forRoot() configuration.' );

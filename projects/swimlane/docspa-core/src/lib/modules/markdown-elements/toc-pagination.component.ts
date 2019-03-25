@@ -10,7 +10,7 @@ import * as VFILE from 'vfile';
 import * as MDAST from 'mdast';
 import { getBasePath } from '../../utils';
 
-import * as unified from 'unified';
+import unified from 'unified';
 import markdown from 'remark-parse';
 // import toc from 'mdast-util-toc';
 import visit from 'unist-util-visit';

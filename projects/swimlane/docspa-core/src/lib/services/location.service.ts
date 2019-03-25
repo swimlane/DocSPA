@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as VFILE from 'vfile';
+import VFILE from 'vfile';
 
 import { join } from '../utils';
 import { resolve } from 'url';
