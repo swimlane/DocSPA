@@ -231,7 +231,7 @@ Use `[[include]]` shortcode to include other files within markdown.
 Add a `codeblock` to include the file as a code block.
 
 ```markdown { playground }
-[[include path="/examples/embed.js" codeblock='js { mark="2" }']]
+[[include path="./examples/embed.js" codeblock='js { mark="2" }']]
 ```
 
 ## Environment Variables

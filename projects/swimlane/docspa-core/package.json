@@ -1,6 +1,6 @@
 {
   "name": "@swimlane/docspa-core",
-  "version": "2.0.0-rc1",
+  "version": "2.0.0-rc3",
   "peerDependencies": {
     "@angular/common": "^7.0.0",
     "@angular/core": "^7.0.0",
@@ -26,7 +26,12 @@
     "url-resolve": "^1.0.0",
     "vfile": "^3.0.0",
     "vfile-reporter": "^5.0.0",
-    "tapable": "^1.1.0"
+    "tapable": "^1.1.0",
+    "mdast-util-toc": "^3.1.0",
+    "remark-stringify": "^6.0.0",
+    "remark-rehype": "^4.0.0",
+    "rehype-raw": "^4.0.0",
+    "rehype-stringify": "^4.0.0"
   },
   "repository": {
     "type": "git",

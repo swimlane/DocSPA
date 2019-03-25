@@ -45,3 +45,8 @@
 ![image](https://1000ch.github.io/lazyload-image/assets/img/19.jpg){ is="lazyload-image" offset="0px" width="25%" }
 ![image](https://1000ch.github.io/lazyload-image/assets/img/20.jpg){ is="lazyload-image" offset="0px" width="25%" }
 
+## Embed
+
+[[ include path="./b.md" codeblock='md { mark="2" }']]
+[[ include path="../examples/embed.md" ]]
+[[ include path="../examples/embed.js" codeblock='js { mark="2" }']]

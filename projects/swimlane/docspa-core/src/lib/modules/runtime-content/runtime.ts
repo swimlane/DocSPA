@@ -1,5 +1,5 @@
 import visit from 'unist-util-visit';
-import * as VFILE from 'vfile';
+import VFILE from 'vfile';
 import * as MDAST from 'mdast';
 import * as UNIFIED from 'unified';
 

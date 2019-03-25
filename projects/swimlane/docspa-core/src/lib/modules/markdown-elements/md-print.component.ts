@@ -4,7 +4,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 
-import * as unified from 'unified';
+import unified from 'unified';
 import markdown from 'remark-parse';
 import visit from 'unist-util-visit';
 import toString from 'mdast-util-to-string';

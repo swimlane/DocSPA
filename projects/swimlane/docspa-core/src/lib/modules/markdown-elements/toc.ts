@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewEncapsulation, HostBinding, SimpleChanges
 
 import { of } from 'rxjs';
 import { flatMap, map, share } from 'rxjs/operators';
-import * as unified from 'unified';
+import unified from 'unified';
 import markdown from 'remark-parse';
 import toc from 'mdast-util-toc';
 import visit from 'unist-util-visit';
@@ -70,7 +70,6 @@ export class TOCComponent implements OnInit {
           result.map || []
         );
         return visit(tree, 'paragraph', (node: any, index: number, parent: any) => {
-          console.log(parent.children.length);
           if (parent.children.length > 1) {
             node.data = node.data || {};
             node.data.hProperties = node.data.hProperties || {};

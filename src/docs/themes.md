@@ -14,7 +14,9 @@ DocSPA supports [docsify themes](https://docsify.js.org/#/themes?id=themes). To 
 <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/pure.css">
 ```
 
-Add CSS variables to root in `styles.css` to customize internale styles.
+## Customization
+
+Add CSS variables to root in `styles.css` to customize internal styles.
 
 ```css
 :root {
