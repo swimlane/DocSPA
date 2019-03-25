@@ -13,6 +13,9 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 
+
+console.log({QuickLRU});
+
 const TTL = 100000;
 
 @Injectable()

@@ -4,6 +4,9 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
+// Web components
+import './app/plugins/lazy-img';
+
 if (environment.production) {
   enableProdMode();
 }

@@ -61,7 +61,7 @@ export class DocspaCoreModule {
     return {
       ngModule: DocspaCoreModule,
       providers: [
-        { provide: DOCSPA_ENVIRONMENT, useValue: { ...config.environment, ...environment } },
+        { provide: DOCSPA_ENVIRONMENT, useValue: environment },
         { provide: DOCSPA_CONFIG_TOKEN, useValue: config }
       ]
     };
