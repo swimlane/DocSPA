@@ -1,3 +1,6 @@
+:root {
+  --navbar-menu-background: var(--base-background-color);
+}
 
 body {
   overflow: overlay;
@@ -271,11 +274,20 @@ body {
     ul li {
       padding: 0 0 0 1rem;
       &.active {
-        background-color: initial;
+        background: var(--sidebar-nav-link-background--active, var(--sidebar-nav-link-background));
+        border-style: var(--sidebar-nav-link-border-style--active, var(--sidebar-nav-link-border-style));
+        border-color: var(--sidebar-nav-link-border-color--active, var(--sidebar-nav-link-border-color));
+        color: var(--sidebar-nav-link-color--active, var(--sidebar-nav-link-color));
+        text-decoration: var(--sidebar-nav-link-text-decoration--active, var(--sidebar-nav-link-text-decoration));
+        text-decoration-color: var(--sidebar-nav-link-text-decoration-color--active, var(--sidebar-nav-link-text-decoration-color));
       }
       &:hover > a, &.active a {
-        color: var(--theme-color, #333);
-        border-right: 0.2rem solid var(--theme-color-secondary-light, #29D0CA);
+        background: var(--sidebar-nav-link-background--hover, var(--sidebar-nav-link-background));
+        border-style: var(--sidebar-nav-link-border-style--hover, var(--sidebar-nav-link-border-style));
+        border-color: var(--sidebar-nav-link-border-color--hover, var(--sidebar-nav-link-border-color));
+        color: var(--sidebar-nav-link-color--hover, var(--sidebar-nav-link-color));
+        text-decoration: var(--sidebar-nav-link-text-decoration--hover, var(--sidebar-nav-link-text-decoration));
+        text-decoration-color: var(--sidebar-nav-link-text-decoration-color--hover, var(--sidebar-nav-link-text-decoration-color));
       }
     }
   }
