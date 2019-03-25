@@ -3,7 +3,7 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { of } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 
-import unified from 'unified';
+import * as unified from 'unified';
 import markdown from 'remark-parse';
 import toc from 'mdast-util-toc';
 import visit from 'unist-util-visit';
@@ -12,7 +12,7 @@ import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
 import { links, images } from '../../shared/links';
 import frontmatter from 'remark-frontmatter';
-import MDAST from 'mdast';
+import * as MDAST from 'mdast';
 import { getTitle } from '@swimlane/docspa-remark-preset/dist/module/plugins/frontmatter';
 import { VFile } from '../../../vendor';
 

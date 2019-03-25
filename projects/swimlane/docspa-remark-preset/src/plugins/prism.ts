@@ -1,15 +1,14 @@
 import visit from 'unist-util-visit';
 import rangeParser from 'parse-numeric-range';
 import Prism from 'prismjs';
-import UNIFIED from 'unified';
+import * as UNIFIED from 'unified';
+import * as MDAST from 'mdast';
 
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-markdown';
 import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-diff';
 import 'prismjs/components/prism-c';
-
-import MDAST from 'mdast';
 
 const ctx =
   typeof window === 'undefined'

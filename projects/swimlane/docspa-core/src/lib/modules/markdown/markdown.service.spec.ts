@@ -1,8 +1,8 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
-import VFILE from 'vfile';
+import * as VFILE from 'vfile';
 import { join } from '../../utils';
 
 import { MarkdownService } from './markdown.service';

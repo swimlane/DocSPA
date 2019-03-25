@@ -12,7 +12,7 @@ import { LocationService } from '../../services/location.service';
 import { RouterService } from '../../services/router.service';
 import { splitHash } from '../../utils';
 
-import vfile from 'vfile';
+import * as vfile from 'vfile';
 
 @Component({
   selector: 'docspa-md-include', // tslint:disable-line

@@ -1,7 +1,7 @@
 import visit from 'unist-util-visit';
 import mermaidApi from 'mermaid';
-import UNIFIED from 'unified';
-import MDAST from 'mdast';
+import * as UNIFIED from 'unified';
+import * as MDAST from 'mdast';
 
 const supportsCustomElements = !!window['customElements'];
 

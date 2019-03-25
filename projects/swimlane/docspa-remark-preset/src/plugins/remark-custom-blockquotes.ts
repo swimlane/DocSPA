@@ -2,8 +2,8 @@
 // https://github.com/montogeek/remark-custom-blockquotes/pull/2 pending merge
 
 import visit from 'unist-util-visit';
-import MDAST from 'mdast';
-import UNIFIED from 'unified';
+import * as MDAST from 'mdast';
+import * as UNIFIED from 'unified';
 
 export function customBlockquotes({ mapping }): UNIFIED.Transformer {
   return function transformer(tree: MDAST.Root) {

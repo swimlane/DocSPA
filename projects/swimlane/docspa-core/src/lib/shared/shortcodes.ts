@@ -1,9 +1,9 @@
 import visit from 'unist-util-visit';
 
 
-import MDAST from 'mdast';
-import VFILE from 'vfile';
-import UNIFIED from 'unified';
+import * as MDAST from 'mdast';
+import * as VFILE from 'vfile';
+import * as  UNIFIED from 'unified';
 
 interface Codes {
   [key: string]: {

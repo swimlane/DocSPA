@@ -4,12 +4,12 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 
-import unified from 'unified';
+import * as unified from 'unified';
 import markdown from 'remark-parse';
 import visit from 'unist-util-visit';
 import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
-import MDAST from 'mdast';
+import * as MDAST from 'mdast';
 import { VFile, Link, Heading } from '../../../vendor';
 
 import frontmatter from 'remark-frontmatter';

@@ -1,4 +1,4 @@
-import VFILE from 'vfile';
+import * as VFILE from 'vfile';
 import * as MDAST from 'mdast';
 
 interface UnknownData {

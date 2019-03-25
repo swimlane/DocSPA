@@ -1,7 +1,7 @@
 import visit from 'unist-util-visit';
 import mdAttrParser from 'md-attr-parser';
-import MDAST from 'mdast';
-import UNIFIED from 'unified';
+import * as MDAST from 'mdast';
+import * as UNIFIED from 'unified';
 
 // The list of DOM Event handler
 const DOMEventHandler = [

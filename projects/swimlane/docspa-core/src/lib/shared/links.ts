@@ -1,11 +1,11 @@
 import visit from 'unist-util-visit';
 import { LocationService } from '../services/location.service';
-import VFILE, { default as VFile } from 'vfile';
-import MDAST from 'mdast';
+import * as VFILE from 'vfile';
+import * as MDAST from 'mdast';
 import { Link } from '../../vendor';
 
 export const links = (locationService: LocationService) => {
-  return (tree: MDAST.Root, vfile: VFile.VFile) => {
+  return (tree: MDAST.Root, vfile: VFILE.VFile) => {
     return visit(tree, ['link', 'definition'], (node: Link, index, parent) => {
       if (node && parent && index !== undefined && !LocationService.isAbsolutePath(node.url)) {
 

@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewEncapsulation, HostBinding, SimpleChanges
 
 import { of } from 'rxjs';
 import { flatMap, map, share } from 'rxjs/operators';
-import unified from 'unified';
+import * as unified from 'unified';
 import markdown from 'remark-parse';
 import toc from 'mdast-util-toc';
 import visit from 'unist-util-visit';
@@ -20,7 +20,7 @@ import { LocationService } from '../../services/location.service';
 
 import { links, images } from '../../shared/links';
 import frontmatter from 'remark-frontmatter';
-import MDAST from 'mdast';
+import * as MDAST from 'mdast';
 
 @Component({
   selector: 'md-toc', // tslint:disable-line
@@ -69,7 +69,7 @@ export class TOCComponent implements OnInit {
           tree.children.slice(0, result.index),
           result.map || []
         );
-        return visit(tree, 'paragraph', (node: MDAST.Heading, index: number, parent: any) => {
+        return visit(tree, 'paragraph', (node: any, index: number, parent: any) => {
           console.log(parent.children.length);
           if (parent.children.length > 1) {
             node.data = node.data || {};

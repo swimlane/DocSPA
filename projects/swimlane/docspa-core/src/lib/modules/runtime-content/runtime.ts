@@ -1,7 +1,7 @@
 import visit from 'unist-util-visit';
-import VFile from 'vfile';
-import MDAST from 'mdast';
-import UNIFIED from 'unified';
+import * as VFILE from 'vfile';
+import * as MDAST from 'mdast';
+import * as UNIFIED from 'unified';
 
 interface VNode {
   node: MDAST.Code;
@@ -12,7 +12,7 @@ interface VNode {
 export function runtime(this: UNIFIED.Processor): UNIFIED.Transformer {
   const processor = this;
 
-  return function(tree: MDAST.Root, file: VFile.VFile, next: Function): any {
+  return function(tree: MDAST.Root, file: VFILE.VFile, next: Function): any {
     const items: VNode[] = [];
 
     visit(tree, 'code', (node: MDAST.Code, index: number, parent: MDAST.Parent) => {
@@ -48,7 +48,7 @@ export function runtime(this: UNIFIED.Processor): UNIFIED.Transformer {
         hProperties.class.push('custom-block');
         hProperties.class.push(isPlayground ? 'playground' : 'runtime');
         if (lang === 'markdown') {
-          const f = VFile({ ...file, contents: node.value });
+          const f = VFILE({ ...file, contents: node.value });
           const v = await processor.process(f);
           value = String(v.contents);
         } else {

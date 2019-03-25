@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { HooksService } from '@swimlane/docspa-core';
-import VFILE from 'vfile';
+import * as VFILE from 'vfile';
 
 /* An example plugin module */
 

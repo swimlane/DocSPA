@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import VFILE, { default as VFile } from 'vfile';
+import * as VFILE from 'vfile';
 
 import { join } from '../utils';
 import { resolve } from 'url';
@@ -44,7 +44,7 @@ export class LocationService {
       page = '/';
     }
 
-    const vfile = VFile({ path: page, cwd: this.root });
+    const vfile = VFILE({ path: page, cwd: this.root });
 
     /* if (vfile.path[0] === '/' && vfile.path[1] === '_') {
       vfile.path = this.settings.notFoundPage;
