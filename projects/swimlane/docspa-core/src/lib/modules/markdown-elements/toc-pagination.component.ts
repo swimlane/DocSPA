@@ -12,7 +12,6 @@ import { getBasePath } from '../../utils';
 
 import unified from 'unified';
 import markdown from 'remark-parse';
-// import toc from 'mdast-util-toc';
 import visit from 'unist-util-visit';
 import stringify from 'remark-stringify';
 import toString from 'mdast-util-to-string';

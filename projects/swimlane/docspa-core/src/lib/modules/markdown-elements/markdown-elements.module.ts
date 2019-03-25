@@ -2,8 +2,13 @@ import { NgModule, Injector, InjectionToken, Optional, ModuleWithProviders, Inje
 import { createCustomElement } from '@angular/elements';
 import { CommonModule } from '@angular/common';
 
+import visit from 'unist-util-visit';
+import * as MDAST from 'mdast';
+import * as UNIFIED from 'unified';
+
 import { customSmartCodes } from '../../shared/shortcodes';
 import { MarkdownService } from '../../modules/markdown/markdown.service';
+import { LocationService } from '../../services/location.service';
 
 // Custom Elements
 import { MadeWithDocSPAComponent } from './made-with-love';
@@ -13,23 +18,6 @@ import { EnvVarComponent } from './env-var.component';
 import { MdPrintComponent } from './md-print.component';
 import { TOCPaginationComponent } from './toc-pagination.component';
 import { EmbedMarkdownComponent } from './embed-file';
-
-/**
- * Convert [[toc]] smart-code to a TOC
- * Must be included after remark-shortcodes but before customSmartCodes
-
-export const tocSmartCode = (): UNIFIED.Transformer => {
-  return (tree: MDAST.Root, file: VFile) => {
-    file.data = file.data || {};
-    return visit(tree, 'shortcode', (node: ShortCode) => {
-      if (node.identifier === 'toc') {
-        node.attributes.path = node.attributes.path || file.data.base;
-      }
-      return true;
-    });
-  };
-};*/
-
 
 export const MARKDOWNELEMENTS_CONFIG_TOKEN = new InjectionToken<any>( 'MarkdownElementsModule.forRoot() configuration.' );
 
@@ -89,6 +77,7 @@ export class MarkdownElementsModule {
   constructor(
     private injector: Injector,
     markdownService: MarkdownService,
+    locationService: LocationService,
     @Optional() @Inject(MARKDOWNELEMENTS_CONFIG_TOKEN) _elements: any
   ) {
     if (_elements) {
@@ -98,6 +87,29 @@ export class MarkdownElementsModule {
           customElements.define(Constructor.is, content);
         }
       });
+
+      const smartCodePaths = (): UNIFIED.Transformer => {
+        return (tree: MDAST.Root, vfile: any) => {
+          vfile.data = vfile.data || {};
+          return visit(tree, 'shortcode', (node: any) => {
+            if (node.identifier === 'toc' || node.identifier === 'include') {
+
+              node.data = node.data || {};
+              node.data.hProperties = node.data.hProperties || {};
+              const path = node.data.originalPath = node.data.hProperties.path;
+
+              if (path === '' && node.identifier === 'toc') {
+                node.data.hProperties.path = vfile.data.base;
+              } else if (!LocationService.isAbsolutePath(path)) {
+                node.data.hProperties.path = locationService.prepareLink(path, vfile.history[0]);
+              }
+            }
+            return node;
+          });
+        };
+      };
+
+      markdownService.remarkPlugins.push(smartCodePaths);
 
       // Adds a remarkplugin to short codes
       markdownService.remarkPlugins.push([customSmartCodes, {
