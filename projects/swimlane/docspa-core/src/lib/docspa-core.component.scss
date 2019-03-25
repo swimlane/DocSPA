@@ -15,9 +15,11 @@ body {
   max-width: 850px;
 }
 
-.markdown-section, .cover-main, .sidebar {
+.markdown-section,
+.cover-main,
+.sidebar {
   h1, h2, h3, h4, h5, h6 {
-    a {
+    a[aria-hidden] {
       font-weight: 600;
       line-height: 1em;
       padding-left: 10px;
@@ -27,8 +29,8 @@ body {
       transition: opacity .25s ease-in-out;
     }
 
-    &:hover a {
-      opacity: 0.6;
+    &:hover a[aria-hidden] {
+      opacity: 0.4;
       &:hover {
         opacity: 1;
       }
