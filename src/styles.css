@@ -212,6 +212,7 @@ a.btn:hover {
 }
 
 /* Sidebars */
+/* TODO: Move this */
 .sidebar.left-sidebar .sidebar-nav ul > li > ul {
   overflow: hidden;
   line-height: 0;

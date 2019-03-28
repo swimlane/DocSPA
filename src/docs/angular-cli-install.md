@@ -1,6 +1,6 @@
 # Adding DocSPA to a angular cli app
 
-!!> Information in the guid may be out of date.  If you are starting a new projetc we recommend looking at the [quick start](quickstart).
+!!> Information in the GUID may be out of date.  If you are starting a new project we recommend looking at the [quick start](quickstart).
 
 0. Generate new Angular app
 
@@ -14,7 +14,7 @@ i> You should now have a fresh angular app visible at http://localhost:4200/.
 
 1. Install DocSPA and peerDependecies
 
-First install DocSPA core:
+First install DocSPA core and DocSPA remark-preset:
 
 ```sh
 npm install --save @swimlane/docspa-core @swimlane/docspa-remark-preset
@@ -117,13 +117,11 @@ export class AppModule { }
 <docspa-page></docspa-page>
 ```
 
-i> You may alternativly set the `DocSPACoreComponent` component as the `bootstrap` comp.
+i> You may alternatively set the `DocSPACoreComponent` component as the `bootstrap` comp.
 
 2) Add `src/docs` with `README.md`
 
 See [content](content).
-
-i> You can use `docsify init ./src/docs` if you like.
 
 3) Edit `angular.json`
 

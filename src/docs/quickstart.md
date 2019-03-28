@@ -3,8 +3,8 @@
 ## Install from GitHub
 
 ```bash
-git clone https://github.com/swimlane/docspa-quickstart.git my-docspa-project
-cd my-docspa-project
+git clone https://github.com/swimlane/docspa-starter.git
+cd docspa-starter
 npm install
 npm start
 ```
@@ -21,7 +21,7 @@ At that point you will see a message to "open your browser on http://localhost:4
 
 ## Customization
 
-This DocSPA instance can be modified change configuaation to teh various DocSPA modules.  See [module](modules) for details on each module and configuration options.
+This DocSPA instance can be modified change configuration to teh various DocSPA modules.  See [module](modules) for details on each module and configuration options.
 
 ## Writing Content
 

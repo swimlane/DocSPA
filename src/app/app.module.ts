@@ -43,7 +43,7 @@ import { environment } from '../environments/environment';
     CommonModule,
     BrowserModule,
     FormsModule,
-    DocspaCoreModule.forRoot(config),
+    DocspaCoreModule.forRoot(config, environment),
     RuntimeContentModule.forRoot({
       imports: [
         CommonModule,
