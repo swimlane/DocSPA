@@ -20,7 +20,7 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { preset } from '@swimlane/docspa-remark-preset';
 import {
   DocspaCoreModule, EmbedStackblitzModule, DocsifyPluginsModule,
-  RuntimeContentModule, MarkdownModule, MarkdownElementsModule
+  RuntimeContentModule, MarkdownModule, MarkdownElementsModule, MARKDOWN_CONFIG_TOKEN
 } from '@swimlane/docspa-core';
 
 import { AppComponent } from './app.component';
@@ -51,7 +51,7 @@ import { environment } from '../environments/environment';
         BrowserAnimationsModule
       ],
     }),
-    MarkdownModule.forRoot(preset),
+    MarkdownModule.forRoot(),
     MarkdownElementsModule.forRoot(),
     DocsifyPluginsModule.forRoot({
       plugins: [
@@ -71,7 +71,8 @@ import { environment } from '../environments/environment';
   ],
   providers: [
     Location,
-    { provide: LocationStrategy, useClass: PathLocationStrategy }
+    { provide: LocationStrategy, useClass: PathLocationStrategy },
+    { provide: MARKDOWN_CONFIG_TOKEN, useValue: preset }
   ],
   bootstrap: [AppComponent],
   entryComponents: [EditOnGithubComponent]

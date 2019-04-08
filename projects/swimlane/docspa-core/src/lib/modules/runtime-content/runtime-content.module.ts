@@ -1,4 +1,4 @@
-import { NgModule, Injector, ModuleWithProviders } from '@angular/core';
+import { NgModule, Injector, ModuleWithProviders, Compiler } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 
 import { MarkdownService } from '../../modules/markdown/markdown.service';
@@ -7,6 +7,14 @@ import { RuntimeContentComponent, RUNTIMECONTENT_CONFIG_TOKEN } from './runtime-
 import { runtime } from './runtime';
 import { prism } from '@swimlane/docspa-remark-preset';
 
+import { JitCompilerFactory } from '@angular/platform-browser-dynamic';
+
+export function createJitCompiler() {
+  return new (JitCompilerFactory as any)([{
+    useDebug: false,
+    useJit: true
+  }]).createCompiler();
+}
 
 @NgModule({
   declarations: [
@@ -22,10 +30,8 @@ export class RuntimeContentModule {
     return {
       ngModule: RuntimeContentModule,
       providers: [
-        {
-          provide: RUNTIMECONTENT_CONFIG_TOKEN,
-          useValue: config
-        }
+        { provide: RUNTIMECONTENT_CONFIG_TOKEN, useValue: config },
+        { provide: Compiler, useFactory: createJitCompiler }
       ]
     };
   }

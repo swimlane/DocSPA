@@ -11,7 +11,7 @@ interface VFile extends VFILE.VFile {
   };
 }
 
-export const readMatter = (): UNIFIED.Transformer => {
+export function readMatter(): UNIFIED.Transformer {
   return function transformer(node: MDAST.Root, file: VFile) {
     if (node.children[0].type === 'yaml') {
       node.children[0].data = node.children[0].data || {};
@@ -19,9 +19,9 @@ export const readMatter = (): UNIFIED.Transformer => {
     }
     return node;
   };
-};
+}
 
-export const getTitle = (): UNIFIED.Transformer => {
+export function getTitle(): UNIFIED.Transformer {
   return (tree: MDAST.Root, file: VFile) => {
     file.data = file.data || {};
     return visit(tree, 'heading', (node: MDAST.Heading) => {
@@ -31,4 +31,4 @@ export const getTitle = (): UNIFIED.Transformer => {
       return true;
     });
   };
-};
+}

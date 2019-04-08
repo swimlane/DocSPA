@@ -7,7 +7,7 @@ import { MarkdownService, MARKDOWN_CONFIG_TOKEN } from './markdown.service';
   entryComponents: []
 })
 export class MarkdownModule {
-  static forRoot(config: any): ModuleWithProviders {
+  static forRoot(config?: any): ModuleWithProviders {
     return {
       ngModule: MarkdownModule,
       providers: [

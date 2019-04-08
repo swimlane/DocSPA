@@ -1,9 +1,8 @@
-import { NgModule, Compiler, Injector, ModuleWithProviders, InjectionToken } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { JitCompilerFactory } from '@angular/platform-browser-dynamic';
 
 import { LoggerModule } from 'ngx-logger';
 
@@ -21,13 +20,6 @@ import { DocSPACoreComponent } from './docspa-core.component';
 import { SafeHtmlPipe } from './services/safe-html.pipe';
 
 import { DOCSPA_CONFIG_TOKEN, DOCSPA_ENVIRONMENT } from './docspa-core.tokens';
-
-export function createJitCompiler() {
-  return new (JitCompilerFactory as any)([{
-    useDebug: false,
-    useJit: true
-  }]).createCompiler();
-}
 
 @NgModule({
   imports: [
@@ -52,7 +44,6 @@ export function createJitCompiler() {
     FetchService,
     RouterService,
     HooksService,
-    { provide: Compiler, useFactory: createJitCompiler },
     { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }
   ]
 })
