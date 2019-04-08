@@ -17,8 +17,11 @@
       "@swimlane/docspa-remark-preset/*": [
         "projects/swimlane/docspa-remark-preset/src/*"
       ],
-      "@swimlane/docspa-remark-preset/dist/module/*": [
-        "projects/swimlane/docspa-remark-preset/src/*"
+      "@swimlane/docspa-stackblitz": [
+        "projects/swimlane/docspa-stackblitz/src/public-api"
+      ],
+      "@swimlane/docspa-stackblitz/*": [
+        "projects/swimlane/docspa-stackblitz/src/*"
       ]
     }
   },

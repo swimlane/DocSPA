@@ -13,7 +13,7 @@ import slug from 'remark-slug';
 import { links, images } from '../../shared/links';
 import frontmatter from 'remark-frontmatter';
 import * as MDAST from 'mdast';
-import { getTitle } from '@swimlane/docspa-remark-preset/dist/module/plugins/frontmatter';
+import { getTitle } from '@swimlane/docspa-remark-preset/plugins/frontmatter';
 import { VFile } from '../../../vendor';
 
 import { join } from '../../utils';

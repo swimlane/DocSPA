@@ -19,9 +19,10 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 import { preset } from '@swimlane/docspa-remark-preset';
 import {
-  DocspaCoreModule, EmbedStackblitzModule, DocsifyPluginsModule,
+  DocspaCoreModule, DocsifyPluginsModule,
   RuntimeContentModule, MarkdownModule, MarkdownElementsModule, MARKDOWN_CONFIG_TOKEN
 } from '@swimlane/docspa-core';
+import { DocspaStackblitzModule } from '@swimlane/docspa-stackblitz';
 
 import { AppComponent } from './app.component';
 
@@ -58,7 +59,7 @@ import { environment } from '../environments/environment';
         timestampPlugin
       ]
     }),
-    EmbedStackblitzModule,
+    DocspaStackblitzModule,
     LoggerModule.forRoot({ level: NgxLoggerLevel.WARN }),
     TabsPluginModule,
     GridPluginModule,
