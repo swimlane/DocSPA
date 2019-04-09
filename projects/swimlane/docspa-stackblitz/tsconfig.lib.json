@@ -16,7 +16,21 @@
     "lib": [
       "dom",
       "es7"
-    ]
+    ],
+    "paths": {
+      "@swimlane/docspa-remark-preset": [
+        "projects/swimlane/docspa-remark-preset/dist/module/index"
+      ],
+      "@swimlane/docspa-remark-preset/*": [
+        "projects/swimlane/docspa-remark-preset/dist/module/*"
+      ],
+      "@swimlane/docspa-core": [
+        "dist/swimlane/docspa-core/esm2015/public_api"
+      ],
+      "@swimlane/docspa-core/*": [
+        "dist/swimlane/docspa-core/esm2015/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "annotateForClosureCompiler": true,
