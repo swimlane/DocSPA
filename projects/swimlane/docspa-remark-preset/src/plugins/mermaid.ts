@@ -1,5 +1,5 @@
 import visit from 'unist-util-visit';
-import mermaidApi from 'mermaid';
+import * as mermaidApi from 'mermaid';
 import * as UNIFIED from 'unified';
 import * as MDAST from 'mdast';
 
@@ -54,5 +54,9 @@ export function mermaid(options: { [key: string]: any }): UNIFIED.Transformer {
 }
 
 if (supportsCustomElements) {
-  customElements.define(MermaidElement.is, MermaidElement);
+  try {
+    customElements.define(MermaidElement.is, MermaidElement);
+  } catch (err) {
+    // noop
+  }
 }

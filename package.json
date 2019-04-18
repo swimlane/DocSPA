@@ -28,7 +28,10 @@
     "predeploy": "npm run build:release",
     "deploy": "angular-cli-ghpages --dir ./dist/docspa",
     "test:watch": "jest --watch",
-    "bundle-report": "webpack-bundle-analyzer dist/docspa/stats.json"
+    "bundle-report": "webpack-bundle-analyzer dist/docspa/stats.json",
+    "pack:core": "npm run build:core && npm pack ./dist/swimlane/docspa-core",
+    "pack:stackblitz": "npm run build:stackblitz && npm pack ./dist/swimlane/docspa-stackblitz",
+    "pack": "npm run pack:core && npm run pack:stackblitz"
   },
   "dependencies": {
     "@angular/animations": "^7.2.10",
@@ -47,7 +50,6 @@
     "@ngx-loading-bar/http-client": "^2.1.0",
     "@rigor789/remark-autolink-headings": "^5.1.0",
     "@stackblitz/sdk": "^1.2.0",
-    "@swimlane/docspa-core": "^1.7.2",
     "@swimlane/docspa-remark-preset": "^1.3.0",
     "@swimlane/ngx-charts": "^10.1.0",
     "@webcomponents/custom-elements": "^1.1.2",

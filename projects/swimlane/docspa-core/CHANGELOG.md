@@ -2,7 +2,8 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-_(none)_
+* Moved `DocspaStackblitzModule` to a separate package.
+* Changes to support AOT
 
 --------------------
 

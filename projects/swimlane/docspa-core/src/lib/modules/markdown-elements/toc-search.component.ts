@@ -13,9 +13,9 @@ import slug from 'remark-slug';
 import { links, images } from '../../shared/links';
 import frontmatter from 'remark-frontmatter';
 import * as MDAST from 'mdast';
-import { getTitle } from '@swimlane/docspa-remark-preset';
-import { VFile } from '../../../vendor';
+import * as UNIFIED from 'unified';
 
+import { VFile } from '../../../vendor';
 import { join } from '../../utils';
 
 import { FetchService } from '../../services/fetch.service';
@@ -23,6 +23,18 @@ import { LocationService } from '../../services/location.service';
 
 interface Link extends MDAST.Link {
   data: any;
+}
+
+export function getTitle(): UNIFIED.Transformer {
+  return (tree: MDAST.Root, file: VFile) => {
+    file.data = file.data || {};
+    return visit(tree, 'heading', (node: MDAST.Heading) => {
+      if (node.depth === 1 && !file.data.title) {
+        file.data.title = toString(node);
+      }
+      return true;
+    });
+  };
 }
 
 @Component({

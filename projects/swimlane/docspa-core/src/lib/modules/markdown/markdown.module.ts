@@ -7,14 +7,16 @@ import { MarkdownService, MARKDOWN_CONFIG_TOKEN } from './markdown.service';
   entryComponents: []
 })
 export class MarkdownModule {
-  static forRoot(config?: any): ModuleWithProviders {
+  public static forRoot(config?: any): ModuleWithProviders {
     return {
       ngModule: MarkdownModule,
       providers: [
         MarkdownService,
         {
           provide: MARKDOWN_CONFIG_TOKEN,
-          useValue: config
+          useFactory() {
+            return config;
+          }
         }
       ]
     };

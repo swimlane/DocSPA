@@ -6,8 +6,6 @@
     "@angular/core": "^7.0.0",
     "@angular/elements": "^7.0.0",
     "@angular/http": "^7.0.0",
-    "@ngx-loading-bar/http-client": "^2.1.0",
-    "@stackblitz/sdk": "^1.2.0",
     "@swimlane/docspa-remark-preset": "^2.0.0-rc4",
     "@webcomponents/custom-elements": "^1.1.2",
     "deepmerge": "^2.1.1",
