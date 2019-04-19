@@ -1,24 +1,65 @@
-# DocspaStackblitz
+## DocspaStackblitzModule
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.0.
+<small>(optional, external)</small>
 
-## Code scaffolding
+This module allows embedding StackBlitz projects within markdown using a `embed-stackblitz` custom element and the [[stackblitz]] shortcode.
 
-Run `ng generate component component-name --project docspa-stackblitz` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project docspa-stackblitz`.
-> Note: Don't forget to add `--project docspa-stackblitz` or else it will be added to the default project in your `angular.json` file. 
+```js { mark="3,15" }
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { DocspaCoreModule } from '@swimlane/docspa-core';
+import { DocspaStackblitzModule } from '@swimlane/docspa-stackblitz';
 
-## Build
+import { AppComponent } from './app.component';
+import { config } from '../docspa.config';
 
-Run `ng build docspa-stackblitz` to build the project. The build artifacts will be stored in the `dist/` directory.
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    DocspaCoreModule.forRoot(config),
+    DocspaStackblitzModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
 
-## Publishing
+The `embed-stackblitz` custom element accepts a [StackBlitz project payload](https://stackblitz.com/docs#project-payload) as the `project` input.
 
-After building your library with `ng build docspa-stackblitz`, go to the dist folder `cd dist/docspa-stackblitz` and run `npm publish`.
+```markdown { playground }
+<embed-stackblitz
+  title='Embeded StackBlitz Project<br />DocSPA'
+  project='{"template": "javascript", "files": {"index.js": "console.log(123)", "index.html": "Hello World"} }'>
+</embed-stackblitz>
+```
 
-## Running unit tests
+or a path to a project payload (`JSON` file) in the documentation local files (relative to the document root folder):
 
-Run `ng test docspa-stackblitz` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```markdown { playground }
+[[stackblitz title="Local StackBlitz Project<br />DocSPA" project-path="examples/folder/stackblitz" ]]
+```
 
-## Further help
+i> When providing a payload path, if the `files` property of the payload contains an array, this is treated as an array of relative paths from which the file content will be loaded.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+You may also supply a `project-id` to to load an existing StackBlitz project:
+
+```markdown { playground }
+<embed-stackblitz
+  title='Existing StackBlitz Project<br />DocSPA'
+  project-id="sdk-create-project">
+</embed-stackblitz>
+```
+
+If a both `project-id` and either a `project-path` or `project` input are provided, the files listed in the local project's files are treated as a a patch to the existing StackBlitz project.
+
+```markdown { playground }
+<embed-stackblitz
+  title='Existing StackBlitz Project with local changes<br />DocSPA'
+  project-id="sdk-create-project"
+  project-path="examples/folder/stackblitz">
+</embed-stackblitz>
+```

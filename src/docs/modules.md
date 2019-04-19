@@ -60,7 +60,7 @@ i> In the [quick start](../quickstart) setup the config file is located at `src/
 
 DocSPA utilizes [remark](https://remark.js.org/) for markdown parsing and, thereby, supports [remark plugins](https://github.com/remarkjs/remark/blob/master/doc/plugins.md#list-of-plugins). To include remark plugins add the `MarkdownModule` module.  The config for the `MarkdownModule` is a [unified preset](https://github.com/unifiedjs/unified#preset) with an additional property for a reporter (for example [vfile-reporter](https://github.com/vfile/vfile-reporter)).
 
-```js { mark="3-5,16" }
+```js { mark="3-5,16,19" }
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { DocspaCoreModule, MarkdownModule } from '@swimlane/docspa-core';
@@ -76,9 +76,11 @@ import { config } from '../docspa.config';
   imports: [
     BrowserModule,
     DocspaCoreModule.forRoot(config),
-    MarkdownModule.forRoot(preset)
+    MarkdownModule.forRoot(preset) // preset can be set here, or below for AOT
   ],
-  providers: [],
+  providers: [
+    // { provide: MARKDOWN_CONFIG_TOKEN, useFactory: () => preset } // use this for AOT
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
@@ -299,7 +301,7 @@ The slug for a header can be set by adding an id.
 ```markdown { playground }
 *Doc*{style="color:red; font-size: large"}*SPA*{style="color:blue"}
 
-![](../assets/docspa_mark-only.png){ style="border: 10px solid lightgrey; padding: 10px;"}
+![](./assets/docspa_mark-only.png){ style="width: 200px; border: 10px solid lightgrey; padding: 10px;"}
 ```
 
 ##### Classes
@@ -319,7 +321,7 @@ The slug for a header can be set by adding an id.
 ##### Attributes
 
 ```markdown { playground }
-![](../assets/docspa_mark-only.png){ width="30px" data-no-zoom }
+![](./assets/docspa_mark-only.png){ width="30px" data-no-zoom }
 
 [www.swimlane.com](http://www.swimlane.com){ target="_blank" }
 
@@ -332,14 +334,15 @@ The slug for a header can be set by adding an id.
 
 DocSPA was designed to work with custom elements (part of the [web components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) suite of technologies).  Once a custom component is loaded they may be embedded directly into the markdown.
 
-i> Custom elements can be defined using `window.customElements.define` or from [angular elements](https://angular.io/guide/elements).
+i> Custom elements can be defined using `window.customElements.define` or using [angular elements](https://angular.io/guide/elements).
 
 This module provides several core angular componets for DocSPA and is already imported by the `DocspaCoreModule` module.  Including this module in your root application module (using `forRoot`) will also make these angular componets available in markdown as custom elements.  Without this module these custom elements are not available for use within markdown.  Many custom elements are also defined and aliased to short codes as noted below.
 
 ```js { mark="3,15" }
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { DocspaCoreModule, MarkdownModule } from '@swimlane/docspa-core';
+import { DocspaCoreModule, MarkdownElementsModule } from '@swimlane/docspa-core';
+import { preset } from '@swimlane/docspa-remark-preset';
 
 import { AppComponent } from './app.component';
 import { config } from '../docspa.config';
@@ -351,7 +354,7 @@ import { config } from '../docspa.config';
   imports: [
     BrowserModule,
     DocspaCoreModule.forRoot(config),
-    MarkdownModule.forRoot()
+    MarkdownElementsModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -485,6 +488,8 @@ i> Add the `data-no-zoom` attribute to exclude an image `![](../assets/docspa_ma
 
 This module enables embedding runtime Angular templates in markdown content.  As config it requires a list of Angular modules available to the runtime component.
 
+!> This module is not compatible with AOT.
+
 ```js { mark="3,15-21" }
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -548,16 +553,17 @@ Use `{ playground }` to create a section containing both the code and the runtim
 
 i> The angular components available within a runtime custom element are controlled by the `RuntimeContentModule.forRoot({ import: [...]})` `import` array.  These modules must also be added to your root app module.
 
-## EmbedStackblitzModule
+## DocspaStackblitzModule
 
-<small>(optional)</small>
+<small>(optional, external)</small>
 
 This module allows embedding StackBlitz projects within markdown using a `embed-stackblitz` custom element and the [[stackblitz]] shortcode.
 
 ```js { mark="3,15" }
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { DocspaCoreModule, EmbedStackblitzModule } from '@swimlane/docspa-core';
+import { DocspaCoreModule } from '@swimlane/docspa-core';
+import { DocspaStackblitzModule } from '@swimlane/docspa-stackblitz';
 
 import { AppComponent } from './app.component';
 import { config } from '../docspa.config';
@@ -569,7 +575,7 @@ import { config } from '../docspa.config';
   imports: [
     BrowserModule,
     DocspaCoreModule.forRoot(config),
-    EmbedStackblitzModule
+    DocspaStackblitzModule
   ],
   providers: [],
   bootstrap: [AppComponent]
