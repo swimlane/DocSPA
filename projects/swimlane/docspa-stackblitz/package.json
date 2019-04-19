@@ -1,6 +1,6 @@
 {
   "name": "@swimlane/docspa-stackblitz",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "peerDependencies": {
     "@angular/common": "^7.2.0",
     "@angular/core": "^7.2.0",
@@ -12,8 +12,7 @@
   },
   "keywords": [
     "angular",
-    "documentation",
-    "docspa"
+    "documentation"
   ],
   "license": "MIT",
   "bugs": {

@@ -1,7 +1,7 @@
 {
   "name": "docspa",
   "private": true,
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "An Angular-powered documentation SPA",
   "scripts": {
     "ng": "ng",
@@ -16,7 +16,9 @@
     "prebuild:release": "rimraf dist",
     "build:release": "cross-env NODE_ENV=production ng build --prod --stats-json --no-aot --no-build-optimizer --base-href=\"/DocSPA/\"",
     "prepublish:lib": "npm run build:libs",
+    "prepublish:core": "npm run build:core",
     "publish:core": "cd dist/swimlane/docspa-core && npm publish",
+    "prepublish:stackblitz": "npm run build:stackblitz",
     "publish:stackblitz": "cd dist/swimlane/docspa-stackblitz && npm publish",
     "publish:libs": "cd dist/swimlane/docspa-core && npm publish",
     "test": "jest",
