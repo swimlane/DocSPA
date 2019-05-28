@@ -2,9 +2,12 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-* Fix scrolling issue when moving between pages
+_(none)_
 
 --------------------
+
+## 3.0.1 (2019-05-28)
+* Fix scrolling issue when moving between pages
 
 ## 3.0.0 (2019-04-19)
 * Moved `DocspaStackblitzModule` to a separate package.
