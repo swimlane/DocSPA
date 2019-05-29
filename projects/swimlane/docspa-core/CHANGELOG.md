@@ -2,9 +2,12 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-* Fix scrolling issue when moving between pages with a cover
+_(none)_
 
 --------------------
+
+## 3.0.2 (2019-05-29)
+* Fix scrolling issue when moving between pages with a cover
 
 ## 3.0.1 (2019-05-28)
 * Fix scrolling issue when moving between pages
