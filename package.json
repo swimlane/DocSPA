@@ -1,7 +1,7 @@
 {
   "name": "docspa",
   "private": true,
-  "version": "3.0.2",
+  "version": "3.1.0-0",
   "description": "An Angular-powered documentation SPA",
   "scripts": {
     "ng": "ng",
