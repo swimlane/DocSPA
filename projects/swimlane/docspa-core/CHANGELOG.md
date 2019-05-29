@@ -2,7 +2,7 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-_(none)_
+* Fix scrolling issue when moving between pages with a cover
 
 --------------------
 

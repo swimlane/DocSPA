@@ -11,7 +11,9 @@
   </docspa-md-include>
 </nav>
 
+<a id="cover-top"></a>
 <section
+  id="cover"
   #coverMain
   *ngIf="coverPage"
   class="cover show">
@@ -36,8 +38,8 @@
       [safe]="true">
     </docspa-md-include>
   </aside>
-  <section class="content">
-    <a id="content-top"></a>
+  <a id="content-top"></a>
+  <section id="content" class="content">
     <article
       *ngIf="contentPage"
       class="markdown-section"
