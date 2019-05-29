@@ -30,10 +30,10 @@ export class RuntimeContentComponent implements OnInit {
   @Input()
   template: string;
 
-  @ViewChild('container', { read: ViewContainerRef })
+  @ViewChild('container', { static: false, read: ViewContainerRef })
   container: ViewContainerRef;
 
-  @ViewChild('source')
+  @ViewChild('source', { static: false })
   source: any;
 
   highlight: string;

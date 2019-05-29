@@ -46,9 +46,6 @@ import '@webcomponents/custom-elements/src/native-shim';
 // Used for browsers without a native support of Custom Elements
 import '@webcomponents/custom-elements/custom-elements.min';
 
-/** Evergreen browsers require these. **/
-import 'core-js/es7/reflect';
-
 
 /**
  * Web Animations `@angular/platform-browser/animations`
