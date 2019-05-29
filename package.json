@@ -1,7 +1,7 @@
 {
   "name": "docspa",
   "private": true,
-  "version": "3.0.2",
+  "version": "3.1.0-0",
   "description": "An Angular-powered documentation SPA",
   "scripts": {
     "ng": "ng",
@@ -131,6 +131,7 @@
     "start-server-and-test": "^1.7.12",
     "trash": "^5.0.0",
     "ts-node": "^8.0.3",
+    "tsickle": "^0.35.0",
     "tslib": "^1.9.0",
     "tslint": "^5.14.0",
     "typescript": "^3.4.5",
