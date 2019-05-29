@@ -2,12 +2,9 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-_(none)_
+* bump Angular peer range to ^8.0.0.
 
 --------------------
-
-## 3.1.0-0 (2019-05-29)
-* bump Angular peer range to include ^8.0.0.
 
 ## 3.0.2 (2019-05-29)
 * Fix scrolling issue when moving between pages with a cover
