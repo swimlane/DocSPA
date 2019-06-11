@@ -154,7 +154,7 @@ i> Various parts of DocSPA will display a page title.  By default this page titl
 | A warning
 
 [[figure | **Figure 1: Figure Title**]]
-| ![Hello](../assets/docspa_mark-only.png)
+| ![Hello](./assets/docspa_mark-only.png)
 
 [[caption | **Table 1: Table Title**]]
 | Tables        | Are           | Cool  |
@@ -458,7 +458,7 @@ Some supported docsify plugins include:
 ```
 
 ```markdown { playground }
-![](../assets/docspa_mark-only.png)
+![](./assets/docspa_mark-only.png)
 ```
 
 i> Add the `data-no-zoom` attribute to exclude an image `![](../assets/docspa_mark-only.png){ data-no-zoom="true" }`
