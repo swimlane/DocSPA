@@ -10,10 +10,11 @@ import {
 export const RUNTIMECONTENT_CONFIG_TOKEN = new InjectionToken<any>( 'forRoot() configuration.' );
 
 @Component({
-  selector: 'runtime-content', // tslint:disable-line
+  selector: 'runtime-content',
   template: `
-  <div class="source" #source><ng-content></ng-content></div>
-  <div #container></div>`,
+    <div class="source" #source><ng-content></ng-content></div>
+    <div #container></div>
+  `,
   styles: [`
     runtime-content > div.source {
       display: none;
@@ -30,10 +31,10 @@ export class RuntimeContentComponent implements OnInit {
   @Input()
   template: string;
 
-  @ViewChild('container', { static: false, read: ViewContainerRef })
+  @ViewChild('container', { static: true, read: ViewContainerRef })
   container: ViewContainerRef;
 
-  @ViewChild('source', { static: false })
+  @ViewChild('source', { static: true })
   source: any;
 
   highlight: string;
