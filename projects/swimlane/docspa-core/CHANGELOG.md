@@ -2,9 +2,12 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-* fix Angular range (only ^8.0.0).
+_(none)_
 
 --------------------
+
+## 4.0.1 (2019-06-11)
+* Fix issues with ViewChild Static Flag
 
 ## 4.0.0 (2019-05-29)
 * bump Angular peer range to ^8.0.0.
