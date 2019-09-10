@@ -47,6 +47,6 @@
 
 ## Embed
 
-[[ include path="./b.md" codeblock='md { mark="2" }']]
+[[ include path="./b.md" codeblock="md { mark='2' }" safe="true"]]
 [[ include path="../examples/embed.md" ]]
-[[ include path="../examples/embed.js" codeblock='js { mark="2" }']]
+[[ include path="../examples/embed.js" codeblock="js { mark='2' }" safe="true"]]

@@ -225,13 +225,13 @@ i> The path is always relative to the root docs folder.  Including `md-toc` with
 Use `[[include]]` shortcode to include other files within markdown.
 
 ```markdown { playground }
-[[include path="/examples/embed.md"]]
+[[include path="/examples/embed.md" safe="true"]]
 ```
 
 Add a `codeblock` to include the file as a code block.
 
 ```markdown { playground }
-[[include path="./examples/embed.js" codeblock='js { mark="2" }']]
+[[include path="./examples/embed.js" codeblock="js { mark='2' }" safe="true"]]
 ```
 
 ## Environment Variables

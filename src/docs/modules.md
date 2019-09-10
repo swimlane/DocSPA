@@ -389,7 +389,7 @@ This shortcode allows including other files within markdown.
 including code blocks:
 
 ```markdown { playground }
-[[include path="/examples/embed.js" codeblock="js"]]
+[[include path="/examples/embed.js" codeblock="js" safe="true"]]
 ```
 
 ### Environment Variables

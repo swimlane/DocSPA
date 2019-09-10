@@ -64,7 +64,9 @@ export class DocsifyPluginsModule {
     const afterEach = (fn: Function) => {
       // todo: async
       this.hooks.afterEach.tap('docsify-afterEach', (vf: VFile) => {
-        vm.route.file = vf.history[1].replace(/^\//, '');
+        if (vf.history && vf.history[1]) {
+          vm.route.file = vf.history[1].replace(/^\//, '');
+        }
         vf.contents = fn(vf.contents);
         return vf;
       });
