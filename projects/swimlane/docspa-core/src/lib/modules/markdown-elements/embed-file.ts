@@ -95,6 +95,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
     return fetch(vf.data.docspa.url).then(res => res.text()).then(async contents => {
       vf.contents = `~~~${this.codeblock}\n${contents}\n~~~`;
       await this.markdownService.processor.process(vf);
+      await this.markdownService.processMd(true, vf);
       this.html = this.safe ? this.sanitizer.bypassSecurityTrustHtml(vf.contents) : vf.contents;
     });
   }

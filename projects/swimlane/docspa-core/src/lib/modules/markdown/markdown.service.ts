@@ -92,20 +92,23 @@ export class MarkdownService {
           // this.logger.debug(`Processing started: ${vf.path}`);
 
           vf.contents = res.contents;
-
-          if (content) {
-            await this.hooks.beforeEach.promise(vf);
-          }
-          // This might eventually be a hook as well
-          const err = await this.processor.process(vf);
-
-          if (content) {
-            await this.hooks.afterEach.promise(vf);
-            this.hooks.doneEach.call(err || vf);
-          }
-          return vf;
+          return this.processMd(content, vf);
         }),
         share()
       );
+  }
+
+  async processMd(content, vf): Promise<VFile> {
+    if (content) {
+      await this.hooks.beforeEach.promise(vf);
+    }
+    // This might eventually be a hook as well
+    const err = await this.processor.process(vf);
+
+    if (content) {
+      await this.hooks.afterEach.promise(vf);
+      this.hooks.doneEach.call(err || vf);
+    }
+    return vf;
   }
 }
