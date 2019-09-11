@@ -5,8 +5,6 @@ import { MarkdownService } from '../markdown/markdown.service';
 import { LocationService } from '../../services/location.service';
 import { FetchService } from '../../services/fetch.service';
 
-import { VFile } from '../../../vendor';
-import * as VFILE from 'vfile';
 import * as MDAST from 'mdast';
 import { getBasePath } from '../../utils';
 
@@ -21,6 +19,10 @@ import frontmatter from 'remark-frontmatter';
 
 import { of } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
+
+// import * as vfile from 'vfile';
+import { VFile } from '../../../vendor';
+import VFILE from 'vfile';
 
 interface Link extends MDAST.Link {
   data: any;
@@ -190,18 +192,18 @@ export class TOCPaginationComponent implements OnInit {
     }
   }
 
-  prepareLink(vfile: VFILE.VFile) {
-    return this.locationService.prepareLink(vfile.history[0]);
+  prepareLink(_vfile: VFILE.VFile) {
+    return this.locationService.prepareLink(_vfile.history[0]);
   }
 
   private loadSummary(summary: string) {
-    const vfile = this.locationService.pageToFile(summary);
-    const fullPath = join(vfile.cwd, vfile.path);
+    const _vfile = this.locationService.pageToFile(summary);
+    const fullPath = join(_vfile.cwd, _vfile.path);
     return this.fetchService.get(fullPath).pipe(
       flatMap(resource => {
-        vfile.contents = resource.contents;
-        vfile.data = vfile.data || {};
-        return resource.notFound ? of(null) : this.processLinks.process(vfile);
+        _vfile.contents = resource.contents;
+        _vfile.data = _vfile.data || {};
+        return resource.notFound ? of(null) : this.processLinks.process(_vfile);
       }),
       map((_: any) => {
         return _.data.tocSearch.map(__ => {
@@ -224,12 +226,25 @@ export class TOCPaginationComponent implements OnInit {
       return;
     }
 
-    return Promise.all(paths.map(_ => {
-      // TODO: all I need is the title
-      // should be able to avoid this
-      // Need to run plugins in case title is changed?
-      return this.markdownService.getMd(_, false)
-        .toPromise();
+    return Promise.all(paths.map(async path => {
+      const _vfile = await this.fetch(path);
+      await this.markdownService.process(_vfile);
+      return _vfile;
     }));
+  }
+
+  private async fetch(path: string) {
+    let _vfile: VFile;
+
+    if (!path) {
+      _vfile = VFILE('') as VFile;
+      _vfile.data.docspa.notFound = true;
+    } else {
+      _vfile = this.locationService.pageToFile(path) as VFile;
+      const { contents, notFound } = await this.fetchService.get(_vfile.data.docspa.url).toPromise();
+      _vfile.data.docspa.notFound = notFound;
+      _vfile.contents = !notFound ? contents : `!> *File not found*\n!> ${path}`;
+    }
+    return _vfile;
   }
 }

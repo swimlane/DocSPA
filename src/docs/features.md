@@ -228,10 +228,10 @@ Use `[[include]]` shortcode to include other files within markdown.
 [[include path="./examples/embed.md"]]
 ```
 
-`js` or `json` files will be included as code blocks.  `safe` and `plugins` are required for some plugins to function correctly, for example [docsify-copy-code](https://www.npmjs.com/package/docsify-copy-code).
+`js` or `json` files will be included as code blocks.  `safe` is required for some plugins to function correctly, for example [docsify-copy-code](https://www.npmjs.com/package/docsify-copy-code).
 
 ```markdown { playground }
-[[include path="./examples/embed.js" attr="{ mark='2' }" safe="true" plugins="true"]]
+[[include path="./examples/embed.js" attr="{ mark='2' }" safe="true"]]
 ```
 
 Add a `codeblock` to explicitly set the code type for other file types.

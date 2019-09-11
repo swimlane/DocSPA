@@ -1,7 +1,7 @@
 import {
   Component, ViewEncapsulation,
   OnInit, OnChanges, HostBinding, HostListener,
-  Input, Output, EventEmitter,
+  Input,
   ElementRef, Renderer2,
   SimpleChanges
 } from '@angular/core';
@@ -11,9 +11,9 @@ import { MarkdownService } from '../markdown/markdown.service';
 import { LocationService } from '../../services/location.service';
 import { RouterService } from '../../services/router.service';
 import { FetchService } from '../../services/fetch.service';
+import { HooksService } from '../../services/hooks.service';
 import { splitHash } from '../../utils';
 
-import * as vfile from 'vfile';
 import { VFile } from '../../../vendor';
 import VFILE from 'vfile';
 
@@ -31,22 +31,14 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   path = '';
 
   @Input()
-  isContent = false;
-
-  @Input()
-  set plugins(val: boolean) {
-    this._plugins = true;
-  }
-  get plugins() {
-    return this._plugins === null ? this.isContent : this._plugins;
-  }
+  isPageContent = false;
 
   @Input()
   set safe(val: boolean) {
     this._safe = true;
   }
   get safe() {
-    return this._safe === null ? this.isContent : this._safe;
+    return this._safe === null ? this.isPageContent : this._safe;
   }
 
   @Input()
@@ -64,15 +56,12 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   @Input()
   attr: string = null;
 
-  @Output() done: EventEmitter<vfile.VFile> = new EventEmitter();
-
   @HostBinding('innerHTML')
   html: string | SafeHtml;
 
   @HostListener('click', ['$event'])
   onClickBtn = this.routerService.clickHandler;
 
-  private _plugins: boolean = null;
   private _safe: boolean = null;
 
   constructor(
@@ -82,7 +71,8 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
     private elm: ElementRef,
     private renderer: Renderer2,
     private locationService: LocationService,
-    private fetchService: FetchService
+    private fetchService: FetchService,
+    private hooks: HooksService,
   ) {
   }
 
@@ -100,7 +90,11 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.load();
+    this.load().then(() => {
+      this.hooks.doneEach.tap('update-links', () => {
+        this.markActiveLinks();
+      });
+    });
   }
 
   private async load(): Promise<string | SafeHtml> {
@@ -111,7 +105,6 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
     const ext = _vfile.extname.replace('.', '');
 
     let codeblock = this.codeblock;
-    const runPlugins = this.plugins && !notFound;
     const bypassSecurity = this.safe && !notFound;
 
     if (!codeblock && codefilesTypes.includes(ext)) {
@@ -123,11 +116,12 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
       _vfile.contents = `~~~${codeblock}\n${_vfile.contents}\n~~~`;
     }
 
-    await this.markdownService.processMd(_vfile, runPlugins);
+    _vfile.data.docspa.isPageContent = this.isPageContent;
+    await this.markdownService.process(_vfile);
     setTimeout(() => {
       this.markActiveLinks();
       this.doScroll();
-      this.done.emit(_vfile);
+      this.hooks.doneEach.call(_vfile);
     }, 30);
 
     this.html = bypassSecurity ? this.sanitizer.bypassSecurityTrustHtml(_vfile.contents as string) : _vfile.contents;
@@ -178,7 +172,6 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   private markActiveLinks() {
     if (this.activeLink) {
       const aObj = this.elm.nativeElement.getElementsByTagName('a');
-
       const activeLinks = [];
       for (let i = 0; i < aObj.length; i++) {
         const a = aObj[i];

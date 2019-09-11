@@ -103,6 +103,13 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
     this.toggleSidebar(sidebar === 'true');
     this.routerService.changed.subscribe((changes: SimpleChanges) => this.pathChanges(changes));
     this.routerService.onInit();
+
+    this.hooks.doneEach.tap('main-content-loaded', (page: VFile) => {
+      if (page.data.docspa.isPageContent) {
+        this.mainContentLoaded(page);
+      }
+    });
+
     this.hooks.mounted.call();
   }
 

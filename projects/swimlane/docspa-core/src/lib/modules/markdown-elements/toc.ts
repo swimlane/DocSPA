@@ -17,10 +17,14 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { FetchService } from '../../services/fetch.service';
 import { RouterService } from '../../services/router.service';
 import { LocationService } from '../../services/location.service';
+import { HooksService } from '../../services/hooks.service';
 
 import { links, images } from '../../shared/links';
 import frontmatter from 'remark-frontmatter';
 import * as MDAST from 'mdast';
+
+import VFILE from 'vfile';
+import { VFile } from '../../../vendor';
 
 @Component({
   selector: 'md-toc', // tslint:disable-line
@@ -42,6 +46,9 @@ export class TOCComponent implements OnInit {
   }
 
   @Input()
+  plugins = false;
+
+  @Input()
   minDepth = 1;
 
   @Input()
@@ -61,6 +68,7 @@ export class TOCComponent implements OnInit {
     private routerService: RouterService,
     private locationService: LocationService,
     private sanitizer: DomSanitizer,
+    private hooks: HooksService
   ) {
     const toToc = () => {
       return (tree: MDAST.Root) => {
@@ -123,21 +131,22 @@ export class TOCComponent implements OnInit {
       return of(null);
     }
 
-    const vfile = this.locationService.pageToFile(page);
+    const vfile = this.locationService.pageToFile(page) as VFile;
     const fullpath = join(vfile.cwd, vfile.path);
     this.fetchService.get(fullpath)
       .pipe(
-        flatMap(resource => {
+        flatMap(async resource => {
           vfile.contents = resource.contents;
           vfile.data = vfile.data || {};
-
-          // TODO: might need to run plugins if headers change
-          return resource.notFound ? of('') : this.processor.process(vfile);
+          /* const err = */ await this.processor.process(vfile);
+          this.hooks.doneEach.call(vfile);
+          return vfile;
         }),
-        map(String),
-        share()
-      ).subscribe(_ => {
-        this.html = this.sanitizer.bypassSecurityTrustHtml(_);
+      ).subscribe(_vfile => {
+        setTimeout(() => {
+          this.hooks.doneEach.call(_vfile);
+        }, 30);
+        this.html = this.sanitizer.bypassSecurityTrustHtml(_vfile.contents as string);
       });
   }
 }

@@ -34,7 +34,7 @@ describe('MarkdownService', () => {
     expect(markdownService).toBeTruthy();
   });
 
-  it('should load and process a file', () => {
+  /* xit('should load and process a file', () => {
     const text = '## Hello';
     markdownService.getMd('/').subscribe((res: VFILE.VFile) => {
       expect(res).toBeTruthy();
@@ -50,5 +50,5 @@ describe('MarkdownService', () => {
     countryRequest.flush(text);
 
     httpMock.verify();
-  });
+  }); */
 });

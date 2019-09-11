@@ -28,7 +28,7 @@ export class TabsPluginModule {
     };
 
     // hooks up tab blocks
-    hooks.doneEach.tap('docsify-doneEach', () => {
+    hooks.doneEach.tap('tabs-doneEach', () => {
       setTimeout(() => {
         [].slice.call(document.querySelectorAll('.tabs')).forEach((tabSet: Element) => {
           const tabs: Element[] = [].slice.call(tabSet.querySelectorAll('.tabs .tab .custom-block-heading'));
