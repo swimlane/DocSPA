@@ -72,40 +72,47 @@ export class MarkdownService {
   /**
    *
    * @param page The page content path
-   * @param content Plugins only run if page is the content page
+   * @param runPlugins Plugins only run if page is the content page
    */
-  getMd(page: string, content = true): Observable<VFILE.VFile>  {
+  getMd(page: string, runPlugins = true): Observable<VFILE.VFile>  {
     if (!page) {
       const _ = VFILE('');
       return of(_)
         .pipe(tap(() => this.hooks.doneEach.call(_)));
     }
 
-    const vf = this.locationService.pageToFile(page);
-    return this.fetchService.get((vf as VFile).data.docspa.url)
+    const vf = this.locationService.pageToFile(page) as VFile;
+    return this.fetchService.get(vf.data.docspa.url)
       .pipe(
         flatMap(async (res: CachePage) => {
+          vf.data.docspa.noFound = res.notFound;
           if (res.notFound) {
-            content = false;
+            runPlugins = false;
           }
 
           // this.logger.debug(`Processing started: ${vf.path}`);
 
           vf.contents = res.contents;
-          return this.processMd(content, vf);
+          return this.processMd(vf, runPlugins);
         }),
         share()
       );
   }
 
-  async processMd(content, vf): Promise<VFile> {
-    if (content) {
+  /**
+   *
+   * @param page The page content path
+   * @param runPlugins Plugins only run if page is the content page
+   */
+  async processMd(vf: VFile, runPlugins: boolean): Promise<VFILE.VFile> {
+    if (runPlugins) {
       await this.hooks.beforeEach.promise(vf);
     }
+
     // This might eventually be a hook as well
     const err = await this.processor.process(vf);
 
-    if (content) {
+    if (runPlugins) {
       await this.hooks.afterEach.promise(vf);
       this.hooks.doneEach.call(err || vf);
     }

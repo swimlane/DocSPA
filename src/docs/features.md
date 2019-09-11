@@ -225,13 +225,19 @@ i> The path is always relative to the root docs folder.  Including `md-toc` with
 Use `[[include]]` shortcode to include other files within markdown.
 
 ```markdown { playground }
-[[include path="/examples/embed.md" safe="true"]]
+[[include path="./examples/embed.md"]]
 ```
 
-Add a `codeblock` to include the file as a code block.
+`js` or `json` files will be included as code blocks.  `safe` and `plugins` are required for some plugins to function correctly, for example [docsify-copy-code](https://www.npmjs.com/package/docsify-copy-code).
 
 ```markdown { playground }
-[[include path="./examples/embed.js" codeblock="js { mark='2' }" safe="true"]]
+[[include path="./examples/embed.js" attr="{ mark='2' }" safe="true" plugins="true"]]
+```
+
+Add a `codeblock` to explicitly set the code type for other file types.
+
+```markdown { playground }
+[[include path="./examples/embed.md" codeblock="md" safe="true"]]
 ```
 
 ## Environment Variables

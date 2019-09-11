@@ -46,8 +46,7 @@
       id="main">
       <docspa-md-include
         [path]="contentPage"
-        [plugins]="true"
-        [safe]="true"
+        [isContent]="true"
         [scrollTo]="anchor"
         (done)="mainContentLoaded($event)">
       </docspa-md-include>

@@ -21,6 +21,7 @@ interface FrontmatterData extends UnknownData {
 
 interface DocSPAData extends UnknownData {
   url: string;
+  notFound?: boolean;
 }
 
 interface VFileData extends UnknownData {

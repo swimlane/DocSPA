@@ -2,7 +2,9 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-_(none)_
+* Allow plugins to run after `[[include]]`
+* Better "File not found" handling for `[[include]]`
+* Better defaults for `[[include]]`
 
 --------------------
 
