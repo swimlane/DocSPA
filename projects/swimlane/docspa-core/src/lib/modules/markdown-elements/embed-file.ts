@@ -116,7 +116,6 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
       _vfile.contents = `~~~${codeblock}\n${_vfile.contents}\n~~~`;
     }
 
-    _vfile.data.docspa.isPageContent = this.isPageContent;
     await this.markdownService.process(_vfile);
     setTimeout(() => {
       this.markActiveLinks();
@@ -138,7 +137,8 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
       _vfile = this.locationService.pageToFile(this.path) as VFile;
       const { contents, notFound } = await this.fetchService.get(_vfile.data.docspa.url).toPromise();
       _vfile.data.docspa.notFound = notFound;
-      _vfile.contents = (!notFound || this.isContent) ? contents : `!> *File not found*\n!> ${this.path}`;
+      _vfile.data.docspa.isPageContent = this.isPageContent;
+      _vfile.contents = (!notFound || this.isPageContent) ? contents : `!> *File not found*\n!> ${this.path}`;
     }
     return _vfile;
   }

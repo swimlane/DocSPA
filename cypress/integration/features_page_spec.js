@@ -29,7 +29,7 @@ describe('The Features page', () => {
   it('runs remark plugins', () => {
     cy.get('@content').find('.custom-block .notice').should('have.length', 4);
     cy.get('@content').find('.math .katex-display').should('have.length', 1);
-    cy.get('@content').find('pre.language-js > code .line-highlight').should('have.length', 2);
+    cy.get('@content').find('pre.language-js > code .line-highlight').should('have.length', 3);
   });
 
   it('runs other plugins', () => {
