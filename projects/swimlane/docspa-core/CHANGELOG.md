@@ -2,12 +2,15 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
+_(none)_
+
+--------------------
+
+## 4.1.0 (2019-09-16)
 * Allow plugins to run after `[[include]]`
 * Better "File not found" handling for `[[include]]`
 * Better defaults for `[[include]]`
 * Fix sidebar TOC not reflecting location on load.
-
---------------------
 
 ## 4.0.1 (2019-06-11)
 * Fix issues with ViewChild Static Flag
