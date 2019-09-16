@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
-import * as VFILE from 'vfile';
-import { join } from '../../utils';
+import VFILE from 'vfile';
 
+import { VFile } from '../../../vendor';
 import { MarkdownService } from './markdown.service';
 import { DOCSPA_ENVIRONMENT } from '../../docspa-core.tokens';
 
@@ -34,21 +34,9 @@ describe('MarkdownService', () => {
     expect(markdownService).toBeTruthy();
   });
 
-  it('should load and process a file', () => {
-    const text = '## Hello';
-    markdownService.getMd('/').subscribe((res: VFILE.VFile) => {
-      expect(res).toBeTruthy();
-      expect(join(res.cwd, res.path)).toEqual('docs/README.html');
-      expect(res.contents).toEqual('<h2>Hello</h2>\n');
-
-      expect(res.path).toEqual('/README.html');
-      expect(res.stem).toEqual('README');
-      expect(join(res.cwd, res.path)).toEqual('docs/README.html');
-    });
-
-    const countryRequest = httpMock.expectOne('docs/README.md');
-    countryRequest.flush(text);
-
-    httpMock.verify();
+  it('process a vfile', async () => {
+    const vfile = VFILE('## Hello') as VFile;
+    await markdownService.process(vfile);
+    expect(vfile.contents).toEqual('<h2>Hello</h2>');
   });
 });

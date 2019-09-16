@@ -53,21 +53,25 @@ export class DocsifyPluginsModule {
     };
 
     const beforeEach = (fn: Function) => {
-      // todo: async
       this.hooks.beforeEach.tap('docsify-beforeEach', (vf: VFile) => {
-        vm.route.file = vf.data.docspa.url;
-        vf.contents = fn(vf.contents);
+        // Docsify beforeEach only runs on main content
+        if (vf.data.docspa.isPageContent) {
+          vm.route.file = vf.data.docspa.url;
+          vf.contents = fn(vf.contents);
+        }
         return vf;
       });
     };
 
     const afterEach = (fn: Function) => {
-      // todo: async
       this.hooks.afterEach.tap('docsify-afterEach', (vf: VFile) => {
-        if (vf.history && vf.history[1]) {
-          vm.route.file = vf.history[1].replace(/^\//, '');
+        // Docsify afterEach only runs on main content
+        if (vf.data.docspa.isPageContent) {
+          if (vf.history && vf.history[1]) {
+            vm.route.file = vf.history[1].replace(/^\//, '');
+          }
+          vf.contents = fn(vf.contents);
         }
-        vf.contents = fn(vf.contents);
         return vf;
       });
     };

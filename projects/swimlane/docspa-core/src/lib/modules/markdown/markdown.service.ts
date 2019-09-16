@@ -1,7 +1,5 @@
 import { Injectable, InjectionToken, Inject, Optional } from '@angular/core';
 
-import { Observable, of } from 'rxjs';
-import { flatMap, tap, share } from 'rxjs/operators';
 import { NGXLogger } from 'ngx-logger';
 
 import unified from 'unified';
@@ -11,11 +9,9 @@ import rehypeStringify from 'rehype-stringify';
 import raw from 'rehype-raw';
 
 import { LocationService } from '../../services/location.service';
-import { FetchService, CachePage } from '../../services/fetch.service';
 import { HooksService } from '../../services/hooks.service';
 import { links, images } from '../../shared/links';
 
-import VFILE from 'vfile';
 import { VFile } from '../../../vendor';
 
 export const MARKDOWN_CONFIG_TOKEN = new InjectionToken<any>( 'forRoot() configuration.' );
@@ -28,6 +24,7 @@ interface Preset extends unified.Preset {
   providedIn: 'root'
 })
 export class MarkdownService {
+  // Lazy init processor
   get processor(): unified.Processor {
     if (this._processor) {
       return this._processor;
@@ -54,7 +51,6 @@ export class MarkdownService {
 
   constructor(
     private locationService: LocationService,
-    private fetchService: FetchService,
     private logger: NGXLogger,
     private hooks: HooksService,
     @Optional() @Inject(MARKDOWN_CONFIG_TOKEN) private config: Preset
@@ -63,52 +59,19 @@ export class MarkdownService {
     this.config.plugins = this.config.plugins || [];
 
     if (this.config.reporter) {
-      this.hooks.doneEach.tap('logging', (page: any) => {
+      this.hooks.afterEach.tap('logging', (page: any) => {
         this.logger.info(this.config.reporter(page));
       });
     }
   }
 
   /**
-   *
-   * @param page The page content path
-   * @param content Plugins only run if page is the content page
+   * Process MD
    */
-  getMd(page: string, content = true): Observable<VFILE.VFile>  {
-    if (!page) {
-      const _ = VFILE('');
-      return of(_)
-        .pipe(tap(() => this.hooks.doneEach.call(_)));
-    }
-
-    const vf = this.locationService.pageToFile(page);
-    return this.fetchService.get((vf as VFile).data.docspa.url)
-      .pipe(
-        flatMap(async (res: CachePage) => {
-          if (res.notFound) {
-            content = false;
-          }
-
-          // this.logger.debug(`Processing started: ${vf.path}`);
-
-          vf.contents = res.contents;
-          return this.processMd(content, vf);
-        }),
-        share()
-      );
-  }
-
-  async processMd(content, vf): Promise<VFile> {
-    if (content) {
-      await this.hooks.beforeEach.promise(vf);
-    }
-    // This might eventually be a hook as well
+  async process(vf: VFile) {
+    await this.hooks.beforeEach.promise(vf);
     const err = await this.processor.process(vf);
-
-    if (content) {
-      await this.hooks.afterEach.promise(vf);
-      this.hooks.doneEach.call(err || vf);
-    }
-    return vf;
+    await this.hooks.afterEach.promise(err || vf);
+    return err || vf;
   }
 }

@@ -6,7 +6,6 @@
   class="app-nav no-badge">
   <docspa-md-include
     [path]="navbarPage"
-    [plugins]="false"
     [safe]="true">
   </docspa-md-include>
 </nav>
@@ -20,7 +19,6 @@
   <docspa-md-include
     class="cover-main"
     [path]="coverPage"
-    [plugins]="false"
     [safe]="true">
   </docspa-md-include>
 </section>
@@ -33,9 +31,8 @@
     <docspa-md-include
       class="sidebar-nav"
       [path]="sidebarPage"
-      [activeLink]="activeLink"
-      [plugins]="false"
-      [safe]="true">
+      [safe]="true"
+      [activeLink]="activeLink">
     </docspa-md-include>
   </aside>
   <a id="content-top"></a>
@@ -46,16 +43,13 @@
       id="main">
       <docspa-md-include
         [path]="contentPage"
-        [plugins]="true"
-        [safe]="true"
-        [scrollTo]="anchor"
-        (done)="mainContentLoaded($event)">
+        [isPageContent]="true"
+        [scrollTo]="anchor">
       </docspa-md-include>
     </article>
     <footer *ngIf="footerPage">
       <docspa-md-include
         [path]="footerPage"
-        [plugins]="false"
         [safe]="true">
       </docspa-md-include>
     </footer>
@@ -64,10 +58,9 @@
     <docspa-md-include
       class="sidebar-nav"
       [path]="rightSidebarPage"
-      [plugins]="false"
+      [safe]="true"
       [activeLink]="activeLink"
-      [activeAnchors]="activeAnchors"
-      [safe]="true">
+      [activeAnchors]="activeAnchors">
     </docspa-md-include>
   </aside>
 

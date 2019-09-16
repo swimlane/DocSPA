@@ -179,13 +179,13 @@ describe('Other pages', () => {
     });
 
     it('to page missing page a', () => {
-      cy.get('@content').find('a[href="sub/sub/missing_a"]').click({ force: true });
-      cy.get('@content').find('h1[id="error-404"]').contains('ERROR 404');
+      cy.get('@content').find('a').contains('./sub/missing_a').click({ force: true });
+      cy.get('@content').find('h1').should('contain', 'ERROR 404');
     });
 
     it('to page missing page b', () => {
       cy.get('@content').find('a[href="sub/sub/missing_b"]').click({ force: true });
-      cy.get('@content').find('h1[id="error-404"]').contains('ERROR 404');
+      cy.get('@content').find('h1').should('contain', 'ERROR 404');
     });
   });
 
