@@ -1,7 +1,5 @@
 import { Injectable, InjectionToken, Inject, Optional } from '@angular/core';
 
-import { Observable, of } from 'rxjs';
-import { flatMap, tap, share } from 'rxjs/operators';
 import { NGXLogger } from 'ngx-logger';
 
 import unified from 'unified';
@@ -11,11 +9,9 @@ import rehypeStringify from 'rehype-stringify';
 import raw from 'rehype-raw';
 
 import { LocationService } from '../../services/location.service';
-import { FetchService, CachePage } from '../../services/fetch.service';
 import { HooksService } from '../../services/hooks.service';
 import { links, images } from '../../shared/links';
 
-import VFILE from 'vfile';
 import { VFile } from '../../../vendor';
 
 export const MARKDOWN_CONFIG_TOKEN = new InjectionToken<any>( 'forRoot() configuration.' );

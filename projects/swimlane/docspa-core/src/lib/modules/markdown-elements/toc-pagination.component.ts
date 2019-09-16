@@ -20,7 +20,6 @@ import frontmatter from 'remark-frontmatter';
 import { of } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 
-// import * as vfile from 'vfile';
 import { VFile } from '../../../vendor';
 import VFILE from 'vfile';
 
