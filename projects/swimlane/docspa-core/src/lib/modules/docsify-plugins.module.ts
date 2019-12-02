@@ -9,7 +9,7 @@ export const DOCSIFYPLUGINS_CONFIG_TOKEN = new InjectionToken<any>( 'DocsifyPlug
 @NgModule({
 })
 export class DocsifyPluginsModule {
-  static forRoot(config: any): ModuleWithProviders {
+  static forRoot(config: any): ModuleWithProviders<DocsifyPluginsModule> {
     return {
       ngModule: DocsifyPluginsModule,
       providers: [

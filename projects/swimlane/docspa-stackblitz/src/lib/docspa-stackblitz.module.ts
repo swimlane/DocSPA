@@ -18,7 +18,7 @@ import { MarkdownService, customSmartCodes } from '@swimlane/docspa-core';
   ]
 })
 export class DocspaStackblitzModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<DocspaStackblitzModule> {
     return {
       ngModule: DocspaStackblitzModule,
     };

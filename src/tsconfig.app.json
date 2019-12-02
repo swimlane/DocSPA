@@ -2,7 +2,6 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
-    "module": "es2015",
     "types": ["node"],
     "paths": {
       "@swimlane/docspa-core": [
@@ -25,10 +24,11 @@
       ]
     }
   },
-  "exclude": [
-    "**/docs/examples/**/*.ts",
-    "**/*.spec.ts",
-    "**/setup-jest.ts",
-    "**/test-config.helper.ts"
-  ]
+  "files": [
+    "main.ts",
+    "polyfills.ts"
+  ],
+  "angularCompilerOptions": {
+    "enableIvy": true
+  }
 }

@@ -26,7 +26,7 @@ export function createJitCompiler() {
   ]
 })
 export class RuntimeContentModule {
-  static forRoot(config: any): ModuleWithProviders {
+  static forRoot(config: any): ModuleWithProviders<RuntimeContentModule> {
     return {
       ngModule: RuntimeContentModule,
       providers: [

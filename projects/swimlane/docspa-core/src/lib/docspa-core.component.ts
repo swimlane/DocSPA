@@ -31,7 +31,7 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
 
   contentHeadings: any[];
 
-  @ViewChild('coverMain', {static: false}) coverMain: any;
+  @ViewChild('coverMain') coverMain: any;
 
   private sidebarClose = false;
 

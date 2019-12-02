@@ -48,7 +48,7 @@ import { DOCSPA_CONFIG_TOKEN, DOCSPA_ENVIRONMENT } from './docspa-core.tokens';
   ]
 })
 export class DocspaCoreModule {
-  static forRoot(config: any = {}, environment: any = {}): ModuleWithProviders {
+  static forRoot(config: any = {}, environment: any = {}): ModuleWithProviders<DocspaCoreModule> {
     return {
       ngModule: DocspaCoreModule,
       providers: [

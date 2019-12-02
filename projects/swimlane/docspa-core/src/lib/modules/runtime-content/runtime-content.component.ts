@@ -71,22 +71,22 @@ export class RuntimeContentComponent implements OnInit {
 
   private createComponentFactorySync(metadata: Component, context: any): ComponentFactory<any> {
     context = context ? JSON.parse(context) : {};
+
     class RuntimeComponent {
       constructor() {
         Object.assign(this, context);
       }
     }
-    const decoratedCmp = Component(metadata)(RuntimeComponent);
-    const imports = this.config.imports;
+    Component(metadata)(RuntimeComponent);
 
-    @NgModule({
-      imports,
-      declarations: [decoratedCmp],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
-    })
     class RuntimeComponentModule { }
+    NgModule({
+      imports: [ ...this.config.imports ],
+      declarations: [ RuntimeComponent ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+    })(RuntimeComponentModule);
 
     const module: ModuleWithComponentFactories<any> = this.compiler.compileModuleAndAllComponentsSync(RuntimeComponentModule);
-    return module.componentFactories.find(f => f.componentType === decoratedCmp);
+    return module.componentFactories.find(f => f.componentType === RuntimeComponent);
   }
 }

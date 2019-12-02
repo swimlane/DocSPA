@@ -65,7 +65,7 @@ const elements = [
   ]
 })
 export class MarkdownElementsModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<MarkdownElementsModule> {
     return {
       ngModule: MarkdownElementsModule,
       providers: [

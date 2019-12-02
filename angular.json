@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist/docspa",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -33,6 +34,12 @@
           },
           "configurations": {
             "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -106,7 +113,8 @@
           "configurations": {
             "production": {
               "project": "projects/swimlane/docspa-core/ng-package.prod.json"
-            }
+            ,              "tsConfig": "projects/swimlane/docspa-core/tsconfig.lib.prod.json"
+}
           }
         },
         "test": {
@@ -143,7 +151,12 @@
             "tsConfig": "projects/swimlane/docspa-stackblitz/tsconfig.lib.json",
             "project": "projects/swimlane/docspa-stackblitz/ng-package.json"
           }
-        },
+        ,          "configurations": {
+            "production": {
+              "tsConfig": "projects/swimlane/docspa-stackblitz/tsconfig.lib.prod.json"
+            }
+          }
+},
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
