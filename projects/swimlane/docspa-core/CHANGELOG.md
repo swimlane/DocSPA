@@ -2,9 +2,12 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-* Support ng9 (Ivy)
+_(none)_
 
 --------------------
+
+## 4.2.0 (2019-12-02)
+* Support ng9 (Ivy)
 
 ## 4.1.0 (2019-09-16)
 * Allow plugins to run after `[[include]]`

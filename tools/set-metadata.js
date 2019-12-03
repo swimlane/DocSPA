@@ -1,7 +1,8 @@
 /* The following code is from https://github.com/ngxs/store/blob/master/tools/set-metadata.ts */
 
-import { writeFile } from 'fs';
-import { getProjects } from './utils';
+const { writeFile } = require('fs');
+const { getProjects } = require('./utils');
+
 const pkg = require('../package.json');
 
 async function main() {

@@ -1,6 +1,6 @@
-import { resolve } from 'path';
+const { resolve } = require('path');
 
-export function getProjects(): any[] {
+module.exports.getProjects = function getProjects() {
   const { projects } = require('../angular.json');
   return Object.keys(projects).map(key => {
     const path = resolve(__dirname, '../', projects[key].root);
