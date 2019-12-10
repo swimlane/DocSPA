@@ -19,15 +19,15 @@ jobs:
       run: |
         npm ci
         # npm run lint
-        # npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
-        # npm run e2e
+        npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+        npm run e2e
       env:
         CI: true
 
     - name: Deploy
       run: |
-        git config --global user.email "jayson.harshbarger@swimlane.com"
-        git config --global user.name "Jayson Harshbarger"
+        git config --global user.email "swimlane-devops@swimlane.com"
+        git config --global user.name "Swimlane"
         npm run deploy
       env:
         CI: true

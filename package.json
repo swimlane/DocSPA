@@ -30,7 +30,7 @@
     "lint": "ng lint",
     "e2e": "npm run test:docs",
     "predeploy": "npm run build:release",
-    "deploy": "angular-cli-ghpages --dir ./dist/docspa --no-silent --repo https://GH_TOKEN@github.com/swimlane/DocSPA.git --name Hypercubed --email jayson.harshbarger@swimlane.com",
+    "deploy": "angular-cli-ghpages --dir ./dist/docspa --repo https://GH_TOKEN@github.com/swimlane/DocSPA.git",
     "test:watch": "jest --watch",
     "bundle-report": "webpack-bundle-analyzer dist/docspa/stats.json",
     "pack:core": "npm run build:core && npm pack ./dist/swimlane/docspa-core",
