@@ -22,9 +22,13 @@ jobs:
         npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
         npm run e2e
 
-    - name: build and deploy
+    - name: build
       run: |
-        npm run deploy -- --name="Hypercubed" --email=hypercubed@gmail.com
-        env:
-        CI: true
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        npm run build:release
+
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: dist/docspa
