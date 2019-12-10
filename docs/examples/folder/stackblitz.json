@@ -1,0 +1,10 @@
+{
+  "files": ["index.ts", "index.html"],
+  "title": "Dynamically Generated Project",
+  "description": "Created with <3 by the StackBlitz SDK!",
+  "template": "typescript",
+  "tags": ["stackblitz", "sdk"] ,
+  "dependencies": {
+    "moment": "*"
+  }
+}
