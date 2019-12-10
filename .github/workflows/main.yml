@@ -14,7 +14,7 @@ jobs:
             node-version: 10.x
         - name: npm install, lint, test, build and deploy
           run: |
-            npm install ci
+            npm install
             # npm run lint
             npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
             npm run e2e
