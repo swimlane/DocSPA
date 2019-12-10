@@ -1,24 +1,30 @@
 name: Node CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-        steps:
-        - uses: actions/checkout@v1
-        - name: Use Node.js 10.x
-          uses: actions/setup-node@v1
-          with:
-            node-version: 10.x
-        - name: npm install, lint, test, build and deploy
-          run: |
-            npm install
-            # npm run lint
-            npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
-            npm run e2e
-            npm run deploy
-            env:
-            CI: true
-            GH_TOKEN: ${{ secrets.GH_TOKEN }}
+    steps:
+    - name: Use Node.js 10.x
+      uses: actions/checkout@v1
+      with:
+        node-version: 10.x
+
+    - name: npm install, lint, test
+      run: |
+        npm install
+        # npm run lint
+        npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+        npm run e2e
+
+    - name: build and deploy
+      run: |
+        npm run deploy -- --name="Hypercubed" --email=hypercubed@gmail.com
+        env:
+        CI: true
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
