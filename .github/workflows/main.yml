@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
+    - name: Use Node.js 10.x
       uses: actions/checkout@v1
       with:
         node-version: 10.x
@@ -21,7 +21,12 @@ jobs:
         # npm run lint
         npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
         npm run e2e
+      env:
+        CI: true
 
     - name: Deploy
       run: |
         npm run deploy
+      env:
+        CI: true
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
