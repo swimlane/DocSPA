@@ -26,8 +26,8 @@ jobs:
 
     - name: Deploy
       run: |
-        git config --global user.email "hypercubed@gmail.com"
-        git config --global user.name "Hypercubed"
+        git config --global user.email "jayson.harshbarger@swimlane.com"
+        git config --global user.name "Jayson Harshbarger"
         npm run deploy
       env:
         CI: true
