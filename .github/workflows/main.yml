@@ -18,7 +18,7 @@ jobs:
             # npm run lint
             npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
             npm run e2e
-            npm run deploy -- --name="J. Harshbarger" --email=hypercubed@gmail.com
+            npm run deploy
             env:
             CI: true
             GH_TOKEN: ${{ secrets.GH_TOKEN }}
