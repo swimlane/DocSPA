@@ -10,25 +10,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Use Node.js 10.x
+    - name: Checkout
       uses: actions/checkout@v1
       with:
         node-version: 10.x
 
-    - name: npm install, lint, test
+    - name: Install, lint, and test
       run: |
-        npm install
+        npm ci
         # npm run lint
         npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
         npm run e2e
 
-    - name: build
-      run: |
-        npm run build:release
-
     - name: Deploy
-      uses: JamesIves/github-pages-deploy-action@releases/v3
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: gh-pages
-        FOLDER: dist/docspa
+      run: |
+        npm run deploy
