@@ -20,17 +20,16 @@ jobs:
       run: |
         npm ci
         # npm run lint
-        # npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
-        # npm run e2e
+        npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+        npm run e2e
       env:
         CI: true
 
     - name: Deploy
       run: |
-        npm run build:release
         git config --global user.email "swimlane-devops@swimlane.com"
         git config --global user.name "Swimlane"
-        npm run deploy:ci
+        npm run deploy
       env:
         CI: true
         GH_TOKEN: ${{ secrets.GH_TOKEN }}

@@ -7,6 +7,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "deploy": "ng deploy --base-href=\"/DocSPA/\"",
     "postversion": "npm run setMetadata && npm run chg:release:lib && git add -A .",
     "chg:release:lib": "cd projects/swimlane/docspa-core && chg release -y",
     "setMetadata": "node ./tools/set-metadata.js",
@@ -14,8 +15,6 @@
     "postbuild:core": "cpx \"./{README.md,LICENSE}\" ./dist/swimlane/docspa-core && cpx ./projects/swimlane/docspa-core/CHANGELOG.md ./dist/swimlane/docspa-core",
     "build:stackblitz": "ng build @swimlane/docspa-stackblitz",
     "build:libs": "npm run build:core && npm run build:stackblitz",
-    "prebuild:release": "rimraf dist",
-    "build:release": "cross-env NODE_ENV=production ng build --prod --stats-json",
     "prepublish:core": "npm run build:core",
     "publish:core": "cd dist/swimlane/docspa-core && npm publish",
     "prepublish:stackblitz": "npm run build:stackblitz",
@@ -28,10 +27,6 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "lint": "ng lint",
-    "e2e": "npm run test:docs",
-    "predeploy": "npm run build:release",
-    "deploy": "angular-cli-ghpages --dir ./dist/docspa",
-    "deploy:ci": "angular-cli-ghpages --dir ./dist/docspa --repo https://GH_TOKEN@github.com/swimlane/DocSPA.git",
     "test:watch": "jest --watch",
     "bundle-report": "webpack-bundle-analyzer dist/docspa/stats.json",
     "pack:core": "npm run build:core && npm pack ./dist/swimlane/docspa-core",
@@ -121,7 +116,7 @@
     "@types/quick-lru": "^3.0.0",
     "@types/unist": "^2.0.3",
     "@types/vfile": "^3.0.2",
-    "angular-cli-ghpages": "^0.5.2",
+    "angular-cli-ghpages": "^0.6.0",
     "chai": "^4.1.2",
     "codelyzer": "^5.1.2",
     "cpx": "^1.5.0",
@@ -157,6 +152,6 @@
   },
   "homepage": "https://swimlane.github.io/DocSPA/",
   "browser": {
-		"crypto": false
-	}
+    "crypto": false
+  }
 }
