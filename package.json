@@ -30,7 +30,8 @@
     "lint": "ng lint",
     "e2e": "npm run test:docs",
     "predeploy": "npm run build:release",
-    "deploy": "angular-cli-ghpages --dir ./dist/docspa --repo https://GH_TOKEN@github.com/swimlane/DocSPA.git",
+    "deploy": "angular-cli-ghpages --dir ./dist/docspa",
+    "deploy:ci": "angular-cli-ghpages --dir ./dist/docspa --repo https://GH_TOKEN@github.com/swimlane/DocSPA.git",
     "test:watch": "jest --watch",
     "bundle-report": "webpack-bundle-analyzer dist/docspa/stats.json",
     "pack:core": "npm run build:core && npm pack ./dist/swimlane/docspa-core",
@@ -156,15 +157,6 @@
   },
   "homepage": "https://swimlane.github.io/DocSPA/",
   "browser": {
-		"fs": false,
-		"path": false,
-		"os": false,
-		"crypto": false,
-		"stream": false,
-		"http": false,
-		"tls": false,
-		"zlib": false,
-		"https": false,
-		"net": false
+		"crypto": false
 	}
 }

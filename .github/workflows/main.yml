@@ -26,9 +26,10 @@ jobs:
 
     - name: Deploy
       run: |
+        npm run build:release
         git config --global user.email "swimlane-devops@swimlane.com"
         git config --global user.name "Swimlane"
-        npm run deploy
+        npm run deploy:ci
       env:
         CI: true
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
