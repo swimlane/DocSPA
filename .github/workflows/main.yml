@@ -1,0 +1,35 @@
+name: Node CI
+
+on:
+  push:
+    branches:
+      - master
+      - actions
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Use Node.js 10.x
+      uses: actions/checkout@v1
+      with:
+        node-version: 10.x
+
+    - name: Install, lint, and test
+      run: |
+        npm ci
+        # npm run lint
+        npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+        npm run e2e
+      env:
+        CI: true
+
+    - name: Deploy
+      run: |
+        git config --global user.email "swimlane-devops@swimlane.com"
+        git config --global user.name "Swimlane"
+        npm run deploy
+      env:
+        CI: true
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
