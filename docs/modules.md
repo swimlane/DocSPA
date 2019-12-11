@@ -394,14 +394,14 @@ including code blocks:
 
 ### Environment Variables
 
-Custom element: `<env>`  
+Custom element: `<md-env>`  
 Shortcode: `[[env]]`
 
 This shortcode allows displaying variables defined in the "environment" property.
 
 ```markdown { playground }
 [[env var="version"]]
-Production? <env var="production" />
+Production? <md-env var="production" />
 ```
 
 !> It is usally expected that `environment` property will contain the contents of your project's `environment.ts`.  `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.  The list of file replacements can be found in `angular.json`.

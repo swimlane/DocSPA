@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1576024653982,
+  "timestamp": 1576025943422,
   "index": "/DocSPA/index.html",
   "assetGroups": [
     {
@@ -148,7 +148,7 @@
     "/DocSPA/docs/experimental.md": "dfaa58d514f4cb10e8ab40fc31839206b2b15ea9",
     "/DocSPA/docs/features.md": "dda7e4d7461ac858f84124046f92f294f3f8711b",
     "/DocSPA/docs/markdown.md": "49b54782211fd88fd3964a5682546c895edf2af3",
-    "/DocSPA/docs/modules.md": "c981989bbf18a514d8437eeb0541ac1886d733a9",
+    "/DocSPA/docs/modules.md": "786ad09f9819b1e55233acb02731b8f1e1691958",
     "/DocSPA/docs/print.md": "1e1970ada84500a47554d4f1da2c13b022ef763c",
     "/DocSPA/docs/quickstart.md": "aca4f12b25423b4077a09b72611f793940402eeb",
     "/DocSPA/docs/sub/README.md": "6372e5a5dcaf8a1d023ddfd9102578a50030f139",
