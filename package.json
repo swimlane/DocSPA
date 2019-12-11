@@ -15,7 +15,7 @@
     "build:stackblitz": "ng build @swimlane/docspa-stackblitz",
     "build:libs": "npm run build:core && npm run build:stackblitz",
     "prebuild:release": "rimraf dist",
-    "build:release": "cross-env NODE_ENV=production ng build --prod --stats-json --no-aot --no-build-optimizer --base-href=\"/DocSPA/\"",
+    "build:release": "cross-env NODE_ENV=production ng build --prod --stats-json",
     "prepublish:core": "npm run build:core",
     "publish:core": "cd dist/swimlane/docspa-core && npm publish",
     "prepublish:stackblitz": "npm run build:stackblitz",
