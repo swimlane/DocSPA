@@ -180,7 +180,7 @@ i> unit test
 !> *Time* is money,
 !> my friend!
 
-?> **Watch Out!** A warning
+!!> **Watch Out!** A warning
 ```
 
 i> The styles of these elements can be customized using CSS.  Additional notices can be added by adding and customizing `remark-custom-blockquotes`.
