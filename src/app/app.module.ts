@@ -18,6 +18,7 @@ import { AppComponent } from './app.component';
 
 import { environment } from '../environments/environment';
 import { DocspaModule } from './docspa.module';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { DocspaModule } from './docspa.module';
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production
     }),
-    DocspaModule
+    DocspaModule,
+    AppRoutingModule
   ],
   providers: [
     Location,
