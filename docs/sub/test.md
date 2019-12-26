@@ -1,10 +1,24 @@
-# Works
+# Links
 
-[link](./logo.png)
+[relative](./a) /docspa/v1/sub/a
 
-[download](./logo.png){ download }
+[relative](a) /docspa/v1/sub/a
 
-[ignore](./logo.png){ ignore }
+[relative](../features) /docspa/v1/features
+
+[root](/features) /docspa/v1/features
+
+[absolute](http://localhost/docspa/) localhost/docspa/
+
+[absolute](http://www.google.com/) www.google.com
+
+[image](./logo.png) /docspa/v1/sub/logo.png
+
+[download](./logo.png){ download } /docs/sub/logo.png
+
+[ignore](./logo.png){ ignore } /logo.png
+
+# Images
 
 ![image](./logo.png)
 

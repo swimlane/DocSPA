@@ -47,6 +47,9 @@ MIT
 @angular/platform-browser-dynamic
 MIT
 
+@angular/router
+MIT
+
 @angular/service-worker
 MIT
 
