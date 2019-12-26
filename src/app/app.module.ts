@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
-import { NgModule } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 
 import {
   Location,
@@ -19,6 +19,16 @@ import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 import { DocspaModule } from './docspa.module';
 import { AppRoutingModule } from './app-routing.module';
+
+// @Injectable({
+//   providedIn: AppRoutingModule,
+// })
+// class LocationWithTrailingSlashes extends Location {
+//   public static stripTrailingSlash(url: string) {
+//     debugger;
+//     return url;
+//   }
+// }
 
 @NgModule({
   declarations: [
@@ -37,10 +47,10 @@ import { AppRoutingModule } from './app-routing.module';
     DocspaModule,
     AppRoutingModule
   ],
-  providers: [
-    Location,
-    { provide: LocationStrategy, useClass: PathLocationStrategy }
-  ],
+  // providers: [
+  //   { provide: Location, useClass: LocationWithTrailingSlashes },
+  //   { provide: LocationStrategy, useClass: PathLocationStrategy }
+  // ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

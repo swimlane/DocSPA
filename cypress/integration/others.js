@@ -1,4 +1,3 @@
-const pkg = require('../../package.json');
 const { sidebar, navbar, noCover } = require('../support/helpers');
 
 describe('Other pages', () => {
@@ -85,10 +84,10 @@ describe('Other pages', () => {
     });
 
     it('links', () => {
-      cy.get('@content').find('a[data-cy]').should($lis => {
+      cy.get('@content').find('md-link[data-cy="link-test"]').should($lis => {
         expect($lis).to.have.length(3);
-        expect($lis.eq(0)).to.have.attr('href', '/sub/');
-        expect($lis.eq(1)).to.have.attr('href', '/');
+        expect($lis.eq(0)).to.have.attr('href', './');
+        expect($lis.eq(1)).to.have.attr('href', '../');
         expect($lis.eq(2)).to.have.attr('href', '/');
       });
     });
@@ -150,7 +149,7 @@ describe('Other pages', () => {
     before(() => cy.visit('/sub/'));
 
     afterEach(() => {
-      cy.get('@sidebar').find('a[href="sub/"]').click({ force: true });
+      cy.get('@sidebar').find('a[href="/sub/"]').click({ force: true });
       cy.get('@content').find('h1[id="sub"]').contains('This is the sub readme');
     })
 
@@ -159,22 +158,22 @@ describe('Other pages', () => {
     });
 
     it('to page a', () => {
-      cy.get('@content').find('a[href="sub/a"]').click({ force: true });
+      cy.get('@content').find('a[href="/sub/a"]').click({ force: true });
       cy.get('@content').find('h1[id="a"]').contains('A');
     });
 
     it('to page b', () => {
-      cy.get('@content').find('a[href="sub/b"]').click({ force: true });
+      cy.get('@content').find('a[href="/sub/b"]').click({ force: true });
       cy.get('@content').find('h1[id="b"]').contains('B');
     });
 
     it('to sub page a', () => {
-      cy.get('@content').find('a[href="sub/sub/a"]').click({ force: true });
+      cy.get('@content').find('a[href="/sub/sub/a"]').click({ force: true });
       cy.get('@content').find('h1[id="sub-a"]').contains('Sub A');
     });
 
     it('to sub page b', () => {
-      cy.get('@content').find('a[href="sub/sub/b"]').click({ force: true });
+      cy.get('@content').find('a[href="/sub/sub/b"]').click({ force: true });
       cy.get('@content').find('h1[id="sub-b"]').contains('Sub B');
     });
 
@@ -184,7 +183,7 @@ describe('Other pages', () => {
     });
 
     it('to page missing page b', () => {
-      cy.get('@content').find('a[href="sub/sub/missing_b"]').click({ force: true });
+      cy.get('@content').find('a[href="/sub/sub/missing_b"]').click({ force: true });
       cy.get('@content').find('h1').should('contain', 'ERROR 404');
     });
   });
@@ -193,23 +192,23 @@ describe('Other pages', () => {
     before(() => cy.visit('/sub/test'));
 
     it('check links', () => {
-      cy.get('@content').find('h1[id="works"]').contains('Works');
-      cy.get('@content').find('a').eq(0).should('have.attr', 'href', '/sub/test#works');
-      cy.get('@content').find('a').eq(1).should('have.attr', 'href', '/sub/logo.png');
-      cy.get('@content').find('a').eq(2).should('have.attr', 'href', 'docs/sub/logo.png');
-      cy.get('@content').find('img').eq(0).should('have.attr', 'src', 'docs/sub/logo.png');
-    });
-  });
+      cy.get('@content').find('h1[id="links"]').contains('Links');
+      cy.get('@content').find('a').eq(0).should('have.attr', 'href', '/sub/test#links');
 
-  describe('Test Page with hash', () => {
-    before(() => cy.visit('/sub/test#works'));
+      cy.get('@content').find('a').eq(1).should('have.attr', 'href', '/sub/a');
+      cy.get('@content').find('a').eq(2).should('have.attr', 'href', '/sub/a');
+      cy.get('@content').find('a').eq(3).should('have.attr', 'href', '/features');
+      cy.get('@content').find('a').eq(4).should('have.attr', 'href', '/features');
+      cy.get('@content').find('a').eq(5).should('have.attr', 'href', 'http://localhost/docspa/');
+      cy.get('@content').find('a').eq(6).should('have.attr', 'href', 'http://www.google.com/');
+      cy.get('@content').find('a').eq(7).should('have.attr', 'href', '/sub/logo.png');
+      cy.get('@content').find('a').eq(8).should('have.attr', 'href', 'docs/sub/logo.png');
+      cy.get('@content').find('a').eq(9).should('have.attr', 'href', './logo.png');
 
-    it('check links', () => {
-      cy.get('@content').find('h1[id="works"]').contains('Works');
-      cy.get('@content').find('a').eq(0).should('have.attr', 'href', '/sub/test#works');
-      cy.get('@content').find('a').eq(1).should('have.attr', 'href', '/sub/logo.png');
-      cy.get('@content').find('a').eq(2).should('have.attr', 'href', 'docs/sub/logo.png');
-      cy.get('@content').find('img').eq(0).should('have.attr', 'src', 'docs/sub/logo.png');
+      // cy.get('@content').find('a').eq(0).should('have.attr', 'href', '/sub/test#links');
+      // cy.get('@content').find('a').eq(1).should('have.attr', 'href', '/sub/logo.png');
+      // cy.get('@content').find('a').eq(2).should('have.attr', 'href', '/docs/sub/logo.png');
+      // cy.get('@content').find('img').eq(0).should('have.attr', 'src', '/docs/sub/logo.png');
     });
   });
 });

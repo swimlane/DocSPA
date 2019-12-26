@@ -18,14 +18,10 @@ export class SettingsService {
 
   coverpage = '';
   basePath = 'docs/';
-  nameLink = '';
+  // nameLink = '';
   ext = '.md';
   notFoundPage = '_404.md';
   maxPageCacheSize = 100;
-
-  get root() {
-    return join(this.nameLink, this.basePath);
-  }
 
   constructor(
     metaService: Meta,

@@ -6,7 +6,7 @@ import { LocationService } from '../../services/location.service';
 import { FetchService } from '../../services/fetch.service';
 
 import * as MDAST from 'mdast';
-import { getBasePath } from '../../utils';
+import { getBasePath } from '../../vfile-utils';
 
 import unified from 'unified';
 import markdown from 'remark-parse';
@@ -15,6 +15,7 @@ import stringify from 'remark-stringify';
 import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
 import { join } from '../../utils';
+
 import frontmatter from 'remark-frontmatter';
 
 import { of } from 'rxjs';
@@ -27,24 +28,30 @@ interface Link extends MDAST.Link {
   data: any;
 }
 
+interface FileIndexItem {
+  title: string;
+  path: string;
+  link: string;
+}
+
 @Component({
   selector: 'docspa-toc-page', // tslint:disable-line
   template: `
     <div class="docsify-pagination-container">
       <div class="pagination-item pagination-item--previous" *ngIf="prev">
-        <a class="prev" [attr.href]="prepareLink(prev)" >
+        <a class="prev" [routerLink]="prev.link" >
           <div class="pagination-item-label">
             <span>« PREVIOUS</span>
           </div>
-          <div class="pagination-item-title">{{prev.data.title}}</div>
+          <div class="pagination-item-title">{{prev.title}}</div>
         </a>
       </div>
       <div class="pagination-item pagination-item--next" *ngIf="next">
-        <a class="next" [attr.href]="prepareLink(next)" >
+        <a class="next" [routerLink]="next.link" >
           <div class="pagination-item-label">
             <span>NEXT »</span>
           </div>
-          <div class="pagination-item-title">{{next.data.title}}</div>
+          <div class="pagination-item-title">{{next.title}}</div>
         </a>
       </div>
     </div>
@@ -126,11 +133,14 @@ export class TOCPaginationComponent implements OnInit {
   @Input()
   summary: string;
 
+  @Input()
+  page: string;
+
   private processLinks: any;
 
   private _paths: string[];
 
-  files: VFILE.VFile[];
+  files: FileIndexItem[];
 
   next: any;
   prev: any;
@@ -172,7 +182,16 @@ export class TOCPaginationComponent implements OnInit {
 
   ngOnInit() {
     const processFiles = (files: any[]) => {
-      this.files = files;
+      this.files = files.map(vfile => {
+        const path = getBasePath(vfile);
+
+        return {
+          path,
+          title: vfile.data.title,
+          link: this.locationService.prepareLink(path, this.routerService.root)
+        };
+      });
+
       this.routerService.changed.subscribe((changes: SimpleChanges) => {
         if ('contentPage' in changes) {
           this.pathChanges(changes.contentPage.currentValue);
@@ -191,9 +210,11 @@ export class TOCPaginationComponent implements OnInit {
     }
   }
 
-  prepareLink(_vfile: VFILE.VFile) {
-    return this.locationService.prepareLink(_vfile.history[0]);
-  }
+  // ngOnChanges(changes: SimpleChanges) {
+  //   if ('contentPage' in changes) {
+  //     this.pathChanges(changes.contentPage.currentValue);
+  //   }    
+  // }
 
   private loadSummary(summary: string) {
     const _vfile = this.locationService.pageToFile(summary);
@@ -213,8 +234,12 @@ export class TOCPaginationComponent implements OnInit {
   }
 
   private pathChanges(path: string) {
-    const re = new RegExp(`^/?${path}$`);
-    const index = this.files.findIndex(file => re.test(file.history[0]));
+    // TODO: make a matches or isActive helper
+    path = path.replace(/^\.\//, '');
+    const re = new RegExp(`^\.?/?${path}$`);
+    const index = this.files.findIndex(file => {
+      return re.test(file.path);
+    });
     this.prev = index > 0 ? this.files[index - 1] : null;
     this.next = index < this.files.length ? this.files[index + 1] : null;
   }
@@ -224,7 +249,6 @@ export class TOCPaginationComponent implements OnInit {
       this.files = null;
       return;
     }
-
     return Promise.all(paths.map(async path => {
       const _vfile = await this.fetch(path);
       await this.markdownService.process(_vfile);

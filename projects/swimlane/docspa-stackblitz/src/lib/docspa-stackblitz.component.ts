@@ -92,7 +92,7 @@ export class EmbedStackblitzComponent {
   id = `embed-stackblitz-${EmbedStackblitzComponent.count++}+${Math.random()}`;
 
   private get root() {
-    return this.settings.root;
+    return this.settings.basePath;
   }
 
   constructor(private http: HttpClient, private settings: SettingsService) {

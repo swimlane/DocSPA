@@ -25,7 +25,7 @@ import { SettingsService } from '../../services/settings.service';
 import { RouterService } from '../../services/router.service';
 import { MarkdownService } from '../markdown/markdown.service';
 
-import { join } from '../../utils';
+import { join, isAbsolutePath } from '../../utils';
 
 @Component({
   selector: 'docspa-print', // tslint:disable-line
@@ -123,7 +123,7 @@ export class MdPrintComponent implements OnInit {
     const fixLinks = () => {
       return (tree: MDAST.Root, file: VFile) => {
         return visit(tree, 'link', (node: MDAST.Link) => {
-          if (node && !LocationService.isAbsolutePath(node.url)) {
+          if (node && !isAbsolutePath(node.url)) {
             const url = locationService.prepareLink(node.url, file.history[0]).replace(/[\/#]/g, '--');
             node.url = `#${url}`;
           }

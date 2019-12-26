@@ -12,11 +12,13 @@ export class EnvVarComponent {
   @Input()
   var: string;
 
-  get value() {
-    return String(this.var ? this.environment[this.var] : '');
-  }
+  value: string;
 
   constructor(@Optional() @Inject(DOCSPA_ENVIRONMENT) private environment: any) {
+  }
+
+  ngOnChanges() {
+    this.value = String(this.var ? this.environment[this.var] : '');
   }
 }
 

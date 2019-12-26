@@ -23,18 +23,17 @@ describe('LocationService', () => {
     });
   });
 
-  it('isAbsolutePath', () => {
-    expect(LocationService.isAbsolutePath('./')).toBeFalsy();
-    expect(LocationService.isAbsolutePath('./test/')).toBeFalsy();
-    expect(LocationService.isAbsolutePath('test/')).toBeFalsy();
-    expect(LocationService.isAbsolutePath('/')).toBeFalsy();
-    expect(LocationService.isAbsolutePath('/test/')).toBeFalsy();
-    expect(LocationService.isAbsolutePath('http://www.swimlane.com')).toBeTruthy();
-  });
+  // it('isAbsolutePath', () => {
+  //   expect(LocationService.isAbsolutePath('./')).toBeFalsy();
+  //   expect(LocationService.isAbsolutePath('./test/')).toBeFalsy();
+  //   expect(LocationService.isAbsolutePath('test/')).toBeFalsy();
+  //   expect(LocationService.isAbsolutePath('/')).toBeFalsy();
+  //   expect(LocationService.isAbsolutePath('/test/')).toBeFalsy();
+  //   expect(LocationService.isAbsolutePath('http://www.swimlane.com')).toBeTruthy();
+  // });
 
   it('should be created', inject([LocationService], (service: LocationService) => {
     expect(service).toBeTruthy();
-    expect(service.root).toBe('docs/');
     expect(service.basePath).toBe('docs/');
   }));
 
@@ -82,9 +81,9 @@ describe('LocationService', () => {
     expect(service.prepareSrc('/image.png', '/features/sub/')).toBe('docs/image.png');
   }));
 
-  it('#stripBaseHref', inject([LocationService], (service: LocationService) => {
-    expect(service.stripBaseHref('docs/thepage')).toBe('thepage');
-    expect(service.stripBaseHref('docs/features/thepage')).toBe('features/thepage');
-    expect(service.stripBaseHref('docs/features/thepage#anchor')).toBe('features/thepage#anchor');
-  }));
+  // it('#stripBaseHref', inject([LocationService], (service: LocationService) => {
+  //   expect(service.stripBaseHref('docs/thepage')).toBe('thepage');
+  //   expect(service.stripBaseHref('docs/features/thepage')).toBe('features/thepage');
+  //   expect(service.stripBaseHref('docs/features/thepage#anchor')).toBe('features/thepage#anchor');
+  // }));
 });

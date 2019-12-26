@@ -43,7 +43,7 @@ import { environment } from '../environments/environment';
       ]
     }),
     DocspaStackblitzModule,
-    LoggerModule.forRoot({ level: NgxLoggerLevel.WARN }),
+    LoggerModule.forRoot({ level: environment.production ? NgxLoggerLevel.ERROR : NgxLoggerLevel.DEBUG }),
     TabsPluginModule,
     GridPluginModule,
   ],

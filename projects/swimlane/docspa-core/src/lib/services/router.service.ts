@@ -1,9 +1,9 @@
 import { Injectable, EventEmitter, SimpleChange, SimpleChanges } from '@angular/core';
-import { Location, PopStateEvent } from '@angular/common';
-import { NGXLogger } from 'ngx-logger';
-import { ReplaySubject } from 'rxjs';
 
-import { getFullPath } from '../utils';
+import { NGXLogger } from 'ngx-logger';
+
+import { goExternal, isAbsolutePath } from '../utils';
+import { getFullPath } from '../vfile-utils';
 
 import { SettingsService } from './settings.service';
 import { FetchService } from './fetch.service';
@@ -24,120 +24,41 @@ export class RouterService {
   page: string;
   anchor: string;
   file: string;
+  root: string;
 
   contentPage: string;
 
+  /**
+   * Emitted whenever page content changes, include side loaded content
+   */
   changed = new EventEmitter<SimpleChanges>();
 
-  private urlSubject = new ReplaySubject<string>(1);
-
-  /**
-   * Get the current url from the window location
-   * Note: cannot use Location directly at the moment as it drops traling slashes
-   */
-  private get locationPath() {
-    const { pathname, hash } = window.location;
-    let url = this.location.path(false);
-    if (this.isDirname(pathname, url) && url.slice(-1) !== '/') {
-      url += '/';
-    }
-    return url + hash;
-  }
-
-  clickHandler = (event: any) => {
-    if (
-      event.defaultPrevented ||
-      event.button !== 0 ||
-      event.shiftKey ||
-      event.ctrlKey ||
-      event.altKey ||
-      event.metaKey
-    ) {
-      return;
-    }
-
-    let anchor = event.target;
-    while (anchor && anchor.nodeName.toLowerCase() !== 'a') {
-      anchor = anchor.parentNode;
-    }
-
-    if (
-      !anchor ||
-      anchor.nodeName.toLowerCase() !== 'a' ||
-      anchor.target && anchor.target.toLowerCase() !== '_self' ||
-      anchor.hasAttribute('download') ||
-      anchor.hasAttribute('ignore')) {
-      return;
-    }
-
-    const href = anchor.getAttribute('href');
-
-    if (!href || LocationService.isAbsolutePath(href)) {
-      return;
-    }
-
-    event.preventDefault();
-    this.go(href);
-  }
-
   constructor(
-    private location: Location,
     private settings: SettingsService,
     private fetchService: FetchService,
     private locationService: LocationService,
-    private logger: NGXLogger
+    private logger: NGXLogger,
   ) {
-    location.subscribe((state: PopStateEvent) => {
-      if (state.type === 'hashchange' || state.type === 'popstate') {
-        this._go(this.locationPath || '');
-      }
-    });
-
-    // TODO: move this.... could be in the docspa-page
-    this.urlSubject.subscribe(path => {
-      this.hashchange(path || '/');
-    });
   }
 
-  onInit() {
-    this._go(this.locationPath || '');
-  }
-
-  go(url: string = '/') {
-    if (!url) { return; }
-    if (LocationService.isAbsolutePath(url)) {
-      this.goExternal(url);
-    } else {
-      this._go(url);
+  go(url: string, root?: string) {
+    url = url || '/';
+    if (isAbsolutePath(url)) {
+      goExternal(url);
+      return Promise.resolve({});
     }
-  }
-
-  private _go(url: string) {
     url = this.canonicalize(url);
-    if (this.locationPath !== url) {
-      this.location.go(url);
-    }
-    this.urlSubject.next(url);
+    return this.urlChange(url || '/', root);
   }
 
-  private canonicalize(url: string) {
-    const hp = this.settings.homepage.replace(/\.md$/, '');
-    url = url.replace(/\.md$/, '');
-    return url.replace(new RegExp(`${hp}\$`), '');
-  }
-
-  private goExternal(url: string) {
-    window.location.assign(url);
-  }
-
-  private isDirname(href: string, page: string) {
-    return href[href.indexOf(page) + page.length] === '/';
-  }
-
-  private async hashchange(url: string = '/') {
+  private async urlChange(url: string = '/', root: string) {
     const changes: SimpleChanges = {};
 
-    // this.logger.debug(`location changed: ${url}`);
+    this.logger.debug(`location changed: ${url}`);
+
+    if (this.root != root) {
+      changes.root = new SimpleChange(this.root, this.root = root, false);
+    }
 
     if (this.url !== url) {
       changes.url = new SimpleChange(this.url, this.url = url, false);
@@ -175,13 +96,22 @@ export class RouterService {
     if (Object.keys(changes).length > 0) {
       this.changed.emit(changes);
     }
+
+    return changes;
+  }
+
+  private canonicalize(url: string) {
+    const hp = this.settings.homepage.replace(/\.md$/, '');
+    url = url.replace(/\.md$/, '');
+    url = url.replace(new RegExp(`${hp}\$`), '/');
+    return url;
   }
 
   private async resolveCoverPath(vfile: VFile) {
     const path = vfile.basename === this.settings.homepage ?
       await this.fetchService.find(getFullPath(vfile), this.settings.coverpage) :
       null;
-    return this.locationService.stripBaseHref(path);
+    return this.locationService.stripBasePath(path);
   }
 
   private async resolveSideloadPaths(vfile: VFile) {
@@ -196,7 +126,7 @@ export class RouterService {
 
     return sideLoadPathsArr.reduce((acc: {[key: string]: string}, path: any, idx: number) => {
       const key = keys[idx];
-      acc[key] = this.locationService.stripBaseHref(path);
+      acc[key] = this.locationService.stripBasePath(path);
       return acc;
     }, {} as {[key: string]: string});
   }

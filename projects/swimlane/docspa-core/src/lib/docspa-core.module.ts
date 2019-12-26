@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 import { LoggerModule } from 'ngx-logger';
 
@@ -29,7 +30,8 @@ import { DOCSPA_CONFIG_TOKEN, DOCSPA_ENVIRONMENT } from './docspa-core.tokens';
     BrowserAnimationsModule,
     MarkdownModule,
     LoggerModule,
-    MarkdownElementsModule
+    MarkdownElementsModule,
+    RouterModule
   ],
   declarations: [
     DocSPACoreComponent,

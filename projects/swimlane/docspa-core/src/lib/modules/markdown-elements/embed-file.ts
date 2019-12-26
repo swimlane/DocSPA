@@ -9,7 +9,6 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { MarkdownService } from '../markdown/markdown.service';
 import { LocationService } from '../../services/location.service';
-import { RouterService } from '../../services/router.service';
 import { FetchService } from '../../services/fetch.service';
 import { HooksService } from '../../services/hooks.service';
 import { splitHash } from '../../utils';
@@ -59,14 +58,10 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   @HostBinding('innerHTML')
   html: string | SafeHtml;
 
-  @HostListener('click', ['$event'])
-  onClickBtn = this.routerService.clickHandler;
-
   private _safe: boolean = null;
 
   constructor(
     private markdownService: MarkdownService,
-    private routerService: RouterService,
     private sanitizer: DomSanitizer,
     private elm: ElementRef,
     private renderer: Renderer2,
@@ -157,6 +152,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   }
 
   private isHashActive(hash: string) {
+    if (!hash) return;
     const activeLink = this.activeLink.replace(/^\//, '');
     const parts = splitHash(hash);
     parts[0] = parts[0].replace(/^\//, '');
@@ -169,6 +165,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   }
 
   // Add 'active' class to links
+  // TODO: move to TOC component?
   private markActiveLinks() {
     if (this.activeLink) {
       const aObj = this.elm.nativeElement.getElementsByTagName('a');

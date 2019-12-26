@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { LocationStrategy, PlatformLocation } from '@angular/common';
 import VFILE from 'vfile';
 
-import { join } from '../utils';
+import { join, isAbsolutePath, stripBaseHref  } from '../utils';
 import { resolve } from 'url';
 
 import { SettingsService } from './settings.service';
@@ -10,18 +11,6 @@ import { SettingsService } from './settings.service';
   providedIn: 'root'
 })
 export class LocationService {
-
-  /**
-   * Determines if a string is an absolut URL
-   */
-  static isAbsolutePath(_: string) {
-    return new RegExp('(:|(\/{2}))', 'g').test(_);
-  }
-
-  get root() {
-    return this.settings.root;
-  }
-
   get basePath() {
     return this.settings.basePath;
   }
@@ -30,9 +19,13 @@ export class LocationService {
     return this.settings.ext;
   }
 
+  private baseHref: string;
+
   constructor(
-    private settings: SettingsService
+    private settings: SettingsService,
+    private platformStrategy: LocationStrategy
   ) {
+    this.baseHref = this.platformStrategy.getBaseHref();
   }
 
   /**
@@ -44,7 +37,7 @@ export class LocationService {
       page = '/';
     }
 
-    const vfile = VFILE({ path: page, cwd: this.root });
+    const vfile = VFILE({ path: page, cwd: this.basePath });
 
     /* if (vfile.path[0] === '/' && vfile.path[1] === '_') {
       vfile.path = this.settings.notFoundPage;
@@ -74,28 +67,23 @@ export class LocationService {
    * Return a resolved url relative to the base path
    */
   prepareLink(href: string, base: string = '') {
-    return LocationService.isAbsolutePath(href) ?
-      href :
-      resolve(base, href);
+    if (isAbsolutePath(href)) return href;
+    return resolve(base, stripBaseHref(this.baseHref, href));
   }
 
   /**
    * Return a resolved url relative to the base path
    */
   prepareSrc(src: string, base: string = '') {
-    return LocationService.isAbsolutePath(src) ?
-      src :
-      join(this.basePath, resolve(base, src));
+    if (isAbsolutePath(src)) return src;
+    return join(this.basePath, resolve(base, src));
   }
 
   /**
-   * Removes the base HREF from a url
+   * Removes the base path from a url
    */
-  stripBaseHref(url: string): string {
-    if (!url) {
-      return null;
-    }
-    const basePath = this.basePath;
-    return basePath && url.startsWith(basePath) ? url.substring(basePath.length) : url;
+  stripBasePath(url: string): string {
+    if (!url) return null;
+    return stripBaseHref(this.basePath, url);
   }
 }

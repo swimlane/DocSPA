@@ -6,7 +6,7 @@ export const sidebar = () => { // TODO: check active link
   cy.get('@sidebar').find('md-toc a').should('have.attr', 'href').and('matches',/^\/.*/);
 
   cy.get('@sidebar').find('md-toc a').first().should('have.attr', 'href', '/#docspa');
-  cy.get('@sidebar').find('md-toc a').last().should('have.attr', 'href', 'features#environment-variables');
+  cy.get('@sidebar').find('md-toc a').last().should('have.attr', 'href', '/features#environment-variables');
 
   cy.get('@rightbar').find('md-toc').should('have.length', 1);
 };

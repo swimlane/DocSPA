@@ -21,12 +21,8 @@ export interface CachePage {
 export class FetchService {
   private inFlight = new Map<string, Observable<CachePage>>();
 
-  get root() {
-    return this.settings.root;
-  }
-
   get path404() {
-    return join(this.settings.root, this.settings.notFoundPage);
+    return join(this.settings.basePath, this.settings.notFoundPage);
   }
 
   constructor(
@@ -38,6 +34,8 @@ export class FetchService {
   /**
    * Finds a file returning a prmomise of the url
    * Returns null in the file is not found
+   * TODO: handle directory vs file.
+   * example: `/path/to/file` can be `/path/to/file.md` or `/path/to/file/README.md`
    *
    * @param dir
    * @param filename
