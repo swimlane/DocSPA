@@ -33,7 +33,7 @@ export class FetchService {
 
   /**
    * Finds a file returning a prmomise of the url
-   * Returns null in the file is not found
+   * Returns null if the file is not found
    * TODO: handle directory vs file.
    * example: `/path/to/file` can be `/path/to/file.md` or `/path/to/file/README.md`
    *
@@ -44,15 +44,15 @@ export class FetchService {
     const url = filename ? resolve(dir, filename) : null;
     const item = await this.get(url).toPromise();
     if (!item) {
-      throw new Error('Possible chache error');
+      throw new Error('Possible cache error');
     }
     return item.notFound || !url ? null : item.resolvedPath;
   }
 
   /**
-   * Finds a file returning a prmomise of the url
+   * Finds a file returning a promise of the url
    * If the file is not found in the given dir, will look up a directory
-   * Returns null in the file is not found up to the root
+   * Returns null if the file is not found up to the root
    *
    * @param root {string} root directory to search up to
    * @param from {string} Base URL (excluding root) being resolved against.
