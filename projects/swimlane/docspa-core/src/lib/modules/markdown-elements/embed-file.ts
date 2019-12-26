@@ -167,39 +167,39 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   // Add 'active' class to links
   // TODO: move to TOC component?
   private markActiveLinks() {
-    if (this.activeLink) {
-      const aObj = this.elm.nativeElement.getElementsByTagName('a');
-      const activeLinks = [];
-      for (let i = 0; i < aObj.length; i++) {
-        const a = aObj[i];
-        const active = this.isHashActive(a.getAttribute('href'));
-        if (active) {
-          activeLinks.push(a);
-        }
-        if (active) {
-          this.renderer.addClass(a, 'active');
-        } else {
-          this.renderer.removeClass(a, 'active');
-        }
+    // if (this.activeLink) {
+    //   const aObj = this.elm.nativeElement.getElementsByTagName('a');
+    //   const activeLinks = [];
+    //   for (let i = 0; i < aObj.length; i++) {
+    //     const a = aObj[i];
+    //     const active = this.isHashActive(a.getAttribute('href'));
+    //     if (active) {
+    //       activeLinks.push(a);
+    //     }
+    //     if (active) {
+    //       this.renderer.addClass(a, 'active');
+    //     } else {
+    //       this.renderer.removeClass(a, 'active');
+    //     }
 
-        let p = a.parentNode;
-        while (p && ['LI', 'UL', 'P'].includes(p.nodeName)) {
-          if (active) {
-            this.renderer.addClass(p, 'active');
-          } else {
-            this.renderer.removeClass(p, 'active');
-          }
-          p = p.parentNode;
-        }
-      }
+    //     let p = a.parentNode;
+    //     while (p && ['LI', 'UL', 'P'].includes(p.nodeName)) {
+    //       if (active) {
+    //         this.renderer.addClass(p, 'active');
+    //       } else {
+    //         this.renderer.removeClass(p, 'active');
+    //       }
+    //       p = p.parentNode;
+    //     }
+    //   }
 
-      activeLinks.forEach(a => {
-        let p = a.parentNode;
-        while (p && ['LI', 'UL', 'P'].includes(p.nodeName)) {
-          this.renderer.addClass(p, 'active');
-          p = p.parentNode;
-        }
-      });
-    }
+    //   activeLinks.forEach(a => {
+    //     let p = a.parentNode;
+    //     while (p && ['LI', 'UL', 'P'].includes(p.nodeName)) {
+    //       this.renderer.addClass(p, 'active');
+    //       p = p.parentNode;
+    //     }
+    //   });
+    // }
   }
 }

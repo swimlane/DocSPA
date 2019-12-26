@@ -37,6 +37,12 @@ body {
     }
   }
 
+  ul li.active>p>a {
+    border-right: 2px solid;
+    color: var(--theme-color,#42b983);
+    font-weight: 600;
+  }
+
   strong {
     font-weight: 700;
   }

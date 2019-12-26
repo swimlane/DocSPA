@@ -14,6 +14,7 @@ import { HooksService } from './services/hooks.service';
 import { RouterService } from './services/router.service';
 import { SettingsService } from './services/settings.service';
 import { splitHash } from './utils';
+import { throttleable } from './throttle';
 
 @Component({
   selector: 'lib-docspa-core,docspa-page,[docspa-page]',
@@ -56,6 +57,7 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // TODO: Move to a scroll spy event on EmbedMarkdownComponent
   @HostListener('window:scroll', [])
+  @throttleable(30)
   onWindowScroll() {
     let add = true;
     let coverHeight = 0;
@@ -65,36 +67,7 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
       add = window.pageYOffset >= coverHeight || cover.classList.contains('hidden');
     }
 
-    if (add) {
-      this.renderer.addClass(document.body, 'sticky');
-    } else {
-      this.renderer.removeClass(document.body, 'sticky');
-    }
-
-    if (this.contentHeadings) {
-      const fromTop = window.scrollY - 60 - coverHeight;
-      const fromBottom = window.scrollY + window.innerHeight + 60 - coverHeight;
-
-      let lastLink = null;
-      const current = this.contentHeadings
-        .filter(link => {
-          const offsetBottom = link.offsetTop + link.offsetHeight;
-          const past = offsetBottom <= fromBottom;
-          if (past) {
-            lastLink = link;
-          }
-          return link.offsetTop >= fromTop && offsetBottom <= fromBottom;
-        })
-        .map(link => splitHash(link.getAttribute('href'))[1]);
-
-      if (current && current.length > 0) {
-        this.activeAnchors = current.join(';');
-      } else if (lastLink) {
-        this.activeAnchors = splitHash(lastLink.getAttribute('href'))[1];
-      } else {
-        this.activeAnchors = '';
-      }
-    }
+    this.renderer[add ? 'addClass' : 'removeClass'](document.body, 'sticky');
   }
 
   toggleSidebar(nextState: boolean = !this.sidebarClose) {
