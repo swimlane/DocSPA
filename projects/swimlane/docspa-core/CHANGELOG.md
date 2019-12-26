@@ -2,9 +2,12 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-* DocSPA now uses (and requires) angular/router.
+_(none)_
 
 --------------------
+
+## 5.0.0-0 (2019-12-26)
+* DocSPA now uses (and requires) angular/router.
 
 ## 4.2.0 (2019-12-02)
 * Support ng9 (Ivy)
