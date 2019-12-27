@@ -2,13 +2,8 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
-import { NgModule, Injectable } from '@angular/core';
+import { NgModule } from '@angular/core';
 
-import {
-  Location,
-  LocationStrategy,
-  PathLocationStrategy,
-} from '@angular/common';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { LoadingBarModule } from '@ngx-loading-bar/core';
@@ -20,16 +15,6 @@ import { environment } from '../environments/environment';
 import { DocspaModule } from './docspa.module';
 import { AppRoutingModule } from './app-routing.module';
 
-// @Injectable({
-//   providedIn: AppRoutingModule,
-// })
-// class LocationWithTrailingSlashes extends Location {
-//   public static stripTrailingSlash(url: string) {
-//     debugger;
-//     return url;
-//   }
-// }
-
 @NgModule({
   declarations: [
     AppComponent
@@ -39,7 +24,7 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    LoadingBarModule.forRoot(),
+    LoadingBarModule,
     LoadingBarHttpClientModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production
