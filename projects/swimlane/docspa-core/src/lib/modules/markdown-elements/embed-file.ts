@@ -44,12 +44,6 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   scrollTo: string;
 
   @Input()
-  activeLink: string;
-
-  @Input()
-  activeAnchors: string = null;
-
-  @Input()
   codeblock: string = null;
 
   @Input()
@@ -63,8 +57,6 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   constructor(
     private markdownService: MarkdownService,
     private sanitizer: DomSanitizer,
-    private elm: ElementRef,
-    private renderer: Renderer2,
     private locationService: LocationService,
     private fetchService: FetchService,
     private hooks: HooksService,
@@ -78,18 +70,11 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
       if ('scrollTo' in changes) {
         this.doScroll();
       }
-      if ('activeLink' in changes || 'activeAnchors' in changes) {
-        this.markActiveLinks();
-      }
     }
   }
 
   ngOnInit() {
-    this.load().then(() => {
-      this.hooks.doneEach.tap('update-links', () => {
-        this.markActiveLinks();
-      });
-    });
+    this.load();
   }
 
   private async load(): Promise<string | SafeHtml> {
@@ -113,7 +98,6 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
 
     await this.markdownService.process(_vfile);
     setTimeout(() => {
-      this.markActiveLinks();
       this.doScroll();
       this.hooks.doneEach.call(_vfile);
     }, 30);
@@ -149,57 +133,5 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
       } catch (e) {
       }
     }
-  }
-
-  private isHashActive(hash: string) {
-    if (!hash) return;
-    const activeLink = this.activeLink.replace(/^\//, '');
-    const parts = splitHash(hash);
-    parts[0] = parts[0].replace(/^\//, '');
-    if (activeLink === parts[0]) {
-      return (this.activeAnchors === undefined || this.activeAnchors === null) ?
-        true :
-        this.activeAnchors.split(';').includes(parts[1]); // todo: split once
-    }
-    return false;
-  }
-
-  // Add 'active' class to links
-  // TODO: move to TOC component?
-  private markActiveLinks() {
-    // if (this.activeLink) {
-    //   const aObj = this.elm.nativeElement.getElementsByTagName('a');
-    //   const activeLinks = [];
-    //   for (let i = 0; i < aObj.length; i++) {
-    //     const a = aObj[i];
-    //     const active = this.isHashActive(a.getAttribute('href'));
-    //     if (active) {
-    //       activeLinks.push(a);
-    //     }
-    //     if (active) {
-    //       this.renderer.addClass(a, 'active');
-    //     } else {
-    //       this.renderer.removeClass(a, 'active');
-    //     }
-
-    //     let p = a.parentNode;
-    //     while (p && ['LI', 'UL', 'P'].includes(p.nodeName)) {
-    //       if (active) {
-    //         this.renderer.addClass(p, 'active');
-    //       } else {
-    //         this.renderer.removeClass(p, 'active');
-    //       }
-    //       p = p.parentNode;
-    //     }
-    //   }
-
-    //   activeLinks.forEach(a => {
-    //     let p = a.parentNode;
-    //     while (p && ['LI', 'UL', 'P'].includes(p.nodeName)) {
-    //       this.renderer.addClass(p, 'active');
-    //       p = p.parentNode;
-    //     }
-    //   });
-    // }
   }
 }

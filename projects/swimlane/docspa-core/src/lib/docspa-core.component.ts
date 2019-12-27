@@ -13,7 +13,6 @@ import { VFile } from '../vendor';
 import { HooksService } from './services/hooks.service';
 import { RouterService } from './services/router.service';
 import { SettingsService } from './services/settings.service';
-import { splitHash } from './shared/utils';
 import { throttleable } from './shared/throttle';
 
 @Component({
@@ -73,17 +72,12 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
   toggleSidebar(nextState: boolean = !this.sidebarClose) {
     this.sidebarClose = nextState;
     localStorage.setItem('DocSPACoreComponent#sidebarClose', String(this.sidebarClose));
-    if (this.sidebarClose) {
-      this.renderer.addClass(document.body, 'close');
-    } else {
-      this.renderer.removeClass(document.body, 'close');
-    }
+    this.renderer[this.sidebarClose ? 'addClass' : 'removeClass'](document.body, 'close');
   }
 
   ngOnInit() {
     const sidebar = localStorage.getItem('DocSPACoreComponent#sidebarClose') || 'false';
     this.toggleSidebar(sidebar === 'true');
-    // this.routerService.changed.subscribe((changes: SimpleChanges) => this.pathChanges(changes));
 
     this.hooks.doneEach.tap('main-content-loaded', (page: VFile) => {
       if (page.data.docspa.isPageContent) {
