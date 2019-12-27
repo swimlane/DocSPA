@@ -2,8 +2,8 @@ import { Injectable, EventEmitter, SimpleChange, SimpleChanges } from '@angular/
 
 import { NGXLogger } from 'ngx-logger';
 
-import { goExternal, isAbsolutePath } from '../utils';
-import { getFullPath } from '../vfile-utils';
+import { goExternal, isAbsolutePath } from '../shared/utils';
+import { getFullPath } from '../shared/vfile-utils';
 
 import { SettingsService } from './settings.service';
 import { FetchService } from './fetch.service';

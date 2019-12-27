@@ -16,7 +16,7 @@ import * as MDAST from 'mdast';
 import * as UNIFIED from 'unified';
 
 import { VFile } from '../../../vendor';
-import { join } from '../../utils';
+import { join } from '../../shared/utils';
 
 import { FetchService } from '../../services/fetch.service';
 import { LocationService } from '../../services/location.service';
@@ -146,6 +146,7 @@ export class TOCSearchComponent implements OnInit {
       };
     };
 
+    // TODO: use toc directly instead of passing through remark2rehype and rehypeStringify
     this.processor = unified() // md -> toc -> md + links
       .use(markdown)
       .use(frontmatter)

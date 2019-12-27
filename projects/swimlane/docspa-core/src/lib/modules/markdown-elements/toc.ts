@@ -13,9 +13,10 @@ import slug from 'remark-slug';
 import rehypeStringify from 'rehype-stringify';
 import remark2rehype from 'remark-rehype';
 import raw from 'rehype-raw';
+import { resolve } from 'url';
 
-import { join, splitHash } from '../../utils';
-import { throttleable } from '../../throttle';
+import { join, splitHash } from '../../shared/utils';
+import { throttleable } from '../../shared/throttle';
 
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
@@ -47,7 +48,7 @@ function getFoldPosition(elem: any) {
 }
 
 @Component({
-  selector: 'md-toc', // tslint:disable-line
+  selector: 'docspa-toc', // tslint:disable-line
   template: ``,
   encapsulation: ViewEncapsulation.None
 })
@@ -55,14 +56,19 @@ export class TOCComponent implements OnInit {
   static readonly is = 'md-toc';
 
   @Input()
-  set path(val) {
+  set path(val: string) {
     this._path = val;
   }
-  get path() {
+  get path(): string {
     if (!this._path) {
       return this.routerService.contentPage;
     }
     return this._path;
+  }
+
+  @Input()
+  set src(val: string) {
+    this._path = val;
   }
 
   @Input()
@@ -86,7 +92,7 @@ export class TOCComponent implements OnInit {
   @HostListener('window:scroll', [])
   @throttleable(120)
   onWindowScroll() {
-    if (this.isCurrentPage) {
+    if (this.isCurrentPage && this.contentAnchors) {
       this.inScrollHashes = [];
       let lastAboveFold = null;
       for (let i = 0; i < this.contentAnchors.length; i++) {
@@ -105,15 +111,16 @@ export class TOCComponent implements OnInit {
   }
 
   private processor: any;
-  private _path: string;
+  private _path: string = '';
   private _lastPath: string;
 
   private contentAnchors: NodeListOf<Element>;
   private tocLinks: NodeListOf<Element>;
   private inScrollHashes: string[] = [];
+  private toc: any;
 
   private get isCurrentPage() {
-    return this._lastPath === this.routerService.contentPage;
+    return !this._path;
   }
 
   constructor(
@@ -125,13 +132,16 @@ export class TOCComponent implements OnInit {
     private elm: ElementRef,
     private renderer: Renderer2
   ) {
+
     const toToc = () => {
       return (tree: MDAST.Root) => {
         const result = toc(tree, { maxDepth: this.maxDepth, tight: this.tight });
+
         tree.children = [].concat(
           tree.children.slice(0, result.index),
           result.map || []
         );
+
         return visit(tree, 'paragraph', (node: any, index: number, parent: any) => {
           if (parent.children.length > 1) {
             node.data = node.data || {};
@@ -155,6 +165,7 @@ export class TOCComponent implements OnInit {
       };
     };
 
+    // TODO: use toc directly instead of passing through remark2rehype and rehypeStringify
     this.processor = unified()
       .use(markdown)
       .use(frontmatter)
@@ -169,29 +180,35 @@ export class TOCComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.routerService.changed.subscribe((changes: SimpleChanges) => {
-      if ('contentPage' in changes) {
+    this.hooks.doneEach.tap('main-content-loaded', (page: VFile) => {
+      if (page.data.docspa.isPageContent) {
+        // load or update after main content changes
         this.load();
+      } else {
+        // update links any DOM changes
+        this.markLinks();
       }
     });
-    this.load();
   }
 
   private load(page: string = this.path) {
-    if (page === this._lastPath) {
-      setTimeout(() => {
-        this.markLinks();
-      }, 30);
-      return;
-    }
-
+    // Not a page, clear
     if (typeof page !== 'string' || page.trim() === '') {
       this.html = '';
       this._lastPath = page;
-      this.getLinks();
       this.markLinks();
+      return;
     }
 
+    // TOC content hasn't changed,
+    // But content might have,
+    // refresh links
+    if (page === this._lastPath) {
+      this.markLinks();
+      return;
+    }
+
+    // get new TOC content
     const vfile = this.locationService.pageToFile(page) as VFile;
     const fullpath = join(vfile.cwd, vfile.path);
     this.fetchService.get(fullpath)
@@ -200,7 +217,6 @@ export class TOCComponent implements OnInit {
           vfile.contents = resource.contents;
           vfile.data = vfile.data || {};
           /* const err = */ await this.processor.process(vfile);
-          this.hooks.doneEach.call(vfile);
           return vfile;
         }),
       ).subscribe(_vfile => {
@@ -208,22 +224,9 @@ export class TOCComponent implements OnInit {
         this._lastPath = page;
         setTimeout(() => {
           this.hooks.doneEach.call(_vfile);
-          this.getLinks();
-          this.markLinks();
+          // console.log(this.toc);
         }, 30);
       });
-  }
-
-  /**
-   * Gets links in current TOC
-   * and if needed anchors in the content
-   */
-  private getLinks() {
-    this.tocLinks = this.elm.nativeElement.getElementsByTagName('a');
-    if (this.isCurrentPage) {
-      const content = document.getElementById('content');
-      this.contentAnchors = content ? content.querySelectorAll('h1[id] a, h2[id] a, h3[id] a, h4[id] a, h5[id] a') : null;
-    }
   }
 
   /**
@@ -238,6 +241,7 @@ export class TOCComponent implements OnInit {
       const [, hash] = splitHash(href);
       return this.inScrollHashes.includes(hash);
     } else {
+      // note: active class is set by routerLink
       return a.classList.contains('active');
     }
   }
@@ -246,6 +250,8 @@ export class TOCComponent implements OnInit {
     const action = isActive ? 'addClass' : 'removeClass';
   
     let p = elem.parentNode;
+
+    // walk up dom to set active class
     while (p && ['LI', 'UL', 'P'].includes(p.nodeName)) {
       this.renderer[action](p, 'active');
       p = p.parentNode;
@@ -254,7 +260,13 @@ export class TOCComponent implements OnInit {
 
   @throttleable(120)
   private markLinks() {
-    // clear all
+    this.tocLinks = this.elm.nativeElement.getElementsByTagName('a');
+    if (this.isCurrentPage) {
+      const content = document.getElementById('content');
+      this.contentAnchors = content ? content.querySelectorAll('h1[id] a, h2[id] a, h3[id] a, h4[id] a, h5[id] a') : null;
+    }
+
+    // clear
     for (let i = 0; i < this.tocLinks.length; i++) {
       this.updateTree(this.tocLinks[i], false);
     }

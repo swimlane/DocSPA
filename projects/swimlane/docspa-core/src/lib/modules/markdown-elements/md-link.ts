@@ -15,7 +15,10 @@ import { RouterService } from '../../services/router.service';
     <ng-template>
       <a
         [attr.class]="klass"
-        [routerLink]="routerLink" [fragment]="fragment" routerLinkActive="active" 
+        [routerLink]="routerLink"
+        [fragment]="fragment"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}"
         [attr.aria-hidden]="ariaHidden">
         <ng-content></ng-content>
       </a>
@@ -56,7 +59,7 @@ export class MdLink {
   ) {
   }
 
-  ngOnInit() {
+  ngAfterContentInit() {
     // Moving link outside of component
     this.vcRef.createEmbeddedView(this.template);
   }
@@ -70,7 +73,7 @@ export class MdLink {
     this.routerLink = this.locationService.prepareLink(routerLink, this.routerService.root);
 
     // Hack to preserve trailing slash
-    if (this.routerLink.endsWith('/')) {
+    if (this.routerLink.length > 1 && this.routerLink.endsWith('/')) {
       this.routerLink = [this.routerLink, ''];
     }
 

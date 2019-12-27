@@ -10,22 +10,20 @@ import visit from 'unist-util-visit';
 import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
 import * as MDAST from 'mdast';
-import { VFile, Link, Heading } from '../../../vendor';
-
 import frontmatter from 'remark-frontmatter';
 import rehypeStringify from 'rehype-stringify';
 import remark2rehype from 'remark-rehype';
 import raw from 'rehype-raw';
 
 import { images } from '../../shared/links';
-
 import { LocationService } from '../../services/location.service';
 import { FetchService } from '../../services/fetch.service';
 import { SettingsService } from '../../services/settings.service';
 import { RouterService } from '../../services/router.service';
 import { MarkdownService } from '../markdown/markdown.service';
+import { VFile, Link, Heading } from '../../../vendor';
 
-import { join, isAbsolutePath } from '../../utils';
+import { join, isAbsolutePath } from '../../shared/utils';
 
 @Component({
   selector: 'docspa-print', // tslint:disable-line

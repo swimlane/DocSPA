@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LocationStrategy, PlatformLocation } from '@angular/common';
 import VFILE from 'vfile';
 
-import { join, isAbsolutePath, stripBaseHref  } from '../utils';
+import { join, isAbsolutePath, stripBaseHref  } from '../shared/utils';
 import { resolve } from 'url';
 
 import { SettingsService } from './settings.service';

@@ -11,7 +11,7 @@ import { MarkdownService } from '../markdown/markdown.service';
 import { LocationService } from '../../services/location.service';
 import { FetchService } from '../../services/fetch.service';
 import { HooksService } from '../../services/hooks.service';
-import { splitHash } from '../../utils';
+import { splitHash } from '../../shared/utils';
 
 import { VFile } from '../../../vendor';
 import VFILE from 'vfile';

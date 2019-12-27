@@ -1,28 +1,27 @@
 import { Component, Input, OnInit, ViewEncapsulation, SimpleChanges } from '@angular/core';
 
-import { RouterService } from '../../services/router.service';
-import { MarkdownService } from '../markdown/markdown.service';
-import { LocationService } from '../../services/location.service';
-import { FetchService } from '../../services/fetch.service';
+import { of } from 'rxjs';
+import { flatMap, map } from 'rxjs/operators';
 
+import VFILE from 'vfile';
 import * as MDAST from 'mdast';
-import { getBasePath } from '../../vfile-utils';
-
 import unified from 'unified';
 import markdown from 'remark-parse';
 import visit from 'unist-util-visit';
 import stringify from 'remark-stringify';
 import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
-import { join } from '../../utils';
-
 import frontmatter from 'remark-frontmatter';
 
-import { of } from 'rxjs';
-import { flatMap, map } from 'rxjs/operators';
+import { RouterService } from '../../services/router.service';
+import { MarkdownService } from '../markdown/markdown.service';
+import { LocationService } from '../../services/location.service';
+import { FetchService } from '../../services/fetch.service';
+
+import { join } from '../../shared/utils';
+import { getBasePath } from '../../shared/vfile-utils';
 
 import { VFile } from '../../../vendor';
-import VFILE from 'vfile';
 
 interface Link extends MDAST.Link {
   data: any;

@@ -6,7 +6,7 @@ import { map, share, catchError } from 'rxjs/operators';
 import { normalize } from 'path';
 import { resolve } from 'url';
 
-import { join } from '../utils';
+import { join } from '../shared/utils';
 import { SettingsService } from './settings.service';
 
 export interface CachePage {

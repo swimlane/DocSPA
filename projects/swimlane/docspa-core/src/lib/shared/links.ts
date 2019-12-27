@@ -4,7 +4,7 @@ import * as VFILE from 'vfile';
 import * as MDAST from 'mdast';
 
 import { Link } from '../../vendor';
-import { isAbsolutePath } from '../utils';
+import { isAbsolutePath } from './utils';
 
 /**
  * Convert markdown links to router links

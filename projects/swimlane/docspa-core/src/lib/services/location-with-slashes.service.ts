@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
 
-import { stripBaseHref, stripIndexHtml } from '../utils';
+import { stripBaseHref, stripIndexHtml } from '../shared/utils';
 
 @Injectable()
 export class LocationWithSlashes extends Location {

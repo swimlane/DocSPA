@@ -2,7 +2,6 @@ import { NgModule, Injector, InjectionToken, Optional, ModuleWithProviders, Inje
 import { createCustomElement } from '@angular/elements';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { DocSPACoreComponent } from '../../docspa-core.component';
 
 import visit from 'unist-util-visit';
 import * as MDAST from 'mdast';
@@ -11,8 +10,8 @@ import * as UNIFIED from 'unified';
 import { customSmartCodes } from '../../shared/shortcodes';
 import { MarkdownService } from '../../modules/markdown/markdown.service';
 import { LocationService } from '../../services/location.service';
-import { isAbsolutePath } from '../../utils';
-import { getBasePath } from '../../vfile-utils';
+import { isAbsolutePath } from '../../shared/utils';
+import { getBasePath } from '../../shared/vfile-utils';
 
 // Custom Elements
 import { MadeWithDocSPAComponent } from './made-with-love';

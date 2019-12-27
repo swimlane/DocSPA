@@ -13,8 +13,8 @@ import { VFile } from '../vendor';
 import { HooksService } from './services/hooks.service';
 import { RouterService } from './services/router.service';
 import { SettingsService } from './services/settings.service';
-import { splitHash } from './utils';
-import { throttleable } from './throttle';
+import { splitHash } from './shared/utils';
+import { throttleable } from './shared/throttle';
 
 @Component({
   selector: 'lib-docspa-core,docspa-page,[docspa-page]',
@@ -145,7 +145,7 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
       if (!root.endsWith('/')) {
         root += '/';
       }
-      const path = `./${url}` + (fragment ? `#${fragment}` : '');
+      const path = `${url}` + (fragment ? `#${fragment}` : '');
 
       this.componentRoot = root;
 
