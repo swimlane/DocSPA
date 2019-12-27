@@ -25,7 +25,7 @@
         "projects/swimlane/docspa-remark-preset/dist/module/*"
       ],
       "@swimlane/docspa-core": [
-        "dist/swimlane/docspa-core/esm2015/public_api"
+        "dist/swimlane/docspa-core/"
       ],
       "@swimlane/docspa-core/*": [
         "dist/swimlane/docspa-core/esm2015/*"

@@ -12,7 +12,7 @@
     "setMetadata": "node ./tools/set-metadata.js",
     "build:core": "ng build @swimlane/docspa-core --prod",
     "postbuild:core": "cpx \"./{README.md,LICENSE}\" ./dist/swimlane/docspa-core && cpx ./projects/swimlane/docspa-core/CHANGELOG.md ./dist/swimlane/docspa-core",
-    "build:stackblitz": "ng build @swimlane/docspa-stackblitz",
+    "build:stackblitz": "ng build @swimlane/docspa-stackblitz --prod",
     "build:libs": "npm run build:core && npm run build:stackblitz",
     "prepublish:core": "npm run build:core",
     "publish:core": "cd dist/swimlane/docspa-core && npm publish",
