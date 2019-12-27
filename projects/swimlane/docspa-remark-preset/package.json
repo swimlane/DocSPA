@@ -43,7 +43,7 @@
     "remark-frontmatter": "^1.2.1",
     "remark-gemoji-to-emoji": "^1.1.0",
     "remark-html-emoji-image": "^1.0.0",
-    "remark-html-katex": "^1.1.1",
+    "remark-html-katex": "^1.2.0",
     "remark-math": "^1.0.6",
     "remark-parse": "^6.0.3",
     "rehype-raw": "^4.0.0",

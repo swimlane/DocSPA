@@ -1,7 +1,7 @@
 {
   "name": "docspa",
   "private": true,
-  "version": "5.0.0-1",
+  "version": "5.0.0-2",
   "description": "An Angular-powered documentation SPA",
   "scripts": {
     "ng": "ng",
@@ -15,9 +15,9 @@
     "build:stackblitz": "ng build @swimlane/docspa-stackblitz --prod",
     "build:libs": "npm run build:core && npm run build:stackblitz",
     "prepublish:core": "npm run build:core",
-    "publish:core": "cd dist/swimlane/docspa-core && npm publish",
+    "publish:core": "cd dist/swimlane/docspa-core && npm publish --tag next",
     "prepublish:stackblitz": "npm run build:stackblitz",
-    "publish:stackblitz": "cd dist/swimlane/docspa-stackblitz && npm publish",
+    "publish:stackblitz": "cd dist/swimlane/docspa-stackblitz && npm publish --tag next",
     "publish:libs": "npm run publish:core && npm run publish:stackblitz",
     "test": "jest",
     "ci": "jest",
@@ -41,7 +41,6 @@
     "@angular/core": "^9.0.0-rc.4",
     "@angular/elements": "^9.0.0-rc.4",
     "@angular/forms": "^9.0.0-rc.4",
-    "@angular/http": "^7.2.10",
     "@angular/platform-browser": "^9.0.0-rc.4",
     "@angular/platform-browser-dynamic": "^9.0.0-rc.4",
     "@angular/router": "^9.0.0-rc.4",
