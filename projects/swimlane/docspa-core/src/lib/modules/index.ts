@@ -1,4 +1,4 @@
-export * from './markdown-elements/markdown-elements.module';
-export * from './runtime-content/runtime-content.module';
-export * from './markdown/index';
+export * from './markdown-elements';
+export * from './runtime-content';
+export * from './markdown';
 export * from './docsify-plugins.module';
