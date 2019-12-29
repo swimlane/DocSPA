@@ -6,6 +6,9 @@ _(none)_
 
 --------------------
 
+## 5.0.0-3 (2019-12-29)
+_(none)_
+
 ## 5.0.0-0 (2019-12-26)
 * DocSPA now uses (and requires) angular/router.
 
