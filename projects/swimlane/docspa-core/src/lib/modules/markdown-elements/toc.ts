@@ -56,20 +56,7 @@ export class TOCComponent implements OnInit {
   static readonly is = 'md-toc';
 
   @Input()
-  set path(val: string) {
-    this._path = val;
-  }
-  get path(): string {
-    if (!this._path) {
-      return this.routerService.contentPage;
-    }
-    return this._path;
-  }
-
-  @Input()
-  set src(val: string) {
-    this._path = val;
-  }
+  path: string;
 
   @Input()
   plugins = false;
@@ -111,16 +98,14 @@ export class TOCComponent implements OnInit {
   }
 
   private processor: any;
-  private _path: string = '';
   private _lastPath: string;
 
   private contentAnchors: NodeListOf<Element>;
   private tocLinks: NodeListOf<Element>;
   private inScrollHashes: string[] = [];
-  private toc: any;
 
   private get isCurrentPage() {
-    return !this._path;
+    return !this.path;
   }
 
   constructor(
@@ -191,7 +176,9 @@ export class TOCComponent implements OnInit {
     });
   }
 
-  private load(page: string = this.path) {
+  private load() {
+    const page = this.path || this.routerService.contentPage;;
+
     // Not a page, clear
     if (typeof page !== 'string' || page.trim() === '') {
       this.html = '';
