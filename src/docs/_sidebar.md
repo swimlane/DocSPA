@@ -4,10 +4,10 @@
 
 ---
 
-<md-toc class="collapsible" src="/" max-depth="3"></md-toc>
-<md-toc class="collapsible" src="/quickstart" max-depth="2"></md-toc>
-<md-toc class="collapsible" src="/content" max-depth="2"></md-toc>
-<md-toc class="collapsible" src="/modules" max-depth="2"></md-toc>
-<md-toc class="collapsible" src="/themes" max-depth="2"></md-toc>
-<md-toc class="collapsible" src="/features" max-depth="2"></md-toc>
+<md-toc class="collapsible" path="/" max-depth="3"></md-toc>
+<md-toc class="collapsible" path="/quickstart" max-depth="2"></md-toc>
+<md-toc class="collapsible" path="/content" max-depth="2"></md-toc>
+<md-toc class="collapsible" path="/modules" max-depth="2"></md-toc>
+<md-toc class="collapsible" path="/themes" max-depth="2"></md-toc>
+<md-toc class="collapsible" path="/features" max-depth="2"></md-toc>
 

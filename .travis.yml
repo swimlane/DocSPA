@@ -13,4 +13,4 @@ install:
   - npm ci
 
 script:
-  - npm run ci
+  - npm run test
