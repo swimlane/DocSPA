@@ -1,22 +1,16 @@
 import {
   Component, Input, ViewEncapsulation,
-  ViewChild, ViewContainerRef, ComponentRef, OnInit,
-  Compiler, NgModule,
-  ComponentFactory, ModuleWithComponentFactories,
-  CUSTOM_ELEMENTS_SCHEMA, InjectionToken,
-  Inject
+  ViewChild, ElementRef, OnInit, TemplateRef
 } from '@angular/core';
-
-export const RUNTIMECONTENT_CONFIG_TOKEN = new InjectionToken<any>( 'forRoot() configuration.' );
 
 @Component({
   selector: 'runtime-content',
   template: `
-    <div class="source" #source><ng-content></ng-content></div>
-    <div #container></div>
+    <code class="source" #source><ng-content></ng-content></code>
+    <ng-container *dynamicComponent="template; context: context; selector: selector"></ng-container>
   `,
   styles: [`
-    runtime-content > div.source {
+    runtime-content > .source {
       display: none;
     }
   `],
@@ -25,68 +19,30 @@ export const RUNTIMECONTENT_CONFIG_TOKEN = new InjectionToken<any>( 'forRoot() c
 export class RuntimeContentComponent implements OnInit {
   static readonly is = 'runtime-content';
 
-  @Input()
+  @Input('context')
   context: any;
 
   @Input()
   template: string;
 
-  @ViewChild('container', { static: true, read: ViewContainerRef })
-  container: ViewContainerRef;
+  @Input()
+  selector = 'runtime-component-sample';
 
   @ViewChild('source', { static: true })
-  source: any;
-
-  highlight: string;
-
-  private componentRef: ComponentRef<{}>;
-
-  constructor(
-    private compiler: Compiler,
-    @Inject(RUNTIMECONTENT_CONFIG_TOKEN) private config: any
-  ) {
-  }
+  source: ElementRef;
 
   ngOnInit() {
     if (!this.template && this.source) {
       this.template = this.source.nativeElement.innerHTML.trim();
     }
-    this.compileTemplate();
-  }
 
-  compileTemplate() {
-    const metadata = {
-      selector: `runtime-component-sample`,
-      template: this.template
-    };
-
-    const factory = this.createComponentFactorySync(metadata, this.context);
-
-    if (this.componentRef) {
-      this.componentRef.destroy();
-      this.componentRef = null;
-    }
-    this.componentRef = this.container.createComponent(factory);
-  }
-
-  private createComponentFactorySync(metadata: Component, context: any): ComponentFactory<any> {
-    context = context ? JSON.parse(context) : {};
-
-    class RuntimeComponent {
-      constructor() {
-        Object.assign(this, context);
+    this.context = this.context || {};
+    if (typeof this.context === 'string') {
+      try {
+        this.context = JSON.parse(this.context);
+      } catch(err) {
+        this.context  = {};
       }
     }
-    Component(metadata)(RuntimeComponent);
-
-    class RuntimeComponentModule { }
-    NgModule({
-      imports: [ ...this.config.imports ],
-      declarations: [ RuntimeComponent ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
-    })(RuntimeComponentModule);
-
-    const module: ModuleWithComponentFactories<any> = this.compiler.compileModuleAndAllComponentsSync(RuntimeComponentModule);
-    return module.componentFactories.find(f => f.componentType === RuntimeComponent);
   }
 }
