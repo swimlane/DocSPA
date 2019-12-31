@@ -1,4 +1,4 @@
-import { NgModule, Injector, ModuleWithProviders, Compiler } from '@angular/core';
+import { NgModule, Injector, ModuleWithProviders, Compiler, ComponentFactory, ComponentFactoryResolver, Type, Component } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import { JitCompilerFactory } from '@angular/platform-browser-dynamic';
 import { prism } from '@swimlane/docspa-remark-preset';
@@ -7,6 +7,7 @@ import { MarkdownService } from '../../modules/markdown/markdown.service';
 import { RuntimeContentComponent } from './runtime-content.component';
 import { runtime } from './runtime';
 import { DynamicComponentDirective, DynamicComponentOptions } from './dynamic-component.directive';
+import { RuntimeElement } from './dynamic-element'
 
 export function createJitCompiler() {
   return new (JitCompilerFactory as any)([{
@@ -50,5 +51,10 @@ export class RuntimeContentModule {
     } else {
       plugins.push(runtime);
     }
+
+    RuntimeElement.injector = injector;
+    customElements.define('runtime-element', RuntimeElement, { extends: 'template' });
   }
 }
+
+

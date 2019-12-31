@@ -4,20 +4,23 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'runtime-content',
+  selector: 'docspa-runtime',
   template: `
-    <code class="source" #source><ng-content></ng-content></code>
+    <div class="source" #source><ng-content></ng-content></div>
     <ng-container *dynamicComponent="template; context: context; selector: selector"></ng-container>
   `,
   styles: [`
-    runtime-content > .source {
+    docspa-runtime > .source {
+      display: none;
+    }
+    md-runtime > .source {
       display: none;
     }
   `],
   encapsulation: ViewEncapsulation.None
 })
 export class RuntimeContentComponent implements OnInit {
-  static readonly is = 'runtime-content';
+  static readonly is = 'md-runtime';
 
   @Input('context')
   context: any;
@@ -30,6 +33,8 @@ export class RuntimeContentComponent implements OnInit {
 
   @ViewChild('source', { static: true })
   source: ElementRef;
+
+  _template: string;
 
   ngOnInit() {
     if (!this.template && this.source) {

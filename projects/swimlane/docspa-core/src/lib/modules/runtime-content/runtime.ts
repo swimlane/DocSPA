@@ -59,11 +59,10 @@ export function runtime(this: UNIFIED.Processor): UNIFIED.Transformer {
             Object.assign(context, JSON.parse(hProperties.context));
           } catch (e) {
           }
-          value = escape(value, true);
-          value = `<runtime-content
-            template="${value}"
+          value = `<template is="runtime-element"
+            template="${escape(value, true)}"
             context="${escape(JSON.stringify(context), true)}">
-          </runtime-content>`;
+          </template>`;
         }
 
         const newNode = {
