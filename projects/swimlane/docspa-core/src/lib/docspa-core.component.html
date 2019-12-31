@@ -30,6 +30,7 @@
   <aside *ngIf="sidebarPage" class="sidebar left-sidebar">
     <docspa-md-include
       class="sidebar-nav"
+      [collapseLists]="true"
       [path]="sidebarPage"
       [safe]="true">
     </docspa-md-include>

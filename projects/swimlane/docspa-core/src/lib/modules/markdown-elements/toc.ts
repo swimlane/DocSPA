@@ -1,9 +1,8 @@
 import {
   Component, Input, OnInit, ViewEncapsulation,
-  HostBinding, SimpleChanges, ElementRef, Renderer2, HostListener
+  HostBinding, ElementRef, Renderer2, HostListener
 } from '@angular/core';
 
-import { of } from 'rxjs';
 import { flatMap, map, share } from 'rxjs/operators';
 import unified from 'unified';
 import markdown from 'remark-parse';
@@ -13,7 +12,6 @@ import slug from 'remark-slug';
 import rehypeStringify from 'rehype-stringify';
 import remark2rehype from 'remark-rehype';
 import raw from 'rehype-raw';
-import { resolve } from 'url';
 
 import { join, splitHash } from '../../shared/utils';
 import { throttleable } from '../../shared/throttle';
@@ -31,6 +29,10 @@ import * as MDAST from 'mdast';
 
 import VFILE from 'vfile';
 import { VFile } from '../../../vendor';
+
+export function coerceBooleanProperty(value: any): boolean {
+  return value != null && `${value}` !== 'false';
+}
 
 function getFoldPosition(elem: any) {
   const docViewTop = 0;
@@ -68,7 +70,15 @@ export class TOCComponent implements OnInit {
   maxDepth = 6;
 
   @Input()
-  tight = false;
+  tight = true;
+
+  @Input('collapse-lists')
+  set collapseLists(val: string | boolean) {
+    this._collapseLists = coerceBooleanProperty(val);
+  }
+  get collapseLists() {
+    return this._collapseLists;
+  }
 
   @HostBinding('innerHTML')
   html: SafeHtml;
@@ -99,6 +109,7 @@ export class TOCComponent implements OnInit {
 
   private processor: any;
   private _lastPath: string;
+  private _collapseLists: boolean = true;
 
   private contentAnchors: NodeListOf<Element>;
   private tocLinks: NodeListOf<Element>;
@@ -247,6 +258,8 @@ export class TOCComponent implements OnInit {
 
   @throttleable(120)
   private markLinks() {
+    if (!this.collapseLists) return;
+
     this.tocLinks = this.elm.nativeElement.getElementsByTagName('a');
     if (this.isCurrentPage) {
       const content = document.getElementById('content');

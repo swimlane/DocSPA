@@ -251,18 +251,20 @@ a.btn:hover {
   font-weight: normal;
 }
 
-.sidebar-nav li>p.has-children {
-  background-image: var(--sidebar-nav-pagelink-background-image--loaded, var(--sidebar-nav-pagelink-background-image));
-  background-position: var(--sidebar-nav-pagelink-background-position--loaded, var(--sidebar-nav-pagelink-background-image));
-  padding: var(--sidebar-nav-pagelink-padding, var(--sidebar-nav-link-padding));
-  transition: var(--sidebar-nav-pagelink-transition);
-  background-repeat: var(--sidebar-nav-pagelink-background-repeat);
-  background-size: var(--sidebar-nav-pagelink-background-size);
+.sidebar-nav li>p.has-children,
+.sidebar-nav li>a.has-children {
+  background-image: var(--sidebar-nav-pagelink-background-image--loaded, var(--sidebar-nav-pagelink-background-image)) !important;
+  background-position: var(--sidebar-nav-pagelink-background-position--loaded, var(--sidebar-nav-pagelink-background-image)) !important;
+  padding: var(--sidebar-nav-pagelink-padding, var(--sidebar-nav-link-padding)) !important;
+  transition: var(--sidebar-nav-pagelink-transition) !important;
+  background-repeat: var(--sidebar-nav-pagelink-background-repeat) !important;
+  background-size: var(--sidebar-nav-pagelink-background-size) !important;
 }
 
-.sidebar-nav li>p.has-children.active {
-  background-image: var(--sidebar-nav-pagelink-background-image--active, var(--sidebar-nav-pagelink-background-image));
-  background-position: var(--sidebar-nav-pagelink-background-position--active, var(--sidebar-nav-pagelink-background-image));
+.sidebar-nav li>p.has-children.active,
+.sidebar-nav li>a.has-children.active {
+  background-image: var(--sidebar-nav-pagelink-background-image--active, var(--sidebar-nav-pagelink-background-image)) !important;
+  background-position: var(--sidebar-nav-pagelink-background-position--active, var(--sidebar-nav-pagelink-background-image)) !important;
 }
 
 #main-nav .github-icon {

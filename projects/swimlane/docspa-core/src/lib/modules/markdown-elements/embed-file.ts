@@ -7,13 +7,15 @@ import {
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
+import VFILE from 'vfile';
+
 import { MarkdownService } from '../markdown/markdown.service';
 import { LocationService } from '../../services/location.service';
 import { FetchService } from '../../services/fetch.service';
 import { HooksService } from '../../services/hooks.service';
 
 import { VFile } from '../../../vendor';
-import VFILE from 'vfile';
+import { throttleable } from '../../shared/throttle';
 
 const codefilesTypes = ['js', 'json'];
 
@@ -48,6 +50,9 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   @Input()
   attr: string = null;
 
+  @Input()
+  collapseLists: boolean = false;
+
   @HostBinding('innerHTML')
   html: string | SafeHtml;
 
@@ -59,6 +64,8 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
     private locationService: LocationService,
     private fetchService: FetchService,
     private hooks: HooksService,
+    private elm: ElementRef,
+    private renderer: Renderer2
   ) {
   }
 
@@ -70,6 +77,10 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
         this.doScroll();
       }
     }
+
+    this.hooks.doneEach.tap('main-content-loaded', (page: VFile) => {
+      this.markLinks();
+    });
   }
 
   ngOnInit() {
@@ -99,6 +110,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
     setTimeout(() => {
       this.doScroll();
       this.hooks.doneEach.call(_vfile);
+      this.markLinks();
     }, 30);
 
     this.html = bypassSecurity ? this.sanitizer.bypassSecurityTrustHtml(_vfile.contents as string) : _vfile.contents;
@@ -130,6 +142,51 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
           block: 'start'
         });
       } catch (e) {
+      }
+    }
+  }
+
+    /**
+   * Determines if a link is active:
+   *    1) If the content is the current TOC page... and link in scroll region
+   *    2) If the content is not the current TOC page... and link is active
+   * @param a
+   */
+  private isLinkActive(a: Element) {
+    return a.classList.contains('active');
+  }
+
+  private updateTree(elem: Element, isActive: boolean) {
+    const action = isActive ? 'addClass' : 'removeClass';
+  
+    let p = elem.parentNode;
+
+    // walk up dom to set active class
+    while (p && ['LI', 'UL', 'P'].includes(p.nodeName)) {
+      this.renderer[action](p, 'active');
+      p = p.parentNode;
+    }
+  }
+
+  @throttleable(120)
+  private markLinks() {
+    if (!this.collapseLists) return;
+
+    const tocLinks = this.elm.nativeElement.querySelectorAll('ul > li > a');
+    const tocParagraphs = this.elm.nativeElement.querySelectorAll('ul > li > p');
+
+    console.log(tocParagraphs);
+
+    // clear
+    for (let i = 0; i < tocLinks.length; i++) {
+      this.updateTree(tocLinks[i], false);
+    }
+
+    // set
+    for (let i = 0; i < tocLinks.length; i++) {
+      const a = tocLinks[i];
+      if (this.isLinkActive(a)) {
+        this.updateTree(tocLinks[i], true);
       }
     }
   }

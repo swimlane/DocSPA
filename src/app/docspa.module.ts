@@ -12,6 +12,7 @@ import {
   RuntimeContentModule, MarkdownModule, MarkdownElementsModule, MARKDOWN_CONFIG_TOKEN
 } from '@swimlane/docspa-core';
 import { DocspaStackblitzModule } from '@swimlane/docspa-stackblitz';
+import * as squeezeParagraphs from 'remark-squeeze-paragraphs';
 
 import { EditOnGithubComponent } from './plugins/edit-on-github';
 import { TabsPluginModule } from './plugins/tabs.module';
@@ -55,7 +56,11 @@ import { environment } from '../environments/environment';
     EditOnGithubComponent
   ],
   providers: [
-    { provide: MARKDOWN_CONFIG_TOKEN, useValue: preset }
+    { provide: MARKDOWN_CONFIG_TOKEN, useValue: {
+        ...preset,
+        plugins: [...preset.plugins, squeezeParagraphs]
+      }
+    }
   ]
 })
 export class DocspaModule {
