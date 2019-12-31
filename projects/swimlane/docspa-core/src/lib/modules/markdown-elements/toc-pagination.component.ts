@@ -30,7 +30,7 @@ interface Link extends MDAST.Link {
 interface FileIndexItem {
   title: string;
   path: string;
-  link: string;
+  link: string | string[];
 }
 
 @Component({
@@ -183,11 +183,17 @@ export class TOCPaginationComponent implements OnInit {
     const processFiles = (files: any[]) => {
       this.files = files.map(vfile => {
         const path = getBasePath(vfile);
+        let link: string | string[] = this.locationService.prepareLink(path, this.routerService.root);
+
+        // Hack to preserve trailing slash
+        if (link.length > 1 && link.endsWith('/')) {
+          link = [link, ''];
+        }
 
         return {
           path,
           title: vfile.data.title,
-          link: this.locationService.prepareLink(path, this.routerService.root)
+          link
         };
       });
 

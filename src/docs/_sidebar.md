@@ -10,12 +10,12 @@
 <md-toc class="collapsible" path="/themes" max-depth="2" collapse-lists="false"></md-toc>
 <md-toc class="collapsible" path="/features" max-depth="2" collapse-lists="false"></md-toc>
 
-* [Modules](/modules){ .has-children }
-  * [DocSPA Core](/modules#docspacoremodule)
-  * [Markdown Extensions](/modules#markdownmodule)
-  * [Marrkdown Elements](/modules#markdownelementsmodule)
-  * [Docsify Plugins](/modules#docsifypluginsmodule)
-  * [Runtime Dynamic Content](/modules#runtimecontentmodule)
-  * [Stackblitz](/modules#docspastackblitzmodule)
+* [Modules](/modules/){ .has-children }
+  * [DocSPA Core](/modules/core)
+  * [Markdown Extensions](/modules/markdown)
+  * [Markdown Elements](/modules/markdown-elements)
+  * [Docsify Plugins](/modules/docsify)
+  * [Runtime Dynamic Content](/modules/runtime)
+  * [Stackblitz](/modules/stackblitz)
 
 
