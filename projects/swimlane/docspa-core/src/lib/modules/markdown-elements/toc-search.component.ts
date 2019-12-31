@@ -14,12 +14,14 @@ import { links, images } from '../../shared/links';
 import frontmatter from 'remark-frontmatter';
 import * as MDAST from 'mdast';
 import * as UNIFIED from 'unified';
+import { resolve } from 'url';
 
 import { VFile } from '../../../vendor';
 import { join } from '../../shared/utils';
 
 import { FetchService } from '../../services/fetch.service';
 import { LocationService } from '../../services/location.service';
+import { RouterService } from '../../services/router.service';
 
 interface Link extends MDAST.Link {
   data: any;
@@ -55,7 +57,7 @@ export function getTitle(): UNIFIED.Transformer {
     <div class="results-panel" [class.show]="searchResults">
       <p class="empty" *ngIf="searchResults?.length === 0">No results!</p>
       <div class="matching-post" *ngFor="let result of searchResults | slice:0:9">
-        <a [attr.href]="result.url" (click)="search(searchInput.value = '')">
+        <a [routerLink]="result.link" (click)="search(searchInput.value = '')">
           <h2 [innerHTML]="result.name"></h2>
           <p [innerHTML]="result.content"></p>
         </a>
@@ -102,7 +104,8 @@ export class TOCSearchComponent implements OnInit {
 
   constructor(
     private fetchService: FetchService,
-    private locationService: LocationService
+    private locationService: LocationService,
+    private routerService: RouterService
   ) {
     const toToc = () => {
       return (tree: MDAST.Root) => {
@@ -132,13 +135,35 @@ export class TOCSearchComponent implements OnInit {
         file.data = file.data || {};
         file.data.tocSearch = [];
         return visit(tree, 'link', (node: Link) => {
-          const url = node.url;
           const content = toString(node);
           const name = (file.data.matter ? file.data.matter.title : false) || file.data.title || file.path;
+
+          let url = node.url;
+          if (node.data && node.data.hProperties && node.data.hProperties.source) {
+            const { source } = node.data.hProperties;
+
+            // resolve path relative to source document
+            url = resolve(source, url);
+          }
+
+          let [link = '', fragment]: any = url.split('#');
+          
+          // resolve path relative to componnet
+          link = this.locationService.prepareLink(link, this.routerService.root);
+
+          // Hack to preserve trailing slash
+          if (link.length > 1 && link.endsWith('/')) {
+            link = [link, ''];
+          }
+
+          fragment = fragment ? fragment.replace(/^#/, '') : undefined;
+
           file.data.tocSearch.push({
             name,
             url,
             content,
+            link,
+            fragment,
             depth: node.depth as number
           });
           return true;

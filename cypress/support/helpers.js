@@ -1,12 +1,14 @@
 export const sidebar = () => { // TODO: check active link
   cy.get('@sidebar').find('img').should('have.attr', 'src', 'docs/assets/docspa-inline-125px.png');
-  cy.get('@sidebar').find('md-toc').should('have.length', 6);
+  cy.get('@sidebar').find('.sidebar-nav > ul, .sidebar-nav > p > md-toc > ul').should('have.length', 6);
 
-  cy.get('@sidebar').find('md-toc a').should('have.length.gt', 40);
-  cy.get('@sidebar').find('md-toc a').should('have.attr', 'href').and('matches',/^\/.*/);
+  cy.get('@sidebar').find('ul li a').should('have.length.gt', 40);
+  cy.get('@sidebar').find('ul li a').should('have.attr', 'href').and('matches',/^\/.*/);
 
-  cy.get('@sidebar').find('md-toc a').first().should('have.attr', 'href', '/#docspa');
-  cy.get('@sidebar').find('md-toc a').last().should('have.attr', 'href', '/features#environment-variables');
+  cy.get('@sidebar').find('ul li a').first().should('have.attr', 'href', '/#docspa');
+
+  // TODO: all TOC
+  cy.get('@sidebar').find('ul li a').last().should('have.attr', 'href', '/modules/stackblitz');
 
   cy.get('@rightbar').find('md-toc').should('have.length', 1);
 };

@@ -7,7 +7,9 @@ interface UnknownData {
 
 interface TOCData {
   name: string;
-  url: string
+  url: string;
+  link: string | string[];
+  fragment: string;
   content: string
   depth: number;
 }

@@ -25,8 +25,8 @@ describe('Main navigation', () => {
   });
 
   it('to customization page', () => {
-    cy.get('@sidebar').find('md-toc[path="/modules"] a').first().click({ force: true });
-    cy.url().should('include', '/modules');
+    cy.get('@sidebar').find('a[href="/modules/"]').first().click({ force: true });
+    cy.url().should('include', '/modules/');
     cy.get('section.content').find('h1[id="modules"]').contains('Modules');
   });
 

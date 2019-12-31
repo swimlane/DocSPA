@@ -19,6 +19,8 @@ describe('The Features page', () => {
   it('has a sidebar', sidebar);
   it('has a navbar', navbar);
 
+  // TODO: check active TOC
+
   it('has content', () => {
     cy.get('@content').find('h1').contains('Features');
     cy.get('@content').find('footer').contains('Made with DocSPA');
@@ -44,7 +46,8 @@ describe('The Features page', () => {
   });
 
   it('has pagination', () => {
-    cy.get('@content').find('.pagination-item-title').should('have.length', 1);
-    cy.get('@content').find('.pagination-item-title').contains('Themes');
+    cy.get('@content').find('.pagination-item-title').should('have.length', 2);
+    cy.get('@content').find('.pagination-item-title').first().contains('Themes');
+    cy.get('@content').find('.pagination-item-title').last().contains('Modules');
   });
 });
