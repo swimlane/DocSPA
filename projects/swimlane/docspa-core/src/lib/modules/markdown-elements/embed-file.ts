@@ -173,9 +173,6 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
     if (!this.collapseLists) return;
 
     const tocLinks = this.elm.nativeElement.querySelectorAll('ul > li > a');
-    const tocParagraphs = this.elm.nativeElement.querySelectorAll('ul > li > p');
-
-    console.log(tocParagraphs);
 
     // clear
     for (let i = 0; i < tocLinks.length; i++) {
