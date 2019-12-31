@@ -138,8 +138,8 @@ export class TOCComponent implements OnInit {
           result.map || []
         );
 
-        return visit(tree, 'paragraph', (node: any, index: number, parent: any) => {
-          if (parent.children.length > 1) {
+        return visit(tree, 'listItem', (node: any, index: number, parent: any) => {
+          if (node.children.length > 1) {
             node.data = node.data || {};
             node.data.hProperties = node.data.hProperties || {};
             node.data.hProperties.class = node.data.hProperties.class || [];

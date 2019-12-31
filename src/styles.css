@@ -20,7 +20,7 @@
   --sidebar-nav-pagelink-background-image--active     : url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' fill='%230074d9' height='8'%3E%3Cg opacity='.6'%3E%3Cpath d='M0 2V0h8v2zM0 5.073V3h8v2.073zM0 7.425V6h8v1.425l-4 .593z'/%3E%3C/g%3E%3C/svg%3E");
   --sidebar-nav-pagelink-background-image--collapse   : var(--sidebar-nav-pagelink-background-image);
   --sidebar-nav-pagelink-background-image--loaded     : var(--sidebar-nav-pagelink-background-image);
-  --sidebar-nav-pagelink-background-position: calc(100% - 7px) center;
+  --sidebar-nav-pagelink-background-position: calc(100% - 7px) 0.65em;
   --sidebar-nav-pagelink-background-position--active: var(--sidebar-nav-pagelink-background-position);
   --sidebar-nav-pagelink-background-position--collapse: var(--sidebar-nav-pagelink-background-position);
   --sidebar-nav-pagelink-background-position--loaded: var(--sidebar-nav-pagelink-background-position--active);
@@ -213,6 +213,10 @@ a.btn:hover {
 
 /* Sidebars */
 /* TODO: Move this */
+.sidebar.left-sidebar p {
+  margin-bottom: 0;
+}
+
 .sidebar.left-sidebar .sidebar-nav ul > li > ul {
   overflow: hidden;
   line-height: 0;
@@ -251,8 +255,9 @@ a.btn:hover {
   font-weight: normal;
 }
 
-.sidebar-nav li>p.has-children,
-.sidebar-nav li>a.has-children {
+.sidebar-nav li.has-children,
+.sidebar-nav li > p.has-children,
+.sidebar-nav li > a.has-children  {
   background-image: var(--sidebar-nav-pagelink-background-image--loaded, var(--sidebar-nav-pagelink-background-image)) !important;
   background-position: var(--sidebar-nav-pagelink-background-position--loaded, var(--sidebar-nav-pagelink-background-image)) !important;
   padding: var(--sidebar-nav-pagelink-padding, var(--sidebar-nav-link-padding)) !important;
@@ -261,11 +266,11 @@ a.btn:hover {
   background-size: var(--sidebar-nav-pagelink-background-size) !important;
 }
 
-.sidebar-nav li>p.has-children.active,
+/* .sidebar-nav li>p.has-children.active,
 .sidebar-nav li>a.has-children.active {
   background-image: var(--sidebar-nav-pagelink-background-image--active, var(--sidebar-nav-pagelink-background-image)) !important;
   background-position: var(--sidebar-nav-pagelink-background-position--active, var(--sidebar-nav-pagelink-background-image)) !important;
-}
+} */
 
 #main-nav .github-icon {
   width: 16px;
