@@ -1,6 +1,6 @@
 import {
   Component, Input, ViewEncapsulation,
-  ViewChild, ElementRef, OnInit, TemplateRef
+  ViewChild, ElementRef, OnInit
 } from '@angular/core';
 
 @Component({

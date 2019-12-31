@@ -1,18 +1,17 @@
-// DynamicComponentDirective from https://github.com/lacolaco/ng-dynamic/
+// Based on DynamicComponentDirective from https://github.com/lacolaco/ng-dynamic/
 
 import {
-  Component,
   ComponentRef,
-  Compiler,
   Directive,
   Input,
   NgModule,
   SimpleChanges,
   Type,
   ViewContainerRef,
-  ReflectiveInjector,
   OnDestroy
 } from '@angular/core';
+
+import { DynamicContentService } from './dynamic-content.service';
 
 /**
  * options for dynamicComponentModule
@@ -72,17 +71,15 @@ export class DynamicComponentDirective implements OnDestroy {
   constructor(
     private options: DynamicComponentOptions,
     private vcRef: ViewContainerRef,
-    private compiler: Compiler
+    private dynamicContentService: DynamicContentService
   ) { }
 
   private createComponentType(): Type<any> {
-    const metadata = new Component({
+    const metadata = {
       selector: this.selector,
       template: this.template,
-    });
-    const cmpClass = class _ {
     };
-    return Component(metadata)(cmpClass);
+    return DynamicContentService.createComponentType(metadata, this.context);
   }
 
   private createNgModuleType(componentType: Type<any>) {
@@ -94,7 +91,7 @@ export class DynamicComponentDirective implements OnDestroy {
       schemas: this.options.ngModuleMetadata.schemas,
       declarations: declarations
     };
-    return NgModule(moduleMeta)(class _ { });
+    return DynamicContentService.createNgModuleType(moduleMeta);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -103,58 +100,11 @@ export class DynamicComponentDirective implements OnDestroy {
     }
     this.cmpType = this.createComponentType();
     this.moduleType = this.createNgModuleType(this.cmpType);
-    const injector = ReflectiveInjector.fromResolvedProviders([], this.vcRef.parentInjector);
-    this.compiler.compileModuleAndAllComponentsAsync<any>(this.moduleType)
-      .then(factory => {
-        let cmpFactory: any;
-        for (let i = factory.componentFactories.length - 1; i >= 0; i--) {
-          if (factory.componentFactories[i].componentType === this.cmpType) {
-            cmpFactory = factory.componentFactories[i];
-            break;
-          }
-        }
-        return cmpFactory;
-      }, error => {
-      })
-      .then(cmpFactory => {
-        if (cmpFactory) {
-          this.vcRef.clear();
-          this.component = this.vcRef.createComponent(cmpFactory, 0, injector);
 
-          if (this.context !== null && this.context !== undefined) {
-            Object.assign(this.component.instance, this.context);
-
-            const proto = Object.getPrototypeOf(this.context);
-            // don't copy default functions from plain objects
-            if (proto !== undefined && proto !== null && proto !== Object.prototype) {
-
-              const func = Object
-                  .getOwnPropertyNames(proto)
-                  .filter((entry) => typeof this.context[entry] === 'function' && entry !== 'constructor');
-
-              let funcMap: any = {};
-              func.forEach((funcName) => funcMap[funcName] = this.context[funcName].bind(this.context));
-              Object.assign(this.component.instance, funcMap);
-            }
-          }
-
-          this.component.changeDetectorRef.detectChanges();
-        }
-      });
+    this.dynamicContentService.attach(this.moduleType, this.cmpType, this.vcRef).then(component => this.component = component);
   }
 
   ngOnDestroy() {
-    if (this.component) {
-      this.component.destroy();
-    }
-
-    if (this.compiler) {
-      if (this.cmpType) {
-        this.compiler.clearCacheFor(this.cmpType);
-      }
-      if (this.moduleType) {
-        this.compiler.clearCacheFor(this.moduleType);
-      }
-    }
+    this.dynamicContentService.detach(this.component);
   }
 }

@@ -7,7 +7,8 @@ import { MarkdownService } from '../../modules/markdown/markdown.service';
 import { RuntimeContentComponent } from './runtime-content.component';
 import { runtime } from './runtime';
 import { DynamicComponentDirective, DynamicComponentOptions } from './dynamic-component.directive';
-import { RuntimeElement } from './dynamic-element'
+import { RuntimeElement } from './dynamic-element';
+import { DynamicContentService } from './dynamic-content.service';
 
 export function createJitCompiler() {
   return new (JitCompilerFactory as any)([{
@@ -31,6 +32,7 @@ export class RuntimeContentModule {
     return {
       ngModule: RuntimeContentModule,
       providers: [
+        DynamicContentService,
         { provide: Compiler, useFactory: createJitCompiler },
         { provide: DynamicComponentOptions, useValue: { ngModuleMetadata: config } }
       ]
