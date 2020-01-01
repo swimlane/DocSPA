@@ -30,6 +30,7 @@ export function runtime(this: UNIFIED.Processor): UNIFIED.Transformer {
 
     async function visitor(node: MDAST.Code, index: number, parent: MDAST.Parent) {
       const { lang, data } = node;
+      
 
       if (!data || !data.hProperties) {
         return;
@@ -80,7 +81,7 @@ export function runtime(this: UNIFIED.Processor): UNIFIED.Transformer {
           newNode.children = newNode.children.concat([
             {
               type: 'html',
-              value: '<p></p>'
+              value: '<br />'
             },
             {
               type: 'html',

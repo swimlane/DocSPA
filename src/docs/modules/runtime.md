@@ -35,19 +35,31 @@ import { config } from '../docspa.config';
 export class AppModule { }
 ```
 
-The `RuntimeContentModule` provides a `md-runtime` custom element that allows embedding Angular template content into markdown.  The `md-runtime` custom element can be added as HTML into the markdown file:
+The `RuntimeContentModule` provides a `runtime-element` custom element that allows embedding Angular template content into markdown.  The `runtime-element` custom element can be added as HTML into the markdown file:
 
-```markdown { playground }
-<md-runtime context='{ "name": "World", "count": 0 }'>
+<div class="custom-block playground language-markdown">
+
+<template is="runtime-element" context='{ "name": "World", "count": 0 }'>
 Hello {{name}}.
 <br /><button (click)="count = count + 1">Click me: {{count}}</button>
-</md-runtime>
+</template>
+
+```html
+<template is="runtime-element" context='{ "name": "World", "count": 0 }'>
+Hello {{name}}.
+<br /><button (click)="count = count + 1">Click me: {{count}}</button>
+</template>
 ```
+
+</div>
+
+!> Note that this element extends the template element as invoked using the "is" attribute.
+
 
 Or by adding `{ run }` to `HTML` fenced code:
 
 ~~~markdown { playground }
-```html { run context='{ "name": "World", "count": 0 }' }
+```html { run  context='{ "name": "World", "count": 0 }' }
 Hello {{name}}.
 <br /><button (click)="count = count + 1">Click me: {{count}}</button>
 ```

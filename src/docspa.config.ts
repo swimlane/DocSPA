@@ -6,7 +6,7 @@ export const config = {
     sidebar: '_sidebar.md',
     navbar: '_navbar.md',
     rightSidebar: '/_right_sidebar.md',
-    footer: '/_footer.md'
+    footer: '_footer.md'
   },
   coverpage: '_coverpage.md'
 };
