@@ -58,7 +58,7 @@ describe('The Home page', () => {
     cy.get('@input').type('doc', { force: true });
     cy.get('@search').find('.results-panel a').should('have.length', 4);
 
-    // TODO: checl links
+    // TODO: check links
   });
 
   it('has pagination', () => {

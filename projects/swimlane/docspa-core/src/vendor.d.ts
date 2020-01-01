@@ -5,7 +5,7 @@ interface UnknownData {
   [key: string]: unknown;
 }
 
-interface TOCData {
+export interface TOCData {
   name: string;
   url: string;
   link: string | string[];

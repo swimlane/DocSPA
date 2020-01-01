@@ -1,33 +1,27 @@
 import {
-  Component, Input, OnInit, ViewEncapsulation,
+  Component, Input, OnChanges, ViewEncapsulation,
   HostBinding, ElementRef, Renderer2, HostListener
 } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { flatMap, map, share } from 'rxjs/operators';
 import unified from 'unified';
 import markdown from 'remark-parse';
-import toc from 'mdast-util-toc';
-import visit from 'unist-util-visit';
 import slug from 'remark-slug';
 import rehypeStringify from 'rehype-stringify';
 import remark2rehype from 'remark-rehype';
 import raw from 'rehype-raw';
-
-import { join, splitHash } from '../../shared/utils';
-import { throttleable } from '../../shared/throttle';
-
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import frontmatter from 'remark-frontmatter';
 
 import { FetchService } from '../../services/fetch.service';
 import { RouterService } from '../../services/router.service';
 import { LocationService } from '../../services/location.service';
 import { HooksService } from '../../services/hooks.service';
-
+import { TocService } from './toc.service';
 import { links, images } from '../../shared/links';
-import frontmatter from 'remark-frontmatter';
-import * as MDAST from 'mdast';
+import { join, splitHash } from '../../shared/utils';
+import { throttleable } from '../../shared/throttle';
 
-import VFILE from 'vfile';
 import { VFile } from '../../../vendor';
 
 export function coerceBooleanProperty(value: any): boolean {
@@ -54,7 +48,7 @@ function getFoldPosition(elem: any) {
   template: ``,
   encapsulation: ViewEncapsulation.None
 })
-export class TOCComponent implements OnInit {
+export class TOCComponent implements OnChanges {
   static readonly is = 'md-toc';
 
   @Input()
@@ -107,7 +101,24 @@ export class TOCComponent implements OnInit {
     }
   }
 
-  private processor: any;
+  private get processor() {
+    if (this._processor) {
+      return this._processor;
+    }
+    return this._processor = unified()
+      .use(markdown)
+      .use(frontmatter)
+      .use(slug)
+      .use(this.tocService.removeNodesPlugin, this.minDepth)
+      .use(this.tocService.tocPlugin, { maxDepth: this.maxDepth, tight: this.tight })
+      .use(links, this.locationService)
+      .use(images, this.locationService)
+      .use(remark2rehype, { allowDangerousHTML: true })
+      .use(raw)
+      .use(rehypeStringify);
+  }
+
+  private _processor: any;
   private _lastPath: string;
   private _collapseLists: boolean = true;
 
@@ -126,56 +137,23 @@ export class TOCComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private hooks: HooksService,
     private elm: ElementRef,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private tocService: TocService
   ) {
-
-    const toToc = () => {
-      return (tree: MDAST.Root) => {
-        const result = toc(tree, { maxDepth: this.maxDepth, tight: this.tight });
-
-        tree.children = [].concat(
-          tree.children.slice(0, result.index),
-          result.map || []
-        );
-
-        return visit(tree, 'listItem', (node: any, index: number, parent: any) => {
-          if (node.children.length > 1) {
-            node.data = node.data || {};
-            node.data.hProperties = node.data.hProperties || {};
-            node.data.hProperties.class = node.data.hProperties.class || [];
-            node.data.hProperties.class.push('has-children');
-          }
-          return true;
-        });
-      };
-    };
-
-    const removeMinNodes = () => {
-      return (tree: MDAST.Root) => {
-        return visit(tree, 'heading', (node: MDAST.Heading, index: number, parent: any) => {
-          if (node.depth < this.minDepth) {
-            parent.children.splice(index, 1);
-          }
-          return true;
-        });
-      };
-    };
-
-    // TODO: use toc directly instead of passing through remark2rehype and rehypeStringify
-    this.processor = unified()
-      .use(markdown)
-      .use(frontmatter)
-      .use(slug)
-      .use(removeMinNodes)
-      .use(toToc)
-      .use(links, locationService)
-      .use(images, locationService)
-      .use(remark2rehype, { allowDangerousHTML: true })
-      .use(raw)
-      .use(rehypeStringify);
   }
 
   ngOnInit() {
+    this.update();
+  }
+
+  ngOnChanges() {
+    if (this._processor) {
+      this._processor = null;
+      this.update();
+    }
+  }
+
+  update() {
     this.hooks.doneEach.tap('main-content-loaded', (page: VFile) => {
       if (page.data.docspa.isPageContent) {
         // load or update after main content changes

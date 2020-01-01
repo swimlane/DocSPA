@@ -1,15 +1,12 @@
-import { Component, Input, OnInit, ViewEncapsulation, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, ViewEncapsulation, SimpleChanges } from '@angular/core';
 
 import { of } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 
 import VFILE from 'vfile';
-import * as MDAST from 'mdast';
 import unified from 'unified';
 import markdown from 'remark-parse';
-import visit from 'unist-util-visit';
 import stringify from 'remark-stringify';
-import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
 import frontmatter from 'remark-frontmatter';
 
@@ -22,10 +19,7 @@ import { join } from '../../shared/utils';
 import { getBasePath } from '../../shared/vfile-utils';
 
 import { VFile } from '../../../vendor';
-
-interface Link extends MDAST.Link {
-  data: any;
-}
+import { TocService } from './toc.service';
 
 interface FileIndexItem {
   title: string;
@@ -112,7 +106,7 @@ interface FileIndexItem {
   `],
   encapsulation: ViewEncapsulation.None
 })
-export class TOCPaginationComponent implements OnInit {
+export class TOCPaginationComponent implements OnChanges {
   static readonly is = 'md-toc-page';
 
   @Input()
@@ -135,53 +129,51 @@ export class TOCPaginationComponent implements OnInit {
   @Input()
   page: string;
 
-  private processLinks: any;
+  next: FileIndexItem;
+  prev: FileIndexItem;
 
+  private get processLinks() {
+    if (this._processLinks) {
+      return this._processLinks;
+    }
+    return this._processLinks = unified()
+      .use(markdown)
+      .use(frontmatter)
+      .use(slug)
+      .use(this.tocService.linkPlugin)
+      .use(stringify);
+  }
+
+  private files: FileIndexItem[];
+  private _processLinks: any;
   private _paths: string[];
 
-  files: FileIndexItem[];
-
-  next: any;
-  prev: any;
-
-  getBasePath: (vfile: VFILE.VFile) => string = getBasePath;
+  // getBasePath: (vfile: VFILE.VFile) => string = getBasePath;
 
   constructor(
     private fetchService: FetchService,
     private routerService: RouterService,
     private markdownService: MarkdownService,
-    private locationService: LocationService
+    private locationService: LocationService,
+    private tocService: TocService
   ) {
-    const getLinks = () => {
-      return (tree: MDAST.Root, file: VFile) => {
-        file.data = file.data || {};
-        file.data.tocSearch = [];
-        return visit(tree, 'link', (node: any) => {
-          const url = node.url;
-          const content = toString(node);
-          const name = (file.data.matter ? file.data.matter.title : false) || file.data.title || file.path;
-          file.data.tocSearch.push({
-            name,
-            url,
-            content,
-            depth: node.depth as number
-          });
-          return true;
-        });
-      };
-    };
-
-    this.processLinks = unified()
-      .use(markdown)
-      .use(frontmatter)
-      .use(slug)
-      .use(getLinks)
-      .use(stringify);
   }
 
   ngOnInit() {
+    this.update();
+  }
+
+  ngOnChanges() {
+    if (this._processLinks) {
+      this._processLinks = null;
+      this.update();
+    }
+  }
+
+  update() {
     const processFiles = (files: any[]) => {
       this.files = files.map(vfile => {
+        // Use TOCService
         const path = getBasePath(vfile);
         let link: string | string[] = this.locationService.prepareLink(path, this.routerService.root);
 
@@ -214,12 +206,6 @@ export class TOCPaginationComponent implements OnInit {
       this.generatePageIndex(this.paths).then(processFiles);
     }
   }
-
-  // ngOnChanges(changes: SimpleChanges) {
-  //   if ('contentPage' in changes) {
-  //     this.pathChanges(changes.contentPage.currentValue);
-  //   }    
-  // }
 
   private loadSummary(summary: string) {
     const _vfile = this.locationService.pageToFile(summary);

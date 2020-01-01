@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnChanges, ViewEncapsulation } from '@angular/core';
 
 import { of } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
@@ -6,38 +6,18 @@ import { flatMap, map } from 'rxjs/operators';
 import unified from 'unified';
 import markdown from 'remark-parse';
 import toc from 'mdast-util-toc';
-import visit from 'unist-util-visit';
 import stringify from 'remark-stringify';
-import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
 import { links, images } from '../../shared/links';
 import frontmatter from 'remark-frontmatter';
 import * as MDAST from 'mdast';
-import * as UNIFIED from 'unified';
-import { resolve } from 'url';
+import { getTitle } from '@swimlane/docspa-remark-preset';
 
-import { VFile } from '../../../vendor';
 import { join } from '../../shared/utils';
 
 import { FetchService } from '../../services/fetch.service';
 import { LocationService } from '../../services/location.service';
-import { RouterService } from '../../services/router.service';
-
-interface Link extends MDAST.Link {
-  data: any;
-}
-
-export function getTitle(): UNIFIED.Transformer {
-  return (tree: MDAST.Root, file: VFile) => {
-    file.data = file.data || {};
-    return visit(tree, 'heading', (node: MDAST.Heading) => {
-      if (node.depth === 1 && !file.data.title) {
-        file.data.title = toString(node);
-      }
-      return true;
-    });
-  };
-}
+import { TocService } from './toc.service';
 
 @Component({
   selector: 'docspa-toc-search', // tslint:disable-line
@@ -68,7 +48,7 @@ export function getTitle(): UNIFIED.Transformer {
   styleUrls: ['./toc-search.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class TOCSearchComponent implements OnInit {
+export class TOCSearchComponent implements OnChanges {
   static readonly is = 'md-toc-search';
 
   @Input()
@@ -94,8 +74,36 @@ export class TOCSearchComponent implements OnInit {
   @Input()
   maxDepth = 6;
 
-  private processor: any;
-  private processLinks: any;
+  private get processor() {
+    if (this._processor) {
+      return this._processor;
+    }
+    return this._processor = unified() // md -> toc -> md + links
+      .use(markdown)
+      .use(frontmatter)
+      .use(slug)
+      .use(getTitle)
+      .use(this.tocService.removeNodesPlugin, this.minDepth)
+      .use(this.tocService.tocPlugin, { maxDepth: this.maxDepth })
+      .use(links, this.locationService)
+      .use(images, this.locationService)
+      .use(this.tocService.linkPlugin)
+      .use(stringify);
+  }
+  private get processLinks() {
+    if (this._processLinks) {
+      return this._processLinks;
+    }
+    return this._processLinks = unified() // md -> md + links
+      .use(markdown)
+      .use(frontmatter)
+      .use(slug)
+      .use(this.tocService.linkPlugin)
+      .use(stringify);
+  }
+
+  private _processor: any;
+  private _processLinks: any;
 
   private _paths: string[];
 
@@ -105,94 +113,23 @@ export class TOCSearchComponent implements OnInit {
   constructor(
     private fetchService: FetchService,
     private locationService: LocationService,
-    private routerService: RouterService
+    private tocService: TocService
   ) {
-    const toToc = () => {
-      return (tree: MDAST.Root) => {
-        const result = toc(tree, { maxDepth: this.maxDepth });
-        tree.children = [].concat(
-          tree.children.slice(0, result.index),
-          result.map || []
-        );
-        return tree;
-      };
-    };
-
-    const removeMinNodes = () => {
-      return (tree: MDAST.Root, file: VFile) => {
-        file.data = file.data || {};
-        return visit(tree, 'heading', (node: MDAST.Heading, index, parent) => {
-          if (node.depth < this.minDepth) {
-            parent.children.splice(index, 1);
-          }
-          return true;
-        });
-      };
-    };
-
-    const getLinks = () => {
-      return (tree: MDAST.Root, file: VFile) => {
-        file.data = file.data || {};
-        file.data.tocSearch = [];
-        return visit(tree, 'link', (node: Link) => {
-          const content = toString(node);
-          const name = (file.data.matter ? file.data.matter.title : false) || file.data.title || file.path;
-
-          let url = node.url;
-          if (node.data && node.data.hProperties && node.data.hProperties.source) {
-            const { source } = node.data.hProperties;
-
-            // resolve path relative to source document
-            url = resolve(source, url);
-          }
-
-          let [link = '', fragment]: any = url.split('#');
-          
-          // resolve path relative to componnet
-          link = this.locationService.prepareLink(link, this.routerService.root);
-
-          // Hack to preserve trailing slash
-          if (link.length > 1 && link.endsWith('/')) {
-            link = [link, ''];
-          }
-
-          fragment = fragment ? fragment.replace(/^#/, '') : undefined;
-
-          file.data.tocSearch.push({
-            name,
-            url,
-            content,
-            link,
-            fragment,
-            depth: node.depth as number
-          });
-          return true;
-        });
-      };
-    };
-
-    // TODO: use toc directly instead of passing through remark2rehype and rehypeStringify
-    this.processor = unified() // md -> toc -> md + links
-      .use(markdown)
-      .use(frontmatter)
-      .use(slug)
-      .use(getTitle)
-      .use(removeMinNodes)
-      .use(toToc)
-      .use(links, locationService)
-      .use(images, locationService)
-      .use(getLinks)
-      .use(stringify);
-
-    this.processLinks = unified() // md -> md + links
-      .use(markdown)
-      .use(frontmatter)
-      .use(slug)
-      .use(getLinks)
-      .use(stringify);
   }
 
   ngOnInit() {
+    this.update();
+  }
+
+  ngOnChanges() {
+    if (this._processor) {
+      this._processor = null;
+      this._processLinks = null;
+      this.update();
+    }
+  }
+
+  update() {
     if (!this.paths && this.summary) {
       this.loadSummary(this.summary).then(paths => {
         this.paths = paths;

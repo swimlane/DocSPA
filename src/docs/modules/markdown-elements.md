@@ -40,7 +40,7 @@ Shortcode: `[[toc]]`
 Used to include the table of contents for a give path.
 
 ```markdown { playground }
-[[toc path="features" max-depth="2"]]
+[[toc path="../features" max-depth="2"]]
 ```
 
 i> The path is always relative to the root docs folder.  Including `md-toc` without a path will load the TOC for the current page (main content).  Using the shortcode `[[toc]]` without a path will insert TOC for the page the shortcodes is found in.
@@ -53,13 +53,13 @@ Shortcode: `[[include]]`
 This shortcode allows including other files within markdown.
 
 ```markdown { playground }
-[[include path="/examples/embed.md"]]
+[[include path="../examples/embed.md"]]
 ```
 
 including code blocks:
 
 ```markdown { playground }
-[[include path="/examples/embed.js" codeblock="js" safe="true"]]
+[[include path="../examples/embed.js" codeblock="js" safe="true"]]
 ```
 
 ## Environment Variables

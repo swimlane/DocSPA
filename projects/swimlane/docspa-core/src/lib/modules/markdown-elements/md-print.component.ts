@@ -22,6 +22,7 @@ import { SettingsService } from '../../services/settings.service';
 import { RouterService } from '../../services/router.service';
 import { MarkdownService } from '../markdown/markdown.service';
 import { VFile, Link, Heading } from '../../../vendor';
+import { TocService } from './toc.service';
 
 import { join, isAbsolutePath } from '../../shared/utils';
 
@@ -97,27 +98,11 @@ export class MdPrintComponent implements OnInit {
     private locationService: LocationService,
     private sanitizer: DomSanitizer,
     private elm: ElementRef,
-    private markdownService: MarkdownService
+    private markdownService: MarkdownService,
+    private tocService: TocService
   ) {
-    const getLinks: unified.Attacher = () => {
-      return (tree: MDAST.Root, file: VFile) => {
-        file.data = file.data || {};
-        file.data.tocSearch = [];
-        return visit(tree, 'link', (node: Link) => {
-          const url = node.url;
-          const content = toString(node);
-          const name = (file.data.matter ? file.data.matter.title : false) || file.data.title || file.path;
-          file.data.tocSearch.push({
-            name,
-            url,
-            content,
-            depth: node.depth
-          });
-          return true;
-        });
-      };
-    };
 
+    // TODO: use tocService
     const fixLinks = () => {
       return (tree: MDAST.Root, file: VFile) => {
         return visit(tree, 'link', (node: MDAST.Link) => {
@@ -130,6 +115,7 @@ export class MdPrintComponent implements OnInit {
       };
     };
 
+    // TODO: move toc servcie
     const fixIds = () => {
       return (tree: MDAST.Root, file: VFile) => {
         return visit(tree, 'heading', (node: Heading) => {
@@ -146,7 +132,7 @@ export class MdPrintComponent implements OnInit {
       .use(markdown)
       .use(frontmatter)
       .use(slug)
-      .use(getLinks)
+      .use(this.tocService.linkPlugin)
       .use(remark2rehype, { allowDangerousHTML: true })
       .use(raw)
       .use(rehypeStringify);
