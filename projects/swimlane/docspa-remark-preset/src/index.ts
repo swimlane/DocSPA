@@ -9,6 +9,7 @@ import shortcodes from 'remark-shortcodes';
 import slug from 'remark-slug';
 import remarkAttr from 'remark-attr';
 import reporter from 'vfile-reporter';
+import sectionize from 'remark-sectionize';
 
 import customBlocks from './plugins/remark-custom-blocks-plugin';
 
@@ -20,7 +21,26 @@ import { shortCodeProps } from './plugins/short-codes';
 import { prism } from './plugins/prism';
 import { mermaid } from './plugins/mermaid';
 
+import visit from 'unist-util-visit';
+import * as MDAST from 'mdast';
+import * as VFILE from 'vfile';
+import * as UNIFIED from 'unified';
+
 export { customBlocks, customBlockquotes, prism, mermaid };
+
+export function moveIds(): UNIFIED.Transformer {
+  return (tree: MDAST.Root, file: VFILE.VFile) => {
+    return visit(tree, 'heading', (node: any, index: number, parent: any) => {
+      if (parent.type === 'section' && node.data && node.data.hProperties && node.data.hProperties.id) {
+        parent.data = parent.data || Object.create(null);
+        parent.data.hProperties = parent.data.hProperties || Object.create(null);
+        parent.data.hProperties.id = node.data.hProperties.id;
+        delete node.data.hProperties.id;
+      }
+      return true;
+    });
+  };
+}
 
 export const plugins = [
   frontmatter,
@@ -31,6 +51,8 @@ export const plugins = [
   [ remarkAttr, { scope: 'permissive' } ],
   slug,
   [ headings, { behaviour: 'append' } ],
+  sectionize,
+  moveIds,
   math,
   katex,
   gemojiToEmoji,

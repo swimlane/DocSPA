@@ -50,8 +50,8 @@ export class TocService {
     return (tree: MDAST.Root, file: VFile) => {
       file.data = file.data || {};
       file.data.tocSearch = [];
-      return visit(tree, 'link', (node: Link) => {
-        file.data.tocSearch.push(this.convertToTocData(file, node));
+      return visit(tree, 'link', (node: Link, index: number, parent: MDAST.Parent) => {
+        file.data.tocSearch.push(this.convertToTocData(file, node, parent));
         return true;
       });
     };
@@ -68,7 +68,7 @@ export class TocService {
     };
   };
 
-  private convertToTocData(file: VFile, node: Link): TOCData {
+  private convertToTocData(file: VFile, node: Link, parent?: MDAST.Parent): TOCData {
     const content = toString(node);
     const name = (file.data.matter ? file.data.matter.title : false) || file.data.title || file.path;
 

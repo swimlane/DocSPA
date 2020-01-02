@@ -17,7 +17,7 @@ import { RouterService } from '../../services/router.service';
         [attr.class]="klass"
         [routerLink]="routerLink"
         [fragment]="fragment"
-        routerLinkActive="active"
+        routerLinkActive="router-link-active"
         [routerLinkActiveOptions]="{exact: true}"
         [attr.aria-hidden]="ariaHidden">
         <ng-content></ng-content>
@@ -69,7 +69,7 @@ export class MdLink {
     const url = resolve(this.source, this.href);
     let [routerLink = '', fragment] = url.split('#');
     
-    // resolve path relative to componnet
+    // resolve path relative to component
     this.routerLink = this.locationService.prepareLink(routerLink, this.routerService.root);
 
     // Hack to preserve trailing slash

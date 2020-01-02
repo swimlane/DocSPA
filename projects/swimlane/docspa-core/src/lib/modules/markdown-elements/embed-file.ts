@@ -1,8 +1,8 @@
 import {
   Component, ViewEncapsulation,
-  OnInit, OnChanges, HostBinding, HostListener,
+  OnInit, OnChanges, HostBinding,
   Input,
-  ElementRef, Renderer2,
+  ElementRef,
   SimpleChanges
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -13,6 +13,7 @@ import { MarkdownService } from '../markdown/markdown.service';
 import { LocationService } from '../../services/location.service';
 import { FetchService } from '../../services/fetch.service';
 import { HooksService } from '../../services/hooks.service';
+import { PageScrollService } from '../../services/page-scroll.service';
 
 import { VFile } from '../../../vendor';
 import { throttleable } from '../../shared/throttle';
@@ -57,6 +58,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   html: string | SafeHtml;
 
   private _safe: boolean = null;
+  private tocLinks: HTMLAnchorElement[];
 
   constructor(
     private markdownService: MarkdownService,
@@ -65,26 +67,25 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
     private fetchService: FetchService,
     private hooks: HooksService,
     private elm: ElementRef,
-    private renderer: Renderer2
+    private pageScrollService: PageScrollService
   ) {
+  }
+
+  ngOnInit() {
+    this.load();
+    this.pageScrollService.updated.subscribe(() => this.markLinks());
+    this.hooks.doneEach.tap('main-content-loaded', () => {
+      this.getTocLinks();
+      this.markLinks();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if ('path' in changes || 'plugins' in changes || 'safe' in changes) {
       this.load();
-    } else {
-      if ('scrollTo' in changes) {
-        this.doScroll();
-      }
+    } else if ('scrollTo' in changes) {
+      this.doScroll();
     }
-
-    this.hooks.doneEach.tap('main-content-loaded', (page: VFile) => {
-      this.markLinks();
-    });
-  }
-
-  ngOnInit() {
-    this.load();
   }
 
   private async load(): Promise<string | SafeHtml> {
@@ -107,14 +108,19 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
     }
 
     await this.markdownService.process(_vfile);
+    this.html = bypassSecurity ? this.sanitizer.bypassSecurityTrustHtml(_vfile.contents as string) : _vfile.contents;
+
     setTimeout(() => {
       this.doScroll();
       this.hooks.doneEach.call(_vfile);
-      this.markLinks();
     }, 30);
 
-    this.html = bypassSecurity ? this.sanitizer.bypassSecurityTrustHtml(_vfile.contents as string) : _vfile.contents;
     return this.html;
+  }
+
+  private getTocLinks() {
+    if (!this.collapseLists) return;
+    this.tocLinks = Array.prototype.slice.call(this.elm.nativeElement.querySelectorAll('ul > li > a'));
   }
 
   private async fetch() {
@@ -146,45 +152,8 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
     }
   }
 
-    /**
-   * Determines if a link is active:
-   *    1) If the content is the current TOC page... and link in scroll region
-   *    2) If the content is not the current TOC page... and link is active
-   * @param a
-   */
-  private isLinkActive(a: Element) {
-    return a.classList.contains('active');
-  }
-
-  private updateTree(elem: Element, isActive: boolean) {
-    const action = isActive ? 'addClass' : 'removeClass';
-  
-    let p = elem.parentNode;
-
-    // walk up dom to set active class
-    while (p && ['LI', 'UL', 'P'].includes(p.nodeName)) {
-      this.renderer[action](p, 'active');
-      p = p.parentNode;
-    }
-  }
-
   @throttleable(120)
   private markLinks() {
-    if (!this.collapseLists) return;
-
-    const tocLinks = this.elm.nativeElement.querySelectorAll('ul > li > a');
-
-    // clear
-    for (let i = 0; i < tocLinks.length; i++) {
-      this.updateTree(tocLinks[i], false);
-    }
-
-    // set
-    for (let i = 0; i < tocLinks.length; i++) {
-      const a = tocLinks[i];
-      if (this.isLinkActive(a)) {
-        this.updateTree(tocLinks[i], true);
-      }
-    }
+    if (this.collapseLists) this.pageScrollService.markLinks(this.tocLinks);
   }
 }

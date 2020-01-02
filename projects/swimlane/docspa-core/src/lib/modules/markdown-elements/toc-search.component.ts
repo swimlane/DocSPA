@@ -78,6 +78,7 @@ export class TOCSearchComponent implements OnChanges {
     if (this._processor) {
       return this._processor;
     }
+    // TODO: add sectionize... find sections.
     return this._processor = unified() // md -> toc -> md + links
       .use(markdown)
       .use(frontmatter)

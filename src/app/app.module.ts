@@ -32,10 +32,6 @@ import { AppRoutingModule } from './app-routing.module';
     DocspaModule,
     AppRoutingModule
   ],
-  // providers: [
-  //   { provide: Location, useClass: LocationWithTrailingSlashes },
-  //   { provide: LocationStrategy, useClass: PathLocationStrategy }
-  // ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

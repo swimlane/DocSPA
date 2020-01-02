@@ -79,6 +79,7 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+import 'intersection-observer';
 import '@ungap/global-this';
 
 window['global'] = globalThis as any;
