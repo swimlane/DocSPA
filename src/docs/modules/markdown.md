@@ -246,7 +246,7 @@ The slug for a header can be set by adding an id.
 ```markdown { playground }
 *Doc*{style="color:red; font-size: large"}*SPA*{style="color:blue"}
 
-![](./assets/docspa_mark-only.png){ style="width: 200px; border: 10px solid lightgrey; padding: 10px;"}
+![](../assets/docspa_mark-only.png){ style="width: 200px; border: 10px solid lightgrey; padding: 10px;"}
 ```
 
 #### Classes
@@ -266,9 +266,9 @@ The slug for a header can be set by adding an id.
 #### Attributes
 
 ```markdown { playground }
-![](./assets/docspa_mark-only.png){ width="30px" data-no-zoom }
+![](../assets/docspa_mark-only.png){ width="30px" data-no-zoom }
 
 [www.swimlane.com](http://www.swimlane.com){ target="_blank" }
 
-[ignore](./docs/README.md){ ignore }
+[ignore](../docs/README.md){ ignore }
 ```

@@ -1,4 +1,4 @@
-import { Directive, ElementRef, SimpleChanges, Renderer2, Input } from '@angular/core';
+import { Directive, ElementRef, SimpleChanges, Renderer2, Input, OnInit, OnChanges} from '@angular/core';
 
 import { HooksService } from '../services/hooks.service';
 import { throttleable } from '../shared/throttle';
@@ -6,7 +6,7 @@ import { throttleable } from '../shared/throttle';
 @Directive({
     selector:'[listCollapse]'
 })
-export class ListCollapse {
+export class ListCollapse implements OnInit, OnChanges {
   // an array of active hash
   @Input()
   listCollapse: string[];
@@ -54,21 +54,11 @@ export class ListCollapse {
     // set
     for (let i = 0; i < this.tocLinks.length; i++) {
       const a = this.tocLinks[i];
-      if (this.isLinkActive(a)) {
-        if (this.isHashActive(a)) {
-          this.renderer.addClass(a, 'active');
-        }
+      if (this.isHashActive(a)) {
+        this.renderer.addClass(a, 'active');
         this.updateTree(a, true);
       }
     }
-  }
-
-  /**
-   * Determines if a link is active (requires router-link-active)
-   * @param a
-   */
-  private isLinkActive(a: HTMLAnchorElement) {
-    return a.classList.contains('router-link-active');
   }
 
   /**
@@ -76,8 +66,11 @@ export class ListCollapse {
    * @param a
    */
   private isHashActive(a: HTMLAnchorElement) {
-    const hash = a.hash.replace(/^#/, '');
-    return !hash || this.listCollapse.includes(hash);
+    if (a.classList.contains('router-link-active')) {
+      const hash = a.hash.replace(/^#/, '');
+      return !hash || this.listCollapse.includes(hash);
+    }
+    return false;
   }
 
   private updateTree(elem: Element, isActive: boolean) {
