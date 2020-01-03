@@ -2,7 +2,6 @@ import {
   Component, ViewEncapsulation,
   OnInit, OnChanges, HostBinding,
   Input,
-  ElementRef,
   SimpleChanges
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -13,10 +12,8 @@ import { MarkdownService } from '../markdown/markdown.service';
 import { LocationService } from '../../services/location.service';
 import { FetchService } from '../../services/fetch.service';
 import { HooksService } from '../../services/hooks.service';
-import { PageScrollService } from '../../services/page-scroll.service';
 
 import { VFile } from '../../../vendor';
-import { throttleable } from '../../shared/throttle';
 
 const codefilesTypes = ['js', 'json'];
 
@@ -58,26 +55,18 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   html: string | SafeHtml;
 
   private _safe: boolean = null;
-  private tocLinks: HTMLAnchorElement[];
 
   constructor(
     private markdownService: MarkdownService,
     private sanitizer: DomSanitizer,
     private locationService: LocationService,
     private fetchService: FetchService,
-    private hooks: HooksService,
-    private elm: ElementRef,
-    private pageScrollService: PageScrollService
+    private hooks: HooksService
   ) {
   }
 
   ngOnInit() {
     this.load();
-    this.pageScrollService.updated.subscribe(() => this.markLinks());
-    this.hooks.doneEach.tap('main-content-loaded', () => {
-      this.getTocLinks();
-      this.markLinks();
-    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -118,11 +107,6 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
     return this.html;
   }
 
-  private getTocLinks() {
-    if (!this.collapseLists) return;
-    this.tocLinks = Array.prototype.slice.call(this.elm.nativeElement.querySelectorAll('ul > li > a'));
-  }
-
   private async fetch() {
     let _vfile: VFile;
 
@@ -150,10 +134,5 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
       } catch (e) {
       }
     }
-  }
-
-  @throttleable(120)
-  private markLinks() {
-    if (this.collapseLists) this.pageScrollService.markLinks(this.tocLinks);
   }
 }

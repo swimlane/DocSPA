@@ -16,10 +16,11 @@ import { FetchService } from './services/fetch.service';
 import { RouterService } from './services/router.service';
 import { CacheInterceptor } from './services/cache.interceptor';
 import { HooksService } from './services/hooks.service';
-import { PageScrollService } from './services/page-scroll.service';
+import { SectionScrollSpy } from './directives/section-spy.directive';
+import { ListCollapse } from './directives/list-collapse.directive';
 
 import { DocSPACoreComponent } from './docspa-core.component';
-import { SafeHtmlPipe } from './services/safe-html.pipe';
+import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 
 import { DOCSPA_CONFIG_TOKEN, DOCSPA_ENVIRONMENT } from './docspa-core.tokens';
 
@@ -37,6 +38,8 @@ import { DOCSPA_CONFIG_TOKEN, DOCSPA_ENVIRONMENT } from './docspa-core.tokens';
   declarations: [
     DocSPACoreComponent,
     SafeHtmlPipe,
+    SectionScrollSpy,
+    ListCollapse
   ],
   exports: [
     DocSPACoreComponent,
@@ -47,7 +50,6 @@ import { DOCSPA_CONFIG_TOKEN, DOCSPA_ENVIRONMENT } from './docspa-core.tokens';
     FetchService,
     RouterService,
     HooksService,
-    PageScrollService,
     { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }
   ]
 })

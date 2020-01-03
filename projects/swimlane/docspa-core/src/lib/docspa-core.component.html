@@ -27,7 +27,7 @@
   <button *ngIf="sidebarPage" class="sidebar-toggle" aria-hidden="true" (click)="toggleSidebar()">
     <div class="sidebar-toggle-button"><span></span><span></span><span></span></div>
   </button>
-  <aside *ngIf="sidebarPage" class="sidebar left-sidebar">
+  <aside *ngIf="sidebarPage" class="sidebar left-sidebar" [listCollapse]="inScrollHashes">
     <docspa-md-include
       class="sidebar-nav"
       [collapseLists]="true"
@@ -40,7 +40,8 @@
     <article
       *ngIf="contentPage"
       class="markdown-section"
-      id="main">
+      id="main"
+      (sectionScrollSpy)="inScrollHashes = $event">
       <docspa-md-include
         [path]="contentPage"
         [isPageContent]="true"
@@ -54,7 +55,7 @@
       </docspa-md-include>
     </footer>
   </section>
-  <aside *ngIf="rightSidebarPage" class="sidebar right-sidebar">
+  <aside *ngIf="rightSidebarPage" class="sidebar right-sidebar" [listCollapse]="inScrollHashes">
     <docspa-md-include
       class="sidebar-nav"
       [collapseLists]="true"

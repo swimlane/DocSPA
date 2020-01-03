@@ -36,11 +36,12 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
   contentHeadings: any[];
 
   componentRoot: string;
+  inScrollHashes: Set<string>;
 
   @ViewChild('coverMain') coverMain: any;
 
   private sidebarClose = false;
-
+  
   constructor(
     private settings: SettingsService,
     private routerService: RouterService,
@@ -67,6 +68,10 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.renderer[add ? 'addClass' : 'removeClass'](document.body, 'sticky');
+  }
+
+  onSectionSpy() {
+    console.log(arguments);
   }
 
   toggleSidebar(nextState: boolean = !this.sidebarClose) {

@@ -2,7 +2,6 @@ import { Injectable, Inject, Optional } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 
 import deepmerge from 'deepmerge'; // use xtend?
-import { join } from '../shared/utils';
 
 import { DOCSPA_CONFIG_TOKEN } from '../docspa-core.tokens';
 

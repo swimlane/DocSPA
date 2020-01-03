@@ -12,5 +12,6 @@ export * from './lib/modules/docsify-plugins.module'; */
 
 export * from './lib/modules';
 export * from './lib/services';
+export * from './lib/directives';
 
 export * from './lib/shared/shortcodes';
