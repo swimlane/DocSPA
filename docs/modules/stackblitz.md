@@ -61,6 +61,6 @@ If a both `project-id` and either a `project-path` or `project` input are provid
 <embed-stackblitz
   title='Existing StackBlitz Project with local changes<br />DocSPA'
   project-id="sdk-create-project"
-  project-path="examples/folder/stackblitz">
+  project-path="/examples/folder/stackblitz">
 </embed-stackblitz>
 ```
