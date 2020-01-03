@@ -28,7 +28,7 @@ npm install --save @ngx-loading-bar/core @ngx-loading-bar/http-client @angular/e
 
 2) Add a `docspa.config.ts` to the `src` folder
 
-See [DocspaCoreModule](modules#docspacoremodule)
+See [DocspaCoreModule](modules/core)
 
 2) Edit `pollyfill.ts`
 

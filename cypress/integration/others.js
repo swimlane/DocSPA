@@ -150,31 +150,31 @@ describe('Other pages', () => {
 
     afterEach(() => {
       cy.get('@sidebar').find('a[href="/sub/"]').click({ force: true });
-      cy.get('@content').find('h1[id="sub"]').contains('This is the sub readme');
+      cy.get('@content').find('section[id="sub"] > h1').contains('This is the sub readme');
     })
 
     it('start on readme', () => {
-      cy.get('@content').find('h1[id="sub"]').contains('This is the sub readme');
+      cy.get('@content').find('section[id="sub"] > h1').contains('This is the sub readme');
     });
 
     it('to page a', () => {
       cy.get('@content').find('a[href="/sub/a"]').click({ force: true });
-      cy.get('@content').find('h1[id="a"]').contains('A');
+      cy.get('@content').find('section[id="a"] > h1').contains('A');
     });
 
     it('to page b', () => {
       cy.get('@content').find('a[href="/sub/b"]').click({ force: true });
-      cy.get('@content').find('h1[id="b"]').contains('B');
+      cy.get('@content').find('section[id="b"] > h1').contains('B');
     });
 
     it('to sub page a', () => {
       cy.get('@content').find('a[href="/sub/sub/a"]').click({ force: true });
-      cy.get('@content').find('h1[id="sub-a"]').contains('Sub A');
+      cy.get('@content').find('section[id="sub-a"] > h1').contains('Sub A');
     });
 
     it('to sub page b', () => {
       cy.get('@content').find('a[href="/sub/sub/b"]').click({ force: true });
-      cy.get('@content').find('h1[id="sub-b"]').contains('Sub B');
+      cy.get('@content').find('section[id="sub-b"]> h1').contains('Sub B');
     });
 
     it('to page missing page a', () => {
@@ -192,7 +192,7 @@ describe('Other pages', () => {
     before(() => cy.visit('/sub/test'));
 
     it('check links', () => {
-      cy.get('@content').find('h1[id="links"]').contains('Links');
+      cy.get('@content').find('section[id="links"] > h1').contains('Links');
       cy.get('@content').find('a').eq(0).should('have.attr', 'href', '/sub/test#links');
 
       cy.get('@content').find('a').eq(1).should('have.attr', 'href', '/sub/a');

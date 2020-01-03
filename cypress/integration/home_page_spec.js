@@ -43,9 +43,8 @@ describe('The Home page', () => {
     cy.get('@content').find('footer').contains('Made with DocSPA');
 
     cy.get('@content').find('h1 a, h2 a, h3 a').first().should('have.attr', 'href').and('matches', /^\/#.*/);
-    cy.get('@content').find('docspa-md-include > p a').first().should('have.attr', 'href', 'https://custom-elements-everywhere.com/#angular');
-    // cy.get('@content').find('docspa-md-include > p a').last().should('have.attr', 'href', 'https://www.swimlane.com');
-    cy.get('@content').find('docspa-md-include > p a').eq(1).should('have.attr', 'href', '/quickstart');
+    cy.get('@content').find('section[id="introduction"] > p a').first().should('have.attr', 'href', 'https://custom-elements-everywhere.com/#angular');
+    cy.get('@content').find('section[id="introduction"] > p a').eq(1).should('have.attr', 'href', '/quickstart');
   });
 
   it('can search', () => {
