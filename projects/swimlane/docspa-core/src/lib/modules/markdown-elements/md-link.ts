@@ -1,9 +1,7 @@
 import { 
   Component, Input,
-  ViewChild, TemplateRef, ViewContainerRef, ElementRef, Renderer2,
-  // Host, Optional, Inject
+  ViewChild, TemplateRef, ViewContainerRef
 } from '@angular/core';
-// import { Router, ActivatedRoute } from '@angular/router';
 import { resolve } from 'url';
 
 import { LocationService } from '../../services/location.service';
@@ -22,8 +20,7 @@ import { RouterService } from '../../services/router.service';
         [attr.aria-hidden]="ariaHidden">
         <ng-content></ng-content>
       </a>
-    </ng-template>`,
-  styles: [':host { display: content; }']
+    </ng-template>`
 })
 export class MdLink {
   static readonly is = 'md-link';
@@ -49,12 +46,8 @@ export class MdLink {
   @ViewChild(TemplateRef, { static: true }) private template: TemplateRef<void>;
 
   constructor(
-    // private router: Router,
-    // private route: ActivatedRoute,
     private locationService: LocationService,
     private readonly vcRef: ViewContainerRef,
-    // private readonly elementRef: ElementRef<HTMLElement>,
-    // private readonly renderer2: Renderer2,
     private readonly routerService: RouterService
   ) {
   }
