@@ -1,6 +1,5 @@
 import { Directive, ElementRef, SimpleChanges, Renderer2, Input, OnInit, OnChanges} from '@angular/core';
 
-import { HooksService } from '../services/hooks.service';
 import { throttleable } from '../shared/throttle';
 
 @Directive({
@@ -13,19 +12,17 @@ export class ListCollapse implements OnInit, OnChanges {
 
   // an array of anchors in this element
   private tocLinks: HTMLAnchorElement[];
+  private mutationObserver: MutationObserver;
 
-  constructor(private elm: ElementRef, private renderer: Renderer2, private hooks: HooksService){
+  constructor(private elm: ElementRef, private renderer: Renderer2){
   }
 
   ngOnInit() {
-    this.getTocLinks();
-    this.markLinks();
-
-    // if page content changes, get links
-    this.hooks.doneEach.tap('main-content-loaded', () => {
+    this.mutationObserver = new MutationObserver(() => {
       this.getTocLinks();
       this.markLinks();
     });
+    this.mutationObserver.observe(this.elm.nativeElement, { childList : true, subtree: true });
   }
 
   // if list of hashs changes, update links
@@ -33,6 +30,10 @@ export class ListCollapse implements OnInit, OnChanges {
     if ('listCollapse' in changes) {
       this.markLinks();
     }
+  }
+
+  ngOnDestroy() {
+    if (this.mutationObserver) this.mutationObserver.disconnect();
   }
 
   private getTocLinks() {

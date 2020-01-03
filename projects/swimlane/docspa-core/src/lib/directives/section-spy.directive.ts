@@ -1,7 +1,4 @@
-import { Directive, ElementRef, Output, EventEmitter, Renderer2 } from '@angular/core';
-
-import { HooksService } from '../services/hooks.service';
-import { VFile } from '../../vendor';
+import { Directive, ElementRef, Output, EventEmitter } from '@angular/core';
 
 @Directive({
     selector:'[sectionScrollSpy]'
@@ -11,18 +8,20 @@ export class SectionScrollSpy {
   updated: EventEmitter<string[]> = new EventEmitter();
 
   private intersectionObserver: IntersectionObserver;
+  private mutationObserver: MutationObserver;
   private inScrollHashes: Set<string>;
 
-  constructor(private elm: ElementRef, private renderer: Renderer2, private hooks: HooksService){
+  constructor(private elm: ElementRef){
   }
 
   ngOnInit() {
-    this.hooks.doneEach.tap('main-content-loaded', (page: VFile) => {
-      // If page content changes, update listeners
-      if (page.data.docspa.isPageContent) {
-        this.setupPageListeners();
-      }
-    });
+    this.mutationObserver = new MutationObserver(() => this.setupPageListeners());
+    this.mutationObserver.observe(this.elm.nativeElement, { childList : true, subtree: true });
+  }
+
+  ngOnDestroy() {
+    if (this.mutationObserver) this.mutationObserver.disconnect();
+    if (this.intersectionObserver) this.intersectionObserver.disconnect();
   }
 
   private setupPageListeners() {
