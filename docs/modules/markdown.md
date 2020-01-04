@@ -99,7 +99,7 @@ i> Various parts of DocSPA will display a page title.  By default this page titl
 | A warning
 
 [[figure | **Figure 1: Figure Title**]]
-| ![Hello](./assets/docspa_mark-only.png)
+| ![Hello](../assets/docspa_mark-only.png)
 
 [[caption | **Table 1: Table Title**]]
 | Tables        | Are           | Cool  |
