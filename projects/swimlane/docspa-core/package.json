@@ -1,6 +1,6 @@
 {
   "name": "@swimlane/docspa-core",
-  "version": "5.0.0-6",
+  "version": "5.0.0-7",
   "peerDependencies": {
     "@angular/common": "^8.0.0 || ^9.0.0-rc.4",
     "@angular/core": "^8.0.0 || ^9.0.0-rc.4",
