@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1578016158398,
+  "timestamp": 1578170993596,
   "index": "/DocSPA/index.html",
   "assetGroups": [
     {
@@ -10,8 +10,8 @@
       "urls": [
         "/DocSPA/favicon.ico",
         "/DocSPA/index.html",
-        "/DocSPA/main-es2015.48d8b94bab881275f465.js",
-        "/DocSPA/main-es5.48d8b94bab881275f465.js",
+        "/DocSPA/main-es2015.7a02544dc9a973885817.js",
+        "/DocSPA/main-es5.7a02544dc9a973885817.js",
         "/DocSPA/polyfills-es2015.5bc7371e740f5f7016a5.js",
         "/DocSPA/polyfills-es5.a3475fb02f20b491994e.js",
         "/DocSPA/runtime-es2015.7395114ece8f14dc2f4d.js",
@@ -156,8 +156,8 @@
     "/DocSPA/docs/markdown.md": "49b54782211fd88fd3964a5682546c895edf2af3",
     "/DocSPA/docs/modules/README.md": "e4f7adbde009408d63b5b1d2356b0ea86b41d953",
     "/DocSPA/docs/modules/core.md": "50862fbc30b1cbd2a04e0ec9062f9277a8d18838",
-    "/DocSPA/docs/modules/docsify.md": "aa1a4055b2c076c35c73a51552cee4d1455d220d",
-    "/DocSPA/docs/modules/markdown-elements.md": "07967ec0da05cf3a2eb4678ec4ddddb5c1baa57f",
+    "/DocSPA/docs/modules/docsify.md": "9fb5b2945c018c45a48562a4faf4d20b8809842f",
+    "/DocSPA/docs/modules/markdown-elements.md": "d679a2b2c6d0f78c8fb12e3ac70149c627f44960",
     "/DocSPA/docs/modules/markdown.md": "f6a3039b080b3d4a7f86ea2d84221e0fe135d633",
     "/DocSPA/docs/modules/runtime.md": "c267ac3f4d17d2d7fc06918eaa90449554a5b43b",
     "/DocSPA/docs/modules/stackblitz.md": "df17dfa3629205deadcf9477b4e0cebab4d0a97c",
@@ -176,9 +176,9 @@
     "/DocSPA/docs/sub/test.md": "2df9a8f2cc33ae812cfe92c3f84e4584626b5f5a",
     "/DocSPA/docs/themes.md": "8aab8821f5bba331c64369ecb854216cc11eb277",
     "/DocSPA/favicon.ico": "096d813c6ee821fc57ab25fb45477459d292f550",
-    "/DocSPA/index.html": "efa65ba173c127379ba17ffa188a71c84a4f0e26",
-    "/DocSPA/main-es2015.48d8b94bab881275f465.js": "e477cb097ffc61f1ff1ea730b0ce03158ce20877",
-    "/DocSPA/main-es5.48d8b94bab881275f465.js": "0c2be75467e4321273632059972a4c92b4cdb4ce",
+    "/DocSPA/index.html": "e3905881dceeb6f8c266318134f40fda6263d052",
+    "/DocSPA/main-es2015.7a02544dc9a973885817.js": "21fd2f435dde21afb0c88dc9542a119807e61ead",
+    "/DocSPA/main-es5.7a02544dc9a973885817.js": "531ec12b44fea4c2975ed6c69dbbaa5abde64963",
     "/DocSPA/polyfills-es2015.5bc7371e740f5f7016a5.js": "78a9587ab8722febc486f1f0297648ff65748d1f",
     "/DocSPA/polyfills-es5.a3475fb02f20b491994e.js": "09cd7bf04f54b3cebbb7c9acc6820cae0308f591",
     "/DocSPA/runtime-es2015.7395114ece8f14dc2f4d.js": "8fa0f1104722967d17ff31db8a086e9967381682",

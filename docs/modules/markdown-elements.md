@@ -71,7 +71,7 @@ This shortcode allows displaying variables defined in the "environment" property
 
 ```markdown { playground }
 [[env var="version"]]
-Production? <md-env var="production" />
+Production? <md-env var="production"></md-env>
 ```
 
 !> It is usally expected that `environment` property will contain the contents of your project's `environment.ts`.  `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.  The list of file replacements can be found in `angular.json`.
