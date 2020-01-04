@@ -23,7 +23,7 @@ export function createJitCompiler() {
     RuntimeContentComponent,
     DynamicComponentDirective
   ],
-  bootstrap: [],
+  providers: [ DynamicContentService ],
   entryComponents: [
     RuntimeContentComponent
   ]
