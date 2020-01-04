@@ -2,6 +2,7 @@ import visit from 'unist-util-visit';
 import { LocationService } from '../services/location.service';
 import * as VFILE from 'vfile';
 import * as MDAST from 'mdast';
+import { resolve } from 'url';
 
 import { Link } from '../../vendor';
 import { isAbsolutePath } from './utils';
@@ -32,6 +33,13 @@ export const links = (locationService: LocationService) => {
           return true;
         }
 
+        node.url = resolve(vfile.history[0], node.url);
+
+        let [routerLink = '', fragment] = node.url.split('#');
+        fragment = fragment ? fragment.replace(/^#/, '') : undefined;
+
+        node.data.hProperties.link = routerLink;
+        node.data.hProperties.fragment = fragment;
         node.data.hProperties.source = vfile.history[0];
         node.data.hProperties.klass = node.data.hProperties.class;
         delete node.data.hProperties.class;

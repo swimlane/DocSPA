@@ -49,7 +49,7 @@ Some supported docsify plugins include:
 ```
 
 ```markdown { playground }
-![](./assets/docspa_mark-only.png)
+![](../assets/docspa_mark-only.png)
 ```
 
 i> Add the `data-no-zoom` attribute to exclude an image `![](../assets/docspa_mark-only.png){ data-no-zoom="true" }`

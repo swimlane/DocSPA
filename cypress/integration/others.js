@@ -75,21 +75,19 @@ describe('Other pages', () => {
     });
 
     it('images', () => {
-      cy.get('@content').find('img[data-cy]').should($lis => {
-        expect($lis).to.have.length(3);
-        expect($lis.eq(0)).to.have.attr('src', 'docs/sub/logo.png');
-        expect($lis.eq(1)).to.have.attr('src', 'docs/assets/docspa_mark-only.png');
-        expect($lis.eq(2)).to.have.attr('src', 'docs/assets/docspa_mark-only.png');
-      });
+      cy.get('@content').find('section[id="images"] img').as('images');
+      cy.get('@images').should('have.length', 3);
+      cy.get('@images').eq(0).should('have.attr', 'src', 'docs/sub/logo.png');
+      cy.get('@images').eq(1).should('have.attr', 'src', 'docs/assets/docspa_mark-only.png');
+      cy.get('@images').eq(2).should('have.attr', 'src', 'docs/assets/docspa_mark-only.png');
     });
 
     it('links', () => {
-      cy.get('@content').find('md-link[data-cy="link-test"]').should($lis => {
-        expect($lis).to.have.length(3);
-        expect($lis.eq(0)).to.have.attr('href', './');
-        expect($lis.eq(1)).to.have.attr('href', '../');
-        expect($lis.eq(2)).to.have.attr('href', '/');
-      });
+      cy.get('@content').find('section[id="links"] > p a[href]').as('links');
+      cy.get('@links').should('have.length', 3);
+      cy.get('@links').eq(0).should('have.attr', 'href', '/sub/');
+      cy.get('@links').eq(1).should('have.attr', 'href', '/');
+      cy.get('@links').eq(2).should('have.attr', 'href', '/');
     });
   });
   

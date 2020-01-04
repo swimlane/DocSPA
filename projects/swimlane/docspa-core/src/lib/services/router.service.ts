@@ -1,4 +1,5 @@
 import { Injectable, EventEmitter, SimpleChange, SimpleChanges } from '@angular/core';
+import { Router, ActivatedRouteSnapshot } from '@angular/router';
 
 import { NGXLogger } from 'ngx-logger';
 
@@ -32,16 +33,31 @@ export class RouterService {
    * Emitted whenever page content changes, include side loaded content
    */
   changed = new EventEmitter<SimpleChanges>();
-
+  
   constructor(
     private settings: SettingsService,
     private fetchService: FetchService,
     private locationService: LocationService,
     private logger: NGXLogger,
+    private router: Router
   ) {
   }
 
-  go(url: string, root?: string) {
+  activateRoute(snapshot: ActivatedRouteSnapshot) {
+    const url = snapshot.url.map(s => s.path).join('/');
+    let root = this.router.url;
+    if (snapshot.fragment) {
+      root = root.replace(new RegExp('#' + snapshot.fragment + '$'), '')
+    }
+    root = root.replace(new RegExp(url + '$'), '');
+    if (!root.endsWith('/')) {
+      root += '/';
+    }
+    const path = url + (snapshot.fragment ? `#${snapshot.fragment}` : '');
+    this.go(path, root);
+  }
+
+  go(url: string, root = this.root) {
     url = url || '/';
     if (isAbsolutePath(url)) {
       goExternal(url);
@@ -51,7 +67,7 @@ export class RouterService {
     return this.urlChange(url || '/', root);
   }
 
-  private async urlChange(url: string = '/', root: string) {
+  private async urlChange(url: string = '/', root = this.root) {
     const changes: SimpleChanges = {};
 
     this.logger.debug(`location changed: ${url}`);

@@ -2,7 +2,6 @@ import {
   Component, Input,
   ViewChild, TemplateRef, ViewContainerRef
 } from '@angular/core';
-import { resolve } from 'url';
 
 import { LocationService } from '../../services/location.service';
 import { RouterService } from '../../services/router.service';
@@ -26,13 +25,10 @@ export class MdLink {
   static readonly is = 'md-link';
 
   @Input()
-  href: string;
+  link: string;
 
   @Input('aria-hidden')
   ariaHidden: any;
-
-  @Input()
-  source: string;
 
   @Input()
   download: boolean;
@@ -40,7 +36,10 @@ export class MdLink {
   @Input()
   klass: boolean;
 
+  @Input()
   routerLink: string | string[];
+
+  @Input()
   fragment: string;
 
   @ViewChild(TemplateRef, { static: true }) private template: TemplateRef<void>;
@@ -57,19 +56,20 @@ export class MdLink {
     this.vcRef.createEmbeddedView(this.template);
   }
 
+  /**
+   * [routerLink] and [routerLinkActive] directives use ActivateRoute as the base,
+   * However, when this component is used as a custom element (via angular elements)
+   * it becomes disassociated with the page componnet (router outlet),
+   * so we must convert the url here to be relaive to the page component activate route.
+   */
   ngOnChanges() {
-    // resolve path relative to source document
-    const url = resolve(this.source, this.href);
-    let [routerLink = '', fragment] = url.split('#');
-    
     // resolve path relative to component
-    this.routerLink = this.locationService.prepareLink(routerLink, this.routerService.root);
+    let routerLink: string | string[] = this.locationService.prepareLink(this.link, this.routerService.root);
 
     // Hack to preserve trailing slash
-    if (this.routerLink.length > 1 && this.routerLink.endsWith('/')) {
-      this.routerLink = [this.routerLink, ''];
+    if (typeof routerLink === 'string' && routerLink.length > 1 && routerLink.endsWith('/')) {
+      routerLink = [routerLink, ''];
     }
-
-    this.fragment = fragment ? fragment.replace(/^#/, '') : undefined;
+    this.routerLink = routerLink;
   }
 }

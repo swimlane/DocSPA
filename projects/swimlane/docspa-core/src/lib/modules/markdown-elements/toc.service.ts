@@ -72,33 +72,32 @@ export class TocService {
     const content = toString(node);
     const name = (file.data.matter ? file.data.matter.title : false) || file.data.title || file.path;
 
-    let url = node.url;
-    if (node.data && node.data.hProperties && node.data.hProperties.source) {
-      const { source } = node.data.hProperties;
+    let { url } = node;
+    let link: string | string[] = '';
+    let fragment = '';
 
+    if (node.data && node.data.hName === 'md-link') {
       // resolve path relative to source document
-      url = resolve(source, url);
+      url = resolve(node.data.hProperties.source, url);
+      link = node.data.hProperties.link as string;
+      fragment = node.data.hProperties.fragment;
+
+      link = this.locationService.prepareLink(link, this.routerService.root);
+    } else {
+      [link = '', fragment] = url.split('#');
     }
-
-    let [link = '', fragment]: any = url.split('#');
     
-    // resolve path relative to componnet
-    link = this.locationService.prepareLink(link, this.routerService.root);
-
     // Hack to preserve trailing slash
-    if (link.length > 1 && link.endsWith('/')) {
+    if (typeof link === 'string' && link.length > 1 && link.endsWith('/')) {
       link = [link, ''];
     }
-
-    fragment = fragment ? fragment.replace(/^#/, '') : undefined;
-
 
     return {
       name,
       url,
       content,
       link,
-      fragment,
+      fragment: fragment ? fragment.replace(/^#/, '') : undefined,
       depth: node.depth as number
     }
   }

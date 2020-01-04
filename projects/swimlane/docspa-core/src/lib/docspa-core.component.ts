@@ -4,11 +4,9 @@ import {
   AfterViewInit, OnDestroy
 } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { combineLatest } from 'rxjs';
-import { resolve } from 'url';
-
 import { VFile } from '../vendor';
 import { HooksService } from './services/hooks.service';
 import { RouterService } from './services/router.service';
@@ -30,12 +28,8 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
   footerPage: string;
   anchor: string;
 
-  activeLink: string;
-  activeAnchors: string;
-
   contentHeadings: any[];
 
-  componentRoot: string;
   inScrollHashes: Set<string>;
 
   @ViewChild('coverMain') coverMain: any;
@@ -49,8 +43,7 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
     private titleService: Title,
     private metaService: Meta,
     private hooks: HooksService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router
+    private activatedRoute: ActivatedRoute
   ) {
     this.setupRouter();
   }
@@ -68,10 +61,6 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.renderer[add ? 'addClass' : 'removeClass'](document.body, 'sticky');
-  }
-
-  onSectionSpy() {
-    console.log(arguments);
   }
 
   toggleSidebar(nextState: boolean = !this.sidebarClose) {
@@ -133,26 +122,6 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
     this.onWindowScroll();
   }
 
-  private setupRouter() {
-    combineLatest(this.activatedRoute.url, this.activatedRoute.fragment).subscribe(([segments, fragment]) => {
-      const url = segments.map(s => s.path).join('/');
-      let root = this.router.url;
-      if (fragment) {
-        root = root.replace(new RegExp('#' + fragment + '$'), '')
-      }
-      root = root.replace(new RegExp(url + '$'), '');
-      if (!root.endsWith('/')) {
-        root += '/';
-      }
-      const path = `${url}` + (fragment ? `#${fragment}` : '');
-
-      this.componentRoot = root;
-
-      this.routerService.go(path, root)
-        .then((changes: SimpleChanges) => this.pathChanges(changes));
-    });
-  }
-
   private pathChanges(changes: SimpleChanges) {
     if ('anchor' in changes) {
       this.anchor = changes.anchor.currentValue;
@@ -160,7 +129,6 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if ('contentPage' in changes && this.contentPage !== changes.contentPage.currentValue) {
       this.contentPage = changes.contentPage.currentValue;
-      this.activeLink = resolve(this.componentRoot, this.contentPage);
 
       // if the page changes, and no anchor is given, scroll top the top
       if ('anchor' in changes && changes.anchor.currentValue === '') {
@@ -186,5 +154,17 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
         this.onWindowScroll();
       }
     }, 30);
+  }
+
+  private setupRouter() {
+    // Watch for changes in the this component's actived route,
+    // pass that on to router servce
+    combineLatest(this.activatedRoute.url, this.activatedRoute.fragment)
+      .subscribe(() => {
+        this.routerService.activateRoute(this.activatedRoute.snapshot);
+      });
+
+    // Respond to changes in the docspa route
+    this.routerService.changed.subscribe((changes: SimpleChanges) => this.pathChanges(changes));
   }
 }

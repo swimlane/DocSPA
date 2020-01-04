@@ -14,6 +14,18 @@ const routes: Routes = [
   }
 ];
 
+// const routes: Routes = [
+//   {
+//     path: 'page',
+//     children: [
+//       {
+//         path: '**',
+//         component: DocSPACoreComponent
+//       }
+//     ]
+//   }
+// ];
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
