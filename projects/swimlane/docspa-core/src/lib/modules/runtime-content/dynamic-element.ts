@@ -3,7 +3,7 @@ import { DynamicComponentOptions } from './dynamic-component.directive';
 import { DynamicContentService } from './dynamic-content.service';
 
 export class RuntimeElement extends HTMLTemplateElement {
-  static injector: Injector;
+  static injector: Injector = null;
 
   private options: NgModule = {
     declarations: [],

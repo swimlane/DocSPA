@@ -8,7 +8,7 @@ import { throttleable } from '../shared/throttle';
 export class ListCollapse implements OnInit, OnChanges {
   // an array of active hash
   @Input()
-  listCollapse: string[];
+  listCollapse: string[] = [];
 
   // an array of anchors in this element
   private tocLinks: HTMLAnchorElement[];
@@ -37,7 +37,6 @@ export class ListCollapse implements OnInit, OnChanges {
   }
 
   private getTocLinks() {
-    if (!this.listCollapse) return;
     this.tocLinks = Array.prototype.slice.call(this.elm.nativeElement.querySelectorAll('ul > li > a'));
   }
 
@@ -69,7 +68,7 @@ export class ListCollapse implements OnInit, OnChanges {
   private isHashActive(a: HTMLAnchorElement) {
     if (a.classList.contains('router-link-active')) {
       const hash = a.hash.replace(/^#/, '');
-      return !hash || this.listCollapse.includes(hash);
+      return !hash || (this.listCollapse || []).includes(hash);
     }
     return false;
   }

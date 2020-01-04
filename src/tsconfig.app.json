@@ -29,6 +29,6 @@
     "polyfills.ts"
   ],
   "angularCompilerOptions": {
-    "enableIvy": true
+    "enableIvy": false
   }
 }

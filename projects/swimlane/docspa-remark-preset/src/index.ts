@@ -26,7 +26,7 @@ import * as MDAST from 'mdast';
 import * as VFILE from 'vfile';
 import * as UNIFIED from 'unified';
 
-export { customBlocks, customBlockquotes, prism, mermaid };
+export { customBlocks, customBlockquotes, prism, mermaid, reporter, getTitle };
 
 export function moveIds(): UNIFIED.Transformer {
   return (tree: MDAST.Root, file: VFILE.VFile) => {
@@ -67,11 +67,6 @@ export const plugins = [
 ];
 
 export const settings = {};
-
-export {
-  reporter,
-  getTitle
-};
 
 export const preset = {
   settings,

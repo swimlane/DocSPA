@@ -21,14 +21,13 @@ export class DynamicContentService {
     return Component(metadata)(RuntimeComponent);
   }
 
-  static createNgModuleType(metadata: NgModule) {
+  static createNgModuleType(metadata: NgModule): Type<any> {
     class RuntimeModule {
     }
     return NgModule(metadata)(RuntimeModule);
   }
 
   constructor(
-    // private options: DynamicComponentOptions,
     private compiler: Compiler,
     private applicationRef: ApplicationRef,
     private injector: Injector
@@ -40,7 +39,7 @@ export class DynamicContentService {
 
     return this.compiler
       .compileModuleAndAllComponentsAsync<any>(moduleType)
-      .then(({ componentFactories }) => {
+      .then(({ ngModuleFactory, componentFactories }) => {
         const componentFactory = componentFactories.find(f => f.componentType === componentType);
         if (!componentFactory) return;
 
@@ -49,7 +48,8 @@ export class DynamicContentService {
           return element.createComponent(componentFactory, 0, injector);
         }
 
-        const componentRef = componentFactory.create(injector, null, element);
+        const ngModule = ngModuleFactory.create(injector)
+        const componentRef = componentFactory.create(injector, null, element, ngModule);
         this.applicationRef.attachView(componentRef.hostView);
 
         return componentRef;

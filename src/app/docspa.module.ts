@@ -32,9 +32,8 @@ import { environment } from '../environments/environment';
     RuntimeContentModule.forRoot({
       imports: [
         CommonModule,
-        NgxChartsModule,
-        BrowserAnimationsModule
-      ],
+        NgxChartsModule
+      ]
     }),
     MarkdownModule.forRoot(),
     MarkdownElementsModule.forRoot(),
@@ -49,7 +48,7 @@ import { environment } from '../environments/environment';
     GridPluginModule,
   ],
   exports: [
-    NgxChartsModule,
+    // NgxChartsModule,
     BrowserAnimationsModule
   ],
   entryComponents: [
