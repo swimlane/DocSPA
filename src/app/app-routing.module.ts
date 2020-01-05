@@ -8,23 +8,20 @@ import {
 import { DocSPACoreComponent, LocationWithSlashes } from '@swimlane/docspa-core';
 
 const routes: Routes = [
+  {  // For testing sub-routes
+    path: 'docspa',
+    children: [
+      {
+        path: '**',
+        component: DocSPACoreComponent
+      }
+    ]
+  },
   {
     path: '**',
     component: DocSPACoreComponent
   }
 ];
-
-// const routes: Routes = [
-//   {
-//     path: 'page',
-//     children: [
-//       {
-//         path: '**',
-//         component: DocSPACoreComponent
-//       }
-//     ]
-//   }
-// ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
