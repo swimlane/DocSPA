@@ -1,6 +1,6 @@
 # Content Features
 
-In the [modules](/modules) section several required, recommended, and option modules are described in detail.  Below we summarize features available in if all modulesa re installed as as shown in the [quick start](/quickstart).
+In the [modules](/modules) section several required, recommended, and option modules are described in detail.  Below we summarize features available if all modules are installed as as shown in the [quick start](/quickstart).  More details can be found in each [module](/modules).
 
 ## Github Flavored Markdown
 
@@ -249,3 +249,23 @@ Use the `[[env]]` shortcode to display variables defined in the `environment` pr
 Production? <md-env var="production" />
 ```
 
+
+## Runtime
+
+Runtime Angular templates in markdown content.
+
+<div class="custom-block playground language-markdown">
+
+<template is="runtime-element" context='{ "name": "World", "count": 0 }'>
+Hello {{name}}.
+<br /><button (click)="count = count + 1">Click me: {{count}}</button>
+</template>
+
+```html
+<template is="runtime-element" context='{ "name": "World", "count": 0 }'>
+Hello {{name}}.
+<br /><button (click)="count = count + 1">Click me: {{count}}</button>
+</template>
+```
+
+</div>

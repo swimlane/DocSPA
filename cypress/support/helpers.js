@@ -21,3 +21,11 @@ export const navbar = () => {
 export const noCover = () => {
   cy.get('app-root').find('.cover-main').should('have.length', 0);
 };
+
+export const pageAliases = () => {
+  cy.get('app-root').find('aside.left-sidebar').as('sidebar');
+  cy.get('app-root').find('aside.right-sidebar').as('rightbar');
+  cy.get('app-root').find('nav.app-nav').as('navbar');
+  cy.get('app-root').find('section.content').as('content');
+  cy.get('app-root').find('footer').as('footer');
+};

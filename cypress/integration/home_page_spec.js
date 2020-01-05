@@ -1,12 +1,9 @@
 const pkg = require('../../package.json');
-const { sidebar, navbar } = require('../support/helpers');
+const { sidebar, navbar, pageAliases } = require('../support/helpers');
 
 describe('The Home page', () => {
   beforeEach(() => {
-    cy.get('app-root').find('aside.left-sidebar').as('sidebar');
-    cy.get('app-root').find('aside.right-sidebar').as('rightbar');
-    cy.get('app-root').find('nav.app-nav').as('navbar');
-    cy.get('app-root').find('section.content').as('content');
+    pageAliases();
   });
 
   before(() => cy.visit('/'));
@@ -38,6 +35,43 @@ describe('The Home page', () => {
   it('has a sidebar', sidebar);
   it('has a navbar', navbar);
 
+  it('has expanded left nav', () => {
+    cy.get('@sidebar').find('md-toc > ul > li > a').as('links');
+    cy.get('@links').should('have.length', 5);
+
+    cy.get('@links').eq(0).should('have.attr', 'href', '/#docspa');
+    cy.get('@links').eq(0).should('have.class', 'router-link-active');
+  });
+
+  describe('right bar sidebar', () => {
+    beforeEach(() => {
+      cy.get('@rightbar').find('md-toc a').as('links');
+    });
+
+    it('has edit this page link', () => {
+      cy.get('@rightbar').find('md-edit-on-github a').contains('Edit this page');
+      cy.get('@rightbar').find('md-edit-on-github a').should('have.attr', 'href', 'https://github.com/swimlane/docspa/edit/master/src/docs//README.md');
+    });
+
+    it('has toc', () => {
+      cy.get('@links').should('have.length', 6);
+  
+      cy.get('@links').eq(0).should('have.attr', 'href', '/#introduction');
+      cy.get('@links').eq(1).should('have.attr', 'href', '/#how-it-works');
+      cy.get('@links').eq(2).should('have.attr', 'href', '/#features');
+      cy.get('@links').eq(3).should('have.attr', 'href', '/#todo');
+      cy.get('@links').eq(4).should('have.attr', 'href', '/#why-not-x');
+      cy.get('@links').eq(5).should('have.attr', 'href', '/#credits');
+    });
+
+    it('updates on scroll', () => {
+      cy.get('@content').find('#todo').scrollIntoView();
+      cy.get('@links').eq(3).should('have.class', 'active');
+      cy.get('@links').eq(4).should('have.class', 'active');
+      cy.get('@links').eq(5).should('have.class', 'active');
+    });
+  });
+
   it('has content', () => {
     cy.get('@content').find('h1').contains('DocSPA');
     cy.get('@content').find('footer').contains('Made with DocSPA');
@@ -55,13 +89,24 @@ describe('The Home page', () => {
     cy.get('@search').find('.results-panel a').should('have.length', 0);
     
     cy.get('@input').type('doc', { force: true });
-    cy.get('@search').find('.results-panel a').should('have.length', 4);
+    cy.get('@search').find('.results-panel .matching-post').as('matching');
+    cy.get('@matching').should('have.length', 4);
 
-    // TODO: check links
+    cy.get('@matching').find('a').eq(0).should('have.attr', 'href', '/');
+    cy.get('@matching').find('a').eq(1).should('have.attr', 'href', '/modules/core');
+    cy.get('@matching').find('a').eq(2).should('have.attr', 'href', '/modules/docsify');
+    cy.get('@matching').find('a').eq(3).should('have.attr', 'href', '/modules/stackblitz');
+
+    cy.get('@matching').find('h2').eq(0).should('have.text', 'DocSPA');
+    cy.get('@matching').find('h2').eq(1).should('have.text', 'DocspaCoreModule');
+    cy.get('@matching').find('h2').eq(2).should('have.text', 'DocsifyPluginsModule');
+    cy.get('@matching').find('h2').eq(3).should('have.text', 'DocspaStackblitzModule');
   });
 
   it('has pagination', () => {
-    cy.get('@content').find('.pagination-item-title').should('have.length', 1);
-    cy.get('@content').find('.pagination-item-title').contains('Quick start');
+    cy.get('@footer').find('.pagination-item-title').should('have.length', 1);
+
+    cy.get('@footer').find('.pagination-item--next a').contains('Quick start');
+    cy.get('@footer').find('.pagination-item--next a').should('have.attr', 'href', '/quickstart');
   });
 });
