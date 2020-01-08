@@ -3,5 +3,6 @@
   "dest": "../../../dist/swimlane/docspa-core",
   "lib": {
     "entryFile": "src/public_api.ts"
-  }
+  },
+  "whitelistedNonPeerDependencies": ["deepmerge", "quick-lru", "throttleit", "tapable"]
 }

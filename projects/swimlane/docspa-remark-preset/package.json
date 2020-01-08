@@ -1,6 +1,6 @@
 {
   "name": "@swimlane/docspa-remark-preset",
-  "version": "5.0.0-0",
+  "version": "5.0.0-8",
   "description": "Remark preset for DocSPA",
   "main": "dist/main/index.js",
   "typings": "dist/main/index.d.ts",
@@ -56,7 +56,9 @@
     "remark-stringify": "^6.0.4",
     "space-separated-tokens": "^1.1.2",
     "unist-util-visit": "^1.4.0",
-    "vfile-reporter": "^5.1.1"
+    "vfile-reporter": "^5.1.1",
+    "unified": "^7.0.0",
+    "vfile": "^3.0.0"
   },
   "repository": {
     "type": "git",
