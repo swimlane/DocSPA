@@ -31,7 +31,7 @@ export const customSmartCodes = (codes: Codes[]): UNIFIED.Transformer => {
           type: 'element',
           ...codes[node.identifier]
         };
-        child.properties = {...(child.properties || {}), ...(node.data ? node.data.hProperties : {}) };
+        child.properties = {...(child.properties || {}), ...(node.data ? node.data.hProperties : {} as any) };
         const newNode = {
           type: node.identifier,
           data: { hChildren: [child] }

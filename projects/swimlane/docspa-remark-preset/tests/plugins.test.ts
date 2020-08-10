@@ -188,13 +188,13 @@ describe('internal', () => {
     expect(out).toContain(`<p><strong>Hello</strong></p>`);
   }); */
 
-  it('mermaid', async () => { // Can't really test mermaid in node env
+  it('mermaid', async () => {
     const contents = stripIndent`
     ~~~mermaid
     **Hello**
     ~~~`;
     const vfile = await processor.process(contents);
     const out = String(vfile);
-    expect(out).toEqual(`<div class="mermaid">**Hello**</div>`);
+    expect(out).toEqual(`<md-mermaid class="mermaid">**Hello**</md-mermaid>`);
   });
 });
