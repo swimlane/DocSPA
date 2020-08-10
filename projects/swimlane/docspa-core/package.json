@@ -2,9 +2,9 @@
   "name": "@swimlane/docspa-core",
   "version": "5.0.0",
   "peerDependencies": {
-    "@angular/common": "^8.0.0 || ^9.0.0",
-    "@angular/core": "^8.0.0 || ^9.0.0",
-    "@angular/elements": "^8.0.0 || ^9.0.0",
+    "@angular/common": "^8.0.0 || ^9.0.0 || ^10.0.0",
+    "@angular/core": "^8.0.0 || ^9.0.0 || ^10.0.0",
+    "@angular/elements": "^8.0.0 || ^9.0.0 || ^10.0.0",
     "@swimlane/docspa-remark-preset": "^5.0.0",
     "ngx-logger": "^4.0.8",
     "path": "^0.12.7",
