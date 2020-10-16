@@ -38,7 +38,7 @@
     "@angular/animations": "^10.0.8",
     "@angular/cdk": "^10.1.2",
     "@angular/common": "^10.0.8",
-    "@angular/compiler": "^10.0.8",
+    "@angular/compiler": "^10.1.6",
     "@angular/core": "^10.0.8",
     "@angular/elements": "^10.0.8",
     "@angular/forms": "^10.0.8",
