@@ -53,7 +53,7 @@ export function prism({classPrefix = 'language'} = {}): Transformer {
 
       value = (escaped ? value : escape(value, true));
 
-      const lines = rangeParser.parse(data.hProperties.mark || '');
+      const lines = rangeParser(data.hProperties.mark || '');
 
       value = value.split('\n').map((line, i) => {
         // todo: line start
