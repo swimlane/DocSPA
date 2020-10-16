@@ -14,7 +14,7 @@ window['fetch'] = fetchMock as any;
 
 const processor = remark()
   .use(preset)
-  .use(remark2rehype, { allowDangerousHTML: true })
+  .use(remark2rehype, { allowDangerousHtml: true })
   .use(raw)
   .use(rehypeStringify);
 
@@ -38,7 +38,7 @@ describe('3rd party', () => {
       L = \\frac{1}{2} \\rho v^2 S C_L
       $$`;
     const vfile = await processor.process(contents);
-    expect(String(vfile)).toContain(`<div class="math">`);
+    expect(String(vfile)).toContain(`<div class="math math-display">`);
   });
 
   it('remark-html-katex', async () => {
@@ -48,7 +48,7 @@ describe('3rd party', () => {
       $$`;
     const vfile = await processor.process(contents);
     expect(String(vfile)).toContain(`<span class="katex-display">`);
-    expect(String(vfile)).toContain(`<math>`);
+    expect(String(vfile)).toContain(`<math xmlns="http://www.w3.org/1998/Math/MathML`);
   });
 
   it('remark-gemoji-to-emoji, remark-html-emoji-image', async () => {
