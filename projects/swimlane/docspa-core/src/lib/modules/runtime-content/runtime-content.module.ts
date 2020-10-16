@@ -48,7 +48,7 @@ export class RuntimeContentModule {
 
     // Adds a remarkplugin for runtime code blocks
     // Needs to be before prism (this is annoying)
-    const idx = plugins.indexOf(prism);
+    const idx = plugins.indexOf(prism as any);
     if (idx > 0) {
       plugins.splice(idx - 1, 0, runtime);
     } else {

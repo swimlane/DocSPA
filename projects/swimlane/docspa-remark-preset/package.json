@@ -55,10 +55,10 @@
     "remark-slug": "^5.1.0",
     "remark-stringify": "^6.0.4",
     "space-separated-tokens": "^1.1.2",
-    "unist-util-visit": "^1.4.0",
-    "vfile-reporter": "^5.1.1",
     "unified": "^7.0.0",
-    "vfile": "^3.0.0"
+    "unist-util-visit": "^1.4.0",
+    "vfile": "^3.0.0",
+    "vfile-reporter": "^5.1.1"
   },
   "repository": {
     "type": "git",

@@ -12,6 +12,7 @@ interface VNode {
 export function runtime(this: UNIFIED.Processor): UNIFIED.Transformer {
   const processor = this;
 
+  // @ts-ignore
   return function(tree: MDAST.Root, file: VFILE.VFile, next: Function): any {
     const items: VNode[] = [];
 
@@ -50,7 +51,7 @@ export function runtime(this: UNIFIED.Processor): UNIFIED.Transformer {
         hProperties.class.push(isPlayground ? 'playground' : 'runtime');
         if (lang === 'markdown') {
           const f = VFILE({ ...file, contents: node.value });
-          const v = await processor.process(f);
+          const v = await processor.process(f as any);
           value = String(v.contents);
         } else {
           const context = {

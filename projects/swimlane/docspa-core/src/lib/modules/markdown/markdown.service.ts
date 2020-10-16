@@ -32,8 +32,8 @@ export class MarkdownService {
     return this._processor = unified()
       .use(markdown)
       .use(this.config)
-      .use(links, this.locationService)
-      .use(images, this.locationService)
+      .use(links, { locationService: this.locationService })
+      .use(images, { locationService: this.locationService })
       .use(remark2rehype, { allowDangerousHTML: true })
       .use(raw)
       // TODO: rehype plugins
@@ -55,7 +55,7 @@ export class MarkdownService {
     private hooks: HooksService,
     @Optional() @Inject(MARKDOWN_CONFIG_TOKEN) private config: Preset
   ) {
-    this.config = this.config || {};
+    this.config = this.config || { plugins: [] };
     this.config.plugins = this.config.plugins || [];
 
     if (this.config.reporter) {

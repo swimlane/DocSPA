@@ -5,12 +5,10 @@ import { mergeMap, map } from 'rxjs/operators';
 
 import unified from 'unified';
 import markdown from 'remark-parse';
-import toc from 'mdast-util-toc';
 import stringify from 'remark-stringify';
 import slug from 'remark-slug';
 import { links, images } from '../../shared/links';
 import frontmatter from 'remark-frontmatter';
-import * as MDAST from 'mdast';
 import { getTitle } from '@swimlane/docspa-remark-preset';
 
 import { join } from '../../shared/utils';
@@ -83,11 +81,11 @@ export class TOCSearchComponent implements OnInit, OnChanges {
       .use(markdown)
       .use(frontmatter)
       .use(slug)
-      .use(getTitle)
+      .use(getTitle as any)
       .use(this.tocService.removeNodesPlugin, this.minDepth)
       .use(this.tocService.tocPlugin, { maxDepth: this.maxDepth })
-      .use(links, this.locationService)
-      .use(images, this.locationService)
+      .use(links, { locationService: this.locationService })
+      .use(images, { locationService: this.locationService })
       .use(this.tocService.linkPlugin)
       .use(stringify);
   }

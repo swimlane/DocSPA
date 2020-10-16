@@ -1,8 +1,11 @@
 import visit from 'unist-util-visit';
 import { LocationService } from '../services/location.service';
-import * as VFILE from 'vfile';
-import * as MDAST from 'mdast';
 import { resolve } from 'url';
+
+import { Transformer, Attacher } from 'unified';
+import { VFile } from 'vfile';
+import { Node } from 'unist';
+import { Image } from 'mdast';
 
 import { Link } from '../../vendor';
 import { isAbsolutePath } from './utils';
@@ -12,9 +15,9 @@ import { isAbsolutePath } from './utils';
  *
  * @param locationService
  */
-export const links = (locationService: LocationService) => {
-  return (tree: MDAST.Root, vfile: VFILE.VFile) => {
-    return visit(tree, ['link', 'definition'], (node: Link, index, parent) => {
+export const links = (settings: { locationService: LocationService }): Transformer => {
+  return (tree: Node, vfile: VFile) => {
+    return visit(tree, ['link', 'definition'], (node: Link, index: number, parent: unknown) => {
       if (node && parent && index !== undefined && !isAbsolutePath(node.url)) {
 
         node.data = { ...node.data };
@@ -28,7 +31,7 @@ export const links = (locationService: LocationService) => {
 
         // TODO: move this to md-link comp?
         if ('download' in node.data.hProperties) {
-          node.url = locationService.prepareSrc(node.url, vfile.path);
+          node.url = settings.locationService.prepareSrc(node.url, vfile.path);
           node.data.hProperties.source = vfile.path;
           return true;
         }
@@ -52,9 +55,9 @@ export const links = (locationService: LocationService) => {
   };
 };
 
-export const images = (locationService: LocationService) => {
-  return (tree: MDAST.Root, vfile: VFILE.VFile) => {
-    return visit(tree, 'image', (node: MDAST.Image) => {
+export const images: Attacher = ({locationService}: {locationService: LocationService}): Transformer => {
+  return (tree: Node, vfile: VFile) => {
+    return visit(tree, 'image', (node: Image) => {
       // src urls are relative to fullpath
       node.url = locationService.prepareSrc(node.url, vfile.path);
       return true;

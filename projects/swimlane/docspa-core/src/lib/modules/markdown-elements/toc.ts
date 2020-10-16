@@ -63,8 +63,8 @@ export class TOCComponent implements OnChanges, OnInit {
       .use(slug)
       .use(this.tocService.removeNodesPlugin, this.minDepth)
       .use(this.tocService.tocPlugin, { maxDepth: this.maxDepth, tight: this.tight })
-      .use(links, this.locationService)
-      .use(images, this.locationService)
+      .use(links, { locationService: this.locationService })
+      .use(images, { locationService: this.locationService })
       .use(remark2rehype, { allowDangerousHTML: true })
       .use(raw)
       .use(rehypeStringify);

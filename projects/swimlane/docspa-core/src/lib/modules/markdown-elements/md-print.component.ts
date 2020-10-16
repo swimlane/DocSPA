@@ -142,7 +142,7 @@ export class MdPrintComponent implements OnInit {
       .use(this.markdownService.remarkPlugins)
       .use(fixLinks)
       .use(fixIds)
-      .use(images, locationService)
+      .use(images, { locationService })
       .use(remark2rehype, { allowDangerousHTML: true })
       .use(raw)
       .use(rehypeStringify);

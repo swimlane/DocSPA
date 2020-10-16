@@ -100,12 +100,12 @@
     "rxjs": "^6.6.3",
     "tapable": "^1.1.0",
     "tslib": "^2.0.0",
-    "unified": "^7.0.0",
+    "unified": "^9.2.0",
     "url": "^0.11.0",
     "url-resolve": "^1.0.0",
     "util": "^0.11.0",
     "vfile": "^4.2.0",
-    "vfile-reporter": "^5.0.0",
+    "vfile-reporter": "^6.0.1",
     "zone.js": "~0.10.3"
   },
   "devDependencies": {
@@ -121,8 +121,6 @@
     "@types/node": "^13.13.15",
     "@types/quick-lru": "^3.0.0",
     "@types/tapable": "^1.0.6",
-    "@types/unist": "^2.0.3",
-    "@types/vfile": "^3.0.2",
     "angular-cli-ghpages": "^0.6.2",
     "chai": "^4.1.2",
     "chg": "^0.4.0",

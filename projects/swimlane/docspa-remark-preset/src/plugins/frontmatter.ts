@@ -3,6 +3,7 @@ import toString from 'mdast-util-to-string';
 import * as MDAST from 'mdast';
 import * as VFILE from 'vfile';
 import * as UNIFIED from 'unified';
+import { Transformer, Attacher, Settings } from 'unified';
 
 interface VFile extends VFILE.VFile {
   data: {
@@ -11,7 +12,7 @@ interface VFile extends VFILE.VFile {
   };
 }
 
-export function readMatter(): UNIFIED.Transformer {
+export function readMatter(): Transformer {
   return function transformer(node: MDAST.Root, file: VFile) {
     if (node.children[0].type === 'yaml') {
       node.children[0].data = node.children[0].data || {};
@@ -21,7 +22,7 @@ export function readMatter(): UNIFIED.Transformer {
   };
 }
 
-export function getTitle(): UNIFIED.Transformer {
+export function getTitle(): Transformer {
   return (tree: MDAST.Root, file: VFile) => {
     file.data = file.data || {};
     return visit(tree, 'heading', (node: MDAST.Heading) => {

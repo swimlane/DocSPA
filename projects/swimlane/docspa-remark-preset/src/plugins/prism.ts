@@ -1,8 +1,10 @@
 import visit from 'unist-util-visit';
 import rangeParser from 'parse-numeric-range';
 import Prism from 'prismjs';
-import * as UNIFIED from 'unified';
-import * as MDAST from 'mdast';
+
+import { Parent } from 'unist';
+import { Transformer } from 'unified';
+import { Code, Root } from 'mdast';
 
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-markdown';
@@ -21,10 +23,10 @@ if (ctx['Prism']) {
   document.removeEventListener('DOMContentLoaded', ctx['Prism'].highlightAll);
 }
 
-export function prism({classPrefix = 'language'} = {}): UNIFIED.Transformer {
-  return (tree: MDAST.Root) => visit(tree, 'code', visitor);
+export function prism({classPrefix = 'language'} = {}): Transformer {
+  return (tree: Root) => visit(tree, 'code', visitor);
 
-  function visitor(node: MDAST.Code, index, parent) {
+  function visitor(node: Code, index: number, parent: Parent) {
     let { lang, value } = node;
     const hl = Prism.highlight;
     if (hl) {
@@ -89,7 +91,7 @@ export function prism({classPrefix = 'language'} = {}): UNIFIED.Transformer {
   }
 }
 
-function escape(html, encode) {
+function escape(html: string, encode: boolean) {
   return html
     .replace(!encode ? /&(?!#?\w+;)/g : /&/g, '&amp;')
     .replace(/</g, '&lt;')

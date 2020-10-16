@@ -23,7 +23,8 @@ interface VFile extends VFILE.VFile {
 }
 
 export const customSmartCodes = (codes: Codes[]): UNIFIED.Transformer => {
-  return (tree: MDAST.Root, file: VFile) => {
+  // @ts-ignore
+  return (tree: MDAST.Root, file: VFILE.VFile) => {
     file.data = file.data || {};
     return visit(tree, 'shortcode', (node: ShortCode, index: number, parent: MDAST.Parent) => {
       if (node && parent && index !== undefined && node.identifier in codes) {
