@@ -120,7 +120,7 @@
     "start-server-and-test": "^1.11.5",
     "ts-node": "^9.0.0",
     "tslint": "^6.1.3",
-    "typescript": "~3.9.7",
+    "typescript": "^4.0.3",
     "webpack-bundle-analyzer": "^3.9.0"
   },
   "repository": {
