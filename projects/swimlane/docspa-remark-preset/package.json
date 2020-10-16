@@ -40,7 +40,7 @@
     "md-attr-parser": "^1.2.1",
     "mdast-util-to-string": "^1.0.5",
     "mdast-util-toc": "^3.1.0",
-    "mermaid": "^8.0.0-rc.8",
+    "mermaid": "^8.8.2",
     "parse-numeric-range": "0.0.2",
     "prismjs": "^1.22.0",
     "rehype-raw": "^4.0.0",

@@ -62,7 +62,7 @@
     "intersection-observer": "^0.7.0",
     "md-attr-parser": "^1.2.1",
     "mdast-util-toc": "^3.1.0",
-    "mermaid": "^8.0.0-rc.8",
+    "mermaid": "^8.8.2",
     "ngx-logger": "^4.1.9",
     "parse-numeric-range": "0.0.2",
     "path": "^0.12.7",

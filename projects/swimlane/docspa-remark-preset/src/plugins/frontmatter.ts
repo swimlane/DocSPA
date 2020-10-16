@@ -1,7 +1,7 @@
 import visit from 'unist-util-visit';
 import toString from 'mdast-util-to-string';
 import { Root, Heading } from 'mdast';
-import { VFile as _VFile }  from 'vfile';
+import { VFile as _VFile } from 'vfile';
 import { Transformer, Attacher, Settings } from 'unified';
 
 interface VFile extends _VFile {

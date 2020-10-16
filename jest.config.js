@@ -2,15 +2,9 @@ module.exports = {
   preset: 'jest-preset-angular',
   globals: {
     'ts-jest': {
-      pathRegex: /\.(spec|test)\.ts$/,
-      tsConfig: 'tsconfig.json'
+      pathRegex: /\.(spec|test)\.ts$/
     }
   },
-  moduleFileExtensions: [
-    'js',
-    'ts',
-    'tsx',
-  ],
   roots: [
     'src',
     'projects/swimlane/docspa-core/src',

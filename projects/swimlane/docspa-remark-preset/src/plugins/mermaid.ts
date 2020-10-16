@@ -1,5 +1,5 @@
 import visit from 'unist-util-visit';
-import * as mermaidApi from 'mermaid';
+import * as mermaidApi from 'mermaid/dist/mermaid.js';
 import * as UNIFIED from 'unified';
 import * as MDAST from 'mdast';
 
