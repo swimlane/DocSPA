@@ -1,12 +1,12 @@
 import visit from 'unist-util-visit';
-import * as MDAST from 'mdast';
-import * as VFILE from 'vfile';
-import * as UNIFIED from 'unified';
+import { Root, Parent } from 'mdast';
+import { VFile } from 'vfile';
+import { Transformer } from 'unified';
 
-export function shortCodeProps(): UNIFIED.Transformer {
-  return (tree: MDAST.Root, file: VFILE.VFile) => {
+export function shortCodeProps(): Transformer {
+  return (tree: Root, file: VFile) => {
     file.data = file.data || {};
-    return visit(tree, 'shortcode', (node: MDAST.Parent) => {
+    return visit(tree, 'shortcode', (node: Parent) => {
       node.data = node.data || {};
       node.data.hProperties = node.data.hProperties || {};
       node.data.hProperties = { ...(node.data.hProperties as any), ...(node.attributes as any) };

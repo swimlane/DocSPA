@@ -22,14 +22,14 @@ import { prism } from './plugins/prism';
 import { mermaid } from './plugins/mermaid';
 
 import visit from 'unist-util-visit';
-import * as MDAST from 'mdast';
-import * as VFILE from 'vfile';
-import * as UNIFIED from 'unified';
+import { Root } from 'mdast';
+import { VFile } from 'vfile';
+import { Transformer } from 'unified';
 
 export { customBlocks, customBlockquotes, prism, mermaid, reporter, getTitle };
 
-export function moveIds(): UNIFIED.Transformer {
-  return (tree: MDAST.Root, file: VFILE.VFile) => {
+export function moveIds(): Transformer {
+  return (tree: Root, file: VFile) => {
     return visit(tree, 'heading', (node: any, index: number, parent: any) => {
       if (parent.type === 'section' && node.data && node.data.hProperties && node.data.hProperties.id) {
         parent.data = parent.data || Object.create(null);

@@ -2,14 +2,15 @@
 // https://github.com/montogeek/remark-custom-blockquotes/pull/2 pending merge
 
 import visit from 'unist-util-visit';
-import * as MDAST from 'mdast';
-import * as UNIFIED from 'unified';
 
-export function customBlockquotes({ mapping }): UNIFIED.Transformer {
-  return function transformer(tree: MDAST.Root) {
+import { Root, Paragraph, Text } from 'mdast';
+import { Transformer } from 'unified';
+
+export function customBlockquotes({ mapping }): Transformer {
+  return function transformer(tree: Root) {
     return visit(tree, 'paragraph', visitor);
 
-    function visitor(node: MDAST.Paragraph) {
+    function visitor(node: Paragraph) {
       const { children } = node;
       const textNode = children[0].value as string;
 
@@ -37,7 +38,7 @@ export function customBlockquotes({ mapping }): UNIFIED.Transformer {
 
         const r = new RegExp(`^\\${substr}\\s`, 'gm');
 
-        visit(node, 'text', (cld: MDAST.Text) => {
+        visit(node, 'text', (cld: Text) => {
           cld.value = cld.value.replace(r, ' ');
           return true;
         });

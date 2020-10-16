@@ -1,7 +1,7 @@
 import visit from 'unist-util-visit';
 import mdAttrParser from 'md-attr-parser';
-import * as MDAST from 'mdast';
-import * as UNIFIED from 'unified';
+import { Root, Code } from 'mdast';
+import { Transformer } from 'unified';
 
 // The list of DOM Event handler
 const DOMEventHandler = [
@@ -28,11 +28,11 @@ const DOMEventHandler = [
   'ontoggle', 'onvolumechange', 'onwaiting',
 ];
 
-const isDangerous = p => DOMEventHandler.indexOf(p) >= 0;
+const isDangerous = (p: string) => DOMEventHandler.indexOf(p) >= 0;
 
-export function infoString(): UNIFIED.Transformer {
-  return function(tree: MDAST.Root) {
-    return visit(tree, 'code', (node: MDAST.Code) => {
+export function infoString(): Transformer {
+  return function(tree: Root) {
+    return visit(tree, 'code', (node: Code) => {
       const idx = node.lang ? node.lang.search(/\s/) : -1;
       if (idx > -1) {
         // @ts-ignore
@@ -45,8 +45,8 @@ export function infoString(): UNIFIED.Transformer {
 }
 
 export function infoStringToAttr() {
-  return function(tree: MDAST.Root) {
-    visit(tree, 'code', (node: MDAST.Code) => {
+  return function(tree: Root) {
+    visit(tree, 'code', (node: Code) => {
       // @ts-ignore
       if (node.infoString) {
         // @ts-ignore

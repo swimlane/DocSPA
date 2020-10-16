@@ -33,7 +33,7 @@
     "deepmerge": "^4.2.2",
     "quick-lru": "^4.0.1",
     "tapable": "^1.1.0",
-    "throttleit": "^1.0.0"
-  ,    "tslib": "^2.0.0"
+    "throttleit": "^1.0.0",
+    "tslib": "^2.0.0"
 }
 }
