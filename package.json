@@ -96,7 +96,7 @@
     "remark-squeeze-paragraphs": "^3.0.4",
     "remark-toc": "^5.0.0",
     "remark-validate-links": "^8.0.2",
-    "rxjs": "^6.6.2",
+    "rxjs": "^6.6.3",
     "tapable": "^1.1.0",
     "tslib": "^2.0.0",
     "unified": "^7.0.0",
