@@ -63,6 +63,9 @@
     "vfile": "^4.2.0",
     "vfile-reporter": "^6.0.1"
   },
+  "peerDependencies": {
+    "remark": "^12.0.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/swimlane/docspa.git"

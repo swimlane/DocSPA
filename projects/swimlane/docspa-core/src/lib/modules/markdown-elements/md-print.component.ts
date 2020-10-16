@@ -133,7 +133,7 @@ export class MdPrintComponent implements OnInit {
       .use(frontmatter)
       .use(slug)
       .use(this.tocService.linkPlugin)
-      .use(remark2rehype, { allowDangerousHTML: true })
+      .use(remark2rehype, { allowDangerousHtml: true })
       .use(raw)
       .use(rehypeStringify);
 
@@ -143,7 +143,7 @@ export class MdPrintComponent implements OnInit {
       .use(fixLinks)
       .use(fixIds)
       .use(images, { locationService })
-      .use(remark2rehype, { allowDangerousHTML: true })
+      .use(remark2rehype, { allowDangerousHtml: true })
       .use(raw)
       .use(rehypeStringify);
   }

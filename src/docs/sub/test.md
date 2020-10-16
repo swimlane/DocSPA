@@ -10,7 +10,7 @@
 
 [absolute](http://localhost/docspa/) localhost/docspa/
 
-[absolute](http://www.google.com/) www.google.com
+[absolute](http://www.google.com/) google.com
 
 [image](./logo.png) /docspa/v1/sub/logo.png
 

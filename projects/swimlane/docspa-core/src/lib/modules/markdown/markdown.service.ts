@@ -34,7 +34,7 @@ export class MarkdownService {
       .use(this.config)
       .use(links, { locationService: this.locationService })
       .use(images, { locationService: this.locationService })
-      .use(remark2rehype, { allowDangerousHTML: true })
+      .use(remark2rehype, { allowDangerousHtml: true })
       .use(raw)
       // TODO: rehype plugins
       .use(rehypeStringify);
