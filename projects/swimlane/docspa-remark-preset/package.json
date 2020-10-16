@@ -17,6 +17,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/jasmine": "^3.5.14",
     "@types/node": "^11.11.6",
     "@types/unist": "^2.0.3",
     "@types/vfile": "^3.0.2",
