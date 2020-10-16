@@ -33,7 +33,7 @@ export class RouterService {
    * Emitted whenever page content changes, include side loaded content
    */
   changed = new EventEmitter<SimpleChanges>();
-  
+
   constructor(
     private settings: SettingsService,
     private fetchService: FetchService,
@@ -47,7 +47,7 @@ export class RouterService {
     const url = snapshot.url.map(s => s.path).join('/');
     let root = this.router.url;
     if (snapshot.fragment) {
-      root = root.replace(new RegExp('#' + snapshot.fragment + '$'), '')
+      root = root.replace(new RegExp('#' + snapshot.fragment + '$'), '');
     }
     root = root.replace(new RegExp(url + '$'), '');
     if (!root.endsWith('/')) {
@@ -72,7 +72,7 @@ export class RouterService {
 
     this.logger.debug(`location changed: ${url}`);
 
-    if (this.root != root) {
+    if (this.root !== root) {
       changes.root = new SimpleChange(this.root, this.root = root, false);
     }
 

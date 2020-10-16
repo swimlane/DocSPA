@@ -24,8 +24,8 @@ describe('FetchService', () => {
       ]
     });
 
-    fetchService = TestBed.get(FetchService);
-    httpMock = TestBed.get(HttpTestingController);
+    fetchService = TestBed.inject(FetchService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {

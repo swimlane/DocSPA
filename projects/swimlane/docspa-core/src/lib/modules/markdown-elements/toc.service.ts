@@ -44,7 +44,7 @@ export class TocService {
         return true;
       });
     };
-  };
+  }
 
   linkPlugin = () => {
     return (tree: MDAST.Root, file: VFile) => {
@@ -66,7 +66,7 @@ export class TocService {
         return true;
       });
     };
-  };
+  }
 
   private convertToTocData(file: VFile, node: Link, parent?: MDAST.Parent): TOCData {
     const content = toString(node);
@@ -86,7 +86,7 @@ export class TocService {
     } else {
       [link = '', fragment] = url.split('#');
     }
-    
+
     // Hack to preserve trailing slash
     if (typeof link === 'string' && link.length > 1 && link.endsWith('/')) {
       link = [link, ''];
@@ -99,6 +99,6 @@ export class TocService {
       link,
       fragment: fragment ? fragment.replace(/^#/, '') : undefined,
       depth: node.depth as number
-    }
+    };
   }
 }

@@ -26,8 +26,8 @@ describe('MarkdownService', () => {
       ]
     });
 
-    markdownService = TestBed.get(MarkdownService);
-    httpMock = TestBed.get(HttpTestingController);
+    markdownService = TestBed.inject(MarkdownService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {

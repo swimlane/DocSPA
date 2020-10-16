@@ -1,6 +1,6 @@
-import { 
+import {
   Component, Input,
-  ViewChild, TemplateRef, ViewContainerRef
+  ViewChild, TemplateRef, ViewContainerRef, AfterContentInit, OnChanges
 } from '@angular/core';
 
 import { LocationService } from '../../services/location.service';
@@ -21,7 +21,7 @@ import { RouterService } from '../../services/router.service';
       </a>
     </ng-template>`
 })
-export class MdLink {
+export class MdLinkComponent implements OnChanges, AfterContentInit {
   static readonly is = 'md-link';
 
   @Input()

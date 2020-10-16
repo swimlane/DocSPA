@@ -9,8 +9,8 @@ import { isAbsolutePath } from './utils';
 
 /**
  * Convert markdown links to router links
- * 
- * @param locationService 
+ *
+ * @param locationService
  */
 export const links = (locationService: LocationService) => {
   return (tree: MDAST.Root, vfile: VFILE.VFile) => {
@@ -35,6 +35,7 @@ export const links = (locationService: LocationService) => {
 
         node.url = resolve(vfile.history[0], node.url);
 
+        // tslint:disable-next-line: prefer-const
         let [routerLink = '', fragment] = node.url.split('#');
         fragment = fragment ? fragment.replace(/^#/, '') : undefined;
 

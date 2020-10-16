@@ -1,7 +1,7 @@
-import { Component, Input, OnChanges, ViewEncapsulation, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, ViewEncapsulation, SimpleChanges, OnInit } from '@angular/core';
 
 import { of } from 'rxjs';
-import { flatMap, map } from 'rxjs/operators';
+import { mergeMap, map } from 'rxjs/operators';
 
 import VFILE from 'vfile';
 import unified from 'unified';
@@ -106,7 +106,7 @@ interface FileIndexItem {
   `],
   encapsulation: ViewEncapsulation.None
 })
-export class TOCPaginationComponent implements OnChanges {
+export class TOCPaginationComponent implements OnInit, OnChanges {
   static readonly is = 'md-toc-page';
 
   @Input()
@@ -211,7 +211,7 @@ export class TOCPaginationComponent implements OnChanges {
     const _vfile = this.locationService.pageToFile(summary);
     const fullPath = join(_vfile.cwd, _vfile.path);
     return this.fetchService.get(fullPath).pipe(
-      flatMap(resource => {
+      mergeMap(resource => {
         _vfile.contents = resource.contents;
         _vfile.data = _vfile.data || {};
         return resource.notFound ? of(null) : this.processLinks.process(_vfile);

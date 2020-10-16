@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EmbedStackblitzComponent } from './docspa-stackblitz.component';
 
@@ -6,7 +6,7 @@ describe('EmbedStackblitzComponent', () => {
   let component: EmbedStackblitzComponent;
   let fixture: ComponentFixture<EmbedStackblitzComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ EmbedStackblitzComponent ]
     })

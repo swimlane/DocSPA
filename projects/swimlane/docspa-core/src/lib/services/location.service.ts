@@ -67,7 +67,7 @@ export class LocationService {
    * Return a resolved url relative to the base path
    */
   prepareLink(href: string, base: string = '') {
-    if (isAbsolutePath(href)) return href;
+    if (isAbsolutePath(href)) { return href; }
     return resolve(base, stripBaseHref(this.baseHref, href));
   }
 
@@ -75,7 +75,7 @@ export class LocationService {
    * Return a resolved url relative to the base path
    */
   prepareSrc(src: string, base: string = '') {
-    if (isAbsolutePath(src)) return src;
+    if (isAbsolutePath(src)) { return src; }
     return join(this.basePath, resolve(base, src));
   }
 
@@ -83,7 +83,7 @@ export class LocationService {
    * Removes the base path from a url
    */
   stripBasePath(url: string): string {
-    if (!url) return null;
+    if (!url) { return null; }
     return stripBaseHref(this.basePath, url);
   }
 }

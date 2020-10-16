@@ -1,4 +1,4 @@
-import { Component, Input, Optional, Inject } from '@angular/core';
+import { Component, Input, Optional, Inject, OnChanges } from '@angular/core';
 import { DOCSPA_ENVIRONMENT } from '../../docspa-core.tokens';
 
 @Component({
@@ -6,7 +6,7 @@ import { DOCSPA_ENVIRONMENT } from '../../docspa-core.tokens';
   template: `{{value}}`,
   styles: []
 })
-export class EnvVarComponent {
+export class EnvVarComponent implements OnChanges {
   static readonly is = 'md-env';
 
   @Input()

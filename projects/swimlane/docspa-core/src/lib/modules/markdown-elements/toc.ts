@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
-import { flatMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 import unified from 'unified';
 import markdown from 'remark-parse';
 import slug from 'remark-slug';
@@ -110,14 +110,14 @@ export class TOCComponent implements OnChanges, OnInit {
     }
 
     // TOC content hasn't changed,
-    if (page === this.lastPath) return;
+    if (page === this.lastPath) { return; }
 
     // get new TOC content
     const vfile = this.locationService.pageToFile(page) as VFile;
     const fullpath = join(vfile.cwd, vfile.path);
     this.fetchService.get(fullpath)
       .pipe(
-        flatMap(async resource => {
+        mergeMap(async resource => {
           vfile.contents = resource.contents;
           vfile.data = vfile.data || {};
           /* const err = */ await this.processor.process(vfile);

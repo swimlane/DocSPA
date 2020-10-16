@@ -9,7 +9,7 @@ export class DynamicContentService {
     if (typeof context === 'string') {
       try {
         context = JSON.parse(context);
-      } catch(err) {
+      } catch (err) {
         context  = {};
       }
     }
@@ -41,14 +41,14 @@ export class DynamicContentService {
       .compileModuleAndAllComponentsAsync<any>(moduleType)
       .then(({ ngModuleFactory, componentFactories }) => {
         const componentFactory = componentFactories.find(f => f.componentType === componentType);
-        if (!componentFactory) return;
+        if (!componentFactory) { return; }
 
         if (element instanceof ViewContainerRef) {
           element.clear();
           return element.createComponent(componentFactory, 0, injector);
         }
 
-        const ngModule = ngModuleFactory.create(injector)
+        const ngModule = ngModuleFactory.create(injector);
         const componentRef = componentFactory.create(injector, null, element, ngModule);
         this.applicationRef.attachView(componentRef.hostView);
 

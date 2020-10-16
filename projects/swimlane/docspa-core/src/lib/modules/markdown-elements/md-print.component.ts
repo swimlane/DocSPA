@@ -2,7 +2,7 @@ import { Component, Input, OnInit, HostBinding, ElementRef } from '@angular/core
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { of } from 'rxjs';
-import { flatMap, map } from 'rxjs/operators';
+import { mergeMap, map } from 'rxjs/operators';
 
 import unified from 'unified';
 import markdown from 'remark-parse';
@@ -199,7 +199,7 @@ export class MdPrintComponent implements OnInit {
     const vfile = this.locationService.pageToFile(summary);
     const fullPath = join(vfile.cwd, vfile.path);
     return this.fetchService.get(fullPath).pipe(
-      flatMap(resource => {
+      mergeMap(resource => {
         vfile.contents = resource.contents;
         vfile.data = vfile.data || {};
         return resource.notFound ? of(null) : this.processLinks.process(vfile);

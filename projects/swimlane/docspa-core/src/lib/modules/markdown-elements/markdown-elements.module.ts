@@ -22,7 +22,7 @@ import { MdPrintComponent } from './md-print.component';
 import { TOCPaginationComponent } from './toc-pagination.component';
 import { EmbedMarkdownComponent } from './embed-file';
 import { TocService } from './toc.service';
-import { MdLink } from './md-link';
+import { MdLinkComponent } from './md-link';
 
 export const MARKDOWNELEMENTS_CONFIG_TOKEN = new InjectionToken<any>( 'MarkdownElementsModule.forRoot() configuration.' );
 
@@ -34,7 +34,7 @@ const elements = [
   MdPrintComponent,
   TOCPaginationComponent,
   EmbedMarkdownComponent,
-  MdLink
+  MdLinkComponent
 ];
 
 @NgModule({
@@ -59,7 +59,7 @@ const elements = [
     MdPrintComponent,
     TOCPaginationComponent,
     EmbedMarkdownComponent,
-    MdLink
+    MdLinkComponent
   ],
   bootstrap: [],
   entryComponents: [
@@ -70,7 +70,7 @@ const elements = [
     MdPrintComponent,
     TOCPaginationComponent,
     EmbedMarkdownComponent,
-    MdLink
+    MdLinkComponent
   ],
   providers: [
     TocService

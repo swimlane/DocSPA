@@ -3,10 +3,10 @@
  * TODO: Accept multiple args
  */
 export function join(start: string, end: string): string {
-  if (start.length == 0) {
+  if (start.length === 0) {
     return end;
   }
-  if (end.length == 0) {
+  if (end.length === 0) {
     return start;
   }
   let slashes = 0;
@@ -16,10 +16,10 @@ export function join(start: string, end: string): string {
   if (end.startsWith('/')) {
     slashes++;
   }
-  if (slashes == 2) {
+  if (slashes === 2) {
     return start + end.substring(1);
   }
-  if (slashes == 1) {
+  if (slashes === 1) {
     return start + end;
   }
   return start + '/' + end;
@@ -27,7 +27,7 @@ export function join(start: string, end: string): string {
 
 export function splitHash(hash: string = '') {
   const arr = [hash, ''];
-  if (!hash) return arr;
+  if (!hash) { return arr; }
   const idx = hash.indexOf('#', 1);
   if (idx > 0) {
     arr[0] = hash.slice(0, idx);

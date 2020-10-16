@@ -35,7 +35,7 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('coverMain') coverMain: any;
 
   private sidebarClose = false;
-  
+
   constructor(
     private settings: SettingsService,
     private routerService: RouterService,
@@ -159,7 +159,7 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
   private setupRouter() {
     // Watch for changes in the this component's actived route,
     // pass that on to router servce
-    combineLatest(this.activatedRoute.url, this.activatedRoute.fragment)
+    combineLatest([this.activatedRoute.url, this.activatedRoute.fragment])
       .subscribe(() => {
         this.routerService.activateRoute(this.activatedRoute.snapshot);
       });

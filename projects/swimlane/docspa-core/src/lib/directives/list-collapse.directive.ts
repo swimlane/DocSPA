@@ -1,11 +1,11 @@
-import { Directive, ElementRef, SimpleChanges, Renderer2, Input, OnInit, OnChanges} from '@angular/core';
+import { Directive, ElementRef, SimpleChanges, Renderer2, Input, OnInit, OnChanges, OnDestroy } from '@angular/core';
 
 import { throttleable } from '../shared/throttle';
 
 @Directive({
-    selector:'[listCollapse]'
+  selector: '[listCollapse]'
 })
-export class ListCollapse implements OnInit, OnChanges {
+export class ListCollapseDirective implements OnInit, OnChanges, OnDestroy {
   // an array of active hash
   @Input()
   listCollapse: string[] = [];
@@ -14,7 +14,7 @@ export class ListCollapse implements OnInit, OnChanges {
   private tocLinks: HTMLAnchorElement[];
   private mutationObserver: MutationObserver;
 
-  constructor(private elm: ElementRef, private renderer: Renderer2){
+  constructor(private elm: ElementRef, private renderer: Renderer2) {
   }
 
   ngOnInit() {
@@ -33,7 +33,7 @@ export class ListCollapse implements OnInit, OnChanges {
   }
 
   ngOnDestroy() {
-    if (this.mutationObserver) this.mutationObserver.disconnect();
+    if (this.mutationObserver) { this.mutationObserver.disconnect(); }
   }
 
   private getTocLinks() {
@@ -42,7 +42,7 @@ export class ListCollapse implements OnInit, OnChanges {
 
   @throttleable(120)
   private markLinks() {
-    if (!this.tocLinks) return;
+    if (!this.tocLinks) { return; }
 
     // clear
     for (let i = 0; i < this.tocLinks.length; i++) {
@@ -75,7 +75,7 @@ export class ListCollapse implements OnInit, OnChanges {
 
   private updateTree(elem: Element, isActive: boolean) {
     const action = isActive ? 'addClass' : 'removeClass';
-  
+
     let p = elem.parentNode;
     // walk up dom to set active class
     while (p && ['LI', 'UL', 'P'].includes(p.nodeName)) {

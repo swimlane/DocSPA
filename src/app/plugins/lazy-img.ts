@@ -67,13 +67,13 @@ export default class LazyloadImage extends HTMLImageElement {
 
   private observe() {
     this.observer.observe(this);
-    this.mediaMatch.addListener(this.onPrint);
+    this.mediaMatch.addEventListener('change', this.onPrint);
   }
 
   private unobserve() {
     this.observer.unobserve(this);
     this.observer.disconnect();
-    this.mediaMatch.removeListener(this.onPrint);
+    this.mediaMatch.removeEventListener('change', this.onPrint);
   }
 
   private onPrint() {

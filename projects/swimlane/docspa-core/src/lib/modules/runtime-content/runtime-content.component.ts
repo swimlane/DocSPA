@@ -22,7 +22,7 @@ import {
 export class RuntimeContentComponent implements OnInit {
   static readonly is = 'md-runtime';
 
-  @Input('context')
+  @Input()
   context: any;
 
   @Input()
@@ -45,7 +45,7 @@ export class RuntimeContentComponent implements OnInit {
     if (typeof this.context === 'string') {
       try {
         this.context = JSON.parse(this.context);
-      } catch(err) {
+      } catch (err) {
         this.context  = {};
       }
     }

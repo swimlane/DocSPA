@@ -1,9 +1,9 @@
-import { Directive, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Directive, ElementRef, Output, EventEmitter, OnChanges, OnDestroy, OnInit } from '@angular/core';
 
 @Directive({
-    selector:'[sectionScrollSpy]'
+  selector: '[sectionScrollSpy]'
 })
-export class SectionScrollSpy {
+export class SectionScrollSpyDirective implements OnInit, OnDestroy {
   @Output('sectionScrollSpy')
   updated: EventEmitter<string[]> = new EventEmitter();
 
@@ -11,7 +11,7 @@ export class SectionScrollSpy {
   private mutationObserver: MutationObserver;
   private inScrollHashes: Set<string>;
 
-  constructor(private elm: ElementRef){
+  constructor(private elm: ElementRef) {
   }
 
   ngOnInit() {
@@ -20,15 +20,15 @@ export class SectionScrollSpy {
   }
 
   ngOnDestroy() {
-    if (this.mutationObserver) this.mutationObserver.disconnect();
-    if (this.intersectionObserver) this.intersectionObserver.disconnect();
+    if (this.mutationObserver) { this.mutationObserver.disconnect(); }
+    if (this.intersectionObserver) { this.intersectionObserver.disconnect(); }
   }
 
   private setupPageListeners() {
     const nodes = this.elm.nativeElement.querySelectorAll('#content > #main section[id]');
     const sections: Element[] = Array.prototype.slice.call(nodes);
 
-    if (this.intersectionObserver) this.intersectionObserver.disconnect();
+    if (this.intersectionObserver) { this.intersectionObserver.disconnect(); }
     this.inScrollHashes = new Set();
 
     this.intersectionObserver = new IntersectionObserver(entries => {

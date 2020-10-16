@@ -1,7 +1,7 @@
-import { Component, Input, OnChanges, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { of } from 'rxjs';
-import { flatMap, map } from 'rxjs/operators';
+import { mergeMap, map } from 'rxjs/operators';
 
 import unified from 'unified';
 import markdown from 'remark-parse';
@@ -48,7 +48,7 @@ import { TocService } from './toc.service';
   styleUrls: ['./toc-search.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class TOCSearchComponent implements OnChanges {
+export class TOCSearchComponent implements OnInit, OnChanges {
   static readonly is = 'md-toc-search';
 
   @Input()
@@ -176,7 +176,7 @@ export class TOCSearchComponent implements OnChanges {
     const vfile = this.locationService.pageToFile(summary);
     const fullPath = join(vfile.cwd, vfile.path);
     return this.fetchService.get(fullPath).pipe(
-      flatMap(resource => {
+      mergeMap(resource => {
         vfile.contents = resource.contents;
         vfile.data = vfile.data || {};
         return resource.notFound ? of(null) : this.processLinks.process(vfile);
@@ -197,7 +197,7 @@ export class TOCSearchComponent implements OnChanges {
       const fullPath = join(vfile.cwd, vfile.path);
       return this.fetchService.get(fullPath)
         .pipe(
-          flatMap(resource => {
+          mergeMap(resource => {
             vfile.contents = resource.contents;
             vfile.data = vfile.data || {};
             return resource.notFound ? of(null) : this.processor.process(vfile);

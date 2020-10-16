@@ -8,7 +8,8 @@ import {
   SimpleChanges,
   Type,
   ViewContainerRef,
-  OnDestroy
+  OnDestroy,
+  OnChanges
 } from '@angular/core';
 
 import { DynamicContentService } from './dynamic-content.service';
@@ -59,7 +60,7 @@ export class DynamicComponentOptions {
 @Directive({
   selector: '[dynamicComponent]',
 })
-export class DynamicComponentDirective implements OnDestroy {
+export class DynamicComponentDirective implements OnChanges, OnDestroy {
   @Input('dynamicComponent') template: string;
   @Input('dynamicComponentSelector') selector: string;
   @Input('dynamicComponentContext') context: any;

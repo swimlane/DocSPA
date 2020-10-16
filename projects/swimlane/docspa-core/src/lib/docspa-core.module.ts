@@ -16,8 +16,8 @@ import { FetchService } from './services/fetch.service';
 import { RouterService } from './services/router.service';
 import { CacheInterceptor } from './services/cache.interceptor';
 import { HooksService } from './services/hooks.service';
-import { SectionScrollSpy } from './directives/section-spy.directive';
-import { ListCollapse } from './directives/list-collapse.directive';
+import { SectionScrollSpyDirective } from './directives/section-spy.directive';
+import { ListCollapseDirective } from './directives/list-collapse.directive';
 
 import { DocSPACoreComponent } from './docspa-core.component';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
@@ -38,8 +38,8 @@ import { DOCSPA_CONFIG_TOKEN, DOCSPA_ENVIRONMENT } from './docspa-core.tokens';
   declarations: [
     DocSPACoreComponent,
     SafeHtmlPipe,
-    SectionScrollSpy,
-    ListCollapse
+    SectionScrollSpyDirective,
+    ListCollapseDirective
   ],
   exports: [
     DocSPACoreComponent,

@@ -49,7 +49,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
   attr: string = null;
 
   @Input()
-  collapseLists: boolean = false;
+  collapseLists = false;
 
   @HostBinding('innerHTML')
   html: string | SafeHtml;
