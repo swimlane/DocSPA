@@ -9,7 +9,7 @@ export function shortCodeProps(): UNIFIED.Transformer {
     return visit(tree, 'shortcode', (node: MDAST.Parent) => {
       node.data = node.data || {};
       node.data.hProperties = node.data.hProperties || {};
-      node.data.hProperties = { ...node.data.hProperties, ...node.attributes };
+      node.data.hProperties = { ...(node.data.hProperties as any), ...(node.attributes as any) };
       return true;
     });
   };
