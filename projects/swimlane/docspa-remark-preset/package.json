@@ -38,7 +38,7 @@
     "mdast-util-toc": "^3.1.0",
     "mermaid": "^8.0.0-rc.8",
     "parse-numeric-range": "0.0.2",
-    "prismjs": "^1.15.0",
+    "prismjs": "^1.22.0",
     "rehype-raw": "^4.0.0",
     "rehype-stringify": "^5.0.0",
     "remark-attr": "^0.8.3",
