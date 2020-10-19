@@ -2,7 +2,7 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-* Support ng10
+* Support only ng10
 
 --------------------
 
