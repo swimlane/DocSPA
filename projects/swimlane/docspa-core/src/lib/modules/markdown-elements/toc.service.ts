@@ -8,7 +8,8 @@ import { resolve } from 'url';
 
 import { LocationService } from '../../services/location.service';
 import { RouterService } from '../../services/router.service';
-import { TOCData, VFile } from '../../../vendor';
+
+import type { TOCData, VFile } from '../../vendor';
 
 interface Link extends MDAST.Link {
   data: any;

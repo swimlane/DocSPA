@@ -1,6 +1,6 @@
 {
   "name": "@swimlane/docspa-remark-preset",
-  "version": "5.1.0-0",
+  "version": "6.0.0",
   "description": "Remark preset for DocSPA",
   "main": "dist/main/index.js",
   "typings": "dist/main/index.d.ts",
@@ -50,7 +50,7 @@
     "remark-html-emoji-image": "^1.0.0",
     "remark-html-katex": "^3.0.0",
     "remark-math": "^3.0.1",
-    "remark-parse": "^9.0.0",
+    "remark-parse": "^8.0.0",
     "remark-parse-yaml": "0.0.3",
     "remark-rehype": "^8.0.0",
     "remark-sectionize": "^1.1.1",
@@ -62,9 +62,6 @@
     "unist-util-visit": "^2.0.3",
     "vfile": "^4.2.0",
     "vfile-reporter": "^6.0.1"
-  },
-  "peerDependencies": {
-    "remark": "^12.0.1"
   },
   "repository": {
     "type": "git",

@@ -12,7 +12,7 @@ import { LocationService } from '../../services/location.service';
 import { HooksService } from '../../services/hooks.service';
 import { links, images } from '../../shared/links';
 
-import { VFile } from '../../../vendor';
+import type { VFile } from '../../vendor';
 
 export const MARKDOWN_CONFIG_TOKEN = new InjectionToken<any>( 'forRoot() configuration.' );
 

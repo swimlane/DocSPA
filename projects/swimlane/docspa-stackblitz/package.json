@@ -2,10 +2,10 @@
   "name": "@swimlane/docspa-stackblitz",
   "version": "5.0.0-8",
   "peerDependencies": {
-    "@angular/common": "^8.0.0 || ^9.0.0 || ^10.0.0",
-    "@angular/core": "^8.0.0 || ^9.0.0 || ^10.0.0",
+    "@angular/common": "^10.0.0",
+    "@angular/core": "^10.0.0",
     "@stackblitz/sdk": "^1.2.0",
-    "@swimlane/docspa-core": "^5.0.0"
+    "@swimlane/docspa-core": "^6.0.0"
   },
   "dependencies": {
     "@stackblitz/sdk": "^1.2.0"

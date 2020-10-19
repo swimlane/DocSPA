@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
 import { map, share, catchError } from 'rxjs/operators';
-import { normalize } from 'path';
+import normalize from 'normalize-path';
 import { resolve } from 'url';
 
 import { join } from '../shared/utils';

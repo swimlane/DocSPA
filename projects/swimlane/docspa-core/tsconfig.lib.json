@@ -1,6 +1,7 @@
 {
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "outDir": "../../../out-tsc/lib",
     "target": "es2015",
     "module": "es2015",
@@ -22,7 +23,7 @@
         "projects/swimlane/docspa-remark-preset/dist/module/index"
       ],
       "@swimlane/docspa-remark-preset/*": [
-        "pprojects/swimlane/docspa-remark-preset/dist/module/*"
+        "projects/swimlane/docspa-remark-preset/dist/module/*"
       ]
     }
   },

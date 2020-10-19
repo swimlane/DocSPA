@@ -25,7 +25,7 @@ import { TocService } from './toc.service';
 import { links, images } from '../../shared/links';
 import { join } from '../../shared/utils';
 
-import { VFile } from '../../../vendor';
+import type { VFile } from '../../vendor';
 
 @Component({
   selector: 'docspa-toc', // tslint:disable-line

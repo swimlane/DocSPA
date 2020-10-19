@@ -10,7 +10,7 @@ export interface TOCData {
   url: string;
   link: string | string[];
   fragment: string;
-  content: string
+  content: string;
   depth: number;
 }
 
@@ -38,7 +38,7 @@ export interface VFile extends VFILE.VFile {
   data: VFileData;
 }
 
-interface hData extends UnknownData {
+interface HData extends UnknownData {
   id?: string;
   originalUrl?: string;
   target?: string;
@@ -46,7 +46,7 @@ interface hData extends UnknownData {
 }
 
 interface NodeData extends UnknownData {
-  hProperties?: hData;
+  hProperties?: HData;
 }
 
 export interface Heading extends MDAST.Heading {

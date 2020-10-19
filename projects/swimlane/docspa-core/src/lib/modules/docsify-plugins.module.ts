@@ -1,8 +1,9 @@
 import { NgModule, ModuleWithProviders, InjectionToken, Optional, Inject } from '@angular/core';
-import { VFile } from '../../vendor';
 
 import { SettingsService } from '../services/settings.service';
 import { HooksService } from '../services/hooks.service';
+
+import type { VFile } from '../vendor';
 
 export const DOCSIFYPLUGINS_CONFIG_TOKEN = new InjectionToken<any>( 'DocsifyPluginsModule.forRoot() configuration.' );
 

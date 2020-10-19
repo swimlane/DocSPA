@@ -7,8 +7,9 @@ import { VFile } from 'vfile';
 import { Node } from 'unist';
 import { Image } from 'mdast';
 
-import { Link } from '../../vendor';
 import { isAbsolutePath } from './utils';
+
+import type { Link } from '../vendor';
 
 /**
  * Convert markdown links to router links

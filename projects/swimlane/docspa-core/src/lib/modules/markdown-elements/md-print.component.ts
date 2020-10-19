@@ -7,7 +7,6 @@ import { mergeMap, map } from 'rxjs/operators';
 import unified from 'unified';
 import markdown from 'remark-parse';
 import visit from 'unist-util-visit';
-import toString from 'mdast-util-to-string';
 import slug from 'remark-slug';
 import * as MDAST from 'mdast';
 import frontmatter from 'remark-frontmatter';
@@ -21,10 +20,11 @@ import { FetchService } from '../../services/fetch.service';
 import { SettingsService } from '../../services/settings.service';
 import { RouterService } from '../../services/router.service';
 import { MarkdownService } from '../markdown/markdown.service';
-import { VFile, Link, Heading } from '../../../vendor';
 import { TocService } from './toc.service';
 
 import { join, isAbsolutePath } from '../../shared/utils';
+
+import type { VFile, Heading } from '../../vendor';
 
 @Component({
   selector: 'docspa-print', // tslint:disable-line

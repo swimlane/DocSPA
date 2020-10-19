@@ -4,9 +4,10 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import VFILE from 'vfile';
 
-import { VFile } from '../../../vendor';
 import { MarkdownService } from './markdown.service';
 import { DOCSPA_ENVIRONMENT } from '../../docspa-core.tokens';
+
+import type { VFile } from '../../vendor';
 
 describe('MarkdownService', () => {
   let markdownService: MarkdownService;

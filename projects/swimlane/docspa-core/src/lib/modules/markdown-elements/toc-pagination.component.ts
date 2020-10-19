@@ -17,9 +17,9 @@ import { FetchService } from '../../services/fetch.service';
 
 import { join } from '../../shared/utils';
 import { getBasePath } from '../../shared/vfile-utils';
-
-import { VFile } from '../../../vendor';
 import { TocService } from './toc.service';
+
+import type { VFile } from '../../vendor';
 
 interface FileIndexItem {
   title: string;

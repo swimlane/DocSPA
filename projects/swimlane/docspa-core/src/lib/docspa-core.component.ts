@@ -4,14 +4,15 @@ import {
   AfterViewInit, OnDestroy
 } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { combineLatest } from 'rxjs';
-import { VFile } from '../vendor';
 import { HooksService } from './services/hooks.service';
 import { RouterService } from './services/router.service';
 import { SettingsService } from './services/settings.service';
 import { throttleable } from './shared/throttle';
+
+import type { VFile } from './vendor';
 
 @Component({
   selector: 'lib-docspa-core,docspa-page,[docspa-page]',

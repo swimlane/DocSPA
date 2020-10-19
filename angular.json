@@ -30,7 +30,15 @@
               "src/styles.css",
               "src/print.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "tapable",
+              "remark-parse",
+              "remark-rehype",
+              "rehype-stringify",
+              "rehype-raw",
+              "vfile"
+            ]
           },
           "configurations": {
             "production": {
