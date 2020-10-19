@@ -2,9 +2,12 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-* Support only ng10
+_(none)_
 
 --------------------
+
+## 6.0.0 (2020-10-19)
+* Support only ng10
 
 ## 5.0.0 (2019-12-26)
 * DocSPA now uses (and requires) angular/router.
