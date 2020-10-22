@@ -67,7 +67,7 @@ describe('The Features page', () => {
       cy.get('@math').find('.math .katex-display').should('have.length', 1);
     });
 
-    it('displays emoji', () => {
+    it.skip('displays emoji', () => {
       cy.get('@content').find('#emoji').as('emoji');
       cy.get('@emoji').find('img').should('have.length', 3);
     });

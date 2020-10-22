@@ -1,6 +1,6 @@
 import {
   Component, Input,
-  ViewChild, TemplateRef, ViewContainerRef, AfterContentInit, OnChanges
+  ViewChild, TemplateRef, ViewContainerRef, AfterContentInit, OnChanges, NgZone
 } from '@angular/core';
 
 import { LocationService } from '../../services/location.service';

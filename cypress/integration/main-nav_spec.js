@@ -49,4 +49,32 @@ describe('Main navigation', () => {
     cy.url().should('include', 'modules');
     cy.get('section.content').find('section[id="docspacoremodule"] > h1').contains('DocspaCoreModule');
   });
+
+  it('has no dead links', () => {
+    const links = ['/'];
+    const visited = [];
+    let crawling = false;
+
+    crawl();
+
+    function crawl() {
+      crawling = true;
+      while (links.length > 0) {
+        const link = links.pop();
+        visited.push(link);
+        cy.angularNavigateByUrl(link);
+        cy.getInternalLinks().then(_ => {
+          _.forEach(l => {
+            if (!visited.includes(l) && !links.includes(l)) {
+              links.push(l);
+            }
+          });
+          if (!crawling) {
+            crawl();
+          }
+        });
+      }
+      crawling = false;
+    }
+  });
 });

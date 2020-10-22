@@ -1,6 +1,6 @@
 # Content Features
 
-In the [modules](/modules) section several required, recommended, and option modules are described in detail.  Below we summarize features available if all modules are installed as as shown in the [quick start](/quickstart).  More details can be found in each [module](/modules).
+In the [modules](/modules/) section several required, recommended, and option modules are described in detail.  Below we summarize features available if all modules are installed as as shown in the [quick start](/quickstart).  More details can be found in each [module](/modules/).
 
 ## Github Flavored Markdown
 

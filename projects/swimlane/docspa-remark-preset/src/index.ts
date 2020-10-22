@@ -55,7 +55,7 @@ export const plugins = [
   moveIds,
   math,
   katex,
-  gemojiToEmoji,
+  // gemojiToEmoji,
   [ htmlEmojiImage, { base: 'https://github.com/images/icons/emoji/' }],
   infoStringToAttr,
   [ customBlocks, customBlocksOptions ],

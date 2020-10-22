@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter, SimpleChange, SimpleChanges } from '@angular/core';
+import { Injectable, EventEmitter, SimpleChange, SimpleChanges, NgZone } from '@angular/core';
 import { Router, ActivatedRouteSnapshot } from '@angular/router';
 
 import { NGXLogger } from 'ngx-logger';
@@ -39,8 +39,12 @@ export class RouterService {
     private fetchService: FetchService,
     private locationService: LocationService,
     private logger: NGXLogger,
-    private router: Router
+    private router: Router,
+    private ngZone: NgZone
   ) {
+    if (window['Cypress']) {
+      window['cypressNavigateByUrl'] = (url: string) => this.navigateByUrl(url);
+    }
   }
 
   activateRoute(snapshot: ActivatedRouteSnapshot) {
@@ -65,6 +69,12 @@ export class RouterService {
     }
     url = this.canonicalize(url);
     return this.urlChange(url || '/', root);
+  }
+
+  navigateByUrl(url: string) {
+    this.ngZone.run(() => {
+      this.router.navigateByUrl(url);
+    });
   }
 
   private async urlChange(url: string = '/', root = this.root) {
