@@ -1,3 +1,5 @@
+import { dom } from '@swimlane/cy-dom-diff';
+
 const pkg = require('../../package.json');
 const { sidebar, navbar, pageAliases } = require('../support/helpers');
 
@@ -21,15 +23,32 @@ describe('The Home page', () => {
   it('has a coverpage', () => {
     cy.get('body').should('have.class', 'ready');
 
-    cy.get('app-root').find('.cover-main').as('coverpage');
-    cy.get('@coverpage').find('h2').contains('DocSPA');
-    cy.get('@coverpage').find('blockquote').contains('An Angular-powered documentation SPA');
-  
-    cy.get('@coverpage').find('img').should('have.attr', 'data-no-zoom', 'true');
-    cy.get('@coverpage').find('img').should('have.attr', 'src', 'docs/assets/docspa_mark-only.png');
-    cy.get('@coverpage').find('a').should('have.length', 2);
+    cy.get('app-root').find('.cover-main').within(() => {
+      cy.get('p').first().domMatch(dom`
+        <img
+          alt="DocSPA Logo"
+          class="docspa-logo"
+          data-no-zoom="true"
+          src="docs/assets/docspa_mark-only.png"
+        >`);
 
-    cy.get('@coverpage').find('md-env').contains(pkg.version);
+      const SEMVER = /([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?/
+
+      cy.get('h2').first().domMatch(dom`
+        DocSPA
+          <small>
+          <md-env
+            ng-version="${SEMVER}"
+            var="version"
+          >
+            ${pkg.version}
+          </md-env>
+        </small>`);
+
+      cy.get('blockquote').contains('An Angular-powered documentation SPA');
+    
+      cy.get('a').should('have.length', 2);    
+    });
   });
 
   it('has a sidebar', sidebar);
