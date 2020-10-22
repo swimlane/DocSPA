@@ -59,8 +59,8 @@ export class MdLinkComponent implements OnChanges, AfterContentInit {
   /**
    * [routerLink] and [routerLinkActive] directives use ActivateRoute as the base,
    * However, when this component is used as a custom element (via angular elements)
-   * it becomes disassociated with the page componnet (router outlet),
-   * so we must convert the url here to be relaive to the page component activate route.
+   * it becomes disassociated with the page component (router outlet),
+   * so we must convert the url here to be relative to the page component activate route.
    */
   ngOnChanges() {
     // resolve path relative to component

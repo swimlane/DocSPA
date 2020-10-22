@@ -1,0 +1,22 @@
+<div class="search" *ngIf="searchIndex">
+  <div class="input-wrap">
+    <input
+      #searchInput
+      type="search"
+      value=""
+      placeholder="Search topics"
+      aria-label="Search topics"
+      (keyup)="search($event.target.value)"
+      (search)="search($event.target.value)">
+  </div>
+
+  <div class="results-panel" [class.show]="searchResults">
+    <p class="empty" *ngIf="searchResults?.length === 0">No results!</p>
+    <div class="matching-post" *ngFor="let result of searchResults | slice:0:9">
+      <a [routerLink]="result.link" (click)="search(searchInput.value = '')">
+        <h2 [innerHTML]="result.name"></h2>
+        <p [innerHTML]="result.content"></p>
+      </a>
+    </div>
+  </div>
+</div>

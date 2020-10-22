@@ -1,6 +1,6 @@
 [![DocSPA Logo](./assets/docspa-inline-125px.png){ data-no-zoom="true" }](/){ .docspa-logo }
 
-<md-toc-search summary="SUMMARY"></md-toc-search>
+<md-search summary="SUMMARY"></md-search>
 
 ---
 

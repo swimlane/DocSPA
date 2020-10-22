@@ -1,0 +1,69 @@
+docspa-search, md-search {
+  .search {
+    margin-bottom: 10px;
+    padding: 6px;
+  
+    .input-wrap {
+      display: flex;
+      align-items: center;
+  
+      input {
+        outline: none;
+        border: none;
+        width: 100%;
+        padding: 0 7px;
+        line-height: 36px;
+        font-size: 14px;
+        appearance: none;
+      }
+      
+      .clear-button {
+        width: 36px;
+        text-align: right;
+  
+        svg {
+          transform: scale(.5);
+        }
+      } 
+    }
+    
+    .results-panel {
+      display: block;
+      // position: absolute;
+      // border: 2px solid red;
+      // background: white;
+      // left: 30px;
+
+      h2 {
+        font-size: 17px;
+        margin: 10px 0 0 0;
+      }
+      
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      
+      .matching-post {
+        border-bottom: 1px solid #eee;
+      }
+      
+      .matching-post:last-child {
+        border-bottom: 0;
+      }
+      
+      p {
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin: 0;
+      }
+      
+      p.empty {
+        text-align: center;
+      }      
+    }
+
+  }
+}
+

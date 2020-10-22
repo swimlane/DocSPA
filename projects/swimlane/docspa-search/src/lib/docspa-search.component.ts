@@ -7,47 +7,24 @@ import unified from 'unified';
 import markdown from 'remark-parse';
 import stringify from 'remark-stringify';
 import slug from 'remark-slug';
-import { links, images } from '../../shared/links';
+import { links, images } from '@swimlane/docspa-core/lib/shared/links';
 import frontmatter from 'remark-frontmatter';
 import { getTitle } from '@swimlane/docspa-remark-preset';
 
-import { join } from '../../shared/utils';
+import { join } from '@swimlane/docspa-core/lib/shared/utils';
 
-import { FetchService } from '../../services/fetch.service';
-import { LocationService } from '../../services/location.service';
-import { TocService } from './toc.service';
+import { FetchService } from '@swimlane/docspa-core';
+import { LocationService } from '@swimlane/docspa-core';
+import { TocService } from '@swimlane/docspa-core';
 
 @Component({
-  selector: 'docspa-toc-search', // tslint:disable-line
-  template: `
-  <div class="search" *ngIf="searchIndex">
-    <div class="input-wrap">
-      <input
-        #searchInput
-        type="search"
-        value=""
-        placeholder="Search topics"
-        aria-label="Search topics"
-        (keyup)="search($event.target.value)"
-        (search)="search($event.target.value)">
-    </div>
-
-    <div class="results-panel" [class.show]="searchResults">
-      <p class="empty" *ngIf="searchResults?.length === 0">No results!</p>
-      <div class="matching-post" *ngFor="let result of searchResults | slice:0:9">
-        <a [routerLink]="result.link" (click)="search(searchInput.value = '')">
-          <h2 [innerHTML]="result.name"></h2>
-          <p [innerHTML]="result.content"></p>
-        </a>
-      </div>
-    </div>
-  </div>
-  `,
-  styleUrls: ['./toc-search.component.scss'],
+  selector: 'docspa-search',
+  templateUrl: './docspa-search.component.html',
+  styleUrls: ['./docspa-search.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class TOCSearchComponent implements OnInit, OnChanges {
-  static readonly is = 'md-toc-search';
+export class DocspaSearchComponent implements OnInit, OnChanges {
+  static readonly is = 'md-search';
 
   @Input()
   set paths(val: string[]) {

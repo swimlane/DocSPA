@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "importHelpers": true,
     "module": "es2020",
     "outDir": "./dist/out-tsc",
@@ -36,14 +36,11 @@
       "@swimlane/docspa-remark-preset": [
         "./projects/swimlane/docspa-remark-preset/src/index"
       ],
-      "@swimlane/docspa-remark-preset/*": [
-        "./projects/swimlane/docspa-remark-preset/src/*"
-      ],
       "@swimlane/docspa-stackblitz": [
         "./projects/swimlane/docspa-stackblitz/src/public-api"
       ],
-      "@swimlane/docspa-stackblitz/*": [
-        "./projects/swimlane/docspa-stackblitz/src/*"
+      "@swimlane/docspa-search": [
+        "./projects/swimlane/docspa-search/src/public-api"
       ]
     }
   }

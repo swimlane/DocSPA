@@ -190,6 +190,46 @@
           }
         }
       }
+    },
+    "@swimlane/docspa-search": {
+      "projectType": "library",
+      "root": "projects/swimlane/docspa-search",
+      "sourceRoot": "projects/swimlane/docspa-search/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/swimlane/docspa-search/tsconfig.lib.json",
+            "project": "projects/swimlane/docspa-search/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/swimlane/docspa-search/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/swimlane/docspa-search/src/test.ts",
+            "tsConfig": "projects/swimlane/docspa-search/tsconfig.spec.json",
+            "karmaConfig": "projects/swimlane/docspa-search/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/swimlane/docspa-search/tsconfig.lib.json",
+              "projects/swimlane/docspa-search/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "docspa"
