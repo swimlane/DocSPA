@@ -1,26 +1,50 @@
-/*
-  This is a "Solution Style" tsconfig.json file, and is used by editors and TypeScript’s language server to improve development experience.
-  It is not intended to be used to perform a compilation.
-
-  To learn more about this file see: https://angular.io/config/solution-tsconfig.
-*/
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./src/tsconfig.app.json"
-    },
-    {
-      "path": "./projects/swimlane/docspa-core/tsconfig.lib.json"
-    },
-    {
-      "path": "./projects/swimlane/docspa-core/tsconfig.spec.json"
-    },
-    {
-      "path": "./projects/swimlane/docspa-stackblitz/tsconfig.lib.json"
-    },
-    {
-      "path": "./projects/swimlane/docspa-stackblitz/tsconfig.spec.json"
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "importHelpers": true,
+    "module": "es2020",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2015",
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "types": [
+      "node",
+      "jasmine"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "paths": {
+      "@swimlane/docspa-core": [
+        "./projects/swimlane/docspa-core/src/public_api"
+      ],
+      "@swimlane/docspa-core/*": [
+        "./projects/swimlane/docspa-core/src/*"
+      ],
+      "@swimlane/docspa-remark-preset": [
+        "./projects/swimlane/docspa-remark-preset/src/index"
+      ],
+      "@swimlane/docspa-remark-preset/*": [
+        "./projects/swimlane/docspa-remark-preset/src/*"
+      ],
+      "@swimlane/docspa-stackblitz": [
+        "./projects/swimlane/docspa-stackblitz/src/public-api"
+      ],
+      "@swimlane/docspa-stackblitz/*": [
+        "./projects/swimlane/docspa-stackblitz/src/*"
+      ]
     }
-  ]
+  }
 }
