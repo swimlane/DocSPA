@@ -99,11 +99,4 @@ describe('The Home page', () => {
     cy.get('@content').find('section[id="introduction"] > p a').first().should('have.attr', 'href', 'https://custom-elements-everywhere.com/#angular');
     cy.get('@content').find('section[id="introduction"] > p a').eq(1).should('have.attr', 'href', '/quickstart');
   });
-
-  it('has pagination', () => {
-    cy.get('@footer').find('.pagination-item-title').should('have.length', 1);
-
-    cy.get('@footer').find('.pagination-item--next a').contains('Quick start');
-    cy.get('@footer').find('.pagination-item--next a').should('have.attr', 'href', '/quickstart');
-  });
 });

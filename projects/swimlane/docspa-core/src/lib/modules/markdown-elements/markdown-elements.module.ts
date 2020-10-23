@@ -20,7 +20,7 @@ import { EnvVarComponent } from './env-var.component';
 import { MdPrintComponent } from './md-print.component';
 import { TOCPaginationComponent } from './toc-pagination.component';
 import { EmbedMarkdownComponent } from './embed-file';
-import { TocService } from './toc.service';
+// import { TocService } from './toc.service';
 import { MdLinkComponent } from './md-link';
 
 export const MARKDOWNELEMENTS_CONFIG_TOKEN = new InjectionToken<any>( 'MarkdownElementsModule.forRoot() configuration.' );
@@ -68,7 +68,7 @@ const elements = [
     MdLinkComponent
   ],
   providers: [
-    TocService
+    // TocService
   ]
 })
 export class MarkdownElementsModule {

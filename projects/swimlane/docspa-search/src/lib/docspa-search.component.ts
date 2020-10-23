@@ -2,20 +2,12 @@ import { Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular
 
 import { of } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';
+import { Builder, stopWordFilter } from 'lunr';
 
-import unified from 'unified';
-import markdown from 'remark-parse';
-import stringify from 'remark-stringify';
-import slug from 'remark-slug';
-import { links, images } from '@swimlane/docspa-core/lib/shared/links';
-import frontmatter from 'remark-frontmatter';
-import { getTitle } from '@swimlane/docspa-remark-preset';
+import { join, splitHash } from '@swimlane/docspa-core/lib/shared/utils';
 
-import { join } from '@swimlane/docspa-core/lib/shared/utils';
-
-import { FetchService } from '@swimlane/docspa-core';
+import { FetchService, MarkdownService } from '@swimlane/docspa-core';
 import { LocationService } from '@swimlane/docspa-core';
-import { TocService } from '@swimlane/docspa-core';
 
 @Component({
   selector: 'docspa-search',
@@ -44,52 +36,23 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
   summary: string;
 
   @Input()
-  minDepth = 1;
+  minDepth: 1 | 2 | 3 | 4 | 5 | 6 = 1;
 
   @Input()
-  maxDepth = 6;
-
-  private get processor() {
-    if (this._processor) {
-      return this._processor;
-    }
-    // TODO: add sectionize... find sections.
-    return this._processor = unified() // md -> toc -> md + links
-      .use(markdown)
-      .use(frontmatter)
-      .use(slug)
-      .use(getTitle as any)
-      .use(this.tocService.removeNodesPlugin, this.minDepth)
-      .use(this.tocService.tocPlugin, { maxDepth: this.maxDepth })
-      .use(links, { locationService: this.locationService })
-      .use(images, { locationService: this.locationService })
-      .use(this.tocService.linkPlugin)
-      .use(stringify);
-  }
-  private get processLinks() {
-    if (this._processLinks) {
-      return this._processLinks;
-    }
-    return this._processLinks = unified() // md -> md + links
-      .use(markdown)
-      .use(frontmatter)
-      .use(slug)
-      .use(this.tocService.linkPlugin)
-      .use(stringify);
-  }
-
-  private _processor: any;
-  private _processLinks: any;
+  maxDepth: 1 | 2 | 3 | 4 | 5 | 6 = 6;
 
   private _paths: string[];
 
   searchIndex: any[];
   searchResults: any[];
 
+  private idx: any;
+
   constructor(
     private fetchService: FetchService,
     private locationService: LocationService,
-    private tocService: TocService
+    // private tocService: TocService,
+    private markdownService: MarkdownService
   ) {
   }
 
@@ -98,22 +61,14 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this._processor) {
-      this._processor = null;
-      this._processLinks = null;
-      this.update();
-    }
+    this.update();
   }
 
-  update() {
+  async update() {
     if (!this.paths && this.summary) {
-      this.loadSummary(this.summary).then(paths => {
-        this.paths = paths;
-        this.generateSearchIndex(this.paths);
-      });
-    } else {
-      this.generateSearchIndex(this.paths);
+      this.paths = await this.loadSummary(this.summary);
     }
+    return this.generateSearchIndex(this.paths);
   }
 
   search(query: string) {
@@ -122,29 +77,40 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
       return;
     }
 
-    const regEx = new RegExp(
-      query.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&'),
-      'gi'
-    );
+    // this.searchIndex.forEach(link => {
+    //   const index = link.content.search(regEx);
+    //   if (index > -1) {
+    //     const start = index < 21 ? 0 : index - 20;
+    //     const end = start + 40;
+    //     const content = link.content
+    //       .substring(start, end)
+    //       .replace(regEx, x => `<em class="search-keyword">${x}</em>`);
+    //     matchingResults.push({
+    //       ...link,
+    //       content
+    //     });
+    //   }
+    // });
 
-    const matchingResults = [];
+    if (!query.includes('*')) {
+      query = '*' + query + '*';
+    }
 
-    this.searchIndex.forEach(link => {
-      const index = link.content.search(regEx);
-      if (index > -1) {
-        const start = index < 21 ? 0 : index - 20;
-        const end = start + 40;
-        const content = link.content
-          .substring(start, end)
-          .replace(regEx, x => `<em class="search-keyword">${x}</em>`);
-        matchingResults.push({
-          ...link,
-          content
-        });
-      }
+    this.searchResults = this.idx.search(query).map(r => {
+      const url = r.ref;
+      // const [link, fragment] = splitHash(url);
+
+      const match = this.searchIndex.find(link => link.url === url);
+
+      return match;
+
+      // return {
+      //   link,
+      //   fragment: fragment.replace(/^#/, ''),
+      //   name: url,
+      //   content: ''
+      // };
     });
-
-    this.searchResults = matchingResults;
   }
 
   private loadSummary(summary: string) {
@@ -154,7 +120,7 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
       mergeMap(resource => {
         vfile.contents = resource.contents;
         vfile.data = vfile.data || {};
-        return resource.notFound ? of(null) : this.processLinks.process(vfile);
+        return resource.notFound ? of(null) : this.markdownService.processLinks(vfile);
       }),
       map((_: any) => {
         return _.data.tocSearch.map(__ => __.url).join(',');
@@ -162,28 +128,48 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
     ).toPromise();
   }
 
-  private generateSearchIndex(paths: string[]) {
+  private async generateSearchIndex(paths: string[]) {
+    this.searchIndex = null;
+    this.idx = null;
+
     if (!paths) {
-      this.searchIndex = null;
       return;
     }
-    const promises = paths.map(_ => {
-      const vfile = this.locationService.pageToFile(_);
+
+    const builder = new Builder();
+
+    builder.pipeline.add(stopWordFilter);
+
+    builder.ref('url');
+    // builder.field('name', { boost: 10 });
+    builder.field('content');
+
+    this.searchIndex = [];
+
+    const promises = paths.map(async p => {
+      const vfile = this.locationService.pageToFile(p);
       const fullPath = join(vfile.cwd, vfile.path);
-      return this.fetchService.get(fullPath)
-        .pipe(
-          mergeMap(resource => {
-            vfile.contents = resource.contents;
-            vfile.data = vfile.data || {};
-            return resource.notFound ? of(null) : this.processor.process(vfile);
-          })
-        ).toPromise();
+
+      const resource = await this.fetchService.get(fullPath).toPromise();
+      vfile.contents = resource.contents;
+      vfile.data = vfile.data || {};
+
+      const file = resource.notFound ? null : await this.markdownService.processTOC(vfile, {
+        minDepth: +this.minDepth,
+        maxDepth: +this.maxDepth as 1
+      });
+
+      if (file?.data?.tocSearch) {
+        console.log(file.data.tocSearch);
+        file.data.tocSearch.forEach(doc => {
+          console.log(doc);
+          this.searchIndex.push(doc);
+          builder.add(doc);
+        });
+      }
     });
 
-    return Promise.all(promises).then(files => {
-      this.searchIndex = (files.reduce((acc: any[], file: any): any[] => {
-        return file ? acc.concat(file.data.tocSearch) : acc;
-      }, []) as any[]);
-    });
+    await Promise.all(promises);
+    this.idx = builder.build();
   }
 }

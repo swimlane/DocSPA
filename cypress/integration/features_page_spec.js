@@ -157,7 +157,7 @@ describe('The Features page', () => {
     });
   });
 
-  describe('right bar sidebar', () => {
+  describe('right sidebar', () => {
     beforeEach(() => {
       cy.get('@rightbar').find('md-toc a').as('links');
     });

@@ -7,7 +7,6 @@ import { mergeMap, map } from 'rxjs/operators';
 import unified from 'unified';
 import markdown from 'remark-parse';
 import visit from 'unist-util-visit';
-import slug from 'remark-slug';
 import * as MDAST from 'mdast';
 import frontmatter from 'remark-frontmatter';
 import rehypeStringify from 'rehype-stringify';
@@ -20,7 +19,6 @@ import { FetchService } from '../../services/fetch.service';
 import { SettingsService } from '../../services/settings.service';
 import { RouterService } from '../../services/router.service';
 import { MarkdownService } from '../markdown/markdown.service';
-import { TocService } from './toc.service';
 
 import { join, isAbsolutePath } from '../../shared/utils';
 
@@ -99,10 +97,10 @@ export class MdPrintComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private elm: ElementRef,
     private markdownService: MarkdownService,
-    private tocService: TocService
+    // private tocService: TocService
   ) {
 
-    // TODO: use tocService
+    // TODO: move to service
     const fixLinks = () => {
       return (tree: MDAST.Root, file: VFile) => {
         return visit(tree, 'link', (node: MDAST.Link) => {
@@ -115,7 +113,7 @@ export class MdPrintComponent implements OnInit {
       };
     };
 
-    // TODO: move toc servcie
+    // TODO: move to service
     const fixIds = () => {
       return (tree: MDAST.Root, file: VFile) => {
         return visit(tree, 'heading', (node: Heading) => {
@@ -127,15 +125,6 @@ export class MdPrintComponent implements OnInit {
         });
       };
     };
-
-    this.processLinks = unified()
-      .use(markdown)
-      .use(frontmatter)
-      .use(slug)
-      .use(this.tocService.linkPlugin)
-      .use(remark2rehype, { allowDangerousHtml: true })
-      .use(raw)
-      .use(rehypeStringify);
 
     this.processor = unified()
       .use(markdown)
@@ -202,7 +191,7 @@ export class MdPrintComponent implements OnInit {
       mergeMap(resource => {
         vfile.contents = resource.contents;
         vfile.data = vfile.data || {};
-        return resource.notFound ? of(null) : this.processLinks.process(vfile);
+        return resource.notFound ? of(null) : this.markdownService.processLinks(vfile);
       }),
       map((_: any) => {
         return _.data.tocSearch.map(__ => {

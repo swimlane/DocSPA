@@ -7,23 +7,14 @@ import {
   HostBinding
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-
 import { mergeMap } from 'rxjs/operators';
-import unified from 'unified';
-import markdown from 'remark-parse';
-import slug from 'remark-slug';
-import rehypeStringify from 'rehype-stringify';
-import remark2rehype from 'remark-rehype';
-import raw from 'rehype-raw';
-import frontmatter from 'remark-frontmatter';
 
 import { FetchService } from '../../services/fetch.service';
 import { RouterService } from '../../services/router.service';
 import { LocationService } from '../../services/location.service';
 import { HooksService } from '../../services/hooks.service';
-import { TocService } from './toc.service';
-import { links, images } from '../../shared/links';
 import { join } from '../../shared/utils';
+import { MarkdownService } from '../markdown/markdown.service';
 
 import type { VFile } from '../../vendor';
 
@@ -42,10 +33,10 @@ export class TOCComponent implements OnChanges, OnInit {
   plugins = false;
 
   @Input()
-  minDepth = 1;
+  minDepth: 1 | 2 | 3 | 4 | 5 | 6 = 1;
 
   @Input()
-  maxDepth = 6;
+  maxDepth: 1 | 2 | 3 | 4 | 5 | 6 = 6;
 
   @Input()
   tight = true;
@@ -53,24 +44,6 @@ export class TOCComponent implements OnChanges, OnInit {
   @HostBinding('innerHTML')
   html: SafeHtml;
 
-  private get processor() {
-    if (this._processor) {
-      return this._processor;
-    }
-    return this._processor = unified()
-      .use(markdown)
-      .use(frontmatter)
-      .use(slug)
-      .use(this.tocService.removeNodesPlugin, this.minDepth)
-      .use(this.tocService.tocPlugin, { maxDepth: this.maxDepth, tight: this.tight })
-      .use(links, { locationService: this.locationService })
-      .use(images, { locationService: this.locationService })
-      .use(remark2rehype, { allowDangerousHtml: true })
-      .use(raw)
-      .use(rehypeStringify);
-  }
-
-  private _processor: any;
   private lastPath: string;
 
   constructor(
@@ -79,7 +52,7 @@ export class TOCComponent implements OnChanges, OnInit {
     private locationService: LocationService,
     private sanitizer: DomSanitizer,
     private hooks: HooksService,
-    private tocService: TocService
+    private markdownService: MarkdownService
   ) {
   }
 
@@ -93,10 +66,7 @@ export class TOCComponent implements OnChanges, OnInit {
   }
 
   ngOnChanges() {
-    if (this._processor) {
-      this._processor = null;
-      this.load();
-    }
+    this.load();
   }
 
   private load() {
@@ -120,7 +90,12 @@ export class TOCComponent implements OnChanges, OnInit {
         mergeMap(async resource => {
           vfile.contents = resource.contents;
           vfile.data = vfile.data || {};
-          /* const err = */ await this.processor.process(vfile);
+          /* const err = */ await this.markdownService.processTOC(vfile, {
+            minDepth: +this.minDepth,
+            // @ts-ignore
+            maxDepth: +this.maxDepth,
+            tight: this.tight
+          });
           return vfile;
         }),
       ).subscribe(_vfile => {

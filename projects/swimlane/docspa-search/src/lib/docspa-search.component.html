@@ -13,7 +13,7 @@
   <div class="results-panel" [class.show]="searchResults">
     <p class="empty" *ngIf="searchResults?.length === 0">No results!</p>
     <div class="matching-post" *ngFor="let result of searchResults | slice:0:9">
-      <a [routerLink]="result.link" (click)="search(searchInput.value = '')">
+      <a [routerLink]="result.link" [fragment]="result.fragment" (click)="search(searchInput.value = '')">
         <h2 [innerHTML]="result.name"></h2>
         <p [innerHTML]="result.content"></p>
       </a>

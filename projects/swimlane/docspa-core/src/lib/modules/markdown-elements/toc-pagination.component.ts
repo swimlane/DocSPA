@@ -17,7 +17,7 @@ import { FetchService } from '../../services/fetch.service';
 
 import { join } from '../../shared/utils';
 import { getBasePath } from '../../shared/vfile-utils';
-import { TocService } from './toc.service';
+// import { TocService } from './toc.service';
 
 import type { VFile } from '../../vendor';
 
@@ -132,30 +132,14 @@ export class TOCPaginationComponent implements OnInit, OnChanges {
   next: FileIndexItem;
   prev: FileIndexItem;
 
-  private get processLinks() {
-    if (this._processLinks) {
-      return this._processLinks;
-    }
-    return this._processLinks = unified()
-      .use(markdown)
-      .use(frontmatter)
-      .use(slug)
-      .use(this.tocService.linkPlugin)
-      .use(stringify);
-  }
-
   private files: FileIndexItem[];
-  private _processLinks: any;
   private _paths: string[];
-
-  // getBasePath: (vfile: VFILE.VFile) => string = getBasePath;
 
   constructor(
     private fetchService: FetchService,
     private routerService: RouterService,
     private markdownService: MarkdownService,
-    private locationService: LocationService,
-    private tocService: TocService
+    private locationService: LocationService
   ) {
   }
 
@@ -164,10 +148,7 @@ export class TOCPaginationComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this._processLinks) {
-      this._processLinks = null;
-      this.update();
-    }
+    this.update();
   }
 
   update() {
@@ -214,7 +195,7 @@ export class TOCPaginationComponent implements OnInit, OnChanges {
       mergeMap(resource => {
         _vfile.contents = resource.contents;
         _vfile.data = _vfile.data || {};
-        return resource.notFound ? of(null) : this.processLinks.process(_vfile);
+        return resource.notFound ? of(null) : this.markdownService.processLinks(_vfile);
       }),
       map((_: any) => {
         return _.data.tocSearch.map(__ => {

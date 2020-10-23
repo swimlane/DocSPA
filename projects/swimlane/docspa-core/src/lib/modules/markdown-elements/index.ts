@@ -1,2 +1,2 @@
 export * from './markdown-elements.module';
-export * from './toc.service';
+// export * from './toc.service';
