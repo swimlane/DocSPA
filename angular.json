@@ -37,7 +37,8 @@
               "remark-rehype",
               "rehype-stringify",
               "rehype-raw",
-              "vfile"
+              "vfile",
+              "lunr"
             ]
           },
           "configurations": {

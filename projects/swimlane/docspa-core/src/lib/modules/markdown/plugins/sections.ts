@@ -1,6 +1,6 @@
 import visit from 'unist-util-visit';
 
-import type { VFile } from '../../../vendor';
+import type { VFile } from '../../../shared/vfile';
 
 export function sectionPlugin() {
   return (tree: any, vfile: VFile) => {
@@ -9,10 +9,13 @@ export function sectionPlugin() {
 
     return visit(tree, 'section', (node: any, index: number, parent: any) => {
       const hnode = node.children.shift();
+
       const id = hnode.data.id;
       const heading = toString(hnode);
+      const name = (vfile.data.matter ? vfile.data.matter.title : false) || vfile.data.title || vfile.path;
 
-      // Get chilt text, removing subsections
+      // Get child text, removing subsections
+      // TODO: improve this to reduce noise in matches
       const text = node.children.filter(c => c.type !== 'section').map(toString).join(' ');
       const source = vfile.history[0];
 
@@ -20,7 +23,9 @@ export function sectionPlugin() {
         id,
         text,
         heading,
-        source
+        source,
+        name,
+        depth: node.depth
       });
 
       return true;
@@ -28,7 +33,7 @@ export function sectionPlugin() {
   };
 }
 
-// Basicly mdast-util-to-string' with a space
+// Basicly mdast-util-to-string with a space
 function toString(node: any) {
   return (
     (node &&

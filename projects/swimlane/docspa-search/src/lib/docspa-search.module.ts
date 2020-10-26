@@ -1,8 +1,9 @@
 import { Injector, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-
+import { OverlayModule } from '@angular/cdk/overlay';
 import { createCustomElement } from '@angular/elements';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { DocspaSearchComponent } from './docspa-search.component';
 
@@ -10,7 +11,9 @@ import { DocspaSearchComponent } from './docspa-search.component';
   declarations: [DocspaSearchComponent],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    OverlayModule,
+    MatPaginatorModule
   ],
   exports: [DocspaSearchComponent],
   entryComponents: [DocspaSearchComponent]

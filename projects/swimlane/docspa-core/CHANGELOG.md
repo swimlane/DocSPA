@@ -2,7 +2,7 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-_(none)_
+* Moved text search to its own module (@swimlane/docspa-search).
 
 --------------------
 

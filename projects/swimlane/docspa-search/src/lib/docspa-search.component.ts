@@ -1,13 +1,12 @@
 import { Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
-import { of } from 'rxjs';
-import { mergeMap, map } from 'rxjs/operators';
-import { Builder, stopWordFilter } from 'lunr';
+import lunr, { Builder, stopWordFilter } from 'lunr';
 
 import { join, splitHash } from '@swimlane/docspa-core/lib/shared/utils';
 
 import { FetchService, MarkdownService } from '@swimlane/docspa-core';
 import { LocationService } from '@swimlane/docspa-core';
+import { escapeRegexp, extractAndHighlight, highlight } from './utils';
 
 @Component({
   selector: 'docspa-search',
@@ -35,23 +34,19 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
   @Input()
   summary: string;
 
-  @Input()
-  minDepth: 1 | 2 | 3 | 4 | 5 | 6 = 1;
-
-  @Input()
-  maxDepth: 1 | 2 | 3 | 4 | 5 | 6 = 6;
-
   private _paths: string[];
 
-  searchIndex: any[];
+  searchIndex: { [key: string]: any };
   searchResults: any[];
 
-  private idx: any;
+  pageIndex = 0;
+  pageSize = 5;
+
+  idx: lunr.Index;
 
   constructor(
     private fetchService: FetchService,
     private locationService: LocationService,
-    // private tocService: TocService,
     private markdownService: MarkdownService
   ) {
   }
@@ -66,66 +61,88 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
 
   async update() {
     if (!this.paths && this.summary) {
-      this.paths = await this.loadSummary(this.summary);
+      this.paths = await this.fetchSummary(this.summary);
     }
     return this.generateSearchIndex(this.paths);
   }
 
-  search(query: string) {
-    if (typeof query !== 'string' || query.trim() === '') {
+  search(queryTerm: string) {
+    if (typeof queryTerm !== 'string' || queryTerm.trim() === '') {
       this.searchResults = null;
       return;
     }
 
-    // this.searchIndex.forEach(link => {
-    //   const index = link.content.search(regEx);
-    //   if (index > -1) {
-    //     const start = index < 21 ? 0 : index - 20;
-    //     const end = start + 40;
-    //     const content = link.content
-    //       .substring(start, end)
-    //       .replace(regEx, x => `<em class="search-keyword">${x}</em>`);
-    //     matchingResults.push({
-    //       ...link,
-    //       content
-    //     });
-    //   }
-    // });
+    const reQuery = escapeRegexp(queryTerm);
 
-    if (!query.includes('*')) {
-      query = '*' + query + '*';
-    }
+    this.pageIndex = 0;
 
-    this.searchResults = this.idx.search(query).map(r => {
-      const url = r.ref;
-      // const [link, fragment] = splitHash(url);
+    const results = this.idx.query(q => {
+      // look for an exact match and apply a large positive boost
+      q.term(queryTerm, { usePipeline: true, boost: 100 });
 
-      const match = this.searchIndex.find(link => link.url === url);
+      // look for terms that match the beginning of this queryTerm and apply a medium boost
+      q.term(queryTerm, { usePipeline: false, wildcard: lunr.Query.wildcard.TRAILING, boost: 10 });
 
-      return match;
-
-      // return {
-      //   link,
-      //   fragment: fragment.replace(/^#/, ''),
-      //   name: url,
-      //   content: ''
-      // };
+      // look for partial match and apply a small boost
+      // tslint:disable-next-line: no-bitwise
+      q.term(queryTerm, { wildcard: lunr.Query.wildcard.LEADING | lunr.Query.wildcard.TRAILING, usePipeline: false, boost: 1 });
     });
+
+    this.searchResults = results.map(r => {
+        const ref = r.ref;
+
+        // tslint:disable-next-line: prefer-const
+        let [link, fragment] = splitHash(ref);
+        fragment = fragment.replace(/^#/, '');
+
+        const match = this.searchIndex[ref];
+
+        let heading: string = match.heading || '';
+        let name: string = match.page || match.name;
+
+        name = highlight(name, reQuery);
+        heading = highlight(heading, reQuery);
+
+        const result = {
+          ...r,
+          ...match,
+          heading,
+          name,
+          link,
+          fragment
+        };
+
+        // Checks if text was part of the match
+        const hasTextMatch = Object.keys(r.matchData.metadata).some(k => !!r.matchData.metadata[k].text);
+
+        if (hasTextMatch) {
+          // Lazy loads text
+          this.fetchSections(link).then(sections => {
+            const { text } = sections.find(s => s.id === fragment);
+            result.text = extractAndHighlight(text, reQuery, queryTerm.length);
+          });
+        }
+
+        return result;
+      });
   }
 
-  private loadSummary(summary: string) {
+  onPageChange($event: {pageSize: number, pageIndex: number }) {
+    this.pageSize = $event.pageSize;
+    this.pageIndex = $event.pageIndex;
+  }
+
+  private async fetchSummary(summary: string) {
     const vfile = this.locationService.pageToFile(summary);
     const fullPath = join(vfile.cwd, vfile.path);
-    return this.fetchService.get(fullPath).pipe(
-      mergeMap(resource => {
-        vfile.contents = resource.contents;
-        vfile.data = vfile.data || {};
-        return resource.notFound ? of(null) : this.markdownService.processLinks(vfile);
-      }),
-      map((_: any) => {
-        return _.data.tocSearch.map(__ => __.url).join(',');
-      })
-    ).toPromise();
+    const resource = await this.fetchService.get(fullPath).toPromise();
+    if (resource.notFound) {
+      return [];
+    }
+    vfile.contents = resource.contents;
+    vfile.data = vfile.data || {};
+    const links = await this.markdownService.getTocLinks(vfile);
+    return links.map(__ => __.url);
   }
 
   private async generateSearchIndex(paths: string[]) {
@@ -141,35 +158,52 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
     builder.pipeline.add(stopWordFilter);
 
     builder.ref('url');
-    // builder.field('name', { boost: 10 });
-    builder.field('content');
+    builder.field('page', { boost: 100 });
+    builder.field('heading', { boost: 10 });
+    builder.field('text');
+    // TODO: tags??
 
-    this.searchIndex = [];
+    this.searchIndex = {};
 
     const promises = paths.map(async p => {
-      const vfile = this.locationService.pageToFile(p);
-      const fullPath = join(vfile.cwd, vfile.path);
+      const sections = await this.fetchSections(p);
 
-      const resource = await this.fetchService.get(fullPath).toPromise();
-      vfile.contents = resource.contents;
-      vfile.data = vfile.data || {};
+      if (sections) {
+        sections.forEach(s => {
+          const url = `${s.source}#${s.id}`;
 
-      const file = resource.notFound ? null : await this.markdownService.processTOC(vfile, {
-        minDepth: +this.minDepth,
-        maxDepth: +this.maxDepth as 1
-      });
+          // keep quick reference to page name and heading
+          this.searchIndex[url] = {
+            name: s.name,
+            page: s.depth === 1 ? s.heading : '',
+            heading: s.depth > 1 ? s.heading : ''
+          };
 
-      if (file?.data?.tocSearch) {
-        console.log(file.data.tocSearch);
-        file.data.tocSearch.forEach(doc => {
-          console.log(doc);
-          this.searchIndex.push(doc);
-          builder.add(doc);
+          // add page name, heading, and full tex to the index
+          builder.add({
+            url,
+            ...s,
+            ...this.searchIndex[url]
+          });
         });
       }
     });
 
+    // wait tell all docs are added to the index
     await Promise.all(promises);
+
+    // todo: store index in localstorage?
     this.idx = builder.build();
+  }
+
+  private async fetchSections(path: string) {
+    const vfile = this.locationService.pageToFile(path);
+    const fullPath = join(vfile.cwd, vfile.path);
+
+    const resource = await this.fetchService.get(fullPath).toPromise();
+    vfile.contents = resource.contents;
+    vfile.data = vfile.data || {};
+
+    return resource.notFound ? null : await this.markdownService.getSections(vfile);
   }
 }

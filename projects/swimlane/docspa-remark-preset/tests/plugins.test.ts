@@ -56,9 +56,9 @@ describe('3rd party', () => {
     const vfile = await processor.process(contents);
     const out = String(vfile);
     expect(out)
-      .toContain(`<img src="https://github.com/images/icons/emoji/smile.png"`);
+      .toContain(`😄`);
     expect(out)
-      .toContain(`<img src="https://github.com/images/icons/emoji/+1.png"`);
+      .toContain(`👍`);
   });
 
   it('remark-custom-blocks', async () => {

@@ -3,9 +3,12 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^10.1.6",
-    "@angular/core": "^10.1.6"
+    "@angular/core": "^10.1.6",
+    "@swimlane/docspa-core": "^6.0.0",
+    "@angular/material": "^10.2.5"
   },
   "dependencies": {
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "lunr": "^2.3.9"
   }
 }

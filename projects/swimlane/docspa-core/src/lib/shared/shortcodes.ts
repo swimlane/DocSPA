@@ -1,32 +1,16 @@
 import visit from 'unist-util-visit';
 
-import * as MDAST from 'mdast';
-import * as VFILE from 'vfile';
-import * as  UNIFIED from 'unified';
+import type * as mdast from 'mdast';
+import type * as  unified from 'unified';
 
-interface Codes {
-  [key: string]: {
-    tagName: string;
-  };
-}
+import type { VFile } from './vfile';
+import type { Codes, ShortCode } from './ast';
 
-interface ShortCode extends MDAST.Parent {
-  type: 'shortcode';
-  identifier: string;
-  attributes: { [key: string]: any };
-}
-
-interface VFile extends VFILE.VFile {
-  data: {
-    base?: string;
-  };
-}
-
-export const customSmartCodes = (codes: Codes[]): UNIFIED.Transformer => {
+export const customSmartCodes = (codes: Codes[]): unified.Transformer => {
   // @ts-ignore
-  return (tree: MDAST.Root, file: VFILE.VFile) => {
+  return (tree: mdast.Root, file: VFile) => {
     file.data = file.data || {};
-    return visit(tree, 'shortcode', (node: ShortCode, index: number, parent: MDAST.Parent) => {
+    return visit(tree, 'shortcode', (node: ShortCode, index: number, parent: mdast.Parent) => {
       if (node && parent && index !== undefined && node.identifier in codes) {
         const child = {
           type: 'element',

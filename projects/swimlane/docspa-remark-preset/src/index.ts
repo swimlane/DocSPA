@@ -3,7 +3,6 @@ import frontmatter from 'remark-frontmatter';
 import math from 'remark-math';
 import katex from 'remark-html-katex';
 import gemojiToEmoji from 'remark-gemoji-to-emoji';
-import htmlEmojiImage from 'remark-html-emoji-image';
 import parseFrontmatter from 'remark-parse-yaml';
 import shortcodes from 'remark-shortcodes';
 import slug from 'remark-slug';
@@ -55,8 +54,7 @@ export const plugins = [
   moveIds,
   math,
   katex,
-  // gemojiToEmoji,
-  [ htmlEmojiImage, { base: 'https://github.com/images/icons/emoji/' }],
+  gemojiToEmoji,
   infoStringToAttr,
   [ customBlocks, customBlocksOptions ],
   [ customBlockquotes, customBlockquotesOptions ],

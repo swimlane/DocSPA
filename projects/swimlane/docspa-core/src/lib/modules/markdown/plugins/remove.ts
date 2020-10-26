@@ -2,7 +2,7 @@ import visit from 'unist-util-visit';
 
 import type * as mdast from 'mdast';
 
-import type { TOCOptions, VFile } from '../../../vendor';
+import type { TOCOptions, VFile } from '../../../shared/vfile';
 
 export function removeNodesPlugin(options?: TOCOptions) {
   return (tree: mdast.Root, vfile: VFile) => {

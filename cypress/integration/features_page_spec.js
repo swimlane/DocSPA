@@ -89,9 +89,9 @@ describe('The Features page', () => {
       });
     });
 
-    it.skip('displays emoji', () => {
+    it('displays emoji', () => {
       cy.get('@content').find('#emoji').as('emoji');
-      cy.get('@emoji').find('img').should('have.length', 3);
+      cy.get('@emoji').find('p').should('have.text', '💯 🎱 💯');
     });
 
     describe('remark-attr', () => {

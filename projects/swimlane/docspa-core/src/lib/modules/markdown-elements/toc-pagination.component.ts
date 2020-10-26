@@ -3,23 +3,14 @@ import { Component, Input, OnChanges, ViewEncapsulation, SimpleChanges, OnInit }
 import { of } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';
 
-import VFILE from 'vfile';
-import unified from 'unified';
-import markdown from 'remark-parse';
-import stringify from 'remark-stringify';
-import slug from 'remark-slug';
-import frontmatter from 'remark-frontmatter';
-
 import { RouterService } from '../../services/router.service';
 import { MarkdownService } from '../markdown/markdown.service';
 import { LocationService } from '../../services/location.service';
 import { FetchService } from '../../services/fetch.service';
 
 import { join } from '../../shared/utils';
-import { getBasePath } from '../../shared/vfile-utils';
-// import { TocService } from './toc.service';
-
-import type { VFile } from '../../vendor';
+import { getBasePath } from '../../shared/vfile';
+import { VFile } from '../../shared/vfile';
 
 interface FileIndexItem {
   title: string;
@@ -188,6 +179,7 @@ export class TOCPaginationComponent implements OnInit, OnChanges {
     }
   }
 
+  // TODO: markdownService.getTocLinks
   private loadSummary(summary: string) {
     const _vfile = this.locationService.pageToFile(summary);
     const fullPath = join(_vfile.cwd, _vfile.path);
@@ -216,7 +208,7 @@ export class TOCPaginationComponent implements OnInit, OnChanges {
     this.next = index < this.files.length ? this.files[index + 1] : null;
   }
 
-  private generatePageIndex(paths: string[]): Promise<VFILE.VFile[]> {
+  private generatePageIndex(paths: string[]): Promise<VFile[]> {
     if (!paths) {
       this.files = null;
       return;
@@ -232,7 +224,7 @@ export class TOCPaginationComponent implements OnInit, OnChanges {
     let _vfile: VFile;
 
     if (!path) {
-      _vfile = VFILE('') as VFile;
+      _vfile = VFile('') as VFile;
       _vfile.data.docspa.notFound = true;
     } else {
       _vfile = this.locationService.pageToFile(path) as VFile;

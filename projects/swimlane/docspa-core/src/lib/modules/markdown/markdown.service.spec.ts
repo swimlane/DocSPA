@@ -8,7 +8,9 @@ import unindent from 'strip-indent';
 import { MarkdownService } from './markdown.service';
 import { DOCSPA_ENVIRONMENT } from '../../docspa-core.tokens';
 
-import type { VFile } from '../../vendor';
+import type { VFile } from '../../shared/vfile';
+import { RouterService } from '../../services/router.service';
+import { Router } from '@angular/router';
 
 describe('MarkdownService', () => {
   let markdownService: MarkdownService;
@@ -21,10 +23,12 @@ describe('MarkdownService', () => {
         LoggerModule.forRoot({ level: NgxLoggerLevel.WARN })
       ],
       providers: [
+        { provide: Router, useValue: { } },
         Location,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: DOCSPA_ENVIRONMENT, useValue: { } },
-        MarkdownService
+        MarkdownService,
+        RouterService
       ]
     });
 
@@ -75,12 +79,16 @@ describe('MarkdownService', () => {
          id: 'hello',
          source: '/README.md',
          text: 'World',
+         name: 'Hello',
+         depth: 1
        },
        {
          heading: 'Goodbye',
          id: 'goodbye',
          source: '/README.md',
          text: 'Earth',
+         name: 'Hello',
+         depth: 2
        },
     ]);
   });

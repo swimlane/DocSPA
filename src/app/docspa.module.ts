@@ -11,7 +11,7 @@ import {
   DocspaCoreModule, DocsifyPluginsModule,
   RuntimeContentModule, MarkdownModule, MarkdownElementsModule, MARKDOWN_CONFIG_TOKEN
 } from '@swimlane/docspa-core';
-import { DocspaSearchModule } from '@swimlane/docspa-search'; 
+import { DocspaSearchModule } from '@swimlane/docspa-search';
 import { DocspaStackblitzModule } from '@swimlane/docspa-stackblitz';
 
 import { EditOnGithubComponent } from './plugins/edit-on-github';

@@ -3,5 +3,6 @@
   "dest": "../../../dist/swimlane/docspa-search",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "whitelistedNonPeerDependencies": ["lunr"]
 }

@@ -1,5 +1,7 @@
+import VFILE from 'vfile';
+import { join } from './utils';
+
 import type * as vfile from 'vfile';
-import type * as mdast from 'mdast';
 import type * as toc from 'mdast-util-toc';
 import type * as unified from 'unified';
 
@@ -33,11 +35,13 @@ export interface TOCOptions extends toc.TOCOptions {
   minDepth?: number;
 }
 
-interface SectionData {
+export interface SectionData {
   id: string;
   text: string;
   heading: string;
   source: string;
+  depth: number;
+  name: string;
 }
 
 interface VFileData extends UnknownData {
@@ -53,29 +57,22 @@ export interface VFile extends vfile.VFile {
   data: VFileData;
 }
 
-interface HData extends UnknownData {
-  id?: string;
-  originalUrl?: string;
-  target?: string;
-  download?: string;
-  source?: string;
-  fragment?: string;
+export function VFile(doc: vfile.VFileCompatible): VFile {
+  return VFILE(doc) as VFile;
 }
 
-interface NodeData extends UnknownData {
-  hProperties?: HData;
+export function isVfile(x: unknown): x is VFile {
+  return x.constructor.name === 'VFile';
 }
 
-export interface Heading extends mdast.Heading {
-  data?: NodeData;
+export function getBasePath(_: VFile) {
+  return _.history[0];
 }
 
-export interface Link extends mdast.Link {
-  depth: number;
-  data?: NodeData;
+export function getFullPath(_: VFile) {
+  return join(_.cwd, _.path);
 }
 
 export interface Preset extends unified.Preset {
   reporter?: (vfile: VFile) => {};
 }
-

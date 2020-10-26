@@ -11,7 +11,7 @@ import { customSmartCodes } from '../../shared/shortcodes';
 import { MarkdownService } from '../../modules/markdown/markdown.service';
 import { LocationService } from '../../services/location.service';
 import { isAbsolutePath } from '../../shared/utils';
-import { getBasePath } from '../../shared/vfile-utils';
+import { getBasePath } from '../../shared/vfile';
 
 // Custom Elements
 import { MadeWithDocSPAComponent } from './made-with-love';

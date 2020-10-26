@@ -10,7 +10,7 @@ describe('pagination', () => {
     });
   });
 
-  it.only('can step', () => {
+  it('can step', () => {
     const links = [
       '/',
       '/quickstart',

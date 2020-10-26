@@ -3,6 +3,7 @@ CHANGELOG
 
 ## HEAD (Unreleased)
 * Added remark-sectionize
+* Removed remark-html-emoji-image for performance
 
 --------------------
 

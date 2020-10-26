@@ -14,24 +14,24 @@ import { getTitle } from '@swimlane/docspa-remark-preset';
 import toString from 'mdast-util-to-string';
 import { resolve } from 'url';
 import visit from 'unist-util-visit';
-
-import vfile from 'vfile';
+import strip from 'remark-strip-html';
 
 import type { VFileCompatible } from 'vfile';
 import type * as mdast from 'mdast';
-
-import { LocationService } from '../../services/location.service';
-import { HooksService } from '../../services/hooks.service';
-import { links, images } from '../../shared/links';
-
-import lazyInitialize from '../../shared/lazy-init';
 
 import { tocPlugin } from './plugins/toc';
 import { removeNodesPlugin } from './plugins/remove';
 import { sectionPlugin } from './plugins/sections';
 
-import type { Preset, TOCOptions, VFile, TOCData, Link } from '../../vendor';
 import { RouterService } from '../../services/router.service';
+import { LocationService } from '../../services/location.service';
+import { HooksService } from '../../services/hooks.service';
+
+import { links, images } from '../../shared/links';
+import lazyInitialize from '../../shared/lazy-init';
+import { VFile, isVfile, Preset, TOCOptions, TOCData, SectionData } from '../../shared/vfile';
+
+import type { Link } from '../../shared/ast';
 
 export const MARKDOWN_CONFIG_TOKEN = new InjectionToken<any>( 'forRoot() configuration.' );
 
@@ -64,7 +64,7 @@ export class MarkdownService {
       .use(markdown)
       .use(frontmatter)
       .use(slug)
-      .use(getTitle as any)
+      .use(getTitle)
       .use(removeNodesPlugin)
       .use(tocPlugin)
       .use(links, { locationService: this.locationService })
@@ -95,6 +95,8 @@ export class MarkdownService {
     return unified()
       .use(markdown)
       .use(slug)
+      .use(getTitle)
+      .use(strip)
       .use(sectionize)
       .use(sectionPlugin);
   }
@@ -137,7 +139,7 @@ export class MarkdownService {
    * Get TOC
    */
   async processTOC(doc: VFileCompatible, options?: TOCOptions): Promise<VFile> {
-    const file = vfile(doc) as VFile;
+    const file = VFile(doc);
     file.data.tocOptions = {
       ...(file.data?.tocOptions || {}),
       ...options,
@@ -147,7 +149,7 @@ export class MarkdownService {
   }
 
   async processLinks(doc: VFileCompatible) {
-    const file = vfile(doc) as VFile;
+    const file = VFile(doc) as VFile;
     const err = await this.linksProcessor.process(file) as VFile;
     return err || file;
   }
@@ -155,17 +157,26 @@ export class MarkdownService {
   /**
    * Get Sections
    */
-  async getSections(doc: VFileCompatible) {
-    const file = vfile(doc) as VFile;
-    const tree = await this.sectionProcessor.parse(file);
-    const p = await this.sectionProcessor.run(tree, file);
+  async getSections(doc: VFileCompatible): Promise<SectionData[]> {
+    const file = isVfile(doc) ? doc : VFile(String(doc)) as VFile;
+    const tree = this.sectionProcessor.parse(file);
+    await this.sectionProcessor.run(tree, file);
+    file.data.title = (file.data.matter ? file.data.matter.title : false) || file.data.title || file.path;
     return file.data?.sections || [];
   }
 
+  async getTocLinks(doc: VFileCompatible): Promise<TOCData[]> {
+    const file = isVfile(doc) ? doc : VFile(String(doc)) as VFile;
+    file.data = file.data || {};
+    await this.processLinks(file);
+    return file.data.tocSearch;
+  }
+
+  // TODO: make a plugin
   private linkPlugin = () => {
     return (tree: mdast.Root, file: VFile) => {
       file.data = file.data || {};
-      file.data.tocSearch = [];
+      file.data.tocSearch = [];  // TODO: rename
       return visit(tree, 'link', (node: Link, index: number, parent: mdast.Parent) => {
         file.data.tocSearch.push(this.convertToTocData(file, node, parent));
         return true;

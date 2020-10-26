@@ -1,22 +1,38 @@
-<div class="search" *ngIf="searchIndex">
-  <div class="input-wrap">
-    <input
-      #searchInput
-      type="search"
-      value=""
-      placeholder="Search topics"
-      aria-label="Search topics"
-      (keyup)="search($event.target.value)"
-      (search)="search($event.target.value)">
-  </div>
-
-  <div class="results-panel" [class.show]="searchResults">
-    <p class="empty" *ngIf="searchResults?.length === 0">No results!</p>
-    <div class="matching-post" *ngFor="let result of searchResults | slice:0:9">
-      <a [routerLink]="result.link" [fragment]="result.fragment" (click)="search(searchInput.value = '')">
-        <h2 [innerHTML]="result.name"></h2>
-        <p [innerHTML]="result.content"></p>
-      </a>
+<div>
+  <div class="docspa-search" *ngIf="idx">
+    <div class="input-wrap" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+      <input
+        #searchInput
+        type="search"
+        value=""
+        placeholder="Search topics"
+        aria-label="Search topics"
+        (keyup)="search($event.target.value)"
+        (search)="search($event.target.value)">
     </div>
-  </div>
+
+    <ng-template
+      cdkConnectedOverlay
+      [cdkConnectedOverlayOrigin]="trigger"
+      [cdkConnectedOverlayOpen]="searchResults">
+      <div class="search">
+        <div class="docspa-search--results-panel results-panel">
+          <p class="empty" *ngIf="searchResults?.length === 0; else showResults">No results!</p>
+          <ng-template #showResults>
+            <div class="matching-post" *ngFor="let result of searchResults | slice:(pageIndex*pageSize):(pageIndex*pageSize + pageSize)">
+              <a [routerLink]="result.link" [fragment]="result.fragment" (click)="search(searchInput.value = '')">
+                <h2 [innerHTML]="result.name"></h2>
+                <h3 [innerHTML]="result.heading"></h3>
+                <p [innerHTML]="result.text"></p>
+                <!-- small>{{ result.score }}</small -->
+              </a>
+            </div>
+            <mat-paginator (page)="onPageChange($event)" [length]="searchResults.length" [pageSize]="5" [hidePageSize]="true">
+            </mat-paginator>
+          </ng-template>
+        </div>
+      </div>
+    </ng-template>
+  </div>  
 </div>
+

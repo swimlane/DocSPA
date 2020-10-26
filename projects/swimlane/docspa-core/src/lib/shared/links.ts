@@ -1,15 +1,15 @@
 import visit from 'unist-util-visit';
-import { LocationService } from '../services/location.service';
 import { resolve } from 'url';
 
-import { Transformer, Attacher } from 'unified';
-import { VFile } from 'vfile';
-import { Node } from 'unist';
-import { Image } from 'mdast';
+import type { Transformer, Attacher } from 'unified';
+import type { Node } from 'unist';
+import type { Image } from 'mdast';
 
 import { isAbsolutePath } from './utils';
+import { LocationService } from '../services/location.service';
 
-import type { Link } from '../vendor';
+import type { VFile } from './vfile';
+import type { Link } from './ast';
 
 /**
  * Convert markdown links to router links

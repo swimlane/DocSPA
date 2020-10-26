@@ -16,7 +16,7 @@ import { HooksService } from '../../services/hooks.service';
 import { join } from '../../shared/utils';
 import { MarkdownService } from '../markdown/markdown.service';
 
-import type { VFile } from '../../vendor';
+import type { VFile } from '../../shared/vfile';
 
 @Component({
   selector: 'docspa-toc', // tslint:disable-line
