@@ -1,12 +1,12 @@
 import { Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
-import lunr, { Builder, stopWordFilter } from 'lunr';
+import lunr, { tokenizer, Builder, stopWordFilter } from 'lunr';
 
 import { join, splitHash } from '@swimlane/docspa-core/lib/shared/utils';
 
 import { FetchService, MarkdownService } from '@swimlane/docspa-core';
 import { LocationService } from '@swimlane/docspa-core';
-import { escapeRegexp, extractAndHighlight, highlight } from './utils';
+import { escapeRegexp, getExcerpt, highlight } from './utils';
 
 @Component({
   selector: 'docspa-search',
@@ -67,32 +67,28 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
   }
 
   search(queryTerm: string) {
+    this.pageIndex = 0;
+    this.searchResults = null;
+
     if (typeof queryTerm !== 'string' || queryTerm.trim() === '') {
-      this.searchResults = null;
       return;
     }
 
-    queryTerm = queryTerm.toLowerCase();
-    const reQuery = escapeRegexp(queryTerm);
+    // Get search terms
+    const queryTokens = tokenizer(queryTerm.toLowerCase()).map(t => t.toString());
+    const queryRegexps = queryTokens.map(t => escapeRegexp(t));
 
-    this.pageIndex = 0;
-
-    // const results = this.idx.query(q => {
-    //   // look for an exact match and apply a large positive boost
-    //   q.term(queryTerm, { usePipeline: true, boost: 100 });
-
-    //   // look for terms that match the beginning of this queryTerm and apply a medium boost
-    //   q.term(queryTerm, { usePipeline: true, wildcard: lunr.Query.wildcard.TRAILING, boost: 10 });
-
-    //   // look for partial match and apply a small boost
-    //   // tslint:disable-next-line: no-bitwise
-    //   q.term(queryTerm, { wildcard: lunr.Query.wildcard.LEADING | lunr.Query.wildcard.TRAILING, usePipeline: true, boost: 1 });
-    // });
-
-    if (!queryTerm.includes('*')) {
-      queryTerm = '*' + queryTerm + '*';
-    }
-    const results = this.idx.search(queryTerm);
+    const results = this.idx.query(q => {
+      queryTokens.forEach(term => {
+        // look for partial match of each term
+        q.term(term, {
+          presence: lunr.Query.presence.REQUIRED,  // force AND
+          // tslint:disable-next-line: no-bitwise
+          wildcard: lunr.Query.wildcard.LEADING | lunr.Query.wildcard.TRAILING, // substring search
+          usePipeline: false,
+        });
+      });
+    });
 
     this.searchResults = results.map(r => {
         const ref = r.ref;
@@ -106,9 +102,13 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
         let heading: string = match.heading || '';
         let name: string = match.page || match.name;
 
-        name = highlight(name, reQuery);
-        heading = highlight(heading, reQuery);
+        // highlight each term
+        queryRegexps.forEach(re => {
+          name = highlight(name, re);
+          heading = highlight(heading, re);
+        });
 
+        // result for a single document match
         const result = {
           ...r,
           ...match,
@@ -124,8 +124,31 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
         if (hasTextMatch) {
           // Lazy loads text
           this.fetchSections(link).then(sections => {
-            const { text } = sections.find(s => s.id === fragment);
-            result.text = extractAndHighlight(text, reQuery, queryTerm.length);
+            // get raw text for the section
+            const section = sections.find(s => s.id === fragment);
+            if (!section) { return; }  // defensive
+
+            const { text } = section;
+
+            // find index of term that matches first
+            let index = 0;
+            let position = Infinity;
+            queryRegexps.forEach((_, idx) => {
+              const i = text.search(_);
+              if (i < position) {
+                index = idx;
+                position = i;
+              }
+            });
+
+            let excerpt = getExcerpt(text, queryRegexps[index], queryTokens[index].length);
+
+            // highlight each term
+            queryRegexps.forEach((_, i) => {
+              excerpt = highlight(excerpt, _);
+            });
+
+            result.text = excerpt;
           });
         }
 

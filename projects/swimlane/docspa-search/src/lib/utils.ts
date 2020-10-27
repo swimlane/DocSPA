@@ -27,7 +27,7 @@ function regexLastIndexOf(str: string, regex: RegExp) {
  * @param reQuery regexp to find
  * @param len lenth og matcvhing string
  */
-function getExcerpt(str: string, reQuery: RegExp, len: number) {
+export function getExcerpt(str: string, reQuery: RegExp, len: number) {
   const m = reQuery.exec(str);
   if (!m) { return str.slice(0, 2 * PADDING); }
 
@@ -44,6 +44,3 @@ function getExcerpt(str: string, reQuery: RegExp, len: number) {
   return before.slice(b) + after.slice(0, a);
 }
 
-export function extractAndHighlight(str: string, reQuery: RegExp, len: number) {
-  return highlight(getExcerpt(str, reQuery, len), reQuery);
-}

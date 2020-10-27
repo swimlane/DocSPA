@@ -168,36 +168,66 @@ The slug for a header can be set by adding an id.
 
 ### Styles
 
-```markdown { playground }
+<div class="custom-block playground language-markdown">
+
+*Doc*{style="color:red; font-size: large"} *SPA*{style="color:blue"}
+
+![](./assets/docspa_mark-only.png){ style="width: 100px; border: 10px solid lightgrey; padding: 10px;"}
+
+```html
 *Doc*{style="color:red; font-size: large"} *SPA*{style="color:blue"}
 
 ![](./assets/docspa_mark-only.png){ style="width: 100px; border: 10px solid lightgrey; padding: 10px;"}
 ```
 
+</div>
+
 ### Classes
 
-```markdown { playground }
+<div class="custom-block playground language-markdown">
+
+`note`{ .badge .note }
+*info*{ .badge .info }
+**tip**{ .badge .tip title="This is a tip" }
+**warn**{ .badge .warn title="Watch out!!" }
+
+```html
 `note`{ .badge .note }
 *info*{ .badge .info }
 **tip**{ .badge .tip title="This is a tip" }
 **warn**{ .badge .warn title="Watch out!!" }
 ```
 
+</div>
+
+
 ### Attributes
 
-```markdown { playground }
+<div class="custom-block playground language-markdown">
+![](./assets/docspa_mark-only.png){ width="30px" data-no-zoom }
+
+[www.swimlane.com](http://www.swimlane.com){ target="_blank" }
+
+[ignore](./docs/README.md){ ignore }
+
+```html
 ![](./assets/docspa_mark-only.png){ width="30px" data-no-zoom }
 
 [www.swimlane.com](http://www.swimlane.com){ target="_blank" }
 
 [ignore](./docs/README.md){ ignore }
 ```
+</div>
 
 ## Zoom Image
 
-```markdown { playground }
+<div class="custom-block playground language-markdown">
+![](./assets/docspa_mark-only.png){ width="200px" }
+
+```html
 ![](./assets/docspa_mark-only.png){ width="200px" }
 ```
+</div>
 
 i> Add the `data-no-zoom` attribute to exclude an image `![](./assets/docspa_mark-only.png){ data-no-zoom="true" }`
 
