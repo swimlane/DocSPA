@@ -72,21 +72,27 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
       return;
     }
 
+    queryTerm = queryTerm.toLowerCase();
     const reQuery = escapeRegexp(queryTerm);
 
     this.pageIndex = 0;
 
-    const results = this.idx.query(q => {
-      // look for an exact match and apply a large positive boost
-      q.term(queryTerm, { usePipeline: true, boost: 100 });
+    // const results = this.idx.query(q => {
+    //   // look for an exact match and apply a large positive boost
+    //   q.term(queryTerm, { usePipeline: true, boost: 100 });
 
-      // look for terms that match the beginning of this queryTerm and apply a medium boost
-      q.term(queryTerm, { usePipeline: false, wildcard: lunr.Query.wildcard.TRAILING, boost: 10 });
+    //   // look for terms that match the beginning of this queryTerm and apply a medium boost
+    //   q.term(queryTerm, { usePipeline: true, wildcard: lunr.Query.wildcard.TRAILING, boost: 10 });
 
-      // look for partial match and apply a small boost
-      // tslint:disable-next-line: no-bitwise
-      q.term(queryTerm, { wildcard: lunr.Query.wildcard.LEADING | lunr.Query.wildcard.TRAILING, usePipeline: false, boost: 1 });
-    });
+    //   // look for partial match and apply a small boost
+    //   // tslint:disable-next-line: no-bitwise
+    //   q.term(queryTerm, { wildcard: lunr.Query.wildcard.LEADING | lunr.Query.wildcard.TRAILING, usePipeline: true, boost: 1 });
+    // });
+
+    if (!queryTerm.includes('*')) {
+      queryTerm = '*' + queryTerm + '*';
+    }
+    const results = this.idx.search(queryTerm);
 
     this.searchResults = results.map(r => {
         const ref = r.ref;

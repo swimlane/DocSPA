@@ -29,7 +29,7 @@ function regexLastIndexOf(str: string, regex: RegExp) {
  */
 function getExcerpt(str: string, reQuery: RegExp, len: number) {
   const m = reQuery.exec(str);
-  if (!m) { return ''; }
+  if (!m) { return str.slice(0, 2 * PADDING); }
 
   const { index } = m;
   const s = Math.max(0, index - PADDING);

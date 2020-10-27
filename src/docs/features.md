@@ -169,7 +169,7 @@ The slug for a header can be set by adding an id.
 ### Styles
 
 ```markdown { playground }
-*Doc*{style="color:red; font-size: large"}*SPA*{style="color:blue"}
+*Doc*{style="color:red; font-size: large"} *SPA*{style="color:blue"}
 
 ![](./assets/docspa_mark-only.png){ style="width: 100px; border: 10px solid lightgrey; padding: 10px;"}
 ```
