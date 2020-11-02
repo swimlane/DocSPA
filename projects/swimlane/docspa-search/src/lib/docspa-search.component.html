@@ -19,7 +19,7 @@
         <div class="docspa-search--results-panel results-panel">
           <p class="empty" *ngIf="!searchResults?.length; else showResults">
             <ng-container *ngIf="queryTerm?.length < minLength; else noResults">
-              Type at least {{ minLength }} characters for search results
+              Type at least {{ minLength }} characters for results
             </ng-container>
             <ng-template>
               No results!
