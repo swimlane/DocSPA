@@ -3,7 +3,7 @@
  * Updated to allow multiple versions
  */
 
-const spaceSeparated = require('space-separated-tokens');
+import spaceSeparated from 'space-separated-tokens';
 
 function escapeRegExp (str: string) {
   return str.replace(/[-[]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');

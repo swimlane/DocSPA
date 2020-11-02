@@ -5,8 +5,8 @@
         #searchInput
         type="search"
         value=""
-        placeholder="Search topics"
-        aria-label="Search topics"
+        placeholder="Search"
+        aria-label="Search"
         (keyup)="search($event.target.value)"
         (search)="search($event.target.value)">
     </div>
@@ -14,20 +14,26 @@
     <ng-template
       cdkConnectedOverlay
       [cdkConnectedOverlayOrigin]="trigger"
-      [cdkConnectedOverlayOpen]="searchResults">
+      [cdkConnectedOverlayOpen]="queryTerm">
       <div class="search">
         <div class="docspa-search--results-panel results-panel">
-          <p class="empty" *ngIf="searchResults?.length === 0; else showResults">No results!</p>
+          <p class="empty" *ngIf="!searchResults?.length; else showResults">
+            <ng-container *ngIf="queryTerm?.length < minLength; else noResults">
+              Type at least {{ minLength }} characters for search results
+            </ng-container>
+            <ng-template>
+              No results!
+            </ng-template>
+          </p>
           <ng-template #showResults>
             <div class="matching-post" *ngFor="let result of searchResults | slice:(pageIndex*pageSize):(pageIndex*pageSize + pageSize)">
               <a [routerLink]="result.link" [fragment]="result.fragment" (click)="search(searchInput.value = '')">
                 <h2 [innerHTML]="result.name"></h2>
                 <h3 [innerHTML]="result.heading"></h3>
-                <p [innerHTML]="result.text"></p>
-                <!-- small>{{ result.score }}</small -->
+                <p [innerHTML]="result.text$ | async"></p>
               </a>
             </div>
-            <mat-paginator (page)="onPageChange($event)" [length]="searchResults.length" [pageSize]="5" [hidePageSize]="true">
+            <mat-paginator (page)="onPageChange($event)" [length]="searchResults?.length" [pageSize]="5" [hidePageSize]="true">
             </mat-paginator>
           </ng-template>
         </div>

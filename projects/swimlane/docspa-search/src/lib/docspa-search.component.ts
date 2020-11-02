@@ -1,12 +1,29 @@
 import { Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
+import { Observable } from 'rxjs/internal/Observable';
+import { defer } from 'rxjs/internal/observable/defer';
+import { shareReplay } from 'rxjs/internal/operators/shareReplay';
+
 import lunr, { tokenizer, Builder, stopWordFilter } from 'lunr';
 
-import { join, splitHash } from '@swimlane/docspa-core/lib/shared/utils';
+import { FetchService, MarkdownService, LocationService } from '@swimlane/docspa-core';
+import { escapeRegexp, getExcerpt, highlight, join, splitHash } from './utils';
 
-import { FetchService, MarkdownService } from '@swimlane/docspa-core';
-import { LocationService } from '@swimlane/docspa-core';
-import { escapeRegexp, getExcerpt, highlight } from './utils';
+interface MatchIndex {
+  heading: string;
+  name: string;
+  page: string;
+}
+
+interface MatchResult {
+  heading: string;
+  name: string;
+  link: string;
+  fragment: string;
+  text$?: Observable<string>;
+  ref: string;
+  score: number;
+}
 
 @Component({
   selector: 'docspa-search',
@@ -34,10 +51,14 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
   @Input()
   summary: string;
 
+  @Input()
+  minLength = 3;
+
   private _paths: string[];
 
-  searchIndex: { [key: string]: any };
-  searchResults: any[];
+  queryTerm: string;
+  searchIndex: { [key: string]: MatchIndex };
+  searchResults: MatchResult[];
 
   pageIndex = 0;
   pageSize = 5;
@@ -67,10 +88,11 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
   }
 
   search(queryTerm: string) {
+    this.queryTerm = queryTerm;
     this.pageIndex = 0;
     this.searchResults = null;
 
-    if (typeof queryTerm !== 'string' || queryTerm.trim() === '') {
+    if (typeof queryTerm !== 'string' || queryTerm.trim() === '' || queryTerm.length < this.minLength) {
       return;
     }
 
@@ -109,7 +131,7 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
         });
 
         // result for a single document match
-        const result = {
+        const result: MatchResult = {
           ...r,
           ...match,
           heading,
@@ -122,8 +144,10 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
         const hasTextMatch = Object.keys(r.matchData.metadata).some(k => !!r.matchData.metadata[k].text);
 
         if (hasTextMatch) {
-          // Lazy loads text
-          this.fetchSections(link).then(sections => {
+          // Lazy loads text, defered tell loaded
+          result.text$ = defer(async () => {
+            const sections = await this.fetchSections(link);
+
             // get raw text for the section
             const section = sections.find(s => s.id === fragment);
             if (!section) { return; }  // defensive
@@ -148,8 +172,8 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
               excerpt = highlight(excerpt, _);
             });
 
-            result.text = excerpt;
-          });
+            return excerpt;
+          }).pipe(shareReplay(1));
         }
 
         return result;

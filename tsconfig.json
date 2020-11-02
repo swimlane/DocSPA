@@ -41,6 +41,9 @@
       ],
       "@swimlane/docspa-search": [
         "./projects/swimlane/docspa-search/src/public-api"
+      ],
+      "@swimlane/docspa-search/index.scss": [
+        "./projects/swimlane/docspa-search/src/index.scss"
       ]
     }
   }

@@ -28,7 +28,8 @@
             ],
             "styles": [
               "src/styles.css",
-              "src/print.css"
+              "src/print.css",
+              "src/index.scss"
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
