@@ -21,7 +21,7 @@
             <ng-container *ngIf="queryTerm?.length < minLength; else noResults">
               Type at least {{ minLength }} characters for results
             </ng-container>
-            <ng-template>
+            <ng-template #noResults>
               No results!
             </ng-template>
           </p>
