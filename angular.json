@@ -39,7 +39,8 @@
               "rehype-stringify",
               "rehype-raw",
               "vfile",
-              "lunr"
+              "lunr",
+              "url"
             ]
           },
           "configurations": {

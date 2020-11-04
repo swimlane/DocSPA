@@ -1,8 +1,7 @@
 import { Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 
-import { Observable } from 'rxjs/internal/Observable';
-import { defer } from 'rxjs/internal/observable/defer';
-import { shareReplay } from 'rxjs/internal/operators/shareReplay';
+import { Observable, defer } from 'rxjs';
+import { shareReplay } from 'rxjs/operators';
 
 import lunr, { tokenizer, Builder, stopWordFilter } from 'lunr';
 

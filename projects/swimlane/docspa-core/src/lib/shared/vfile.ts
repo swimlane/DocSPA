@@ -62,7 +62,7 @@ export function VFile(doc: vfile.VFileCompatible): VFile {
 }
 
 export function isVfile(x: unknown): x is VFile {
-  return x.constructor.name === 'VFile';
+  return x instanceof VFILE;
 }
 
 export function getBasePath(_: VFile) {

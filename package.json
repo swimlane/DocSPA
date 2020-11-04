@@ -23,6 +23,7 @@
     "build:stackblitz": "ng build @swimlane/docspa-stackblitz --prod",
     "build:search": "ng build @swimlane/docspa-search --prod",
     "build:preset": "cd projects/swimlane/docspa-remark-preset && npm run build",
+    "build:release": "cross-env NODE_ENV=production ng build --prod --aot --base-href=\"/DocSPA/\" --output-path=\"dist/DocSPA/\"",
     "prepublish:core": "run-s chg:release:core build:core",
     "publish:core": "npm publish dist/swimlane/docspa-core --tag next",
     "prepublish:stackblitz": "run-s build:core build:stackblitz",
