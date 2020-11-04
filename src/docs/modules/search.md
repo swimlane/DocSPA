@@ -1,3 +1,4 @@
+
 # DocspaSearchComponent
 
 <small>(optional, external)</small>

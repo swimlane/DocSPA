@@ -2,9 +2,12 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-* Moved text search to its own module (@swimlane/docspa-search).
+_(none)_
 
 --------------------
+
+## 7.0.1 (2020-11-04)
+* Moved text search to its own module (@swimlane/docspa-search).
 
 ## 6.0.0 (2020-10-19)
 * Support only ng10
