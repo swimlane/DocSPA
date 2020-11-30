@@ -162,7 +162,7 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
     // pass that on to router servce
     combineLatest([this.activatedRoute.url, this.activatedRoute.fragment])
       .subscribe(() => {
-        this.routerService.activateRoute(this.activatedRoute.snapshot);
+        this.routerService.activateRoute();
       });
 
     // Respond to changes in the docspa route
