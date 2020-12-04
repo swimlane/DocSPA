@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - actions
 
 jobs:
   build:
@@ -19,9 +18,7 @@ jobs:
     - name: Install, lint, and test
       run: |
         npm ci
-        # npm run lint
-        npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
-        npm run e2e
+        npm test
       env:
         CI: true
 
