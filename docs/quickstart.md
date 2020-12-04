@@ -21,7 +21,7 @@ At that point you will see a message to "open your browser on http://localhost:4
 
 ## Customization
 
-This DocSPA instance can be modified change configuration to teh various DocSPA modules.  See [module](modules) for details on each module and configuration options.
+This DocSPA instance can be modified change configuration to teh various DocSPA modules.  See [module](/modules/) for details on each module and configuration options.
 
 ## Writing Content
 

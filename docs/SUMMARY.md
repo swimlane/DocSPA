@@ -9,4 +9,5 @@
   * [Markdown Elements](/modules/markdown-elements)
   * [Docsify Plugins](/modules/docsify)
   * [Runtime Dynamic Content](/modules/runtime)
+  * [Search](/modules/search)
   * [Stackblitz](/modules/stackblitz)
