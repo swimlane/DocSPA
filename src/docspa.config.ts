@@ -9,5 +9,5 @@ export const config = {
     footer: '_footer.md'
   },
   coverpage: '_coverpage.md',
-  maxPageCacheSize: 1
+  maxPageCacheSize: 20
 };

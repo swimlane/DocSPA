@@ -15,10 +15,10 @@ describe('Search', () => {
     cy.get('@matching').should('have.length', 5);
 
     cy.get('@matching').eq(0).find('a').should('have.attr', 'href', '/modules/docsify#docsifypluginsmodule');
-    cy.get('@matching').eq(1).find('a').should('have.attr', 'href', '/modules/stackblitz#docspastackblitzmodule');
-    cy.get('@matching').eq(2).find('a').should('have.attr', 'href', '/modules/core#docspacoremodule');
-    cy.get('@matching').eq(3).find('a').should('have.attr', 'href', '/#docspa');
-    cy.get('@matching').eq(4).find('a').should('have.attr', 'href', '/content#pages');
+    cy.get('@matching').eq(1).find('a').should('have.attr', 'href', '/modules/search#docspasearchcomponent');
+    cy.get('@matching').eq(2).find('a').should('have.attr', 'href', '/modules/stackblitz#docspastackblitzmodule');
+    cy.get('@matching').eq(3).find('a').should('have.attr', 'href', '/modules/core#docspacoremodule');
+    cy.get('@matching').eq(4).find('a').should('have.attr', 'href', '/#docspa');
     
     cy.get('@matching').eq(0).find('a').domMatch(dom`
       <h2><em class="search-keyword">Doc</em>sifyPluginsModule</h2>
@@ -29,7 +29,7 @@ describe('Search', () => {
         <em class="search-keyword">doc</em>sify plugins add the
       </p>`);
 
-    cy.get('@matching').eq(1).find('a').domMatch(dom`
+    cy.get('@matching').eq(2).find('a').domMatch(dom`
       <h2><em class="search-keyword">Doc</em>spaStackblitzModule</h2>
       <h3></h3>
       <p>
@@ -41,7 +41,7 @@ import {
 import {<em class="search-keyword">Doc</em>spaStackblitzModule } from
       </p>`);
 
-    cy.get('@matching').eq(2).find('a').domMatch(dom`
+    cy.get('@matching').eq(3).find('a').domMatch(dom`
       <h2><em class="search-keyword">Doc</em>spaCoreModule</h2>
       <h3></h3>
       <p>
@@ -49,18 +49,10 @@ import {<em class="search-keyword">Doc</em>spaStackblitzModule } from
         <em class="search-keyword">Doc</em>SPA.  This module is required and should be imported using the  forRoot()  static method and
       </p>`);
 
-    cy.get('@matching').eq(3).find('a').domMatch(dom`<h2>
+    cy.get('@matching').eq(4).find('a').domMatch(dom`<h2>
       <em class="search-keyword">Doc</em>SPA</h2>
       <h3></h3>
       <p>Angular-powered<em class="search-keyword">doc</em>umentation
-      </p>`);
-    
-    cy.get('@matching').eq(4).find('a').domMatch(dom`
-      <h2>Content</h2>
-      <h3>Pages</h3>
-      <p>
-      <em class="search-keyword">Doc</em>uments within the  ./src/
-      <em class="search-keyword">doc</em>s  folder are available within the application. By default,
       </p>`);
   });
 });

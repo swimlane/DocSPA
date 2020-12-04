@@ -204,6 +204,7 @@ The slug for a header can be set by adding an id.
 ### Attributes
 
 <div class="custom-block playground language-markdown">
+
 ![](./assets/docspa_mark-only.png){ width="30px" data-no-zoom }
 
 [www.swimlane.com](http://www.swimlane.com){ target="_blank" }
@@ -217,16 +218,19 @@ The slug for a header can be set by adding an id.
 
 [ignore](./docs/README.md){ ignore }
 ```
+
 </div>
 
 ## Zoom Image
 
 <div class="custom-block playground language-markdown">
+
 ![](./assets/docspa_mark-only.png){ width="200px" }
 
 ```html
 ![](./assets/docspa_mark-only.png){ width="200px" }
 ```
+
 </div>
 
 i> Add the `data-no-zoom` attribute to exclude an image `![](./assets/docspa_mark-only.png){ data-no-zoom="true" }`

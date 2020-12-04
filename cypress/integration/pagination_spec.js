@@ -23,6 +23,7 @@ describe('pagination', () => {
       '/modules/markdown-elements',
       '/modules/docsify',
       '/modules/runtime',
+      '/modules/search',
       '/modules/stackblitz'
     ];
 
@@ -30,6 +31,7 @@ describe('pagination', () => {
       links.slice(1).forEach(link => {
         cy.wait(200);
         cy.get('.next').scrollIntoView().click({ force: true });
+        cy.wait(200);
         cy.url().should('contain', link);
       });
 
@@ -38,6 +40,7 @@ describe('pagination', () => {
       links.reverse().slice(1).forEach(link => {
         cy.wait(200);
         cy.get('.prev').scrollIntoView().click({ force: true });
+        cy.wait(200);
         cy.url().should('contain', link);
       });
 

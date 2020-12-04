@@ -9,45 +9,45 @@ describe('Main navigation', () => {
 
   it('start on readme', () => {
     cy.url().should('eq', 'http://localhost:4200/');
-    cy.get('section.content').find('h1').contains('DocSPA');
+    cy.get('section.content').find('h1').should('have.text', 'DocSPA');
   });
 
   it('to features page', () => {
     cy.get('@sidebar').find('md-toc[path="/features"] a').first().click({ force: true });
     cy.url().should('include', '/features');
-    cy.get('section.content').find('section[id="content-features"] h1').contains('Content Features');
+    cy.get('section.content').find('section[id="content-features"] h1').should('have.text', 'Content Features');
   });
 
   it('to content page', () => {
     cy.get('@sidebar').find('md-toc[path="/content"] a').first().click({ force: true });
     cy.url().should('include', '/content');
-    cy.get('section.content').find('section[id="content"] h1').contains('Content');
+    cy.get('section.content').find('section[id="content"] h1').should('have.text', 'Content');
   });
 
   it('to customization page', () => {
     cy.get('@sidebar').find('a[href="/modules/"]').first().click({ force: true });
     cy.url().should('include', '/modules/');
-    cy.get('section.content').find('section[id="modules"] h1').contains('Modules');
+    cy.get('section.content').find('section[id="modules"] h1').should('have.text', 'Modules');
   });
 
   it('to quickstart page', () => {
     cy.get('@sidebar').find('md-toc[path="/quickstart"] a').first().click({ force: true });
     cy.url().should('include', '/quickstart');
-    cy.get('section.content').find('section[id="quick-start"] h1').contains('Quick start');
+    cy.get('section.content').find('section[id="quick-start"] h1').should('have.text', 'Quick start');
   });
 
   it('content links', () => {
     cy.get('@sidebar').find('md-toc[path="/"] a').first().click({ force: true });
     cy.url().should('eq', 'http://localhost:4200/#docspa');
-    cy.get('section.content').find('h1').contains('DocSPA');
+    cy.get('section.content').find('h1').should('have.text', 'DocSPA');
     cy.get('section.content').find('a[href="/quickstart"]').first().click({ force: true });
     cy.url().should('include', '/quickstart');
-    cy.get('section.content').find('section[id="quick-start"] > h1').contains('Quick start');
+    cy.get('section.content').find('section[id="quick-start"] > h1').should('have.text', 'Quick start');
     cy.get('section.content').find('.info > a').first().click({ force: true });
-    cy.get('section.content').find('section[id="adding-docspa-to-a-angular-cli-app"] > h1').contains('Adding DocSPA to a angular cli app');
+    cy.get('section.content').find('section[id="adding-docspa-to-a-angular-cli-app"] > h1').should('have.text', 'Adding DocSPA to a angular cli app');
     cy.get('section.content').find('a[href="/modules/core"]').click({ force: true });
     cy.url().should('include', 'modules');
-    cy.get('section.content').find('section[id="docspacoremodule"] > h1').contains('DocspaCoreModule');
+    cy.get('section.content').find('section[id="docspacoremodule"] > h1').should('have.text', 'DocspaCoreModule');
   });
 
   it('has no dead links', () => {
