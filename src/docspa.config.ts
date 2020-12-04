@@ -8,5 +8,6 @@ export const config = {
     rightSidebar: '/_right_sidebar.md',
     footer: '_footer.md'
   },
-  coverpage: '_coverpage.md'
+  coverpage: '_coverpage.md',
+  maxPageCacheSize: 20
 };

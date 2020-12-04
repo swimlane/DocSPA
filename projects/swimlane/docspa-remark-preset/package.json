@@ -1,12 +1,12 @@
 {
   "name": "@swimlane/docspa-remark-preset",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "description": "Remark preset for DocSPA",
   "main": "dist/main/index.js",
   "typings": "dist/main/index.d.ts",
   "module": "dist/module/index.js",
   "scripts": {
-    "clean": "trash dist",
+    "clean": "rimraf dist",
     "build": "npm run clean && npm run build:main && npm run build:module",
     "build:main": "tsc -p tsconfig.json",
     "build:module": "tsc -p tsconfig.module.json",
@@ -26,10 +26,13 @@
     "jest-fetch-mock": "^3.0.3",
     "nyc": "^15.1.0",
     "remark": "^12.0.1",
-    "trash-cli": "^3.1.0",
+    "rimraf": "^3.0.2",
     "ts-jest": "^26.4.1",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.3"
+  },
+  "peerDependencies": {
+    "remark": "^12.0.1"
   },
   "files": [
     "dist"
@@ -57,6 +60,7 @@
     "remark-shortcodes": "^0.3.1",
     "remark-slug": "^6.0.0",
     "remark-stringify": "^9.0.0",
+    "remark-strip-html": "^1.0.1",
     "space-separated-tokens": "^1.1.5",
     "unified": "^9.2.0",
     "unist-util-visit": "^2.0.3",

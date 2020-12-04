@@ -68,6 +68,7 @@ describe('page component is a subpage', () => {
     });
 
     it('has toc', () => {
+      
       cy.get('@links').should('have.length', 6);
   
       cy.get('@links').eq(0).should('have.attr', 'href', '/docspa/#introduction');
@@ -87,40 +88,22 @@ describe('page component is a subpage', () => {
   });
 
   it('has content', () => {
-    cy.get('@content').find('h1').contains('DocSPA');
-    cy.get('@content').find('footer').contains('Made with DocSPA');
-
-    cy.get('@content').find('h1 a, h2 a, h3 a').first().should('have.attr', 'href').and('matches', /^\/docspa\/#.*/);
-    cy.get('@content').find('section[id="introduction"] > p a').first().should('have.attr', 'href', 'https://custom-elements-everywhere.com/#angular');
-    cy.get('@content').find('section[id="introduction"] > p a').eq(1).should('have.attr', 'href', '/docspa/quickstart');
-  });
-
-  it('can search', () => {
-    cy.get('app-root').find('aside.left-sidebar .search').as('search');
-
-    cy.get('@search').find('input').as('input');
-    cy.get('@input').should('have.attr', 'type', 'search');
-    cy.get('@search').find('.results-panel a').should('have.length', 0);
-    
-    cy.get('@input').type('doc', { force: true });
-    cy.get('@search').find('.results-panel .matching-post').as('matching');
-    cy.get('@matching').should('have.length', 4);
-
-    cy.get('@matching').find('a').eq(0).should('have.attr', 'href', '/docspa/');
-    cy.get('@matching').find('a').eq(1).should('have.attr', 'href', '/docspa/modules/core');
-    cy.get('@matching').find('a').eq(2).should('have.attr', 'href', '/docspa/modules/docsify');
-    cy.get('@matching').find('a').eq(3).should('have.attr', 'href', '/docspa/modules/stackblitz');
-
-    cy.get('@matching').find('h2').eq(0).should('have.text', 'DocSPA');
-    cy.get('@matching').find('h2').eq(1).should('have.text', 'DocspaCoreModule');
-    cy.get('@matching').find('h2').eq(2).should('have.text', 'DocsifyPluginsModule');
-    cy.get('@matching').find('h2').eq(3).should('have.text', 'DocspaStackblitzModule');
+    cy.get('@content').within(() => {
+      cy.get('h1').contains('DocSPA');
+      cy.get('footer').contains('Made with DocSPA');
+  
+      cy.get('h1 a, h2 a, h3 a').first().should('have.attr', 'href').and('matches', /^\/docspa\/#.*/);
+      cy.get('section[id="introduction"] > p a').first().should('have.attr', 'href', 'https://custom-elements-everywhere.com/#angular');
+      cy.get('section[id="introduction"] > p a').eq(1).should('have.attr', 'href', '/docspa/quickstart');
+    });
   });
 
   it('has pagination', () => {
-    cy.get('@footer').find('.pagination-item-title').should('have.length', 1);
+    cy.get('@footer').within(() => {
+      cy.get('.pagination-item-title').should('have.length', 1);
 
-    cy.get('@footer').find('.pagination-item--next a').contains('Quick start');
-    cy.get('@footer').find('.pagination-item--next a').should('have.attr', 'href', '/docspa/quickstart');
+      cy.get('.pagination-item--next a').contains('Quick start');
+      cy.get('.pagination-item--next a').should('have.attr', 'href', '/docspa/quickstart');      
+    });
   });
 });

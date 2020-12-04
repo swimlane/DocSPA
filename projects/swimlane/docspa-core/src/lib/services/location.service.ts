@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { LocationStrategy, PlatformLocation } from '@angular/common';
-import VFILE from 'vfile';
-
-import { join, isAbsolutePath, stripBaseHref  } from '../shared/utils';
 import { resolve } from 'url';
 
+import { join, isAbsolutePath, stripBaseHref  } from '../shared/utils';
+
 import { SettingsService } from './settings.service';
+
+import { VFile } from '../shared/vfile';
 
 @Injectable({
   providedIn: 'root'
@@ -31,17 +32,13 @@ export class LocationService {
   /**
    * Convert a page string to a virtual file
    */
-  pageToFile(page: string = ''): VFILE.VFile {
+  pageToFile(page: string = ''): VFile {
     page = page.replace(/^#/, '');
     if (page === '') {
       page = '/';
     }
 
-    const vfile = VFILE({ path: page, cwd: this.basePath });
-
-    /* if (vfile.path[0] === '/' && vfile.path[1] === '_') {
-      vfile.path = this.settings.notFoundPage;
-    } */
+    const vfile = VFile({ path: page, cwd: this.basePath });
 
     if (vfile.path.slice(-1) === '/') {
       vfile.path = join(vfile.path, this.settings.homepage);

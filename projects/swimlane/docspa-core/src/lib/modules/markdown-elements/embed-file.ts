@@ -13,7 +13,7 @@ import { LocationService } from '../../services/location.service';
 import { FetchService } from '../../services/fetch.service';
 import { HooksService } from '../../services/hooks.service';
 
-import type { VFile } from '../../vendor';
+import type { VFile } from '../../shared/vfile';
 
 const codefilesTypes = ['js', 'json'];
 

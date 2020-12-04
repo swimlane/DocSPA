@@ -1,3 +1,5 @@
+import { dom } from '@swimlane/cy-dom-diff';
+
 const { sidebar, navbar, noCover, pageAliases } = require('../support/helpers');
 const pkg = require('../../package.json');
 
@@ -25,9 +27,27 @@ describe('The Features page', () => {
 
   describe('remark plugins', () => {
     it('shows GFM', () => {
-      cy.get('@content').find('#github-flavored-markdown').as('gfm');
-      cy.get('@gfm').find('input[type="checkbox"]').should('have.length', 4);
-      cy.get('@gfm').find('table').should('exist');
+      cy.get('@content').find('#github-flavored-markdown').within(() => {
+        cy.get('.contains-task-list').domMatch(dom`
+        <li class="task-list-item">
+          <input disabled type="checkbox">
+          foo
+        </li>
+        <li class="task-list-item">
+          <input checked disabled type="checkbox">
+          baz
+        </li>
+        <li class="task-list-item">
+          <input disabled type="checkbox">
+          bim
+        </li>
+        <li class="task-list-item">
+          <input disabled type="checkbox">
+          lim
+        </li>`);
+
+        cy.get('table').should('exist');
+      });
     });
 
     it('shows HTML', () => {
@@ -63,20 +83,62 @@ describe('The Features page', () => {
     });
 
     it('displays math', () => {
-      cy.get('@content').find('#math').as('math');
-      cy.get('@math').find('.math .katex-display').should('have.length', 1);
+      cy.get('@content').find('#math').within(() => {
+        cy.get('.math .katex-display').should('have.length', 1);
+        cy.get('.math .katex-display annotation').should('have.text', 'E^2=(mc^2)^2+(pc)^2');
+      });
     });
 
     it('displays emoji', () => {
       cy.get('@content').find('#emoji').as('emoji');
-      cy.get('@emoji').find('img').should('have.length', 3);
+      cy.get('@emoji').find('p').should('have.text', '💯 🎱 💯');
     });
 
-    describe.skip('remark-attr', () => {
-      it('renders ids');
-      it('renders styles');
-      it('renders classes');
-      it('renders attributes');
+    describe('remark-attr', () => {
+      it('renders ids', () => {
+        cy.get('#ids h3').should('contain', 'IDs');
+      });
+
+      it('renders styles', () => {
+        cy.get('#styles > div.custom-block > :nth-child(1)').domMatch(dom`
+          <em style="color:red; font-size: large">Doc</em>
+          <em style="color:blue">SPA</em>`);
+        cy.get('#styles > div.custom-block > :nth-child(2)').domMatch(dom`
+            <img
+            class="medium-zoom-image"
+            src="docs/assets/docspa_mark-only.png"
+            style="width: 100px; border: 10px solid lightgrey; padding: 10px;"
+          >`);
+      });
+
+      it('renders classes', () => {
+        cy.get('#classes > div.custom-block > p').domMatch(dom`<code class="badge note">
+            note
+          </code>
+          <em class="badge info">
+            info
+          </em>
+          <strong
+            class="badge tip"
+            title="This is a tip"
+          >
+            tip
+          </strong>
+          <strong
+            class="badge warn"
+            title="Watch out!!"
+          >
+            warn
+          </strong>`);
+      });
+
+      it('renders attributes', () => {
+        cy.get('#attributes > div.custom-block > :nth-child(1)').domMatch(dom`<img
+          data-no-zoom
+          src="docs/assets/docspa_mark-only.png"
+          width="30px"
+        >`);
+      });
     });
   });
 
@@ -95,7 +157,7 @@ describe('The Features page', () => {
     });
   });
 
-  describe('right bar sidebar', () => {
+  describe('right sidebar', () => {
     beforeEach(() => {
       cy.get('@rightbar').find('md-toc a').as('links');
     });

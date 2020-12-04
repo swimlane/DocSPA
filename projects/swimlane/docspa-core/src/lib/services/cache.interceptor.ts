@@ -13,14 +13,12 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 
-const TTL = 100000;
-
 @Injectable()
 export class CacheInterceptor implements HttpInterceptor {
   private cache: QuickLRU<string, HttpEvent<any>>;
 
   constructor(settings: SettingsService) {
-    const maxSize = settings.maxPageCacheSize || 100;
+    const maxSize = settings.maxPageCacheSize || 20;
     this.cache = new QuickLRU({ maxSize });
   }
 

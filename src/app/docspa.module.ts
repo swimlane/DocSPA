@@ -11,8 +11,8 @@ import {
   DocspaCoreModule, DocsifyPluginsModule,
   RuntimeContentModule, MarkdownModule, MarkdownElementsModule, MARKDOWN_CONFIG_TOKEN
 } from '@swimlane/docspa-core';
+import { DocspaSearchModule } from '@swimlane/docspa-search';
 import { DocspaStackblitzModule } from '@swimlane/docspa-stackblitz';
-// import * as squeezeParagraphs from 'remark-squeeze-paragraphs';
 
 import { EditOnGithubComponent } from './plugins/edit-on-github';
 import { TabsPluginModule } from './plugins/tabs.module';
@@ -46,6 +46,7 @@ import { environment } from '../environments/environment';
     LoggerModule.forRoot({ level: environment.production ? NgxLoggerLevel.ERROR : NgxLoggerLevel.WARN }),
     TabsPluginModule,
     GridPluginModule,
+    DocspaSearchModule
   ],
   exports: [
     // NgxChartsModule,

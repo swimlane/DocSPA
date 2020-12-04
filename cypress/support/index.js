@@ -13,8 +13,8 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
-// Import commands.js using ES2015 syntax:
-import './commands'
+import '@swimlane/cy-dom-diff/commands';
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+// Import commands.js using ES2015 syntax:
+import './commands';
+

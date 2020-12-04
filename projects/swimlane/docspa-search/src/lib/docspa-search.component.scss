@@ -1,6 +1,4 @@
-
-// TODO: make themeable (https://jhildenbiddle.github.io/docsify-themeable/#/customization?id=search)
-md-toc-search .search {
+.docspa-search {
   margin-bottom: 10px;
   padding: 6px;
 
@@ -27,25 +25,35 @@ md-toc-search .search {
       }
     } 
   }
-  
-  .results-panel {
-    display: block;
-  }
-  
+}
+
+.docspa-search--results-panel {
+  display: block;
+  background-color: var(--sidebar-background, unset);
+  width: calc(var(--sidebar-width, 300px) * 1.5);
+  box-shadow: 2px 2px 7px black;
+  margin-left: 20px;
+  padding: 5px;
+
   h2 {
     font-size: 17px;
     margin: 10px 0 0 0;
+  }
+
+  h3 {
+    font-size: 13px;
+    margin: 0;
   }
   
   a {
     text-decoration: none;
     color: inherit;
   }
-  
+
   .matching-post {
     border-bottom: 1px solid #eee;
   }
-  
+
   .matching-post:last-child {
     border-bottom: 0;
   }

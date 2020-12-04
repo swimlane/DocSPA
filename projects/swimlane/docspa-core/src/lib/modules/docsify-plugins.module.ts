@@ -3,7 +3,7 @@ import { NgModule, ModuleWithProviders, InjectionToken, Optional, Inject } from 
 import { SettingsService } from '../services/settings.service';
 import { HooksService } from '../services/hooks.service';
 
-import type { VFile } from '../vendor';
+import type { VFile } from '../shared/vfile';
 
 export const DOCSIFYPLUGINS_CONFIG_TOKEN = new InjectionToken<any>( 'DocsifyPluginsModule.forRoot() configuration.' );
 

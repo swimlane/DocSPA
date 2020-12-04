@@ -1,16 +1,16 @@
-import { Injectable, EventEmitter, SimpleChange, SimpleChanges } from '@angular/core';
+import { Injectable, EventEmitter, SimpleChange, SimpleChanges, NgZone } from '@angular/core';
 import { Router, ActivatedRouteSnapshot } from '@angular/router';
 
 import { NGXLogger } from 'ngx-logger';
 
 import { goExternal, isAbsolutePath } from '../shared/utils';
-import { getFullPath } from '../shared/vfile-utils';
+import { getFullPath } from '../shared/vfile';
 
 import { SettingsService } from './settings.service';
 import { FetchService } from './fetch.service';
 import { LocationService } from './location.service';
 
-import { VFile } from 'vfile';
+import { VFile } from '../shared/vfile';
 
 @Injectable({
   providedIn: 'root'
@@ -39,8 +39,12 @@ export class RouterService {
     private fetchService: FetchService,
     private locationService: LocationService,
     private logger: NGXLogger,
-    private router: Router
+    private router: Router,
+    private ngZone: NgZone
   ) {
+    if (window['Cypress']) {
+      window['cypressNavigateByUrl'] = (url: string) => this.navigateByUrl(url);
+    }
   }
 
   activateRoute(snapshot: ActivatedRouteSnapshot) {
@@ -65,6 +69,12 @@ export class RouterService {
     }
     url = this.canonicalize(url);
     return this.urlChange(url || '/', root);
+  }
+
+  navigateByUrl(url: string) {
+    this.ngZone.run(() => {
+      this.router.navigateByUrl(url);
+    });
   }
 
   private async urlChange(url: string = '/', root = this.root) {

@@ -12,7 +12,7 @@ import { RouterService } from './services/router.service';
 import { SettingsService } from './services/settings.service';
 import { throttleable } from './shared/throttle';
 
-import type { VFile } from './vendor';
+import type { VFile } from './shared/vfile';
 
 @Component({
   selector: 'lib-docspa-core,docspa-page,[docspa-page]',

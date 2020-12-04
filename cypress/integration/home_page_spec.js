@@ -1,3 +1,5 @@
+import { dom } from '@swimlane/cy-dom-diff';
+
 const pkg = require('../../package.json');
 const { sidebar, navbar, pageAliases } = require('../support/helpers');
 
@@ -21,15 +23,32 @@ describe('The Home page', () => {
   it('has a coverpage', () => {
     cy.get('body').should('have.class', 'ready');
 
-    cy.get('app-root').find('.cover-main').as('coverpage');
-    cy.get('@coverpage').find('h2').contains('DocSPA');
-    cy.get('@coverpage').find('blockquote').contains('An Angular-powered documentation SPA');
-  
-    cy.get('@coverpage').find('img').should('have.attr', 'data-no-zoom', 'true');
-    cy.get('@coverpage').find('img').should('have.attr', 'src', 'docs/assets/docspa_mark-only.png');
-    cy.get('@coverpage').find('a').should('have.length', 2);
+    cy.get('app-root').find('.cover-main').within(() => {
+      cy.get('p').first().domMatch(dom`
+        <img
+          alt="DocSPA Logo"
+          class="docspa-logo"
+          data-no-zoom="true"
+          src="docs/assets/docspa_mark-only.png"
+        >`);
 
-    cy.get('@coverpage').find('md-env').contains(pkg.version);
+      const SEMVER = /([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?/
+
+      cy.get('h2').first().domMatch(dom`
+        DocSPA
+          <small>
+          <md-env
+            ng-version="${SEMVER}"
+            var="version"
+          >
+            ${pkg.version}
+          </md-env>
+        </small>`);
+
+      cy.get('blockquote').contains('An Angular-powered documentation SPA');
+    
+      cy.get('a').should('have.length', 2);    
+    });
   });
 
   it('has a sidebar', sidebar);
@@ -79,34 +98,5 @@ describe('The Home page', () => {
     cy.get('@content').find('h1 a, h2 a, h3 a').first().should('have.attr', 'href').and('matches', /^\/#.*/);
     cy.get('@content').find('section[id="introduction"] > p a').first().should('have.attr', 'href', 'https://custom-elements-everywhere.com/#angular');
     cy.get('@content').find('section[id="introduction"] > p a').eq(1).should('have.attr', 'href', '/quickstart');
-  });
-
-  it('can search', () => {
-    cy.get('app-root').find('aside.left-sidebar .search').as('search');
-
-    cy.get('@search').find('input').as('input');
-    cy.get('@input').should('have.attr', 'type', 'search');
-    cy.get('@search').find('.results-panel a').should('have.length', 0);
-    
-    cy.get('@input').type('doc', { force: true });
-    cy.get('@search').find('.results-panel .matching-post').as('matching');
-    cy.get('@matching').should('have.length', 4);
-
-    cy.get('@matching').find('a').eq(0).should('have.attr', 'href', '/');
-    cy.get('@matching').find('a').eq(1).should('have.attr', 'href', '/modules/core');
-    cy.get('@matching').find('a').eq(2).should('have.attr', 'href', '/modules/docsify');
-    cy.get('@matching').find('a').eq(3).should('have.attr', 'href', '/modules/stackblitz');
-
-    cy.get('@matching').find('h2').eq(0).should('have.text', 'DocSPA');
-    cy.get('@matching').find('h2').eq(1).should('have.text', 'DocspaCoreModule');
-    cy.get('@matching').find('h2').eq(2).should('have.text', 'DocsifyPluginsModule');
-    cy.get('@matching').find('h2').eq(3).should('have.text', 'DocspaStackblitzModule');
-  });
-
-  it('has pagination', () => {
-    cy.get('@footer').find('.pagination-item-title').should('have.length', 1);
-
-    cy.get('@footer').find('.pagination-item--next a').contains('Quick start');
-    cy.get('@footer').find('.pagination-item--next a').should('have.attr', 'href', '/quickstart');
   });
 });

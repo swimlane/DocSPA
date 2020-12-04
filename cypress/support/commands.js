@@ -23,3 +23,22 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('getInternalLinks', () => { 
+  const links = [];
+  return cy.get('a', { log: false }).each($el => {
+    const href = $el.attr('href');
+    if (href && href.startsWith('/')) {
+      links.push(href.split('#')[0]);
+    }
+  }).then(() => links);
+});
+
+Cypress.Commands.add('angularNavigateByUrl', (url) => { 
+  return cy.window('body', { log: false }).then(win => {
+    cy.log(`Angular nav to '${url}' `);
+    win.cypressNavigateByUrl(url)
+    cy.url().should('contain', url);
+    cy.get('#main h1').should('not.contain', 'ERROR 404');
+  });
+});

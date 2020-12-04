@@ -7,24 +7,23 @@ import { mergeMap, map } from 'rxjs/operators';
 import unified from 'unified';
 import markdown from 'remark-parse';
 import visit from 'unist-util-visit';
-import slug from 'remark-slug';
-import * as MDAST from 'mdast';
-import frontmatter from 'remark-frontmatter';
 import rehypeStringify from 'rehype-stringify';
 import remark2rehype from 'remark-rehype';
 import raw from 'rehype-raw';
 
-import { images } from '../../shared/links';
+import type * as mdast from 'mdast';
+
 import { LocationService } from '../../services/location.service';
 import { FetchService } from '../../services/fetch.service';
 import { SettingsService } from '../../services/settings.service';
 import { RouterService } from '../../services/router.service';
 import { MarkdownService } from '../markdown/markdown.service';
-import { TocService } from './toc.service';
 
 import { join, isAbsolutePath } from '../../shared/utils';
+import { images } from '../../shared/links';
 
-import type { VFile, Heading } from '../../vendor';
+import type { VFile } from '../../shared/vfile';
+import type { Heading } from '../../shared/ast';
 
 @Component({
   selector: 'docspa-print', // tslint:disable-line
@@ -99,13 +98,13 @@ export class MdPrintComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private elm: ElementRef,
     private markdownService: MarkdownService,
-    private tocService: TocService
+    // private tocService: TocService
   ) {
 
-    // TODO: use tocService
+    // TODO: move to service
     const fixLinks = () => {
-      return (tree: MDAST.Root, file: VFile) => {
-        return visit(tree, 'link', (node: MDAST.Link) => {
+      return (tree: mdast.Root, file: VFile) => {
+        return visit(tree, 'link', (node: mdast.Link) => {
           if (node && !isAbsolutePath(node.url)) {
             const url = locationService.prepareLink(node.url, file.history[0]).replace(/[\/#]/g, '--');
             node.url = `#${url}`;
@@ -115,9 +114,9 @@ export class MdPrintComponent implements OnInit {
       };
     };
 
-    // TODO: move toc servcie
+    // TODO: move to service
     const fixIds = () => {
-      return (tree: MDAST.Root, file: VFile) => {
+      return (tree: mdast.Root, file: VFile) => {
         return visit(tree, 'heading', (node: Heading) => {
           if (node && node.data && node.data.hProperties && node.data.hProperties.id) {
             const id = locationService.prepareLink(`#${node.data.hProperties.id}`, file.history[0]).replace(/[\/#]/g, '--');
@@ -127,15 +126,6 @@ export class MdPrintComponent implements OnInit {
         });
       };
     };
-
-    this.processLinks = unified()
-      .use(markdown)
-      .use(frontmatter)
-      .use(slug)
-      .use(this.tocService.linkPlugin)
-      .use(remark2rehype, { allowDangerousHtml: true })
-      .use(raw)
-      .use(rehypeStringify);
 
     this.processor = unified()
       .use(markdown)
@@ -195,6 +185,7 @@ export class MdPrintComponent implements OnInit {
     });
   }
 
+  // TODO: use markdownService.getLinks
   private loadSummary(summary: string): Promise<string[]> {
     const vfile = this.locationService.pageToFile(summary);
     const fullPath = join(vfile.cwd, vfile.path);
@@ -202,7 +193,7 @@ export class MdPrintComponent implements OnInit {
       mergeMap(resource => {
         vfile.contents = resource.contents;
         vfile.data = vfile.data || {};
-        return resource.notFound ? of(null) : this.processLinks.process(vfile);
+        return resource.notFound ? of(null) : this.markdownService.processLinks(vfile);
       }),
       map((_: any) => {
         return _.data.tocSearch.map(__ => {

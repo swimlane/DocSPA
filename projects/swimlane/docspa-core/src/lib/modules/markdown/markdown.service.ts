@@ -7,37 +7,98 @@ import markdown from 'remark-parse';
 import remark2rehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
 import raw from 'rehype-raw';
+import frontmatter from 'remark-frontmatter';
+import slug from 'remark-slug';
+import sectionize from 'remark-sectionize';
+import { getTitle } from '@swimlane/docspa-remark-preset';
+import toString from 'mdast-util-to-string';
+import { resolve } from 'url';
+import visit from 'unist-util-visit';
+import strip from 'remark-strip-html';
 
+import type { VFileCompatible } from 'vfile';
+import type * as mdast from 'mdast';
+
+import { tocPlugin } from './plugins/toc';
+import { removeNodesPlugin } from './plugins/remove';
+import { sectionPlugin } from './plugins/sections';
+
+import { RouterService } from '../../services/router.service';
 import { LocationService } from '../../services/location.service';
 import { HooksService } from '../../services/hooks.service';
-import { links, images } from '../../shared/links';
 
-import type { VFile } from '../../vendor';
+import { links, images } from '../../shared/links';
+import lazyInitialize from '../../shared/lazy-init';
+import { VFile, isVfile, Preset, TOCOptions, TOCData, SectionData } from '../../shared/vfile';
+
+import type { Link } from '../../shared/ast';
 
 export const MARKDOWN_CONFIG_TOKEN = new InjectionToken<any>( 'forRoot() configuration.' );
-
-interface Preset extends unified.Preset {
-  reporter?: (vfile: VFile) => {};
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class MarkdownService {
-  // Lazy init processor
+
+  /**
+   * Processor for converting md to html
+   */
+  @lazyInitialize
   get processor(): unified.Processor {
-    if (this._processor) {
-      return this._processor;
-    }
-    return this._processor = unified()
+    return unified()
       .use(markdown)
       .use(this.config)
       .use(links, { locationService: this.locationService })
       .use(images, { locationService: this.locationService })
       .use(remark2rehype, { allowDangerousHtml: true })
       .use(raw)
-      // TODO: rehype plugins
       .use(rehypeStringify);
+  }
+
+  /**
+   * Processor for converting md to a toc
+   */
+  @lazyInitialize
+  private get tocProcessor() {
+    return unified()
+      .use(markdown)
+      .use(frontmatter)
+      .use(slug)
+      .use(getTitle)
+      .use(removeNodesPlugin)
+      .use(tocPlugin)
+      .use(links, { locationService: this.locationService })
+      .use(images, { locationService: this.locationService })
+      .use(this.linkPlugin)
+      .use(remark2rehype, { allowDangerousHtml: true })
+      .use(raw)
+      .use(rehypeStringify);
+  }
+
+  @lazyInitialize
+  private get linksProcessor() {
+    return unified()
+      .use(markdown)
+      .use(frontmatter)
+      .use(slug)
+      .use(this.linkPlugin)
+      .use(remark2rehype, { allowDangerousHtml: true })
+      .use(raw)
+      .use(rehypeStringify);
+  }
+
+  /**
+   * Processor for extracting sections from md
+   */
+  @lazyInitialize
+  private get sectionProcessor() {
+    return unified()
+      .use(markdown)
+      .use(slug)
+      .use(getTitle)
+      .use(strip)
+      .use(sectionize)
+      .use(sectionPlugin);
   }
 
   get remarkPlugins(): unified.PluggableList {
@@ -47,12 +108,11 @@ export class MarkdownService {
     return this.config.plugins;
   }
 
-  private _processor: any;
-
   constructor(
     private locationService: LocationService,
     private logger: NGXLogger,
     private hooks: HooksService,
+    private routerService: RouterService,
     @Optional() @Inject(MARKDOWN_CONFIG_TOKEN) private config: Preset
   ) {
     this.config = this.config || { plugins: [] };
@@ -68,10 +128,93 @@ export class MarkdownService {
   /**
    * Process MD
    */
-  async process(vf: VFile) {
+  async process(vf: VFileCompatible): Promise<VFile> {
     await this.hooks.beforeEach.promise(vf);
     const err = await this.processor.process(vf);
     await this.hooks.afterEach.promise(err || vf);
-    return err || vf;
+    return (err || vf) as VFile;
+  }
+
+  /**
+   * Get TOC
+   */
+  async processTOC(doc: VFileCompatible, options?: TOCOptions): Promise<VFile> {
+    const file = VFile(doc);
+    file.data.tocOptions = {
+      ...(file.data?.tocOptions || {}),
+      ...options,
+    };
+    const err = await this.tocProcessor.process(file) as VFile;
+    return err || file;
+  }
+
+  async processLinks(doc: VFileCompatible) {
+    const file = VFile(doc) as VFile;
+    const err = await this.linksProcessor.process(file) as VFile;
+    return err || file;
+  }
+
+  /**
+   * Get Sections
+   */
+  async getSections(doc: VFileCompatible): Promise<SectionData[]> {
+    const file = isVfile(doc) ? doc : VFile(String(doc)) as VFile;
+    const tree = this.sectionProcessor.parse(file);
+    await this.sectionProcessor.run(tree, file);
+    file.data.title = (file.data.matter ? file.data.matter.title : false) || file.data.title || file.path;
+    return file.data?.sections || [];
+  }
+
+  async getTocLinks(doc: VFileCompatible): Promise<TOCData[]> {
+    const file = isVfile(doc) ? doc : VFile(String(doc)) as VFile;
+    file.data = file.data || {};
+    await this.processLinks(file);
+    return file.data.tocSearch;
+  }
+
+  // TODO: make a plugin
+  private linkPlugin = () => {
+    return (tree: mdast.Root, file: VFile) => {
+      file.data = file.data || {};
+      file.data.tocSearch = [];  // TODO: rename
+      return visit(tree, 'link', (node: Link, index: number, parent: mdast.Parent) => {
+        file.data.tocSearch.push(this.convertToTocData(file, node, parent));
+        return true;
+      });
+    };
+  }
+
+  private convertToTocData(file: VFile, node: Link, parent?: mdast.Parent): TOCData {
+    const content = toString(node);
+    const name = (file.data.matter ? file.data.matter.title : false) || file.data.title || file.path;
+
+    let { url } = node;
+    let link: string | string[] = '';
+    let fragment = '';
+
+    if (node.data && node.data.hName === 'md-link') {
+      // resolve path relative to source document
+      url = resolve(node.data.hProperties.source, url);
+      link = node.data.hProperties.link as string;
+      fragment = node.data.hProperties.fragment;
+
+      link = this.locationService.prepareLink(link, this.routerService.root);
+    } else {
+      [link = '', fragment] = url.split('#');
+    }
+
+    // Hack to preserve trailing slash
+    if (typeof link === 'string' && link.length > 1 && link.endsWith('/')) {
+      link = [link, ''];
+    }
+
+    return {
+      name,
+      url,
+      content,
+      link,
+      fragment: fragment ? fragment.replace(/^#/, '') : undefined,
+      depth: node.depth as number
+    };
   }
 }

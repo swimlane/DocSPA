@@ -240,35 +240,56 @@ The slug for a header can be set by adding an id.
 # Heading Number Two
 { #number-2 }
 ```
+### Styles
 
-#### Styles
+<div class="custom-block playground language-markdown">
 
-```markdown { playground }
-*Doc*{style="color:red; font-size: large"}*SPA*{style="color:blue"}
+*Doc*{style="color:red; font-size: large"} *SPA*{style="color:blue"}
 
-![](../assets/docspa_mark-only.png){ style="width: 200px; border: 10px solid lightgrey; padding: 10px;"}
+![](../assets/docspa_mark-only.png){ style="width: 100px; border: 10px solid lightgrey; padding: 10px;"}
+
+```html
+*Doc*{style="color:red; font-size: large"} *SPA*{style="color:blue"}
+
+![](../assets/docspa_mark-only.png){ style="width: 100px; border: 10px solid lightgrey; padding: 10px;"}
 ```
 
-#### Classes
+</div>
 
-```markdown { playground }
-<span class="badge note">note</span>
-<span class="badge info">info</span>
-<span class="badge tip" title="This is a tip">tip</span>
-<span class="badge warn" title="Watch out!!">warn</span>
+### Classes
 
+<div class="custom-block playground language-markdown">
+
+`note`{ .badge .note }
+*info*{ .badge .info }
+**tip**{ .badge .tip title="This is a tip" }
+**warn**{ .badge .warn title="Watch out!!" }
+
+```html
 `note`{ .badge .note }
 *info*{ .badge .info }
 **tip**{ .badge .tip title="This is a tip" }
 **warn**{ .badge .warn title="Watch out!!" }
 ```
 
-#### Attributes
+</div>
 
-```markdown { playground }
+
+### Attributes
+
+<div class="custom-block playground language-markdown">
+
 ![](../assets/docspa_mark-only.png){ width="30px" data-no-zoom }
 
 [www.swimlane.com](http://www.swimlane.com){ target="_blank" }
 
-[ignore](../docs/README.md){ ignore }
+[ignore](./docs/README.md){ ignore }
+
+```html
+![](./assets/docspa_mark-only.png){ width="30px" data-no-zoom }
+
+[www.swimlane.com](http://www.swimlane.com){ target="_blank" }
+
+[ignore](./docs/README.md){ ignore }
 ```
+</div>
