@@ -8,17 +8,11 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-
-    - name: Use Node.js 12.x
-      uses: actions/setup-node@v1
       with:
         node-version: 12.x
 
     - name: Install
-      run: |
-        npm ci
-      env:
-        CI: true
+      uses: bahmutov/npm-install@v1
 
     - name: test
       run: |
@@ -28,7 +22,7 @@ jobs:
 
     - name: Prepare and deploy
       run: |
-        npm run deploy -- --name="Swimlane" --email="swimlane-devops@swimlane.com" --no-silent
+        npm run deploy -- --name="Swimlane" --email="swimlane-devops@swimlane.com"
       if: ${{ github.ref == 'refs/heads/master' }}
       env:
         CI: true
