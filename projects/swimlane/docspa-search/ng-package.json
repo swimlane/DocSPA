@@ -7,5 +7,5 @@
   "lib": {
     "entryFile": "src/public-api.ts"
   },
-  "whitelistedNonPeerDependencies": ["lunr"]
+  "allowedNonPeerDependencies": ["lunr"]
 }
