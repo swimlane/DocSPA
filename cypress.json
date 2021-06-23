@@ -1,4 +1,3 @@
 {
-  "baseUrl": "http://localhost:4200",
-  "experimentalNetworkStubbing": true
+  "baseUrl": "http://localhost:4200"
 }

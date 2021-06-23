@@ -1,5 +1,5 @@
-const pkg = require('../../package.json');
-const { sidebar, navbar, pageAliases } = require('../support/helpers');
+import pkg from '../../package.json';
+import { navbar, pageAliases } from '../support/helpers';
 
 describe('page component is a subpage', () => {
   beforeEach(() => {

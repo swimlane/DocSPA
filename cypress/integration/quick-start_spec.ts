@@ -1,4 +1,4 @@
-const { sidebar, navbar, noCover } = require('../support/helpers');
+import { sidebar, navbar, noCover } from '../support/helpers';
 
 describe('The quickstart page', () => {
   beforeEach(() => {

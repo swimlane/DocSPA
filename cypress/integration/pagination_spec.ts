@@ -32,7 +32,7 @@ describe('pagination', () => {
         cy.wait(200);
         cy.get('.next').scrollIntoView().click({ force: true });
         cy.wait(200);
-        cy.url().should('contain', link);
+        cy.url().should('contain', link, { timeout: 5000 });
       });
 
       cy.get('.next').should('not.exist');
