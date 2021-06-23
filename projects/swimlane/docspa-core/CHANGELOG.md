@@ -6,6 +6,9 @@ _(none)_
 
 --------------------
 
+## 8.0.0 (2021-06-23)
+* Update deps to for Angular 12
+
 ## 7.0.1 (2020-11-04)
 * Moved text search to its own module (@swimlane/docspa-search).
 

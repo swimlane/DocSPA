@@ -19,7 +19,7 @@ describe('Search', () => {
     cy.get('@matching').eq(2).find('a').should('have.attr', 'href', '/modules/stackblitz#docspastackblitzmodule');
     cy.get('@matching').eq(3).find('a').should('have.attr', 'href', '/modules/core#docspacoremodule');
     cy.get('@matching').eq(4).find('a').should('have.attr', 'href', '/#docspa');
-    
+
     cy.get('@matching').eq(0).find('a').domMatch(dom`
       <h2><em class="search-keyword">Doc</em>sifyPluginsModule</h2>
       <h3></h3>

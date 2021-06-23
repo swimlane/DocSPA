@@ -1,7 +1,7 @@
 import { dom } from '@swimlane/cy-dom-diff';
 
-const { sidebar, navbar, noCover, pageAliases } = require('../support/helpers');
-const pkg = require('../../package.json');
+import { sidebar, navbar, noCover, pageAliases } from '../support/helpers';
+import pkg from '../../package.json';
 
 describe('The Features page', () => {
   beforeEach(() => {
