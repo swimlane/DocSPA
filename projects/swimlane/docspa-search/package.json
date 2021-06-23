@@ -1,6 +1,6 @@
 {
   "name": "@swimlane/docspa-search",
-  "version": "7.0.2",
+  "version": "7.0.3",
   "peerDependencies": {
     "@angular/common": "^12.0.5",
     "@angular/core": "^12.0.5",
@@ -10,5 +10,21 @@
   "dependencies": {
     "tslib": "^2.0.0",
     "lunr": "^2.3.9"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swimlane/docspa.git"
+  },
+  "keywords": [
+    "angular",
+    "documentation"
+  ],
+  "authors": [
+    "Jayson Harshbarger"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/swimlane/docspa/issues"
+  },
+  "homepage": "https://swimlane.github.io/DocSPA/"
 }
