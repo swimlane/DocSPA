@@ -2,10 +2,10 @@
   "name": "@swimlane/docspa-search",
   "version": "7.0.2",
   "peerDependencies": {
-    "@angular/common": "^10.1.6",
-    "@angular/core": "^10.1.6",
+    "@angular/common": "^12.0.5",
+    "@angular/core": "^12.0.5",
     "@swimlane/docspa-core": "^7.0.0",
-    "@angular/material": "^10.2.5"
+    "@angular/material": "^12.0.5"
   },
   "dependencies": {
     "tslib": "^2.0.0",

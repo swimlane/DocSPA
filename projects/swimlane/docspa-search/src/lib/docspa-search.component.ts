@@ -231,7 +231,7 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
             heading: s.depth > 1 ? s.heading : ''
           };
 
-          // add page name, heading, and full tex to the index
+          // add page name, heading, and full text to the index
           builder.add({
             url,
             ...s,
