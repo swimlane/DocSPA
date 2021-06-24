@@ -34,6 +34,7 @@ import 'zone.js';  // Included with Angular CLI.
  */
 import 'intersection-observer';
 import '@ungap/global-this';
+import '@ungap/custom-elements';
 
 window['global'] = globalThis as any;
 window['process'] = window['process'] || require('process/browser');

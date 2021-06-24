@@ -53,8 +53,7 @@ Hello {{name}}.
 
 </div>
 
-!> Note that this element extends the template element as invoked using the "is" attribute.
-
+!> Note that this element extends the template element as invoked using the "is" attribute.  Safari will need `@ungap/custom-elements` to support this.
 
 Or by adding `{ run }` to `HTML` fenced code:
 
