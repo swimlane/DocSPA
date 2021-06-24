@@ -4,5 +4,5 @@
   "lib": {
     "entryFile": "src/public_api.ts"
   },
-  "allowedNonPeerDependencies": ["deepmerge", "quick-lru", "throttleit", "tapable"]
+  "allowedNonPeerDependencies": ["deepmerge", "quick-lru", "throttleit", "tapable", "remark-strip-html"]
 }

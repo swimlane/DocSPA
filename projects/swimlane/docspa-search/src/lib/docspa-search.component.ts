@@ -112,71 +112,74 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
     });
 
     this.searchResults = results.map(r => {
-        const ref = r.ref;
+      const ref = r.ref;
+      
 
-        // tslint:disable-next-line: prefer-const
-        let [link, fragment] = splitHash(ref);
-        fragment = fragment.replace(/^#/, '');
+      // tslint:disable-next-line: prefer-const
+      let [link, fragment] = splitHash(ref);
+      fragment = fragment.replace(/^#/, '');
 
-        const match = this.searchIndex[ref];
+      const match = this.searchIndex[ref];
 
-        let heading: string = match.heading || '';
-        let name: string = match.page || match.name;
+      let heading: string = match.heading || '';
+      let name: string = match.page || match.name;
 
-        // highlight each term
-        queryRegexps.forEach(re => {
-          name = highlight(name, re);
-          heading = highlight(heading, re);
-        });
-
-        // result for a single document match
-        const result: MatchResult = {
-          ...r,
-          ...match,
-          heading,
-          name,
-          link,
-          fragment
-        };
-
-        // Checks if text was part of the match
-        const hasTextMatch = Object.keys(r.matchData.metadata).some(k => !!r.matchData.metadata[k].text);
-
-        if (hasTextMatch) {
-          // Lazy loads text, defered tell loaded
-          result.text$ = defer(async () => {
-            const sections = await this.fetchSections(link);
-
-            // get raw text for the section
-            const section = sections.find(s => s.id === fragment);
-            if (!section) { return; }  // defensive
-
-            const { text } = section;
-
-            // find index of term that matches first
-            let index = 0;
-            let position = Infinity;
-            queryRegexps.forEach((_, idx) => {
-              const i = text.search(_);
-              if (i < position) {
-                index = idx;
-                position = i;
-              }
-            });
-
-            let excerpt = getExcerpt(text, queryRegexps[index], queryTokens[index].length);
-
-            // highlight each term
-            queryRegexps.forEach((_, i) => {
-              excerpt = highlight(excerpt, _);
-            });
-
-            return excerpt;
-          }).pipe(shareReplay(1));
-        }
-
-        return result;
+      // highlight each term
+      queryRegexps.forEach(re => {
+        name = highlight(name, re);
+        heading = highlight(heading, re);
       });
+
+      // result for a single document match
+      const result: MatchResult = {
+        ...r,
+        ...match,
+        heading,
+        name,
+        link,
+        fragment
+      };
+
+      console.log({ result });
+
+      // Checks if text was part of the match
+      const hasTextMatch = Object.keys(r.matchData.metadata).some(k => !!r.matchData.metadata[k].text);
+
+      if (hasTextMatch) {
+        // Lazy loads text, defered tell loaded
+        result.text$ = defer(async () => {
+          const sections = await this.fetchSections(link);
+
+          // get raw text for the section
+          const section = sections.find(s => s.id === fragment);
+          if (!section) { return; }  // defensive
+
+          const { text } = section;
+
+          // find index of term that matches first
+          let index = 0;
+          let position = Infinity;
+          queryRegexps.forEach((_, idx) => {
+            const i = text.search(_);
+            if (i < position) {
+              index = idx;
+              position = i;
+            }
+          });
+
+          let excerpt = getExcerpt(text, queryRegexps[index], queryTokens[index].length);
+
+          // highlight each term
+          queryRegexps.forEach((_, i) => {
+            excerpt = highlight(excerpt, _);
+          });
+
+          return excerpt;
+        }).pipe(shareReplay(1));
+      }
+
+      return result;
+    });
   }
 
   onPageChange($event: {pageSize: number, pageIndex: number }) {
@@ -223,6 +226,7 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
       if (sections) {
         sections.forEach(s => {
           const url = `${s.source}#${s.id}`;
+          console.log({ url })
 
           // keep quick reference to page name and heading
           this.searchIndex[url] = {

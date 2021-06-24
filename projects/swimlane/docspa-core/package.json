@@ -32,6 +32,7 @@
   "dependencies": {
     "deepmerge": "^4.2.2",
     "quick-lru": "^4.0.1",
+    "remark-strip-html": "^1.0.2",
     "tapable": "^1.1.0",
     "throttleit": "^1.0.0",
     "tslib": "^2.0.0"
