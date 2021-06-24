@@ -2,9 +2,12 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-* Add `remark-strip-html` as a dependency
+_(none)_
 
 --------------------
+
+## 8.0.1 (2021-06-24)
+* Add `remark-strip-html` as a dependency
 
 ## 8.0.0 (2021-06-23)
 * Update deps to for Angular 12
