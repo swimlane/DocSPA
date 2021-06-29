@@ -113,7 +113,7 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
 
     this.searchResults = results.map(r => {
       const ref = r.ref;
-      
+
 
       // tslint:disable-next-line: prefer-const
       let [link, fragment] = splitHash(ref);
@@ -226,7 +226,7 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
       if (sections) {
         sections.forEach(s => {
           const url = `${s.source}#${s.id}`;
-          console.log({ url })
+          console.log({ url });
 
           // keep quick reference to page name and heading
           this.searchIndex[url] = {

@@ -8,7 +8,6 @@
     "start": "ng serve",
     "build": "ng build",
     "lint": "ng lint",
-    "lint:fix": "ng lint -- --fix",
     "e2e": "start-server-and-test start http-get://localhost:4200 cypress:run",
     "unit": "jest",
     "unit:watch": "jest --watch",
@@ -48,7 +47,9 @@
     "audit": "run-s audit:*",
     "audit:npm": "npm audit",
     "audit:npm-check": "npm-check --skip-unused || true",
-    "npm-update": "npm-check --skip-unused -u"
+    "npm-update": "npm-check --skip-unused -u",
+    "fix": "run-s fix:*",
+    "fix:lint": "ng lint -- --fix"
   },
   "dependencies": {
     "@angular/animations": "^12.0.5",
