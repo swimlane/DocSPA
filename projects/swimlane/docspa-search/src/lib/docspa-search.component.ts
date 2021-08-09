@@ -22,6 +22,7 @@ interface MatchResult {
   text$?: Observable<string>;
   ref: string;
   score: number;
+  routerLink: string | string[];
 }
 
 @Component({
@@ -114,7 +115,6 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
     this.searchResults = results.map(r => {
       const ref = r.ref;
 
-
       // tslint:disable-next-line: prefer-const
       let [link, fragment] = splitHash(ref);
       fragment = fragment.replace(/^#/, '');
@@ -130,6 +130,12 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
         heading = highlight(heading, re);
       });
 
+      let routerLink: string | string[] = link;
+      // Hack to preserve trailing slash
+      if (typeof routerLink === 'string' && routerLink.length > 1 && routerLink.endsWith('/')) {
+        routerLink = [routerLink, ''];
+      }
+
       // result for a single document match
       const result: MatchResult = {
         ...r,
@@ -137,10 +143,9 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
         heading,
         name,
         link,
-        fragment
+        fragment,
+        routerLink
       };
-
-      console.log({ result });
 
       // Checks if text was part of the match
       const hasTextMatch = Object.keys(r.matchData.metadata).some(k => !!r.matchData.metadata[k].text);

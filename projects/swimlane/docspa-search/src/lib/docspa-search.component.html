@@ -27,7 +27,7 @@
           </p>
           <ng-template #showResults>
             <div class="matching-post" *ngFor="let result of searchResults | slice:(pageIndex*pageSize):(pageIndex*pageSize + pageSize)">
-              <a [routerLink]="[result.link, '']" [fragment]="result.fragment" (click)="search(searchInput.value = '')">
+              <a [routerLink]="result.routerLink" [fragment]="result.fragment" (click)="search(searchInput.value = '')">
                 <h2 [innerHTML]="result.name"></h2>
                 <h3 [innerHTML]="result.heading"></h3>
                 <p [innerHTML]="result.text$ | async"></p>
