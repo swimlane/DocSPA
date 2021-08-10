@@ -1,6 +1,6 @@
 <div>
   <div class="docspa-search" *ngIf="idx">
-    <div class="input-wrap" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+    <div class="input-wrap docspa-search--input" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
       <input
         #searchInput
         type="search"
@@ -26,15 +26,15 @@
             </ng-template>
           </p>
           <ng-template #showResults>
-            <div class="matching-post" *ngFor="let result of searchResults | slice:(pageIndex*pageSize):(pageIndex*pageSize + pageSize)">
-              <a [routerLink]="result.routerLink" [fragment]="result.fragment" (click)="search(searchInput.value = '')">
-                <h2 [innerHTML]="result.name"></h2>
-                <h3 [innerHTML]="result.heading"></h3>
-                <p [innerHTML]="result.text$ | async"></p>
-              </a>
-            </div>
-            <mat-paginator (page)="onPageChange($event)" [length]="searchResults?.length" [pageSize]="5" [hidePageSize]="true">
-            </mat-paginator>
+            <cdk-virtual-scroll-viewport appendOnly itemSize="5" class="docspa-search--viewport">
+              <div *cdkVirtualFor="let result of searchResults" class="docspa-search--item">
+                <a [routerLink]="result.routerLink" [fragment]="result.fragment" (click)="search(searchInput.value = '')">
+                  <h2 [innerHTML]="result.name"></h2>
+                  <h3 [innerHTML]="result.heading"></h3>
+                  <p [innerHTML]="result.text$ | async"></p>
+                </a>
+              </div>
+            </cdk-virtual-scroll-viewport>
           </ng-template>
         </div>
       </div>

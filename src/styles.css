@@ -2,7 +2,7 @@
 
 :root {
   --theme-color: #0074d9;
-  --sidebar-width: 16rem;
+  --sidebar-width: 25rem;
   --right-sidebar-width: 16rem;
   --right-sidebar-border-color: none;
   --base-background-color: #F5F7F9;
@@ -110,25 +110,6 @@ section.content footer {
   text-align: center;
   width: 100%;
   display: block;
-}
-
-::-webkit-scrollbar {
-    width: 5px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: #f1f1f1; 
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #888; 
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #555; 
 }
 
 /* Buttons */

@@ -231,7 +231,6 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
       if (sections) {
         sections.forEach(s => {
           const url = `${s.source}#${s.id}`;
-          console.log({ url });
 
           // keep quick reference to page name and heading
           this.searchIndex[url] = {

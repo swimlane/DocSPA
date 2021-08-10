@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { createCustomElement } from '@angular/elements';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { DocspaSearchComponent } from './docspa-search.component';
 
@@ -13,7 +14,8 @@ import { DocspaSearchComponent } from './docspa-search.component';
     CommonModule,
     RouterModule,
     OverlayModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    ScrollingModule
   ],
   exports: [DocspaSearchComponent],
   entryComponents: [DocspaSearchComponent]
