@@ -2,9 +2,12 @@ CHANGELOG
 =========
 
 ## HEAD (Unreleased)
-* Fix trailing slash issue in docspa-search
+_(none)_
 
 --------------------
+
+## 8.0.2 (2021-08-09)
+* Fix trailing slash issue in docspa-search
 
 ## 8.0.1 (2021-06-24)
 * Add `remark-strip-html` as a dependency
