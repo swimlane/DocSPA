@@ -6,6 +6,9 @@ _(none)_
 
 --------------------
 
+## 8.0.3 (2021-08-10)
+* Improve search display for `docspa-search`
+
 ## 8.0.2 (2021-08-09)
 * Fix trailing slash issue in docspa-search
 
