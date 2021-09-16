@@ -1,24 +1,24 @@
 // copy of https://github.com/montogeek/remark-custom-blockquotes with
 // https://github.com/montogeek/remark-custom-blockquotes/pull/2 pending merge
 
-import visit from 'unist-util-visit';
+import visit from "unist-util-visit";
 
-import { Root, Paragraph, Text } from 'mdast';
-import { Transformer } from 'unified';
+import { Root, Paragraph, Text } from "mdast";
+import { Transformer } from "unified";
 
 export function customBlockquotes({ mapping }): Transformer {
   return function transformer(tree: Root) {
-    return visit(tree, 'paragraph', visitor);
+    return visit(tree, "paragraph", visitor);
 
     function visitor(node: Paragraph) {
       const { children } = node;
-      const textNode = children[0].value as string;
+      const textNode = (children[0] as Text).value as string;
 
       if (!textNode) {
         return true;
       }
 
-      const idx = textNode.indexOf('>');
+      const idx = textNode.indexOf(">");
 
       if (idx < 0 || idx > 5) {
         return;
@@ -28,18 +28,18 @@ export function customBlockquotes({ mapping }): Transformer {
       const className = mapping[substr];
 
       if (className) {
-        node.type = 'paragraph';
+        node.type = "paragraph";
         node.data = {
-          hName: 'p',
+          hName: "p",
           hProperties: {
             className
           }
         };
 
-        const r = new RegExp(`^\\${substr}\\s`, 'gm');
+        const r = new RegExp(`^\\${substr}\\s`, "gm");
 
-        visit(node, 'text', (cld: Text) => {
-          cld.value = cld.value.replace(r, ' ');
+        visit(node, "text", (cld: Text) => {
+          cld.value = cld.value.replace(r, " ");
           return true;
         });
       }
@@ -48,9 +48,11 @@ export function customBlockquotes({ mapping }): Transformer {
   };
 }
 
-export const customBlockquotesOptions = { mapping: {
-  '+>': 'note',
-  'i>': 'info',
-  '!>': 'tip',
-  '!!>': 'warn'
-}};
+export const customBlockquotesOptions = {
+  mapping: {
+    "+>": "note",
+    "i>": "info",
+    "!>": "tip",
+    "!!>": "warn"
+  }
+};
