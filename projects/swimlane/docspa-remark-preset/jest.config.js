@@ -19,8 +19,7 @@ module.exports = {
     '**/tests/*.test.+(ts|tsx|js)',
   ],
   transform: {
-    '^.+\\.(ts|tsx|js)$': 'ts-jest',
+    '^.+\\.(ts|tsx)$': 'ts-jest',
   },
-  transformIgnorePatterns: [`/node_modules/(?!${esModules})`],
   preset: 'ts-jest',
 }
