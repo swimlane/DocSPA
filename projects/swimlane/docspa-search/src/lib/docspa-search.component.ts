@@ -127,7 +127,7 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
 
       // highlight each term
       matchWords.forEach(word => {
-        const re = escapeRegexp(word)
+        const re = escapeRegexp(word);
         if ('page' in metadata[word]) {
           name = highlight(name, re);
         }
