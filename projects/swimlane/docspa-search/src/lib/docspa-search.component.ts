@@ -96,21 +96,7 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
       return;
     }
 
-    // Get search terms
-    const queryTokens = tokenizer(queryTerm.toLowerCase()).map(t => t.toString());
-    const queryRegexps = queryTokens.map(t => escapeRegexp(t));
-
-    const results = this.idx.query(q => {
-      queryTokens.forEach(term => {
-        // look for partial match of each term
-        q.term(term, {
-          presence: lunr.Query.presence.REQUIRED,  // force AND
-          // tslint:disable-next-line: no-bitwise
-          wildcard: lunr.Query.wildcard.LEADING | lunr.Query.wildcard.TRAILING, // substring search
-          usePipeline: false,
-        });
-      });
-    });
+    const results = this.idx.search(queryTerm);
 
     this.searchResults = results.map(r => {
       const ref = r.ref;
@@ -124,17 +110,31 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
       let heading: string = match.heading || '';
       let name: string = match.page || match.name;
 
-      // highlight each term
-      queryRegexps.forEach(re => {
-        name = highlight(name, re);
-        heading = highlight(heading, re);
-      });
+      // // highlight each term
+      // queryRegexps.forEach(re => {
+      //   name = highlight(name, re);
+      //   heading = highlight(heading, re);
+      // });
 
       let routerLink: string | string[] = link;
       // Hack to preserve trailing slash
       if (typeof routerLink === 'string' && routerLink.length > 1 && routerLink.endsWith('/')) {
         routerLink = [routerLink, ''];
       }
+
+      const metadata = r?.matchData?.metadata || {};
+      const matchWords = Object.keys(r.matchData.metadata);
+
+      // highlight each term
+      matchWords.forEach(word => {
+        const re = escapeRegexp(word)
+        if ('page' in metadata[word]) {
+          name = highlight(name, re);
+        }
+        if ('heading' in metadata[word]) {
+          heading = highlight(heading, re);
+        }
+      });
 
       // result for a single document match
       const result: MatchResult = {
@@ -148,10 +148,13 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
       };
 
       // Checks if text was part of the match
-      const hasTextMatch = Object.keys(r.matchData.metadata).some(k => !!r.matchData.metadata[k].text);
+      const hasTextMatch = matchWords.some(k => !!metadata[k].text);
 
       if (hasTextMatch) {
-        // Lazy loads text, defered tell loaded
+        const queryRegexps = matchWords.map(t => escapeRegexp(t));
+        console.log({ queryRegexps });
+
+        // Lazy loads text, defered untill loaded
         result.text$ = defer(async () => {
           const sections = await this.fetchSections(link);
 
@@ -172,10 +175,10 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
             }
           });
 
-          let excerpt = getExcerpt(text, queryRegexps[index], queryTokens[index].length);
+          let excerpt = getExcerpt(text, queryRegexps[index], matchWords[index].length);
 
           // highlight each term
-          queryRegexps.forEach((_, i) => {
+          queryRegexps.forEach((_, _i) => {
             excerpt = highlight(excerpt, _);
           });
 
