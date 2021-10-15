@@ -15,24 +15,14 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "types": [
-      "node",
-      "jasmine"
-    ],
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "typeRoots": ["node_modules/@types"],
+    "types": ["node", "jasmine"],
+    "lib": ["es2017", "dom"],
     "paths": {
       "@swimlane/docspa-core": [
         "./projects/swimlane/docspa-core/src/public_api"
       ],
-      "@swimlane/docspa-core/*": [
-        "./projects/swimlane/docspa-core/src/*"
-      ],
+      "@swimlane/docspa-core/*": ["./projects/swimlane/docspa-core/src/*"],
       "@swimlane/docspa-remark-preset": [
         "./projects/swimlane/docspa-remark-preset/src/index"
       ],
