@@ -9,7 +9,7 @@ export function shortCodeProps(): Transformer {
     return visit(tree, 'shortcode', (node: Parent) => {
       node.data = node.data || {};
       node.data.hProperties = node.data.hProperties || {};
-      node.data.hProperties = { ...(node.data.hProperties as any), ...(node.attributes as any) };
+      node.data.hProperties = { ...(node.data.hProperties as any), ...((node as any).attributes as any) };
       return true;
     });
   };

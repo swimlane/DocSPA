@@ -12,7 +12,7 @@ export function customBlockquotes({ mapping }): Transformer {
 
     function visitor(node: Paragraph) {
       const { children } = node;
-      const textNode = children[0].value as string;
+      const textNode = (children[0] as Text).value as string;
 
       if (!textNode) {
         return true;
