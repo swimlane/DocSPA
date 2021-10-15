@@ -29,19 +29,19 @@ describe('pagination', () => {
 
     cy.get('.docsify-pagination-container').scrollIntoView().within(() => {
       links.slice(1).forEach(link => {
-        cy.wait(200);
-        cy.get('.next').scrollIntoView().click({ force: true });
-        cy.wait(200);
-        cy.url().should('contain', link, { timeout: 10000 });
+        cy.get('.next').should('have.attr', 'href', link);
+        cy.get('.next').scrollIntoView()
+        cy.get('.next').click();
+        cy.url().should('contain', link);
       });
 
       cy.get('.next').should('not.exist');
 
       links.reverse().slice(1).forEach(link => {
-        cy.wait(200);
-        cy.get('.prev').scrollIntoView().click({ force: true });
-        cy.wait(200);
-        cy.url().should('contain', link, { timeout: 10000 });
+        cy.get('.prev').should('have.attr', 'href', link);
+        cy.get('.prev').scrollIntoView()
+        cy.get('.prev').click();
+        cy.url().should('contain', link);
       });
 
       cy.get('.prev').should('not.exist');      
