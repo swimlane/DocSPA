@@ -152,7 +152,6 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
 
       if (hasTextMatch) {
         const queryRegexps = matchWords.map(t => escapeRegexp(t));
-        console.log({ queryRegexps });
 
         // Lazy loads text, defered untill loaded
         result.text$ = defer(async () => {
