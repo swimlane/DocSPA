@@ -35,6 +35,6 @@
     "remark-strip-html": "^1.0.2",
     "tapable": "^1.1.0",
     "throttleit": "^1.0.0",
-    "tslib": "^2.0.0"
+    "tslib": "^2.3.1"
   }
 }
