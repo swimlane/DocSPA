@@ -200,7 +200,15 @@ export class TOCPaginationComponent implements OnInit, OnChanges {
   private pathChanges(path: string) {
     // TODO: make a matches or isActive helper
     path = path.replace(/^\.\//, '');
-    const re = new RegExp(`^\.?/?${path}$`);
+    
+    // If path === '/'
+    path = (path === '/') ? 'README' : path;
+
+    // The original regexp is wrong
+    // const re = new RegExp(`^\.?/?${path}$`);
+
+    const re = new RegExp(`^.*${path}.*$`);
+
     const index = this.files.findIndex(file => {
       return re.test(file.path);
     });
