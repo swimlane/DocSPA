@@ -48,17 +48,31 @@ export class RouterService {
   }
 
   activateRoute(snapshot: ActivatedRouteSnapshot) {
-    const url = snapshot.url.map(s => s.path).join('/');
-    let root = this.router.url;
-    if (snapshot.fragment) {
-      root = root.replace(new RegExp('#' + snapshot.fragment + '$'), '');
-    }
-    root = root.replace(new RegExp(url + '$'), '');
-    if (!root.endsWith('/')) {
-      root += '/';
-    }
-    const path = url + (snapshot.fragment ? `#${snapshot.fragment}` : '');
-    this.go(path, root);
+        const url = snapshot.url.map(s => s.path).join('/');
+        const fragment = (snapshot.fragment ? `#${snapshot.fragment}` : '');
+
+        let root = this.router.url;
+
+        if (snapshot.fragment) {
+            root = root.replace(new RegExp('#' + snapshot.fragment + '$'), '');
+        }
+
+        let [ _url, _fragment ] = root.split(/[#\?]/)
+
+        _url = _url.split(/[\/\?]/)[2] || '';
+
+        _url = _url ? `${decodeURI(_url)}` : '';
+        _fragment = _fragment ? `#${decodeURI(_fragment)}` : '';
+
+        root = root.replace(new RegExp(url + '$'), '');
+
+        if (!root.endsWith('/')) {
+            root += '/';
+        }
+        
+        const path = `${_url}${_fragment}`;
+
+        this.go(path, root);
   }
 
   go(url: string, root = this.root) {
