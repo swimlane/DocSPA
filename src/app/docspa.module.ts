@@ -23,41 +23,38 @@ import { config } from '../docspa.config';
 import { environment } from '../environments/environment';
 
 @NgModule({
-  declarations: [
-    EditOnGithubComponent
-  ],
-  imports: [
-    CommonModule,
-    DocspaCoreModule.forRoot(config, environment),
-    RuntimeContentModule.forRoot({
-      imports: [
+    declarations: [
+        EditOnGithubComponent
+    ],
+    imports: [
         CommonModule,
-        NgxChartsModule
-      ]
-    }),
-    MarkdownModule.forRoot(),
-    MarkdownElementsModule.forRoot(),
-    DocsifyPluginsModule.forRoot({
-      plugins: [
-        timestampPlugin
-      ]
-    }),
-    DocspaStackblitzModule,
-    LoggerModule.forRoot({ level: environment.production ? NgxLoggerLevel.ERROR : NgxLoggerLevel.WARN }),
-    TabsPluginModule,
-    GridPluginModule,
-    DocspaSearchModule
-  ],
-  exports: [
-    // NgxChartsModule,
-    BrowserAnimationsModule
-  ],
-  entryComponents: [
-    EditOnGithubComponent
-  ],
-  providers: [
-    { provide: MARKDOWN_CONFIG_TOKEN, useValue: preset }
-  ]
+        DocspaCoreModule.forRoot(config, environment),
+        RuntimeContentModule.forRoot({
+            imports: [
+                CommonModule,
+                NgxChartsModule
+            ]
+        }),
+        MarkdownModule.forRoot(),
+        MarkdownElementsModule.forRoot(),
+        DocsifyPluginsModule.forRoot({
+            plugins: [
+                timestampPlugin
+            ]
+        }),
+        DocspaStackblitzModule,
+        LoggerModule.forRoot({ level: environment.production ? NgxLoggerLevel.ERROR : NgxLoggerLevel.WARN }),
+        TabsPluginModule,
+        GridPluginModule,
+        DocspaSearchModule
+    ],
+    exports: [
+        // NgxChartsModule,
+        BrowserAnimationsModule
+    ],
+    providers: [
+        { provide: MARKDOWN_CONFIG_TOKEN, useValue: preset }
+    ]
 })
 export class DocspaModule {
   constructor(private injector: Injector) {

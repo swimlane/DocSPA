@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule, Injector, ModuleWithProviders, Compiler } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import '@angular/platform-browser-dynamic';
@@ -19,14 +20,14 @@ export function createJitCompiler() {
 }
 
 @NgModule({
+  imports: [
+    CommonModule
+  ],
   declarations: [
     RuntimeContentComponent,
     DynamicComponentDirective
   ],
-  providers: [ DynamicContentService ],
-  entryComponents: [
-    RuntimeContentComponent
-  ]
+  providers: [DynamicContentService]
 })
 export class RuntimeContentModule {
   static forRoot(config: any): ModuleWithProviders<RuntimeContentModule> {

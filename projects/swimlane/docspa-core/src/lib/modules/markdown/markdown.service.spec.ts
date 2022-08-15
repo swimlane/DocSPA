@@ -17,19 +17,20 @@ describe('MarkdownService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
+    imports: [
         HttpClientTestingModule,
         LoggerModule.forRoot({ level: NgxLoggerLevel.WARN })
-      ],
-      providers: [
-        { provide: Router, useValue: { } },
+    ],
+    providers: [
+        { provide: Router, useValue: {} },
         Location,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
-        { provide: DOCSPA_ENVIRONMENT, useValue: { } },
+        { provide: DOCSPA_ENVIRONMENT, useValue: {} },
         MarkdownService,
         RouterService
-      ]
-    });
+    ],
+    teardown: { destroyAfterEach: false }
+});
 
     markdownService = TestBed.inject(MarkdownService);
     TestBed.inject(HttpTestingController);

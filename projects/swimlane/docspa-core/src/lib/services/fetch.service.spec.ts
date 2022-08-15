@@ -12,17 +12,18 @@ describe('FetchService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
+    imports: [
         HttpClientTestingModule,
         LoggerModule.forRoot({ level: NgxLoggerLevel.TRACE })
-      ],
-      providers: [
+    ],
+    providers: [
         Location,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
-        { provide: DOCSPA_ENVIRONMENT, useValue: { } },
+        { provide: DOCSPA_ENVIRONMENT, useValue: {} },
         FetchService
-      ]
-    });
+    ],
+    teardown: { destroyAfterEach: false }
+});
 
     fetchService = TestBed.inject(FetchService);
     httpMock = TestBed.inject(HttpTestingController);

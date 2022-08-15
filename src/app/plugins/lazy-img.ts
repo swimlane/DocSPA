@@ -1,4 +1,4 @@
-require('style-loader!./lazy-img.css');
+import './lazy-img.css';
 
 export default class LazyloadImage extends HTMLImageElement {
   original = '';
