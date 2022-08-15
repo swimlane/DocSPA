@@ -92,7 +92,7 @@ export class TOCComponent implements OnChanges, OnInit {
           vfile.data = vfile.data || {};
           /* const err = */ await this.markdownService.processTOC(vfile, {
             minDepth: +this.minDepth,
-            maxDepth: +this.maxDepth,
+            maxDepth: +this.maxDepth as 1 | 2 | 3 | 4 | 5 | 6,
             tight: this.tight
           });
           return vfile;

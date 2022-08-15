@@ -53,12 +53,12 @@ export class DocsifyPluginsModule {
       });
     };
 
-    const beforeEach = (fn: () => unknown) => {
+    const beforeEach = (fn: (x: any) => unknown) => {
       this.hooks.beforeEach.tap('docsify-beforeEach', (vf: VFile) => {
         // Docsify beforeEach only runs on main content
         if (vf.data.docspa.isPageContent) {
           vm.route.file = vf.data.docspa.url;
-          vf.contents = fn(vf.contents);
+          vf.contents = fn(vf.contents) as any;
         }
         return vf;
       });
