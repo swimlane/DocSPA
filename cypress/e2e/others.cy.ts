@@ -9,7 +9,10 @@ describe('Other pages', () => {
   });
 
   describe('Page not found', () => {
-    before(() => cy.visit('/not-found'));
+    before(() => {
+      cy.visit('/not-found');
+      cy.waitForNetworkIdle(1000);
+    });
 
     it('has a title', () => {
       cy.title().should('eq', 'DocSPA - ERROR 404')
@@ -25,7 +28,10 @@ describe('Other pages', () => {
   });
 
   describe('Sub directory readme not found', () => {
-    before(() => cy.visit('/sub')); // note: this does not match sub/
+    before(() => {
+      cy.visit('/sub');
+      cy.waitForNetworkIdle(1000);
+    });
 
     it('has a title', () => {
       cy.title().should('eq', 'DocSPA - ERROR 404')
@@ -41,7 +47,10 @@ describe('Other pages', () => {
   });
   
   describe('The Sub page', () => {
-    before(() => cy.visit('/sub/'));
+    before(() => {
+      cy.visit('/sub/');
+      cy.waitForNetworkIdle(1000);
+    });
 
     it('has a title', () => {
       cy.title().should('eq', 'DocSPA - Test Sub Page');
@@ -92,7 +101,10 @@ describe('Other pages', () => {
   });
   
   describe('The Sub-sub A page', () => {
-    before(() => cy.visit('/sub/sub/a'));
+    before(() => {
+      cy.visit('/sub/sub/a');
+      cy.waitForNetworkIdle(1000);
+    });
 
     it('has a title', () => {
       cy.title().should('eq', 'DocSPA - Sub A')
@@ -120,7 +132,10 @@ describe('Other pages', () => {
   });
 
   describe('Page not found in subdir', () => {
-    before(() => cy.visit('/sub/here-too'));
+    before(() => {
+      cy.visit('/sub/here-too');
+      cy.waitForNetworkIdle(1000);
+    });
 
     it('has a title', () => {
       cy.title().should('eq', 'DocSPA - ERROR 404')
@@ -144,7 +159,10 @@ describe('Other pages', () => {
   });
 
   describe('Sub navigation', () => {
-    before(() => cy.visit('/sub/'));
+    before(() => {
+      cy.visit('/sub/');
+      cy.waitForNetworkIdle(1000);
+    });
 
     afterEach(() => {
       cy.get('@sidebar').find('a[href="/sub/"]').click({ force: true });
@@ -187,7 +205,10 @@ describe('Other pages', () => {
   });
 
   describe('Test Page', () => {
-    before(() => cy.visit('/sub/test'));
+    before(() => {
+      cy.visit('/sub/test');
+      cy.waitForNetworkIdle(1000);
+    });
 
     it('check links', () => {
       cy.get('@content').find('section[id="links"] > h1').contains('Links');

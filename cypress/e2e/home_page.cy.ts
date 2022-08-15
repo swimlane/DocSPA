@@ -8,7 +8,10 @@ describe('The Home page', () => {
     pageAliases();
   });
 
-  before(() => cy.visit('/'));
+  before(() => {
+    cy.visit('/');
+    cy.waitForNetworkIdle(1000);
+  });
 
   it('has a title and metadata', () => {
     cy.title().should('eq', 'DocSPA');

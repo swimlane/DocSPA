@@ -5,7 +5,10 @@ describe('Main navigation', () => {
     cy.get('app-root').find('nav.app-nav').as('navbar');
   });
 
-  before(() => cy.visit('/'));
+  before(() => {
+    cy.visit('/');
+    cy.waitForNetworkIdle(1000);
+  });
 
   it('start on readme', () => {
     cy.url().should('eq', 'http://localhost:4200/');

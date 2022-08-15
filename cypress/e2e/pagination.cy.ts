@@ -1,5 +1,8 @@
 describe('pagination', () => {
-  before(() => cy.visit('/'));
+  before(() => {
+    cy.visit('/');
+    cy.waitForNetworkIdle(1000);
+  });
 
   it('has pagination links', () => {
     cy.get('app-root').find('footer').within(() => {
