@@ -35,7 +35,7 @@ function dirname(path: string) {
 }
 
 @Component({
-  selector: 'embed-stackblitz', // tslint:disable-line
+  selector: 'embed-stackblitz', // eslint-disable-line
   template: `
     <div *ngIf="!opened" class="placeholder" (click)="load()">
       <div *ngIf="title" class="title" [innerHTML]="title"></div>
@@ -156,7 +156,7 @@ export class EmbedStackblitzComponent {
     return sdk.embedProject(this.id, project, this.embedOpts);
   }
 
-  private loadProjectFile(file: string): Promise<Project> {
+  private loadProjectFile(_file: string): Promise<Project> {
     const url = join(this.root, `${this.projectPath}.json`);
     return this.http.get(url, {responseType: 'json'}).toPromise().then((project: any) => {
       if (Array.isArray(project.files)) {

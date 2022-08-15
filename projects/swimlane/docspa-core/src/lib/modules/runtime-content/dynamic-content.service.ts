@@ -1,5 +1,4 @@
 import { Injectable, Type, Component, NgModule, ComponentRef, Compiler, ApplicationRef, Injector, ViewContainerRef } from '@angular/core';
-import { DynamicComponentOptions } from './dynamic-component.directive';
 
 @Injectable({
   providedIn: 'root'

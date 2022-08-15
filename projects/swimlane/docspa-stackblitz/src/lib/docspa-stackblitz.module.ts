@@ -7,15 +7,12 @@ import { EmbedStackblitzComponent } from './docspa-stackblitz.component';
 import { MarkdownService, customSmartCodes } from '@swimlane/docspa-core';
 
 @NgModule({
-  declarations: [EmbedStackblitzComponent],
-  imports: [
-    CommonModule
-  ],
-  exports: [EmbedStackblitzComponent],
-  bootstrap: [],
-  entryComponents: [
-    EmbedStackblitzComponent
-  ]
+    declarations: [EmbedStackblitzComponent],
+    imports: [
+        CommonModule
+    ],
+    exports: [EmbedStackblitzComponent],
+    bootstrap: []
 })
 export class DocspaStackblitzModule {
   static forRoot(): ModuleWithProviders<DocspaStackblitzModule> {

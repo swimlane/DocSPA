@@ -3,6 +3,7 @@ import { dom } from '@swimlane/cy-dom-diff';
 describe('Search', () => {
   before(() => {
     cy.visit('/');
+    cy.waitForNetworkIdle(1000);
     cy.get('body', { timeout: 10000 }).should('have.class', 'ready');
   });
 

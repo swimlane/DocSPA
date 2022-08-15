@@ -7,7 +7,6 @@ import type { VFile } from './vfile';
 import type { Codes, ShortCode } from './ast';
 
 export const customSmartCodes = (codes: Codes[]): unified.Transformer => {
-  // @ts-ignore
   return (tree: mdast.Root, file: VFile) => {
     file.data = file.data || {};
     return visit(tree, 'shortcode', (node: ShortCode, index: number, parent: mdast.Parent) => {

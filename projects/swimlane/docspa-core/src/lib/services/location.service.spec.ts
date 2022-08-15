@@ -10,17 +10,18 @@ import { DOCSPA_ENVIRONMENT } from '../docspa-core.tokens';
 describe('LocationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
+    imports: [
         LoggerModule.forRoot({ level: NgxLoggerLevel.WARN })
-      ],
-      providers: [
+    ],
+    providers: [
         Location,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
-        { provide: DOCSPA_ENVIRONMENT, useValue: { } },
+        { provide: DOCSPA_ENVIRONMENT, useValue: {} },
         SettingsService,
         LocationService
-      ]
-    });
+    ],
+    teardown: { destroyAfterEach: false }
+});
   });
 
   // it('isAbsolutePath', () => {

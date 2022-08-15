@@ -19,7 +19,7 @@ interface FileIndexItem {
 }
 
 @Component({
-  selector: 'docspa-toc-page', // tslint:disable-line
+  selector: 'docspa-toc-page', // eslint-disable-line
   template: `
     <div class="docsify-pagination-container">
       <div class="pagination-item pagination-item--previous" *ngIf="prev">
@@ -200,7 +200,8 @@ export class TOCPaginationComponent implements OnInit, OnChanges {
   private pathChanges(path: string) {
     // TODO: make a matches or isActive helper
     path = path.replace(/^\.\//, '');
-    const re = new RegExp(`^\.?/?${path}$`);
+    // eslint-disable-next-line security/detect-non-literal-regexp
+    const re = new RegExp(`^.?/?${path}$`);
     const index = this.files.findIndex(file => {
       return re.test(file.path);
     });

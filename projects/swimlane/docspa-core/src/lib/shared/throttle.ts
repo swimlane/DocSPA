@@ -1,7 +1,5 @@
 import throttle from 'throttleit';
 
-type AnyFunction = (...args: any[]) => any;
-
 export * from 'throttleit';
 
 /**

@@ -25,7 +25,7 @@ export function join(start: string, end: string): string {
   return start + '/' + end;
 }
 
-export function splitHash(hash: string = '') {
+export function splitHash(hash = '') {
   const arr = [hash, ''];
   if (!hash) { return arr; }
   const idx = hash.indexOf('#', 1);
@@ -45,7 +45,7 @@ export function isDirname(href: string, page: string) {
 }
 
 export function isAbsolutePath(_: string) {
-  return new RegExp('(:|(\/{2}))', 'g').test(_);
+  return new RegExp('(:|(/{2}))', 'g').test(_);
 }
 
 export function stripBaseHref(baseHref: string, url: string): string {

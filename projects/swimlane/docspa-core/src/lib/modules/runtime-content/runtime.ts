@@ -10,9 +10,10 @@ interface VNode {
 }
 
 export function runtime(this: UNIFIED.Processor): UNIFIED.Transformer {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
   const processor = this;
 
-  // @ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-types
   return function(tree: MDAST.Root, file: VFILE.VFile, next: Function): any {
     const items: VNode[] = [];
 
@@ -60,6 +61,7 @@ export function runtime(this: UNIFIED.Processor): UNIFIED.Transformer {
           try {
             Object.assign(context, JSON.parse(hProperties.context));
           } catch (e) {
+            // no-op
           }
           value = `<template is="runtime-element"
             template="${escape(value, true)}"

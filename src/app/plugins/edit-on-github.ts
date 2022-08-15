@@ -2,7 +2,7 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { RouterService, LocationService } from '@swimlane/docspa-core';
 
 @Component({
-  selector: 'docspa-edit-on-github', // tslint:disable-line
+  selector: 'docspa-edit-on-github', // eslint-disable-line
   template: `<a [attr.href]="href" target="_blank"><ng-content></ng-content></a>`,
   styles: []
 })
@@ -17,14 +17,14 @@ export class EditOnGithubComponent implements OnInit {
   private path: string;
   private docEditBase: string;
 
-  get href() {
+  get href(): string {
     return this.docEditBase + this.path;
   }
 
   constructor(private routerService: RouterService, private locationService: LocationService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.setPath(this.routerService.contentPage);
     this.routerService.changed.subscribe((changes: SimpleChanges) => {
       if ('contentPage' in changes) {
@@ -33,7 +33,7 @@ export class EditOnGithubComponent implements OnInit {
     });
   }
 
-  setPath(page: string) {
+  setPath(page: string): void {
     const vfile = this.locationService.pageToFile(page);
     this.path = vfile.path;
   }

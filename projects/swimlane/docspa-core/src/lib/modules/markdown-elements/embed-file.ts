@@ -18,7 +18,7 @@ import type { VFile } from '../../shared/vfile';
 const codefilesTypes = ['js', 'json'];
 
 @Component({
-  selector: 'docspa-md-include', // tslint:disable-line
+  selector: 'docspa-md-include', // eslint-disable-line
   template: ``,
   encapsulation: ViewEncapsulation.None
 })
@@ -132,6 +132,7 @@ export class EmbedMarkdownComponent implements OnInit, OnChanges {
           block: 'start'
         });
       } catch (e) {
+        // no-op
       }
     }
   }

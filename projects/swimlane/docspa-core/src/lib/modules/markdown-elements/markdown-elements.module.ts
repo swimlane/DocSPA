@@ -36,40 +36,31 @@ const elements = [
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule
-  ],
-  exports: [
-    MadeWithDocSPAComponent,
-    TOCComponent,
-    EnvVarComponent,
-    MdPrintComponent,
-    TOCPaginationComponent,
-    EmbedMarkdownComponent
-  ],
-  declarations: [
-    MadeWithDocSPAComponent,
-    TOCComponent,
-    EnvVarComponent,
-    MdPrintComponent,
-    TOCPaginationComponent,
-    EmbedMarkdownComponent,
-    MdLinkComponent
-  ],
-  bootstrap: [],
-  entryComponents: [
-    MadeWithDocSPAComponent,
-    TOCComponent,
-    EnvVarComponent,
-    MdPrintComponent,
-    TOCPaginationComponent,
-    EmbedMarkdownComponent,
-    MdLinkComponent
-  ],
-  providers: [
+    imports: [
+        CommonModule,
+        RouterModule
+    ],
+    exports: [
+        MadeWithDocSPAComponent,
+        TOCComponent,
+        EnvVarComponent,
+        MdPrintComponent,
+        TOCPaginationComponent,
+        EmbedMarkdownComponent
+    ],
+    declarations: [
+        MadeWithDocSPAComponent,
+        TOCComponent,
+        EnvVarComponent,
+        MdPrintComponent,
+        TOCPaginationComponent,
+        EmbedMarkdownComponent,
+        MdLinkComponent
+    ],
+    bootstrap: [],
+    providers: [
     // TocService
-  ]
+    ]
 })
 export class MarkdownElementsModule {
   static forRoot(): ModuleWithProviders<MarkdownElementsModule> {

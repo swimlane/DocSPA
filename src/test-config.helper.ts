@@ -1,7 +1,7 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, TestBedStatic } from '@angular/core/testing';
 
 type CompilerOptions = Partial<{
-  providers: any[];
+  providers: unknown[];
   useJit: boolean;
   preserveWhitespaces: boolean;
 }>;
@@ -10,7 +10,7 @@ export type ConfigureFn = (testBed: typeof TestBed) => void;
 export const configureTests = (
   configure: ConfigureFn,
   compilerOptions: CompilerOptions = {}
-) => {
+): Promise<TestBedStatic> => {
   const compilerConfig: CompilerOptions = {
     preserveWhitespaces: false,
     ...compilerOptions,

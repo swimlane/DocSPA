@@ -8,7 +8,10 @@ describe('The quickstart page', () => {
     cy.get('app-root').find('section.content').as('content');
   });
 
-  before(() => cy.visit('/quickstart'));
+  before(() => {
+    cy.visit('/quickstart');
+    cy.waitForNetworkIdle(1000);
+  });
 
   it('has a title', () => {
     cy.title().should('eq', 'DocSPA - Quick start')

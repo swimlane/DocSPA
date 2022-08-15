@@ -26,7 +26,7 @@ import type { VFile } from '../../shared/vfile';
 import type { Heading } from '../../shared/ast';
 
 @Component({
-  selector: 'docspa-print', // tslint:disable-line
+  selector: 'docspa-print', // eslint-disable-line
   template: `<!-- -->`,
   styles: []
 })
@@ -106,7 +106,7 @@ export class MdPrintComponent implements OnInit {
       return (tree: mdast.Root, file: VFile) => {
         return visit(tree, 'link', (node: mdast.Link) => {
           if (node && !isAbsolutePath(node.url)) {
-            const url = locationService.prepareLink(node.url, file.history[0]).replace(/[\/#]/g, '--');
+            const url = locationService.prepareLink(node.url, file.history[0]).replace(/[/#]/g, '--');
             node.url = `#${url}`;
           }
           return true;
@@ -119,7 +119,7 @@ export class MdPrintComponent implements OnInit {
       return (tree: mdast.Root, file: VFile) => {
         return visit(tree, 'heading', (node: Heading) => {
           if (node && node.data && node.data.hProperties && node.data.hProperties.id) {
-            const id = locationService.prepareLink(`#${node.data.hProperties.id}`, file.history[0]).replace(/[\/#]/g, '--');
+            const id = locationService.prepareLink(`#${node.data.hProperties.id}`, file.history[0]).replace(/[/#]/g, '--');
             node.data.hProperties.id = node.data.id = id;
           }
           return true;
@@ -166,8 +166,8 @@ export class MdPrintComponent implements OnInit {
     });
 
     const files = await Promise.all(p);
-    const contents = files.map((f, i) => {
-      const id = f.history[0].replace(/^\//, '').replace(/[\/#]/g, '--');
+    const contents = files.map(f => {
+      const id = f.history[0].replace(/^\//, '').replace(/[/#]/g, '--');
       return `<article class="print-page" id="${id}"><a id="--${id}"></a>${f.contents}</article>`;
     }).join('<hr class="page-break">');
 

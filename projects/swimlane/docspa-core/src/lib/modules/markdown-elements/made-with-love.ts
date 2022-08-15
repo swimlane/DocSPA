@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'made-with-docspa', // tslint:disable-line
+  selector: 'made-with-docspa', // eslint-disable-line
   template: `
     <ng-template #noUrl>
       by

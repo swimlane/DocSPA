@@ -14,7 +14,6 @@
 // ***********************************************************
 
 import '@swimlane/cy-dom-diff/commands';
-
-// Import commands.js using ES2015 syntax:
 import './commands';
+import 'cypress-network-idle';
 

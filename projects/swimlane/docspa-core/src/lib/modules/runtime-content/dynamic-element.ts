@@ -1,4 +1,4 @@
-import { NgModule, Injector, ApplicationRef, Compiler, Type, Component, ComponentRef } from '@angular/core';
+import { NgModule, Injector, ComponentRef } from '@angular/core';
 import { DynamicComponentOptions } from './dynamic-component.directive';
 import { DynamicContentService } from './dynamic-content.service';
 

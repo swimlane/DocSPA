@@ -9,16 +9,15 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { DocspaSearchComponent } from './docspa-search.component';
 
 @NgModule({
-  declarations: [DocspaSearchComponent],
-  imports: [
-    CommonModule,
-    RouterModule,
-    OverlayModule,
-    MatPaginatorModule,
-    ScrollingModule
-  ],
-  exports: [DocspaSearchComponent],
-  entryComponents: [DocspaSearchComponent]
+    declarations: [DocspaSearchComponent],
+    imports: [
+        CommonModule,
+        RouterModule,
+        OverlayModule,
+        MatPaginatorModule,
+        ScrollingModule
+    ],
+    exports: [DocspaSearchComponent]
 })
 export class DocspaSearchModule {
   constructor(

@@ -6,7 +6,10 @@ describe('page component is a subpage', () => {
     pageAliases();
   });
 
-  before(() => cy.visit('/docspa/'));
+  before(() => {
+    cy.visit('/docspa/');
+    cy.waitForNetworkIdle(1000);
+  });
 
   it('has a title and metadata', () => {
     cy.title().should('eq', 'DocSPA');

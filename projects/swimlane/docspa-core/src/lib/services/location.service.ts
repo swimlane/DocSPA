@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocationStrategy, PlatformLocation } from '@angular/common';
+import { LocationStrategy } from '@angular/common';
 import { resolve } from 'url';
 
 import { join, isAbsolutePath, stripBaseHref  } from '../shared/utils';
@@ -32,7 +32,7 @@ export class LocationService {
   /**
    * Convert a page string to a virtual file
    */
-  pageToFile(page: string = ''): VFile {
+  pageToFile(page = ''): VFile {
     page = page.replace(/^#/, '');
     if (page === '') {
       page = '/';
@@ -63,7 +63,7 @@ export class LocationService {
   /**
    * Return a resolved url relative to the base path
    */
-  prepareLink(href: string, base: string = '') {
+  prepareLink(href: string, base = '') {
     if (isAbsolutePath(href)) { return href; }
     return resolve(base, stripBaseHref(this.baseHref, href));
   }
@@ -71,7 +71,7 @@ export class LocationService {
   /**
    * Return a resolved url relative to the base path
    */
-  prepareSrc(src: string, base: string = '') {
+  prepareSrc(src: string, base = '') {
     if (isAbsolutePath(src)) { return src; }
     return join(this.basePath, resolve(base, src));
   }

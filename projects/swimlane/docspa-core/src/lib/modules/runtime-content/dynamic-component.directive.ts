@@ -95,7 +95,7 @@ export class DynamicComponentDirective implements OnChanges, OnDestroy {
     return DynamicContentService.createNgModuleType(moduleMeta);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(_changes: SimpleChanges) {
     if (!this.template) {
       return;
     }

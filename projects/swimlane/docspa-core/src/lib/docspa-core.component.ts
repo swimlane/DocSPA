@@ -64,7 +64,7 @@ export class DocSPACoreComponent implements OnInit, AfterViewInit, OnDestroy {
     this.renderer[add ? 'addClass' : 'removeClass'](document.body, 'sticky');
   }
 
-  toggleSidebar(nextState: boolean = !this.sidebarClose) {
+  toggleSidebar(nextState = !this.sidebarClose) {
     this.sidebarClose = nextState;
     localStorage.setItem('DocSPACoreComponent#sidebarClose', String(this.sidebarClose));
     this.renderer[this.sidebarClose ? 'addClass' : 'removeClass'](document.body, 'close');

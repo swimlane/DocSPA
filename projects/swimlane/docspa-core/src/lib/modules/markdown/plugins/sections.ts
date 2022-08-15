@@ -7,7 +7,7 @@ export function sectionPlugin() {
     vfile.data = vfile.data || {};
     vfile.data.sections = [];
 
-    return visit(tree, 'section', (node: any, index: number, parent: any) => {
+    return visit(tree, 'section', (node: any, _index: number, _parent: any) => {
       const hnode = node.children.shift();
 
       const id = hnode.data.id;

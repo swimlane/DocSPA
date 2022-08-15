@@ -14,26 +14,26 @@ import { Router } from '@angular/router';
 
 describe('MarkdownService', () => {
   let markdownService: MarkdownService;
-  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
+    imports: [
         HttpClientTestingModule,
         LoggerModule.forRoot({ level: NgxLoggerLevel.WARN })
-      ],
-      providers: [
-        { provide: Router, useValue: { } },
+    ],
+    providers: [
+        { provide: Router, useValue: {} },
         Location,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
-        { provide: DOCSPA_ENVIRONMENT, useValue: { } },
+        { provide: DOCSPA_ENVIRONMENT, useValue: {} },
         MarkdownService,
         RouterService
-      ]
-    });
+    ],
+    teardown: { destroyAfterEach: false }
+});
 
     markdownService = TestBed.inject(MarkdownService);
-    httpMock = TestBed.inject(HttpTestingController);
+    TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {

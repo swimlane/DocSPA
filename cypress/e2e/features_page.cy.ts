@@ -8,7 +8,10 @@ describe('The Features page', () => {
     pageAliases();
   });
 
-  before(() => cy.visit('/features'));
+  before(() => {
+    cy.visit('/features');
+    cy.waitForNetworkIdle(1000);
+  });
 
   it('has a title', () => {
     cy.title().should('eq', 'DocSPA - Content Features')

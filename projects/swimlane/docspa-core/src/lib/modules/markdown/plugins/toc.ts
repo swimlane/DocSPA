@@ -19,7 +19,7 @@ export function tocPlugin(options?: TOCOptions) {
       result.map || []
     );
 
-    return visit(tree, 'listItem', (node: any, index: number, parent: any) => {
+    return visit(tree, 'listItem', (node: any, _index: number, _parent: any) => {
       if (node.children.length > 1) {
         node.data = node.data || {};
         node.data.hProperties = node.data.hProperties || {};

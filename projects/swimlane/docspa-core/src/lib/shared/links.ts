@@ -39,7 +39,7 @@ export const links = (settings: { locationService: LocationService }): Transform
 
         node.url = resolve(vfile.history[0], node.url);
 
-        // tslint:disable-next-line: prefer-const
+        // eslint-disable-next-line prefer-const
         let [routerLink = '', fragment] = node.url.split('#');
         fragment = fragment ? fragment.replace(/^#/, '') : undefined;
 
