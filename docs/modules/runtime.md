@@ -75,9 +75,6 @@ Use `{ playground }` to create a section containing both the code and the runtim
     [results]="data">
   </ngx-charts-bar-vertical>
 </div>
-<pre>
-{{data | json}}
-</pre>
 ```
 
 i> The angular components available within a runtime custom element are controlled by the `RuntimeContentModule.forRoot({ import: [...]})` `import` array.  These modules must also be added to your root app module.
