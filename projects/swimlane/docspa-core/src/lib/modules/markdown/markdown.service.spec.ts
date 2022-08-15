@@ -14,7 +14,6 @@ import { Router } from '@angular/router';
 
 describe('MarkdownService', () => {
   let markdownService: MarkdownService;
-  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -33,7 +32,7 @@ describe('MarkdownService', () => {
     });
 
     markdownService = TestBed.inject(MarkdownService);
-    httpMock = TestBed.inject(HttpTestingController);
+    TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {

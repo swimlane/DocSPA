@@ -1,13 +1,13 @@
 import {
   Component, Input,
-  ViewChild, TemplateRef, ViewContainerRef, AfterContentInit, OnChanges, NgZone
+  ViewChild, TemplateRef, ViewContainerRef, AfterContentInit, OnChanges
 } from '@angular/core';
 
 import { LocationService } from '../../services/location.service';
 import { RouterService } from '../../services/router.service';
 
 @Component({
-  selector: 'docspa-link', // tslint:disable-line
+  selector: 'docspa-link', // eslint-disable-line
   template: `
     <ng-template>
       <a

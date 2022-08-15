@@ -92,14 +92,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
             ]
           }
         },
@@ -145,14 +142,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/swimlane/docspa-core/tsconfig.lib.json",
-              "projects/swimlane/docspa-core/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "projects/swimlane/docspa-core/**/*.ts",
+              "projects/swimlane/docspa-core/**/*.html"
             ]
           }
         }
@@ -185,14 +179,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/swimlane/docspa-stackblitz/tsconfig.lib.json",
-              "projects/swimlane/docspa-stackblitz/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "projects/swimlane/docspa-stackblitz/**/*.ts",
+              "projects/swimlane/docspa-stackblitz/**/*.html"
             ]
           }
         }
@@ -225,19 +216,19 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/swimlane/docspa-search/tsconfig.lib.json",
-              "projects/swimlane/docspa-search/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "projects/swimlane/docspa-search/**/*.ts",
+              "projects/swimlane/docspa-search/**/*.html"
             ]
           }
         }
       }
     }
   },
-  "defaultProject": "docspa"
+  "defaultProject": "docspa",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }

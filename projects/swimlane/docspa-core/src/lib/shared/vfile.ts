@@ -74,5 +74,5 @@ export function getFullPath(_: VFile) {
 }
 
 export interface Preset extends unified.Preset {
-  reporter?: (vfile: VFile) => {};
+  reporter?: (vfile: VFile) => unknown;
 }

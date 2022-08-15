@@ -1,5 +1,6 @@
 export function escapeRegexp(str: string) {
-  return new RegExp(str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'gi');
+  // eslint-disable-next-line security/detect-non-literal-regexp
+  return new RegExp(str.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'), 'gi');
 }
 
 export function highlight(str: string, reQuery: RegExp) {
@@ -13,6 +14,7 @@ function regexLastIndexOf(str: string, regex: RegExp) {
   let lastIndexOf = -1;
   let result: RegExpExecArray;
 
+  // eslint-disable-next-line no-cond-assign
   while (result = regex.exec(str)) {
     lastIndexOf = result.index;
   }
@@ -21,11 +23,11 @@ function regexLastIndexOf(str: string, regex: RegExp) {
 }
 
 /**
- * Get a region of text surrounding the first oocurance of reQuery
+ * Get a region of text surrounding the first occurrence of reQuery
  *
  * @param str string to extract from
  * @param reQuery regexp to find
- * @param len lenth og matcvhing string
+ * @param len length og matching string
  */
 export function getExcerpt(str: string, reQuery: RegExp, len: number) {
   const m = reQuery.exec(str);
@@ -71,7 +73,7 @@ export function join(start: string, end: string): string {
   return start + '/' + end;
 }
 
-export function splitHash(hash: string = '') {
+export function splitHash(hash = '') {
   const arr = [hash, ''];
   if (!hash) { return arr; }
   const idx = hash.indexOf('#', 1);

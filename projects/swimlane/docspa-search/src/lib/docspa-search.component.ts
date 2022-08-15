@@ -3,7 +3,7 @@ import { Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular
 import { Observable, defer } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 
-import lunr, { tokenizer, Builder, stopWordFilter } from 'lunr';
+import lunr, { Builder, stopWordFilter } from 'lunr';
 
 import { FetchService, MarkdownService, LocationService } from '@swimlane/docspa-core';
 import { escapeRegexp, getExcerpt, highlight, join, splitHash } from './utils';
@@ -72,11 +72,11 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
   ) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.update();
   }
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     this.update();
   }
 
@@ -101,7 +101,7 @@ export class DocspaSearchComponent implements OnInit, OnChanges {
     this.searchResults = results.map(r => {
       const ref = r.ref;
 
-      // tslint:disable-next-line: prefer-const
+      // eslint-disable-next-line prefer-const
       let [link, fragment] = splitHash(ref);
       fragment = fragment.replace(/^#/, '');
 

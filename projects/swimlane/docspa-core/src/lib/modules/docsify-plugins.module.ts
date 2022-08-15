@@ -45,7 +45,7 @@ export class DocsifyPluginsModule {
       }
     };
 
-    const init = (fn: Function) => {
+    const init = (fn: () => unknown) => {
       this.hooks.init.tap('docsify-init', () => {
         setTimeout(() => {  // get rid of this, could be called after component renders
           return fn();
@@ -53,7 +53,7 @@ export class DocsifyPluginsModule {
       });
     };
 
-    const beforeEach = (fn: Function) => {
+    const beforeEach = (fn: () => unknown) => {
       this.hooks.beforeEach.tap('docsify-beforeEach', (vf: VFile) => {
         // Docsify beforeEach only runs on main content
         if (vf.data.docspa.isPageContent) {
@@ -64,7 +64,7 @@ export class DocsifyPluginsModule {
       });
     };
 
-    const afterEach = (fn: Function) => {
+    const afterEach = (fn: (v: any) => any) => {
       this.hooks.afterEach.tap('docsify-afterEach', (vf: VFile) => {
         // Docsify afterEach only runs on main content
         if (vf.data.docspa.isPageContent) {
@@ -77,7 +77,7 @@ export class DocsifyPluginsModule {
       });
     };
 
-    const doneEach = (fn: Function) => {
+    const doneEach = (fn: () => unknown) => {
       this.hooks.doneEach.tap('docsify-doneEach', () => {
         setTimeout(() => {  // get rid of this, could be called after component renders
           return fn();
@@ -85,7 +85,7 @@ export class DocsifyPluginsModule {
       });
     };
 
-    const mounted = (fn: Function) => {
+    const mounted = (fn: () => unknown) => {
       this.hooks.mounted.tap('docsify-mounted', () => {
         setTimeout(() => {  // get rid of this, could be called after component renders
           return fn();
@@ -93,7 +93,7 @@ export class DocsifyPluginsModule {
       });
     };
 
-    const ready = (fn: Function) => {
+    const ready = (fn: () => unknown) => {
       fn();
     };
 

@@ -19,7 +19,7 @@ import { MarkdownService } from '../markdown/markdown.service';
 import type { VFile } from '../../shared/vfile';
 
 @Component({
-  selector: 'docspa-toc', // tslint:disable-line
+  selector: 'docspa-toc', // eslint-disable-line
   template: ``,
   encapsulation: ViewEncapsulation.None
 })
@@ -92,7 +92,6 @@ export class TOCComponent implements OnChanges, OnInit {
           vfile.data = vfile.data || {};
           /* const err = */ await this.markdownService.processTOC(vfile, {
             minDepth: +this.minDepth,
-            // @ts-ignore
             maxDepth: +this.maxDepth,
             tight: this.tight
           });

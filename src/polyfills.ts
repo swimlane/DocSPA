@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /**
  * This file includes polyfills needed by Angular and is loaded before the app.
  * You can add your own extra polyfills to this file.
@@ -36,6 +37,7 @@ import 'intersection-observer';
 import '@ungap/global-this';
 import '@ungap/custom-elements';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 window['global'] = globalThis as any;
 window['process'] = window['process'] || require('process/browser');
 window['Buffer'] = window['Buffer'] || require('buffer').Buffer;

@@ -2,7 +2,7 @@ import { Component, Input, Optional, Inject, OnChanges } from '@angular/core';
 import { DOCSPA_ENVIRONMENT } from '../../docspa-core.tokens';
 
 @Component({
-  selector: 'docspa-env', // tslint:disable-line
+  selector: 'docspa-env', // eslint-disable-line
   template: `{{value}}`,
   styles: []
 })

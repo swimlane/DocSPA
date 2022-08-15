@@ -51,8 +51,10 @@ export class RouterService {
     const url = snapshot.url.map(s => s.path).join('/');
     let root = this.router.url;
     if (snapshot.fragment) {
+      // eslint-disable-next-line security/detect-non-literal-regexp
       root = root.replace(new RegExp('#' + snapshot.fragment + '$'), '');
     }
+    // eslint-disable-next-line security/detect-non-literal-regexp
     root = root.replace(new RegExp(url + '$'), '');
     if (!root.endsWith('/')) {
       root += '/';
@@ -77,7 +79,7 @@ export class RouterService {
     });
   }
 
-  private async urlChange(url: string = '/', root = this.root) {
+  private async urlChange(url = '/', root = this.root) {
     const changes: SimpleChanges = {};
 
     this.logger.debug(`location changed: ${url}`);
@@ -90,7 +92,7 @@ export class RouterService {
       changes.url = new SimpleChange(this.url, this.url = url, false);
     }
 
-    let [page = '/', anchor = ''] = url.split(/[#\?]/);
+    let [page = '/', anchor = ''] = url.split(/[#?]/);
     anchor = anchor || '';
     page = page || '/';
 
@@ -129,7 +131,8 @@ export class RouterService {
   private canonicalize(url: string) {
     const hp = this.settings.homepage.replace(/\.md$/, '');
     url = url.replace(/\.md$/, '');
-    url = url.replace(new RegExp(`${hp}\$`), '/');
+    // eslint-disable-next-line security/detect-non-literal-regexp
+    url = url.replace(new RegExp(`${hp}$`), '/');
     return url;
   }
 

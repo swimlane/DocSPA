@@ -184,7 +184,7 @@ export class MarkdownService {
     };
   }
 
-  private convertToTocData(file: VFile, node: Link, parent?: mdast.Parent): TOCData {
+  private convertToTocData(file: VFile, node: Link, _parent?: mdast.Parent): TOCData {
     const content = toString(node);
     const name = (file.data.matter ? file.data.matter.title : false) || file.data.title || file.path;
 

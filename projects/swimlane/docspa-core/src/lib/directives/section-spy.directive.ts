@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Output, EventEmitter, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Directive, ElementRef, Output, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 
 @Directive({
   selector: '[sectionScrollSpy]'

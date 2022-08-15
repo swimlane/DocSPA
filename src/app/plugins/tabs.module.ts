@@ -19,7 +19,7 @@ export class TabsPluginModule {
       },
     }]);
 
-    const toggleState = function (tabs: any[]) {
+    const toggleState = function (tabs: Element[]) {
       tabs.forEach(tab => {
         const state = this === tab ? 'open' : 'closed';
         tab = tab.closest('.tab');
