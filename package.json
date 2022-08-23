@@ -125,7 +125,7 @@
     "chg": "^0.4.0",
     "cpx": "^1.5.0",
     "cross-env": "^7.0.2",
-    "cypress": "^10.4.0",
+    "cypress": "^10.6.0",
     "cypress-network-idle": "^1.10.0",
     "eslint": "^8.2.0",
     "eslint-config-prettier": "^8.5.0",
