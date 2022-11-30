@@ -68,7 +68,7 @@ export class ListCollapseDirective implements OnInit, OnChanges, OnDestroy {
   private isHashActive(a: HTMLAnchorElement) {
     if (a.classList.contains('router-link-active')) {
       const hash = a.hash.replace(/^#/, '');
-      return !hash || (this.listCollapse || []).includes(hash);
+      return !hash || (this.listCollapse || []).includes(decodeURI(hash));
     }
     return false;
   }
