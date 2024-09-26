@@ -11,8 +11,11 @@
       "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "customWebpackConfig": {
+              "path": "./webpack.config.js"
+            },
             "outputPath": "dist/docspa",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -25,11 +28,7 @@
               "src/.nojekyll",
               "src/manifest.json"
             ],
-            "styles": [
-              "src/styles.css",
-              "src/print.css",
-              "src/index.scss"
-            ],
+            "styles": ["src/styles.css", "src/print.css", "src/index.scss"],
             "scripts": [],
             "allowedCommonJsDependencies": [
               "tapable",
@@ -94,18 +93,13 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "assets": [
-              "src/manifest.json"
-            ]
+            "assets": ["src/manifest.json"]
           }
         },
         "deploy": {
