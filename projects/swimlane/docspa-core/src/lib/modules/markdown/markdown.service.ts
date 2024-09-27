@@ -1,45 +1,53 @@
-import { Injectable, InjectionToken, Inject, Optional } from '@angular/core';
+import { Injectable, InjectionToken, Inject, Optional } from "@angular/core";
 
-import { NGXLogger } from 'ngx-logger';
+// import { NGXLogger } from 'ngx-logger';
 
-import unified from 'unified';
-import markdown from 'remark-parse';
-import remark2rehype from 'remark-rehype';
-import rehypeStringify from 'rehype-stringify';
-import raw from 'rehype-raw';
-import frontmatter from 'remark-frontmatter';
-import slug from 'remark-slug';
-import sectionize from 'remark-sectionize';
-import { getTitle } from '@swimlane/docspa-remark-preset';
-import toString from 'mdast-util-to-string';
-import { resolve } from 'url';
-import visit from 'unist-util-visit';
-import strip from 'remark-strip-html';
+import unified from "unified";
+import markdown from "remark-parse";
+import remark2rehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import raw from "rehype-raw";
+import frontmatter from "remark-frontmatter";
+import slug from "remark-slug";
+import sectionize from "remark-sectionize";
+import { getTitle } from "@swimlane/docspa-remark-preset";
+import toString from "mdast-util-to-string";
+import { resolve } from "url";
+import visit from "unist-util-visit";
+import strip from "remark-strip-html";
 
-import type { VFileCompatible } from 'vfile';
-import type * as mdast from 'mdast';
+import type { VFileCompatible } from "vfile";
+import type * as mdast from "mdast";
 
-import { tocPlugin } from './plugins/toc';
-import { removeNodesPlugin } from './plugins/remove';
-import { sectionPlugin } from './plugins/sections';
+import { tocPlugin } from "./plugins/toc";
+import { removeNodesPlugin } from "./plugins/remove";
+import { sectionPlugin } from "./plugins/sections";
 
-import { RouterService } from '../../services/router.service';
-import { LocationService } from '../../services/location.service';
-import { HooksService } from '../../services/hooks.service';
+import { RouterService } from "../../services/router.service";
+import { LocationService } from "../../services/location.service";
+import { HooksService } from "../../services/hooks.service";
 
-import { links, images } from '../../shared/links';
-import lazyInitialize from '../../shared/lazy-init';
-import { VFile, isVfile, Preset, TOCOptions, TOCData, SectionData } from '../../shared/vfile';
+import { links, images } from "../../shared/links";
+import lazyInitialize from "../../shared/lazy-init";
+import {
+  VFile,
+  isVfile,
+  Preset,
+  TOCOptions,
+  TOCData,
+  SectionData,
+} from "../../shared/vfile";
 
-import type { Link } from '../../shared/ast';
+import type { Link } from "../../shared/ast";
 
-export const MARKDOWN_CONFIG_TOKEN = new InjectionToken<any>( 'forRoot() configuration.' );
+export const MARKDOWN_CONFIG_TOKEN = new InjectionToken<any>(
+  "forRoot() configuration."
+);
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class MarkdownService {
-
   /**
    * Processor for converting md to html
    */
@@ -110,7 +118,7 @@ export class MarkdownService {
 
   constructor(
     private locationService: LocationService,
-    private logger: NGXLogger,
+    // private logger: any,
     private hooks: HooksService,
     private routerService: RouterService,
     @Optional() @Inject(MARKDOWN_CONFIG_TOKEN) private config: Preset
@@ -119,8 +127,8 @@ export class MarkdownService {
     this.config.plugins = this.config.plugins || [];
 
     if (this.config.reporter) {
-      this.hooks.afterEach.tap('logging', (page: any) => {
-        this.logger.info(this.config.reporter(page));
+      this.hooks.afterEach.tap("logging", (page: any) => {
+        // this.logger.info(this.config.reporter(page));
       });
     }
   }
@@ -144,13 +152,13 @@ export class MarkdownService {
       ...(file.data?.tocOptions || {}),
       ...options,
     };
-    const err = await this.tocProcessor.process(file) as VFile;
+    const err = (await this.tocProcessor.process(file)) as VFile;
     return err || file;
   }
 
   async processLinks(doc: VFileCompatible) {
     const file = VFile(doc) as VFile;
-    const err = await this.linksProcessor.process(file) as VFile;
+    const err = (await this.linksProcessor.process(file)) as VFile;
     return err || file;
   }
 
@@ -158,15 +166,18 @@ export class MarkdownService {
    * Get Sections
    */
   async getSections(doc: VFileCompatible): Promise<SectionData[]> {
-    const file = isVfile(doc) ? doc : VFile(String(doc)) as VFile;
+    const file = isVfile(doc) ? doc : (VFile(String(doc)) as VFile);
     const tree = this.sectionProcessor.parse(file);
     await this.sectionProcessor.run(tree, file);
-    file.data.title = (file.data.matter ? file.data.matter.title : false) || file.data.title || file.path;
+    file.data.title =
+      (file.data.matter ? file.data.matter.title : false) ||
+      file.data.title ||
+      file.path;
     return file.data?.sections || [];
   }
 
   async getTocLinks(doc: VFileCompatible): Promise<TOCData[]> {
-    const file = isVfile(doc) ? doc : VFile(String(doc)) as VFile;
+    const file = isVfile(doc) ? doc : (VFile(String(doc)) as VFile);
     file.data = file.data || {};
     await this.processLinks(file);
     return file.data.tocSearch;
@@ -176,23 +187,34 @@ export class MarkdownService {
   private linkPlugin = () => {
     return (tree: mdast.Root, file: VFile) => {
       file.data = file.data || {};
-      file.data.tocSearch = [];  // TODO: rename
-      return visit(tree, 'link', (node: Link, index: number, parent: mdast.Parent) => {
-        file.data.tocSearch.push(this.convertToTocData(file, node, parent));
-        return true;
-      });
+      file.data.tocSearch = []; // TODO: rename
+      return visit(
+        tree,
+        "link",
+        (node: Link, index: number, parent: mdast.Parent) => {
+          file.data.tocSearch.push(this.convertToTocData(file, node, parent));
+          return true;
+        }
+      );
     };
-  }
+  };
 
-  private convertToTocData(file: VFile, node: Link, _parent?: mdast.Parent): TOCData {
+  private convertToTocData(
+    file: VFile,
+    node: Link,
+    _parent?: mdast.Parent
+  ): TOCData {
     const content = toString(node);
-    const name = (file.data.matter ? file.data.matter.title : false) || file.data.title || file.path;
+    const name =
+      (file.data.matter ? file.data.matter.title : false) ||
+      file.data.title ||
+      file.path;
 
     let { url } = node;
-    let link: string | string[] = '';
-    let fragment = '';
+    let link: string | string[] = "";
+    let fragment = "";
 
-    if (node.data && node.data.hName === 'md-link') {
+    if (node.data && node.data.hName === "md-link") {
       // resolve path relative to source document
       url = resolve(node.data.hProperties.source, url);
       link = node.data.hProperties.link as string;
@@ -200,12 +222,12 @@ export class MarkdownService {
 
       link = this.locationService.prepareLink(link, this.routerService.root);
     } else {
-      [link = '', fragment] = url.split('#');
+      [link = "", fragment] = url.split("#");
     }
 
     // Hack to preserve trailing slash
-    if (typeof link === 'string' && link.length > 1 && link.endsWith('/')) {
-      link = [link, ''];
+    if (typeof link === "string" && link.length > 1 && link.endsWith("/")) {
+      link = [link, ""];
     }
 
     return {
@@ -213,8 +235,8 @@ export class MarkdownService {
       url,
       content,
       link,
-      fragment: fragment ? fragment.replace(/^#/, '') : undefined,
-      depth: node.depth as number
+      fragment: fragment ? fragment.replace(/^#/, "") : undefined,
+      depth: node.depth as number,
     };
   }
 }

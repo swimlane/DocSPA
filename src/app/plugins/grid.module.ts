@@ -1,21 +1,21 @@
-import { NgModule } from '@angular/core';
-import { MarkdownService } from '@swimlane/docspa-core';
-import { customBlocks } from '@swimlane/docspa-remark-preset';
+import { NgModule } from "@angular/core";
+import { MarkdownService } from "@swimlane/docspa-core";
+import { customBlocks } from "@swimlane/docspa-remark-preset";
 
-import './grid.css';
+import "./grid.css";
 
-@NgModule({
-})
+@NgModule({})
 export class GridPluginModule {
   constructor(markdownService: MarkdownService) {
-
     // Adds a remarkplugin to process tab blocks
-    markdownService.remarkPlugins.push([customBlocks, {
-      grid: {
-        classes: 'grid',
-        title: 'optional'
-      }
-    }]);
+    markdownService.remarkPlugins.push([
+      customBlocks,
+      {
+        grid: {
+          classes: "grid",
+          title: "optional",
+        },
+      },
+    ]);
   }
 }
-

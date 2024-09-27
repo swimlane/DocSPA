@@ -32,17 +32,17 @@ npm i --save-dev @types/node
 
 ```ts
 export const config = {
-  name: 'My DocSPA Site',
-  basePath: 'docs/',
-  homepage: 'README.md',
-  notFoundPage: '_404.md',
+  name: "My DocSPA Site",
+  basePath: "docs/",
+  homepage: "README.md",
+  notFoundPage: "_404.md",
   sideLoad: {
-    sidebar: '_sidebar.md',
-    navbar: '_navbar.md',
-    rightSidebar: '/_sidebar2.md',
-    footer: '_footer.md'
+    sidebar: "_sidebar.md",
+    navbar: "_navbar.md",
+    rightSidebar: "/_sidebar2.md",
+    footer: "_footer.md",
   },
-  coverpage: '_coverpage.md',
+  coverpage: "_coverpage.md",
 };
 ```
 
@@ -54,14 +54,14 @@ Add the following to `pollyfill.ts`:
 
 ```ts
 // Used for browsers with partially native support of Custom Elements
-import '@webcomponents/custom-elements/src/native-shim';
+import "@webcomponents/custom-elements/src/native-shim";
 
 // Used for browsers without a native support of Custom Elements
-import '@webcomponents/custom-elements/custom-elements.min';
+import "@webcomponents/custom-elements/custom-elements.min";
 
-window['global'] = globalThis as any;
-window['process'] = window['process'] || require('process/browser');
-window['Buffer'] = window['Buffer'] || require('buffer').Buffer;
+window["global"] = globalThis as any;
+window["process"] = window["process"] || require("process/browser");
+window["Buffer"] = window["Buffer"] || require("buffer").Buffer;
 ```
 
 ## Edit `index.html` to add a docsify theme:
@@ -86,58 +86,45 @@ window['Buffer'] = window['Buffer'] || require('buffer').Buffer;
 ## Add imports and config to `AppModule`
 
 ```ts { mark="7-10,19-22,24-26" }
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
 
-import { config } from '../docspa.config';
-import { DocspaCoreModule, MarkdownElementsModule, MarkdownModule, MARKDOWN_CONFIG_TOKEN } from '@swimlane/docspa-core';
-import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
-import { preset } from '@swimlane/docspa-remark-preset';
+import { config } from "../docspa.config";
+import { DocspaCoreModule, MarkdownElementsModule, MarkdownModule, MARKDOWN_CONFIG_TOKEN } from "@swimlane/docspa-core";
+import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
+import { preset } from "@swimlane/docspa-remark-preset";
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    DocspaCoreModule.forRoot(config),
-    LoggerModule.forRoot({ level: NgxLoggerLevel.WARN }),
-    MarkdownModule.forRoot(),
-    MarkdownElementsModule.forRoot(),
-  ],
-  providers: [
-    { provide: MARKDOWN_CONFIG_TOKEN, useFactory: () => preset }
-  ],
-  bootstrap: [AppComponent]
+  declarations: [AppComponent],
+  imports: [BrowserModule, AppRoutingModule, DocspaCoreModule.forRoot(config), LoggerModule.forRoot({ level: NgxLoggerLevel.WARN }), MarkdownModule.forRoot(), MarkdownElementsModule.forRoot()],
+  providers: [{ provide: MARKDOWN_CONFIG_TOKEN, useFactory: () => preset }],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
 ```
 
 ## Update `app-routing.module.ts` to support DocSPA routing
 
 ```ts { mark="1,4,6-8,11,13-16" }
-import { LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { DocSPACoreComponent, LocationWithSlashes } from '@swimlane/docspa-core';
+import { LocationStrategy, PathLocationStrategy } from "@angular/common";
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { DocSPACoreComponent, LocationWithSlashes } from "@swimlane/docspa-core";
 
-const routes: Routes = [
-  { path: '**', component: DocSPACoreComponent }
-];
+const routes: Routes = [{ path: "**", component: DocSPACoreComponent }];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
   providers: [
     { provide: Location, useClass: LocationWithSlashes },
-    { provide: LocationStrategy, useClass: PathLocationStrategy }
-  ]
+    { provide: LocationStrategy, useClass: PathLocationStrategy },
+  ],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
 ```
 
 ## Remove boilerplate from `app.component.html`

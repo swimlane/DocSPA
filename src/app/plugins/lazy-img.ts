@@ -1,32 +1,30 @@
-import './lazy-img.css';
+import "./lazy-img.css";
 
 export default class LazyloadImage extends HTMLImageElement {
-  original = '';
+  original = "";
   intersectionObserver: IntersectionObserver;
   matchMediaPrint: MediaQueryList;
 
   static get FALLBACK_IMAGE(): string {
-    return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAEElEQVR42gEFAPr/AP///wAI/AL+Sr4t6gAAAABJRU5ErkJggg==';
+    return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAEElEQVR42gEFAPr/AP///wAI/AL+Sr4t6gAAAABJRU5ErkJggg==";
   }
 
   static get observedAttributes(): string[] {
-    return [
-      'offset'
-    ];
+    return ["offset"];
   }
 
   get offset(): string {
-    return this.getAttribute('offset');
+    return this.getAttribute("offset");
   }
 
   set offset(value: string) {
-    this.setAttribute('offset', value);
+    this.setAttribute("offset", value);
   }
 
   get observer(): IntersectionObserver {
     if (!this.intersectionObserver) {
       this.intersectionObserver = new IntersectionObserver(this.onIntersect, {
-        rootMargin: this.offset
+        rootMargin: this.offset,
       });
     }
     return this.intersectionObserver;
@@ -34,7 +32,7 @@ export default class LazyloadImage extends HTMLImageElement {
 
   get mediaMatch(): MediaQueryList {
     if (!this.matchMediaPrint) {
-      this.matchMediaPrint = window.matchMedia('print');
+      this.matchMediaPrint = window.matchMedia("print");
     }
     return this.matchMediaPrint;
   }
@@ -48,7 +46,7 @@ export default class LazyloadImage extends HTMLImageElement {
   }
 
   connectedCallback(): void {
-    this.classList.toggle('loading', false);
+    this.classList.toggle("loading", false);
     this.observe();
   }
 
@@ -56,7 +54,11 @@ export default class LazyloadImage extends HTMLImageElement {
     this.unobserve();
   }
 
-  attributeChangedCallback(_name: string, _oldValue: unknown, _newValue: unknown): void {
+  attributeChangedCallback(
+    _name: string,
+    _oldValue: unknown,
+    _newValue: unknown
+  ): void {
     if (this.observer === null) {
       return;
     }
@@ -67,13 +69,13 @@ export default class LazyloadImage extends HTMLImageElement {
 
   private observe() {
     this.observer.observe(this);
-    this.mediaMatch.addEventListener('change', this.onPrint);
+    this.mediaMatch.addEventListener("change", this.onPrint);
   }
 
   private unobserve() {
     this.observer.unobserve(this);
     this.observer.disconnect();
-    this.mediaMatch.removeEventListener('change', this.onPrint);
+    this.mediaMatch.removeEventListener("change", this.onPrint);
   }
 
   private onPrint() {
@@ -92,20 +94,20 @@ export default class LazyloadImage extends HTMLImageElement {
   }
 
   private load() {
-    this.addEventListener('load', () => {
+    this.addEventListener("load", () => {
       this.unobserve();
     });
 
-    this.addEventListener('error', () => {
+    this.addEventListener("error", () => {
       this.src = LazyloadImage.FALLBACK_IMAGE;
       this.unobserve();
     });
 
     this.src = this.original;
-    this.classList.toggle('loaded', true);
+    this.classList.toggle("loaded", true);
   }
 }
 
-customElements.define('lazyload-image', LazyloadImage, {
-  extends: 'img'
+customElements.define("lazyload-image", LazyloadImage, {
+  extends: "img",
 });

@@ -6,6 +6,9 @@ _(none)_
 
 --------------------
 
+## 7.0.0 (2024-09-27)
+_(none)_
+
 ## 7.0.0 (2020-11-02)
 * Added remark-sectionize
 * Removed remark-html-emoji-image for performance
